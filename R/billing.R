@@ -1,11 +1,7 @@
 library(tidyverse)
 library(paws)
 
-Sys.setenv(
-  AWS_ACCESS_KEY_ID = "",
-  AWS_SECRET_ACCESS_KEY = "",
-  AWS_REGION = "us-east-1"
-)
+#'
 
 ce <- paws::costexplorer()
 
@@ -19,13 +15,13 @@ raw_billing_data <- ce$get_cost_and_usage(
   )
 )
 
-billing_data <- raw_billing_data$ResultsByTime %>%
+billing_data <- raw_billing_data$ResultsByTime |>
   map(function(x){
     tibble(Date = x$TimePeriod$Start,
-           Service = x$Groups %>% map(function(y){y$Keys}) %>% map_chr(~.x[1]),
-           Linked_Account = x$Groups %>% map(function(y){y$Keys}) %>% map_chr(~.x[2]),
-           Unblended_Cost = x$Groups %>% map(function(y){y$Metrics$UnblendedCost$Amount}) %>% unlist() %>% as.double())
-  }) %>%
+           Service = x$Groups |> map(function(y){y$Keys}) |> map_chr(~.x[1]),
+           Linked_Account = x$Groups |> map(function(y){y$Keys}) |> map_chr(~.x[2]),
+           Unblended_Cost = x$Groups |> map(function(y){y$Metrics$UnblendedCost$Amount}) |> unlist() |> as.double())
+  }) |>
   list_rbind()
 
 raw_billing_data <- ce$get_cost_and_usage(
@@ -38,13 +34,13 @@ raw_billing_data <- ce$get_cost_and_usage(
   )
 )
 
-billing_data <- raw_billing_data$ResultsByTime %>%
+billing_data <- raw_billing_data$ResultsByTime |>
   map(function(x){
     tibble(Date = x$TimePeriod$Start,
-           Service = x$Groups %>% map(function(y){y$Keys}) %>% map_chr(~.x[1]),
-           Linked_Account = x$Groups %>% map(function(y){y$Keys}) %>% map_chr(~.x[2]),
-           Blended_Cost = x$Groups %>% map(function(y){y$Metrics$BlendedCost$Amount}) %>% unlist() %>% as.double())
-  }) %>%
+           Service = x$Groups |> map(function(y){y$Keys}) |> map_chr(~.x[1]),
+           Linked_Account = x$Groups |> map(function(y){y$Keys}) |> map_chr(~.x[2]),
+           Blended_Cost = x$Groups |> map(function(y){y$Metrics$BlendedCost$Amount}) |> unlist() |> as.double())
+  }) |>
   list_rbind()
 
 ubilling_data$Unblended_Cost |> sum()
