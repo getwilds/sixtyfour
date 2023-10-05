@@ -1,7 +1,13 @@
+## TODO: not looked over this file yet
+
+#' User list cleanup - internal function
+#'
 #' @importFrom purrr map list_rbind
 #' @importFrom dplyr mutate
 #' @importFrom tibble as_tibble
 #' @importFrom lubridate as_datetime
+#' @autoglobal
+#' @param x what is this param Sean? some kind of tibble presumably
 user_list_cleanup <- function(x) {
   x |>
     map(~ .x[c("UserName", "UserId", "Path", "Arn", "CreateDate", "PasswordLastUsed")]) |>
@@ -28,6 +34,7 @@ list_users <- function() {
 #'
 #' @export
 #' @importFrom paws iam
+#' @param username A user name
 create_user <- function(username) {
     batman <- paws::iam()
 
@@ -37,9 +44,4 @@ create_user <- function(username) {
       user_list_cleanup()
 }
 
-
-
-
-testUser1_keys <- batman$create_access_key("testUser1")
-
-
+# testUser1_keys <- batman$create_access_key("testUser1")
