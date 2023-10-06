@@ -2,8 +2,8 @@ Package: sixtyfour
 Title: Humane Interface to AWS
 Version: 0.0.0.91
 Authors@R: c(
-    person("Sean", "Kross", role = c("aut", "cre"), email = "skross@fredhutch.org"),
-    person("Scott", "Chamberlain", role = "aut")
+    person("Sean", "Kross", role = "aut"),
+    person("Scott", "Chamberlain", role = c("aut", "cre"), email = "schambe3@fredhutch.org")
   )
 Description: Humane Interface to AWS. And more text. Even more text.
 License: MIT + file LICENSE
