@@ -1,0 +1,19 @@
+url: ~
+template:
+  bootstrap: 5
+reference:
+  - title: sixtyfour
+    desc: >
+      High level overview of package
+    contents:
+      - sixtyfour
+  - title: Files (Buckets)
+    contents:
+      - starts_with("bucket")
+  - title: Billing
+    contents:
+      - billing
+  - title: Users
+    contents:
+      - create_user
+      - list_users
