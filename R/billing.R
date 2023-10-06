@@ -31,16 +31,16 @@ billing_factory <- function(type) {
       )
     )
 
-    raw_billing_data$ResultsByTime |>
+    raw_billing_data$ResultsByTime %>%
       map(function(x){
         tibble(Date = x$TimePeriod$Start,
-               Service = x$Groups |> map(function(y){y$Keys}) |> map_chr(~.x[1]),
-               Linked_Account = x$Groups |> map(function(y){y$Keys}) |> map_chr(~.x[2]),
-               "{type}" := x$Groups |>
-                map(function(y){y$Metrics[[type]]$Amount}) |>
-                unlist() |>
+               Service = x$Groups %>% map(function(y){y$Keys}) %>% map_chr(~.x[1]),
+               Linked_Account = x$Groups %>% map(function(y){y$Keys}) %>% map_chr(~.x[2]),
+               "{type}" := x$Groups %>%
+                map(function(y){y$Metrics[[type]]$Amount}) %>%
+                unlist() %>%
                 as.double())
-      }) |>
+      }) %>%
       list_rbind()
   }
 }

@@ -9,12 +9,12 @@
 #' @autoglobal
 #' @param x what is this param Sean? some kind of tibble presumably
 user_list_cleanup <- function(x) {
-  x |>
-    map(~ .x[c("UserName", "UserId", "Path", "Arn", "CreateDate", "PasswordLastUsed")]) |>
-    map(\(x) map(x, \(y) ifelse(length(y) < 1, NA, y))) |>
-    map(as_tibble) |>
-    list_rbind() |>
-    mutate(CreateDate = as_datetime(CreateDate)) |>
+  x %>%
+    map(~ .x[c("UserName", "UserId", "Path", "Arn", "CreateDate", "PasswordLastUsed")]) %>%
+    map(\(x) map(x, \(y) ifelse(length(y) < 1, NA, y))) %>%
+    map(as_tibble) %>%
+    list_rbind() %>%
+    mutate(CreateDate = as_datetime(CreateDate)) %>%
     mutate(PasswordLastUsed = as_datetime(PasswordLastUsed))
 }
 
@@ -26,7 +26,7 @@ user_list_cleanup <- function(x) {
 list_users <- function() {
   batman <- paws::iam()
 
-  batman$list_users()$Users |>
+  batman$list_users()$Users %>%
     user_list_cleanup()
 }
 
@@ -40,7 +40,7 @@ create_user <- function(username) {
 
     result <- batman$create_user(UserName = username)
 
-    result |>
+    result %>%
       user_list_cleanup()
 }
 

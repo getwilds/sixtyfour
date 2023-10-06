@@ -47,7 +47,7 @@
 # sss$object
 
 # buckets <- sss$list_buckets()
-# buckets[[1]] |>
+# buckets[[1]] %>%
 #   map_chr(~ .x$Name)
 
 # sss$put_bucket_ownership_controls(Bucket = "s64-test-2",
