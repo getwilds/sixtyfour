@@ -1,9 +1,8 @@
+# sixtyfour
+
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/fhdsl/sixtyfour/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/fhdsl/sixtyfour/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
-
-
-# sixtyfour
 
 A science-focused, more humane R interface to AWS.
 
