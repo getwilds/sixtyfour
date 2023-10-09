@@ -6,14 +6,16 @@
 \alias{sixtyfour-package}
 \title{sixtyfour: Humane Interface to AWS}
 \description{
-Humane Interface to AWS. And more text. Even more text.
+Write some more things here to give folks a
+sense of what the goal of this package is,
+high level entrypoints, etc.
 }
 \author{
-\strong{Maintainer}: Sean Kross \email{skross@fredhutch.org}
+\strong{Maintainer}: Scott Chamberlain \email{schambe3@fredhutch.org}
 
 Authors:
 \itemize{
-  \item Scott Chamberlain
+  \item Sean Kross
 }
 
 }
