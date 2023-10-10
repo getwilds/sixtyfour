@@ -9,5 +9,6 @@
 
 ## usethis namespace: start
 #' @importFrom magrittr %>%
+#' @importFrom paws s3 iam costexplorer
 ## usethis namespace: end
 NULL
