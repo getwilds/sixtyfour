@@ -1,5 +1,6 @@
 #' Fetch billing data
 #'
+#' @export
 #' @importFrom tibble tibble
 #' @importFrom purrr map map_chr list_rbind
 #' @importFrom rlang :=
@@ -20,8 +21,7 @@ billing <- function(date_start, date_end = as.character(Sys.Date())) {
 # function factory to create functions for both blended and unblended data
 billing_factory <- function(type) {
   function(date_start, date_end) {
-    ce <- paws::costexplorer()
-    raw_billing_data <- ce$get_cost_and_usage(
+    raw_billing_data <- env64$costexplorer$get_cost_and_usage(
       TimePeriod = list(Start = date_start, End = date_end),
       Granularity = "DAILY",
       Metrics = type,
