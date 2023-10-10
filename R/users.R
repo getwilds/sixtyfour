@@ -22,7 +22,6 @@ user_list_cleanup <- function(x) {
 #' List Users
 #'
 #' @export
-#' @importFrom paws iam
 #' @returns A data frame with information about user accounts.
 list_users <- function() {
   env64$iam$list_users()$Users %>%
@@ -32,7 +31,6 @@ list_users <- function() {
 #' Create a User
 #'
 #' @export
-#' @importFrom paws iam
 #' @param username A user name
 create_user <- function(username) {
     result <- env64$iam$create_user(UserName = username)
