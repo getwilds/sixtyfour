@@ -1,62 +1,57 @@
-## TODO: not looked over this file yet (commented out below so package can run)
+#' Create an S3 bucket
+#'
+#' @export
+#' @param bucket (character) bucket name. required
+#' @note internally uses [head_bucket](https://www.paws-r-sdk.com/docs/s3_head_bucket/)
+#' @examples \dontrun{
+#' # exists
+#' aws_bucket_exists(bucket="s64-test-2")
+#' # does not exist
+#' aws_bucket_exists(bucket="no-bucket")
+#' }
+aws_bucket_exists <- function(bucket) {
+  res <- tryCatch({
+    env64$s3$head_bucket(Bucket = bucket)
+  }, error = function(e) e)
+  !inherits(res, c("error", "error_response"))
+}
 
-# sss <- paws::s3()
+#' Create an S3 bucket
+#'
+#' @export
+#' @param bucket (character) bucket name. required
+#' @param ... named parameters passed on to [list_objects](https://www.paws-r-sdk.com/docs/s3_create_bucket/)
+#' @examples \dontrun{
+#' aws_bucket_create(bucket="s64-test-2")
+#' }
+aws_bucket_create <- function(bucket, ...) {
+  env64$s3$create_bucket(Bucket = bucket,
+    CreateBucketConfiguration = list(LocationConstraint = "us-west-2"), ...)
+}
 
-# sss$create_bucket(Bucket = "s64-test-3-private",
-#                   CreateBucketConfiguration = list(LocationConstraint = "us-west-2"))
+#' List objects in an S3 bucket
+#'
+#' @export
+#' @param bucket (character) bucket name. required
+#' @param ... named parameters passed on to [list_objects](https://www.paws-r-sdk.com/docs/s3_list_objects/)
+#' @examples \dontrun{
+#' aws_bucket_list_objects(bucket="s64-test-2")
+#' }
+aws_bucket_list_objects <- function(bucket, ...) {
+  env64$s3$list_objects(Bucket = bucket, ...)
+}
 
-# sss$put_public_access_block(Bucket = "s64-test-2",
-#                             PublicAccessBlockConfiguration = list(
-#                               BlockPublicPolicy = FALSE,
-#                               RestrictPublicBuckets = FALSE
-#                             ))
-
-# sss$put_object(
-#   Body = "~/Desktop/koth.png",
-#   Bucket = "s64-test-2",
-#   Key = basename("~/Desktop/koth.png"),
-#   Tagging = NULL)
-
-# sss$put_object_acl(
-#   AccessControlPolicy = structure(
-#     list(),
-#     names = character(
-#       0
-#     )
-#   ),
-#   Bucket = "s64-test-2",
-#   Key = basename("~/Desktop/koth.png"),
-#   GrantRead = "uri=http://acs.amazonaws.com/groups/global/AllUsers"
-# )
-
-# sss$list_objects("s64-test-2")
-
-# policy <- '{
-#   "Version":"2012-10-17",
-#   "Statement":[{
-#     "Sid":"PublicReadGetObject",
-#     "Effect":"Allow",
-#     "Principal": "*",
-#     "Action":"s3:GetObject",
-#     "Resource":"arn:aws:s3:::s64-test-2/*"
-#   }]
-# }'
-
-# sss$put_bucket_policy(Bucket = "s64-test-2", Policy = policy)
-
-# sss$object
-
-# buckets <- sss$list_buckets()
-# buckets[[1]] %>%
-#   map_chr(~ .x$Name)
-
-# sss$put_bucket_ownership_controls(Bucket = "s64-test-2",
-#                                   OwnershipControls = list(
-#                                     Rules = list(
-#                                       list(
-#                                         ObjectOwnership = "ObjectWriter"
-#                                       )
-#                                     )
-#                                   ))
-
-# sss$get_bucket_ownership_controls(Bucket = "s64-test-2")
+#' List S3 buckets
+#'
+#' @export
+#' @param ... named parameters passed on to [list_buckets](https://www.paws-r-sdk.com/docs/s3_list_buckets/)
+#' @return tibble with zero or more rows (each an S3 bucket), with two columns:
+#' * Name (character)
+#' * CreationDate (dttm)
+#' @autoglobal
+#' @examples \dontrun{
+#' aws_buckets()
+#' }
+aws_buckets <- function(...) {
+  env64$s3$list_buckets(...) %>% .$Buckets %>% map(., as_tibble) %>% list_rbind()
+}

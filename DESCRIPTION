@@ -18,7 +18,8 @@ Imports:
     paws,
     purrr,
     rlang,
-    tibble
+    tibble,
+    fs
 Suggests: 
     roxyglobals
 Config/roxyglobals/filename: globals.R

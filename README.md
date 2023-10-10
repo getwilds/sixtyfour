@@ -20,10 +20,11 @@ This package is not on CRAN (yet)
 
 ## sixtyfour high level organization
 
-- billing: get AWS billing details
-- files: manage files on AWS
-- users: manage users on AWS
-- database: interact with AWS databases
+- `aws_billing`: get AWS billing details
+- `aws_bucket*`: manage S3 buckets
+- `aws_file_*`: manage files in S3 buckets on AWS
+- `aws_user*`: manage users on AWS
+- `aws_db*`: interact with AWS databases
 
 
 ## Getting Started
