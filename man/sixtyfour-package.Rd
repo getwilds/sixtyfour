@@ -11,7 +11,7 @@ sense of what the goal of this package is,
 high level entrypoints, etc.
 }
 \author{
-\strong{Maintainer}: Scott Chamberlain \email{schambe3@fredhutch.org}
+\strong{Maintainer}: Scott Chamberlain \email{sachamber@fredhutch.org}
 
 Authors:
 \itemize{
