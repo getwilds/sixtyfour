@@ -1,5 +1,6 @@
 #' Upload a file
 #'
+#' @export
 #' @importFrom fs file_exists
 #' @param bucket (character) an S3 bucket. required
 #' @param path (character) a file path to read from or write to. required
@@ -35,6 +36,7 @@ aws_file_upload <- function(bucket, path, key = basename(path), ...) {
 
 #' Download a file
 #'
+#' @export
 #' @inheritParams aws_file_upload
 #' @param ... named parameters passed on to [download_file](https://www.paws-r-sdk.com/docs/s3_download_file/)
 #' @details Wraps [download_file](https://www.paws-r-sdk.com/docs/s3_download_file/)
@@ -54,6 +56,7 @@ aws_file_download <- function(bucket, key, path, ...) {
 
 #' File attributes
 #'
+#' @export
 #' @inheritParams aws_file_upload
 #' @param ... named parameters passed on to [head_object](https://www.paws-r-sdk.com/docs/s3_head_object/)
 #' @return `list` of length 0
@@ -68,6 +71,7 @@ aws_file_attr <- function(bucket, key, ...) {
 
 #' Check if a file exists
 #'
+#' @export
 #' @inheritParams aws_file_upload
 #' @return TRUE or FALSE
 #' @examples \dontrun{
