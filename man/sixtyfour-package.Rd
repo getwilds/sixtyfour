@@ -10,6 +10,14 @@ Write some more things here to give folks a
 sense of what the goal of this package is,
 high level entrypoints, etc.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/fhdsl/sixtyfour}
+  \item Report bugs at \url{https://github.com/fhdsl/sixtyfour/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Scott Chamberlain \email{sachamber@fredhutch.org}
 
