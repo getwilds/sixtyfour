@@ -14,6 +14,9 @@ aws_bucket_create(bucket, ...)
 \description{
 Create an S3 bucket
 }
+\note{
+Requires the env var \code{AWS_REGION}
+}
 \examples{
 \dontrun{
 aws_bucket_create(bucket="s64-test-2")

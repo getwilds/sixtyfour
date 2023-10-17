@@ -8,12 +8,10 @@ paws_handlr <- function(...) {
   tryCatch(..., error = function(e) e)
 }
 
-# TODO: maybe use a custom switch to have more useful error messages?
-# status_swap <- function(err) {
-#   dplyr::case_match(
-#     err$status_code,
-#     404 = "Not found",
-#     403 = "Not found",
-#     .default = err$message
-#   )
-# }
+# Check for an env var; stop with message if not found
+env_var <- function(env_name) {
+  x <- Sys.getenv(env_name, "")
+  stop_msg <- sprintf("Environment variable '%s' not found", env_name)
+  if (identical(x, "")) stop(stop_msg)
+  return(x)
+}

@@ -21,12 +21,13 @@ aws_bucket_exists <- function(bucket) {
 #' @export
 #' @param bucket (character) bucket name. required
 #' @param ... named parameters passed on to [list_objects](https://www.paws-r-sdk.com/docs/s3_create_bucket/)
+#' @note Requires the env var `AWS_REGION`
 #' @examples \dontrun{
 #' aws_bucket_create(bucket="s64-test-2")
 #' }
 aws_bucket_create <- function(bucket, ...) {
   env64$s3$create_bucket(Bucket = bucket,
-    CreateBucketConfiguration = list(LocationConstraint = "us-west-2"), ...)
+    CreateBucketConfiguration = list(LocationConstraint = env_var("AWS_REGION")), ...)
 }
 
 #' List objects in an S3 bucket
