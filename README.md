@@ -13,7 +13,7 @@ Development version
 
 ``` r
 # install.packages("pak")
-pak::pak("fhdsl/sixtyfour")
+pak::pkg_install("fhdsl/sixtyfour")
 ```
 
 This package is not on CRAN (yet)
