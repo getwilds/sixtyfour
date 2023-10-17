@@ -46,3 +46,7 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
+        env:
+          AWS_REGION: a
+          AWS_ACCESS_KEY_ID: b
+          AWS_SECRET_ACCESS_KEY: c

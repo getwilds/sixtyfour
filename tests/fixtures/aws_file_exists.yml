@@ -1,0 +1,70 @@
+http_interactions:
+- request:
+    method: head
+    uri: https://s64-test-2.s3.<<aws_region>>.amazonaws.com/DESCRIPTION
+    body:
+      encoding: ''
+      string: ''
+    headers:
+      Accept: application/json, text/xml, application/xml, */*
+      Content-Type: ''
+      User-Agent: paws/0.6.1 (R4.3.1; darwin20; aarch64)
+      Content-Length: '0'
+      X-Amz-Date: 20231017T174807Z
+      X-Amz-Content-Sha256: redacted
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amz-id-2: redacted
+      x-amz-request-id: redacted
+      date: Tue, 17 Oct 2023 17:48:08 GMT
+      last-modified: Mon, 09 Oct 2023 18:20:26 GMT
+      etag: '"0993e11c77ceeab5119978fe37a320c8"'
+      x-amz-server-side-encryption: AES256
+      accept-ranges: bytes
+      content-type: binary/octet-stream
+      server: AmazonS3
+      content-length: '354'
+    body:
+      encoding: ''
+      file: no
+      string: ''
+  recorded_at: 2023-10-17 17:48:07 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: head
+    uri: https://s64-test-2.s3.<<aws_region>>.amazonaws.com/doesntexist
+    body:
+      encoding: ''
+      string: ''
+    headers:
+      Accept: application/json, text/xml, application/xml, */*
+      Content-Type: ''
+      User-Agent: paws/0.6.1 (R4.3.1; darwin20; aarch64)
+      Content-Length: '0'
+      X-Amz-Date: 20231017T174807Z
+      X-Amz-Content-Sha256: redacted
+      Authorization: redacted
+  response:
+    status:
+      status_code: 404
+      category: Client error
+      reason: Not Found
+      message: 'Client error: (404) Not Found'
+    headers:
+      x-amz-request-id: redacted
+      x-amz-id-2: redacted
+      content-type: application/xml
+      date: Tue, 17 Oct 2023 17:48:07 GMT
+      server: AmazonS3
+    body:
+      encoding: ''
+      file: no
+      string: ''
+  recorded_at: 2023-10-17 17:48:07 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
