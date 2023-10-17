@@ -13,7 +13,7 @@ Development version
 
 ``` r
 # install.packages("pak")
-pak::pak("seankross/sixtyfour")
+pak::pak("fhdsl/sixtyfour")
 ```
 
 This package is not on CRAN (yet)

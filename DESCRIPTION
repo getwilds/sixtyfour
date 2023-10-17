@@ -6,6 +6,8 @@ Authors@R: c(
     person("Scott", "Chamberlain", role = c("aut", "cre"), email = "sachamber@fredhutch.org")
   )
 Description: Humane Interface to AWS. And more text. Even more text.
+URL: https://github.com/fhdsl/sixtyfour
+BugReports: https://github.com/fhdsl/sixtyfour/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
