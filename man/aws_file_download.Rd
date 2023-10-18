@@ -16,7 +16,7 @@ aws_file_download(bucket, key, path, ...)
 \item{...}{named parameters passed on to \href{https://www.paws-r-sdk.com/docs/s3_download_file/}{download_file}}
 }
 \value{
-\code{list} of length 0
+Path of downloaded file
 }
 \description{
 Download a file

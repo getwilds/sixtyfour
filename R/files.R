@@ -40,7 +40,7 @@ aws_file_upload <- function(bucket, path, key = basename(path), ...) {
 #' @inheritParams aws_file_upload
 #' @param ... named parameters passed on to [download_file](https://www.paws-r-sdk.com/docs/s3_download_file/)
 #' @details Wraps [download_file](https://www.paws-r-sdk.com/docs/s3_download_file/)
-#' @return `list` of length 0
+#' @return Path of downloaded file
 #' @examples \dontrun{
 #' temp_path <- tempfile()
 #' aws_file_download(bucket = "s64-test-2", key = "DESCRIPTION",
@@ -52,6 +52,7 @@ aws_file_upload <- function(bucket, path, key = basename(path), ...) {
 #' }
 aws_file_download <- function(bucket, key, path, ...) {
   env64$s3$download_file(Bucket = bucket, Key = key, Filename = path, ...)
+  return(path)
 }
 
 #' File attributes
