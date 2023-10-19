@@ -7,17 +7,28 @@
 aws_buckets(...)
 }
 \arguments{
-\item{...}{named parameters passed on to \href{https://www.paws-r-sdk.com/docs/s3_list_buckets/}{list_buckets}}
+\item{...}{named parameters passed on to \code{\link[s3fs:info]{s3fs::s3_dir_info()}}}
 }
 \value{
-tibble with zero or more rows (each an S3 bucket), with two columns:
+if no objects found, an empty tibble. if tibble has rows each
+is an S3 bucket, with 8 columns:
 \itemize{
-\item Name (character)
-\item CreationDate (dttm)
+\item bucket_name (character)
+\item key (character)
+\item uri (character)
+\item size (fs::bytes)
+\item type (character)
+\item owner (character)
+\item etag (character)
+\item last_modified (dttm)
 }
 }
 \description{
 List S3 buckets
+}
+\note{
+we set \code{refresh=TRUE} internally to make sure we return up to date
+information about your buckets rather than what's cached locally
 }
 \examples{
 \dontrun{

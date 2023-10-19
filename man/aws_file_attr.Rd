@@ -4,25 +4,28 @@
 \alias{aws_file_attr}
 \title{File attributes}
 \usage{
-aws_file_attr(bucket, key, ...)
+aws_file_attr(remote_path)
 }
 \arguments{
-\item{bucket}{(character) an S3 bucket. required}
-
-\item{key}{(character) a key for an object in an S3 \code{bucket}. required}
-
-\item{...}{named parameters passed on to \href{https://www.paws-r-sdk.com/docs/s3_head_object/}{head_object}}
+\item{remote_path}{(character) one or more remote S3 paths. required}
 }
 \value{
-\code{list} of length 0
+a tibble with many columns, with number of rows matching length
+of \code{remote_path}
 }
 \description{
 File attributes
 }
+\note{
+uses \code{\link[s3fs:info]{s3fs::s3_file_info()}} internally
+}
 \examples{
 \dontrun{
-aws_file_attr(bucket = "s64-test-2", key = "DESCRIPTION")
-aws_file_attr(bucket = "s64-test-2", key = "ddd")
-aws_file_attr(bucket = "s64-test-2", key = "doesntexist")
+# files one by one
+aws_file_attr(s3_path("s64-test-2", "DESCRIPTION"))
+aws_file_attr(s3_path("s64-test-2", "ddd"))
+aws_file_attr(s3_path("s64-test-2", "doesntexist"))
+# or all together
+aws_file_attr(s3_path("s64-test-2", c("DESCRIPTION", "ddd")))
 }
 }

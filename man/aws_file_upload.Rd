@@ -4,27 +4,23 @@
 \alias{aws_file_upload}
 \title{Upload a file}
 \usage{
-aws_file_upload(bucket, path, key = basename(path), ...)
+aws_file_upload(path, remote_path, ...)
 }
 \arguments{
-\item{bucket}{(character) an S3 bucket. required}
+\item{path}{(character) a file path to read from. required}
 
-\item{path}{(character) a file path to read from or write to. required}
+\item{remote_path}{(character) a remote path where the file
+should go. required}
 
-\item{key}{(character) a key for an object in an S3 \code{bucket}. required}
-
-\item{...}{named parameters passed on to \href{https://www.paws-r-sdk.com/docs/s3_put_object/}{put_object}}
+\item{...}{named parameters passed on to \code{\link[s3fs:copy]{s3fs::s3_file_copy()}}}
 }
 \value{
-a tibble with two columns and many rows
+(character) a vector of remote s3 paths
 }
 \description{
 Upload a file
 }
 \details{
-Wraps \href{https://www.paws-r-sdk.com/docs/s3_put_object/}{put_object}
-
-\code{bucket} parameter:
 \itemize{
 \item For upload: if it does exist it will be created
 \item For download: if it does not exist, function will return an error
@@ -32,19 +28,24 @@ Wraps \href{https://www.paws-r-sdk.com/docs/s3_put_object/}{put_object}
 }
 \examples{
 \dontrun{
-desc_file <- file.path(system.file(), "DESCRIPTION")
-aws_file_upload(bucket = "s64-test-2", path = desc_file)
+demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
+aws_file_upload(demo_rds_file, s3_path("s64-test-2", basename(demo_rds_file)))
 
-# supply a different key
-aws_file_upload(bucket = "s64-test-2", path = desc_file, key = "d_file")
+## many files at once
+links_rds_file <- file.path(system.file(), "Meta/links.rds")
+aws_file_upload(
+ c(demo_rds_file, links_rds_file),
+ s3_path("s64-test-2", c(basename(demo_rds_file), basename(links_rds_file))))
 
 # set expiration, expire 1 minute from now
-aws_file_upload(bucket = "s64-test-2", path = desc_file, key = "ddd",
-Expires = Sys.time() + 60)
+aws_file_upload(demo_rds_file, s3_path("s64-test-2", "ddd.rds"), Expires = Sys.time() + 60)
 
 # bucket doesn't exist
-aws_file_upload(bucket = "not-a-bucket", path = desc_file)
-# path doesn't exist
-aws_file_upload(bucket = "s64-test-2", path = "file_doesnt_exist.txt")
+aws_file_upload(demo_rds_file, "s3://not-a-bucket/eee.rds")
 }
+
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# path doesn't exist
+aws_file_upload("file_doesnt_exist.txt", s3_path("s64-test-2", "file_doesnt_exist.txt"))
+\dontshow{\}) # examplesIf}
 }

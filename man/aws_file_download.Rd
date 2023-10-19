@@ -4,34 +4,39 @@
 \alias{aws_file_download}
 \title{Download a file}
 \usage{
-aws_file_download(bucket, key, path, ...)
+aws_file_download(remote_path, path, ...)
 }
 \arguments{
-\item{bucket}{(character) an S3 bucket. required}
+\item{remote_path}{(character) one or more remote S3 paths. required}
 
-\item{key}{(character) a key for an object in an S3 \code{bucket}. required}
+\item{path}{(character) one or more file paths to write to. required}
 
-\item{path}{(character) a file path to read from or write to. required}
-
-\item{...}{named parameters passed on to \href{https://www.paws-r-sdk.com/docs/s3_download_file/}{download_file}}
+\item{...}{named parameters passed on to \code{\link[s3fs:download]{s3fs::s3_file_download()}}}
 }
 \value{
-Path of downloaded file
+(character) a vector of local file paths
 }
 \description{
 Download a file
 }
-\details{
-Wraps \href{https://www.paws-r-sdk.com/docs/s3_download_file/}{download_file}
+\note{
+USES A FORK OF s3fs FOR A MINOR FIX THAT MAKES LENGTH>1 INPUTS WORK
 }
 \examples{
 \dontrun{
-temp_path <- tempfile()
-aws_file_download(bucket = "s64-test-2", key = "DESCRIPTION",
-path = temp_path)
+tfile <- tempfile()
+aws_file_download(remote_path="s3://s64-test-2/DESCRIPTION", path=tfile)
 
-# S3 key doesn't exist
-aws_file_download(bucket = "s64-test-2", key = "TESTING123",
-path = temp_path)
+# many files
+tfiles <- replicate(n=3, tempfile())
+aws_file_download(remote_path=s3_path("s64-test-2", c("a_file", "c_file", "d_file")), path=tfiles)
+
+## length of `remote_path` and `path` must be the same
+tfiles <- replicate(n=2, tempfile())
+aws_file_download(remote_path=s3_path("s64-test-2", c("a_file", "c_file", "d_file")), path=tfiles)
+
+# S3 file does not exist
+temp_path <- tempfile()
+aws_file_download(s3_path("s64-test-2", "TESTING123"), temp_path)
 }
 }

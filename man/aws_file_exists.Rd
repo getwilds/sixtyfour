@@ -4,24 +4,22 @@
 \alias{aws_file_exists}
 \title{Check if a file exists}
 \usage{
-aws_file_exists(bucket, key, ...)
+aws_file_exists(remote_path)
 }
 \arguments{
-\item{bucket}{(character) an S3 bucket. required}
-
-\item{key}{(character) a key for an object in an S3 \code{bucket}. required}
-
-\item{...}{named parameters passed on to \href{https://www.paws-r-sdk.com/docs/s3_put_object/}{put_object}}
+\item{remote_path}{(character) one or more remote S3 paths. required}
 }
 \value{
-TRUE or FALSE
+vector of booleans (\code{TRUE} or \code{FALSE}), length matches
+\code{length(remote_path)}
 }
 \description{
 Check if a file exists
 }
 \examples{
 \dontrun{
-aws_file_exists(bucket = "s64-test-2", key = "DESCRIPTION")
-aws_file_exists(bucket = "s64-test-2", key = "doesntexist")
+aws_file_exists(s3_path("s64-test-2", "DESCRIPTION"))
+aws_file_exists(s3_path("s64-test-2", "doesntexist"))
+aws_file_exists(s3_path("s64-test-2", c("DESCRIPTION", "doesntexist")))
 }
 }
