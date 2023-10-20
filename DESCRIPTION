@@ -27,6 +27,8 @@ Imports:
     glue
 Suggests: 
     roxyglobals,
+    DBI,
+    RPostgres,
     testthat (>= 3.0.0),
     vcr (>= 0.6.0)
 Config/roxyglobals/filename: globals.R

@@ -24,3 +24,6 @@ reference:
     contents:
       - create_user
       - list_users
+  - title: Database
+    contents:
+      - starts_with("aws_db")
