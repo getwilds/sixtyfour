@@ -39,6 +39,10 @@ Sys.setenv(
 )
 ```
 
+## Setting the interface
+
+The function `sixtyfour::set_s3_interface` makes it easier to toggle between S3 compatible backends; right now only supporting AWS S3 itself and [Minio](https://min.io/).
+
 ## Code of Conduct
 
   Please note that the sixtyfour project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
