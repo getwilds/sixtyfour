@@ -13,8 +13,8 @@ high level entrypoints, etc.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/fhdsl/sixtyfour}
-  \item Report bugs at \url{https://github.com/fhdsl/sixtyfour/issues}
+  \item \url{https://github.com/getwilds/sixtyfour}
+  \item Report bugs at \url{https://github.com/getwilds/sixtyfour/issues}
 }
 
 }
