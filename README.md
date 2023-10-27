@@ -1,8 +1,8 @@
 # sixtyfour
 
 <!-- badges: start -->
-[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
-[![R-CMD-check](https://github.com/fhdsl/sixtyfour/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/fhdsl/sixtyfour/actions/workflows/R-CMD-check.yaml)
+[![Project Status: Concept – Not useable, no support, not open to feedback, unstable API.](https://getwilds.github.io/badges/badges/concept.svg)](https://getwilds.github.io/badges/#concept)
+[![R-CMD-check](https://github.com/getwilds/sixtyfour/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/getwilds/sixtyfour/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 A science-focused, more humane R interface to AWS.
@@ -13,7 +13,7 @@ Development version
 
 ``` r
 # install.packages("pak")
-pak::pkg_install("fhdsl/sixtyfour")
+pak::pkg_install("getwilds/sixtyfour")
 ```
 
 This package is not on CRAN (yet)
