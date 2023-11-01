@@ -11,8 +11,7 @@ A science-focused, more humane R interface to AWS.
 
 Development version
 
-
-```r
+```{r eval=FALSE}
 # install.packages("pak")
 pak::pkg_install("getwilds/sixtyfour")
 ```
