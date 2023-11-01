@@ -4,6 +4,9 @@
     <loc>/404.html</loc>
   </url>
   <url>
+    <loc>/CODE_OF_CONDUCT.html</loc>
+  </url>
+  <url>
     <loc>/LICENSE-text.html</loc>
   </url>
   <url>
@@ -16,6 +19,48 @@
     <loc>/index.html</loc>
   </url>
   <url>
+    <loc>/issue_template.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_bucket_create.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_bucket_delete.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_bucket_download.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_bucket_exists.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_bucket_list_objects.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_bucket_tree.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_bucket_upload.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_buckets.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_file_attr.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_file_delete.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_file_download.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_file_exists.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_file_upload.html</loc>
+  </url>
+  <url>
     <loc>/reference/billing.html</loc>
   </url>
   <url>
@@ -25,12 +70,21 @@
     <loc>/reference/index.html</loc>
   </url>
   <url>
+    <loc>/reference/last.html</loc>
+  </url>
+  <url>
     <loc>/reference/list_users.html</loc>
   </url>
   <url>
-    <loc>/reference/sixtyfour-package.html</loc>
+    <loc>/reference/path_s3_parser.html</loc>
   </url>
   <url>
-    <loc>/reference/user_list_cleanup.html</loc>
+    <loc>/reference/reexports.html</loc>
+  </url>
+  <url>
+    <loc>/reference/set_s3_interface.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sixtyfour-package.html</loc>
   </url>
 </urlset>
