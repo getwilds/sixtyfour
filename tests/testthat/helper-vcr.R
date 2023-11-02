@@ -2,7 +2,7 @@ library("vcr")
 invisible(vcr::vcr_configure(
   dir = vcr::vcr_test_path("fixtures"),
   filter_sensitive_data = list(
-    "<<aws_region>>" = Sys.getenv('AWS_REGION')
+    "<<aws_region>>" = Sys.getenv("AWS_REGION")
   ),
   filter_request_headers = list(
     Authorization = "redacted",

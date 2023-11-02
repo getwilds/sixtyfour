@@ -5,14 +5,17 @@
 #' @note internally uses [head_bucket](https://www.paws-r-sdk.com/docs/s3_head_bucket/)
 #' @examples \dontrun{
 #' # exists
-#' aws_bucket_exists(bucket="s64-test-2")
+#' aws_bucket_exists(bucket = "s64-test-2")
 #' # does not exist
-#' aws_bucket_exists(bucket="no-bucket")
+#' aws_bucket_exists(bucket = "no-bucket")
 #' }
 aws_bucket_exists <- function(bucket) {
-  res <- tryCatch({
-    env64$s3$head_bucket(Bucket = bucket)
-  }, error = function(e) e)
+  res <- tryCatch(
+    {
+      env64$s3$head_bucket(Bucket = bucket)
+    },
+    error = function(e) e
+  )
   !inherits(res, c("error", "error_response"))
 }
 
@@ -23,11 +26,13 @@ aws_bucket_exists <- function(bucket) {
 #' @param ... named parameters passed on to [list_objects](https://www.paws-r-sdk.com/docs/s3_create_bucket/)
 #' @note Requires the env var `AWS_REGION`
 #' @examples \dontrun{
-#' aws_bucket_create(bucket="s64-test-2")
+#' aws_bucket_create(bucket = "s64-test-2")
 #' }
 aws_bucket_create <- function(bucket, ...) {
-  env64$s3$create_bucket(Bucket = bucket,
-    CreateBucketConfiguration = list(LocationConstraint = env_var("AWS_REGION")), ...)
+  env64$s3$create_bucket(
+    Bucket = bucket,
+    CreateBucketConfiguration = list(LocationConstraint = env_var("AWS_REGION")), ...
+  )
 }
 
 #' Delete an S3 bucket
@@ -39,9 +44,9 @@ aws_bucket_create <- function(bucket, ...) {
 #' sure that you want to delete the bucket.
 #' @return an empty list
 #' @examples \dontrun{
-#' aws_bucket_create(bucket="bucket-to-delete-111")
+#' aws_bucket_create(bucket = "bucket-to-delete-111")
 #' aws_buckets()
-#' aws_bucket_delete(bucket="bucket-to-delete-111")
+#' aws_bucket_delete(bucket = "bucket-to-delete-111")
 #' aws_buckets()
 #' }
 aws_bucket_delete <- function(bucket, ...) {
@@ -61,12 +66,12 @@ aws_bucket_delete <- function(bucket, ...) {
 #' @note Requires the env var `AWS_REGION`. This function prompts you to make
 #' sure that you want to delete the bucket.
 #' @examples \dontrun{
-#' aws_bucket_create(bucket="tmp-bucket-369")
+#' aws_bucket_create(bucket = "tmp-bucket-369")
 #' desc_file <- file.path(system.file(), "DESCRIPTION")
 #' aws_file_upload(bucket = "tmp-bucket-369", path = desc_file)
 #' aws_file_upload(bucket = "tmp-bucket-369", path = desc_file, key = "d_file")
 #' temp_dir <- file.path(tempdir(), "tmp-bucket-369")
-#' aws_bucket_download(bucket="tmp-bucket-369", dest_path=temp_dir)
+#' aws_bucket_download(bucket = "tmp-bucket-369", dest_path = temp_dir)
 #'
 #' # cleanup
 #' aws_bucket_delete("tmp-bucket-369")
@@ -90,10 +95,10 @@ aws_bucket_download <- function(bucket, dest_path, ...) {
 #' library(fs)
 #' tdir <- path(tempdir(), "apples")
 #' dir.create(tdir)
-#' tfiles <- replicate(n=10, file_temp(tmp_dir = tdir, ext=".txt"))
+#' tfiles <- replicate(n = 10, file_temp(tmp_dir = tdir, ext = ".txt"))
 #' invisible(lapply(tfiles, function(x) write.csv(mtcars, x)))
 #'
-#' aws_bucket_upload(path=tdir, bucket="a-new-bucket-345")
+#' aws_bucket_upload(path = tdir, bucket = "a-new-bucket-345")
 #' aws_bucket_list_objects("a-new-bucket-345")
 #'
 #' # cleanup
@@ -101,9 +106,9 @@ aws_bucket_download <- function(bucket, dest_path, ...) {
 #' aws_file_delete(objs$uri)
 #' aws_bucket_delete("a-new-bucket-345")
 #' }
-aws_bucket_upload <- function(path, bucket, max_batch = fs::fs_bytes("100MB"),
-  ...) {
-
+aws_bucket_upload <- function(
+    path, bucket, max_batch = fs::fs_bytes("100MB"),
+    ...) {
   if (!aws_bucket_exists(bucket)) {
     if (yesno("{.strong {bucket}} does not exist. Create it?")) {
       cli::cli_inform("Exiting without uploading {.strong {basename(path)}}")
@@ -111,8 +116,10 @@ aws_bucket_upload <- function(path, bucket, max_batch = fs::fs_bytes("100MB"),
     }
     aws_bucket_create(bucket)
   }
-  s3fs::s3_dir_upload(path = path, new_path = bucket,
-    max_batch = max_batch)
+  s3fs::s3_dir_upload(
+    path = path, new_path = bucket,
+    max_batch = max_batch
+  )
 }
 
 #' List objects in an S3 bucket
@@ -132,7 +139,7 @@ aws_bucket_upload <- function(path, bucket, max_batch = fs::fs_bytes("100MB"),
 #' * etag (character)
 #' * last_modified (dttm)
 #' @examples \dontrun{
-#' aws_bucket_list_objects(bucket="s64-test-2")
+#' aws_bucket_list_objects(bucket = "s64-test-2")
 #' }
 aws_bucket_list_objects <- function(bucket, ...) {
   out <- s3fs::s3_dir_info(bucket, ...)

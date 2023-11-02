@@ -38,17 +38,17 @@ last <- function(x) x[length(x)]
 #' path_s3_parser("s3://s64-test-2/DESCRIPTION")
 #' path_s3_parser("s3://s64-test-2/some/other/path/things.csv")
 #' paths <- c(
-#'  "s3://s64-test-2/DESCRIPTION",
-#'  "s3://s64-test-2/stuff.txt",
-#'  "s3://s64-test-2/some/other/path/things.csv"
+#'   "s3://s64-test-2/DESCRIPTION",
+#'   "s3://s64-test-2/stuff.txt",
+#'   "s3://s64-test-2/some/other/path/things.csv"
 #' )
 #' path_s3_parser(paths)
 #'
 #' # if a path is not an s3 path
 #' paths <- c(
-#'  "s3://s64-test-2/DESCRIPTION",
-#'  "s3://s64-test-2/stuff.txt",
-#'  "s64-test-2/some/other/path/things.csv"
+#'   "s3://s64-test-2/DESCRIPTION",
+#'   "s3://s64-test-2/stuff.txt",
+#'   "s64-test-2/some/other/path/things.csv"
 #' )
 #' path_s3_parser(paths)
 path_s3_parser <- function(paths) {
@@ -58,7 +58,7 @@ path_s3_parser <- function(paths) {
   paths <- strsplit(paths, "/")
   Map(function(x) {
     if (length(x) > 2) {
-      x <- c(x[1], paste(x[-c(1, length(x))], collapse="/"), last(x))
+      x <- c(x[1], paste(x[-c(1, length(x))], collapse = "/"), last(x))
       as.list(stats::setNames(x, list_names))
     } else {
       as.list(stats::setNames(c(x[1], "", last(x)), list_names))
