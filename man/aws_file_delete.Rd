@@ -22,7 +22,7 @@ Delete a file
 # create a file
 tfile <- tempfile()
 cat("Hello World!", file = tfile)
-aws_file_upload(remote_path="s3://s64-test-2", path=tfile)
+aws_file_upload(remote_path = "s3://s64-test-2", path = tfile)
 
 # delete the file
 aws_file_delete(s3_path("s64-test-2", basename(tfile)))

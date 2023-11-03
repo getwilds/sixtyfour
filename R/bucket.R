@@ -2,7 +2,8 @@
 #'
 #' @export
 #' @param bucket (character) bucket name. required
-#' @note internally uses [head_bucket](https://www.paws-r-sdk.com/docs/s3_head_bucket/)
+#' @note internally uses
+#' [head_bucket](https://www.paws-r-sdk.com/docs/s3_head_bucket/)
 #' @examples \dontrun{
 #' # exists
 #' aws_bucket_exists(bucket = "s64-test-2")
@@ -23,7 +24,8 @@ aws_bucket_exists <- function(bucket) {
 #'
 #' @export
 #' @param bucket (character) bucket name. required
-#' @param ... named parameters passed on to [list_objects](https://www.paws-r-sdk.com/docs/s3_create_bucket/)
+#' @param ... named parameters passed on to
+#' [list_objects](https://www.paws-r-sdk.com/docs/s3_create_bucket/)
 #' @note Requires the env var `AWS_REGION`
 #' @examples \dontrun{
 #' aws_bucket_create(bucket = "s64-test-2")
@@ -31,7 +33,8 @@ aws_bucket_exists <- function(bucket) {
 aws_bucket_create <- function(bucket, ...) {
   env64$s3$create_bucket(
     Bucket = bucket,
-    CreateBucketConfiguration = list(LocationConstraint = env_var("AWS_REGION")), ...
+    CreateBucketConfiguration =
+      list(LocationConstraint = env_var("AWS_REGION")), ...
   )
 }
 
@@ -39,7 +42,8 @@ aws_bucket_create <- function(bucket, ...) {
 #'
 #' @export
 #' @param bucket (character) bucket name. required
-#' @param ... named parameters passed on to [delete_bucket](https://www.paws-r-sdk.com/docs/s3_delete_bucket/)
+#' @param ... named parameters passed on to
+#' [delete_bucket](https://www.paws-r-sdk.com/docs/s3_delete_bucket/)
 #' @note Requires the env var `AWS_REGION`. This function prompts you to make
 #' sure that you want to delete the bucket.
 #' @return an empty list

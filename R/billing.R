@@ -35,13 +35,17 @@ billing_factory <- function(type) {
       map(function(x) {
         tibble(
           Date = x$TimePeriod$Start,
-          Service = x$Groups %>% map(function(y) {
-            y$Keys
-          }) %>% map_chr(~ .x[1]),
-          Linked_Account = x$Groups %>% map(function(y) {
-            y$Keys
-          }) %>% map_chr(~ .x[2]),
-          "{type}" := x$Groups %>%
+          Service = x$Groups %>%
+            map(function(y) {
+              y$Keys
+            }) %>%
+            map_chr(~ .x[1]),
+          Linked_Account = x$Groups %>%
+            map(function(y) {
+              y$Keys
+            }) %>%
+            map_chr(~ .x[2]),
+          "{type}" := x$Groups %>% # nolint
             map(function(y) {
               y$Metrics[[type]]$Amount
             }) %>%

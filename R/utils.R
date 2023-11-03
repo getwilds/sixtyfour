@@ -13,8 +13,10 @@ env_var <- function(env_name) {
 # lifted directly from the devtools package within the file (MIT licensed):
 # https://github.com/r-lib/devtools/blob/main/R/release.R
 yesno <- function(msg, .envir = parent.frame()) {
-  yeses <- c("Yes", "Definitely", "For sure", "Yup", "Yeah", "Of course", "Absolutely")
-  nos <- c("No way", "Not yet", "I forget", "No", "Nope", "Uhhhh... Maybe?")
+  yeses <- c("Yes", "Definitely", "For sure", "Yup",
+             "Yeah", "Of course", "Absolutely")
+  nos <- c("No way", "Not yet", "I forget", "No",
+           "Nope", "Uhhhh... Maybe?")
 
   cli::cli_inform(msg, .envir = .envir)
   qs <- c(sample(yeses, 1), sample(nos, 2))
@@ -33,7 +35,8 @@ last <- function(x) x[length(x)]
 #'
 #' @keywords internal
 #' @param paths (character) one or more s3 paths
-#' @return an unnamed list with each slot a named list with bucket, path, and file
+#' @return an unnamed list with each slot a named list with bucket, path,
+#' and file
 #' @examplesIf interactive()
 #' path_s3_parser("s3://s64-test-2/DESCRIPTION")
 #' path_s3_parser("s3://s64-test-2/some/other/path/things.csv")

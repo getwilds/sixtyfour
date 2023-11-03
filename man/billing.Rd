@@ -15,6 +15,6 @@ Fetch billing data
 }
 \examples{
 \dontrun{
-billing(date_start="2023-01-01")
+billing(date_start = "2023-01-01")
 }
 }

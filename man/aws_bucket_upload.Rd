@@ -28,10 +28,10 @@ sure that you want to delete the bucket.
 library(fs)
 tdir <- path(tempdir(), "apples")
 dir.create(tdir)
-tfiles <- replicate(n=10, file_temp(tmp_dir = tdir, ext=".txt"))
+tfiles <- replicate(n = 10, file_temp(tmp_dir = tdir, ext = ".txt"))
 invisible(lapply(tfiles, function(x) write.csv(mtcars, x)))
 
-aws_bucket_upload(path=tdir, bucket="a-new-bucket-345")
+aws_bucket_upload(path = tdir, bucket = "a-new-bucket-345")
 aws_bucket_list_objects("a-new-bucket-345")
 
 # cleanup

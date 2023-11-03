@@ -23,7 +23,8 @@
 set_s3_interface <- function(interface = "aws") {
   interfaces <- c("aws", "minio")
   if (!interface %in% interfaces) {
-    stop(glue::glue("'interface' must be one of {paste(interfaces, collapse=', ')}"))
+    msg <- "'interface' must be one of"
+    stop(glue::glue("{msg} {paste(interfaces, collapse=', ')}"))
   }
 
   # package paws

@@ -9,7 +9,8 @@ aws_bucket_create(bucket, ...)
 \arguments{
 \item{bucket}{(character) bucket name. required}
 
-\item{...}{named parameters passed on to \href{https://www.paws-r-sdk.com/docs/s3_create_bucket/}{list_objects}}
+\item{...}{named parameters passed on to
+\href{https://www.paws-r-sdk.com/docs/s3_create_bucket/}{list_objects}}
 }
 \description{
 Create an S3 bucket
@@ -19,6 +20,6 @@ Requires the env var \code{AWS_REGION}
 }
 \examples{
 \dontrun{
-aws_bucket_create(bucket="s64-test-2")
+aws_bucket_create(bucket = "s64-test-2")
 }
 }

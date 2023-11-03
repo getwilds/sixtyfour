@@ -22,12 +22,12 @@ sure that you want to delete the bucket.
 }
 \examples{
 \dontrun{
-aws_bucket_create(bucket="tmp-bucket-369")
+aws_bucket_create(bucket = "tmp-bucket-369")
 desc_file <- file.path(system.file(), "DESCRIPTION")
 aws_file_upload(bucket = "tmp-bucket-369", path = desc_file)
 aws_file_upload(bucket = "tmp-bucket-369", path = desc_file, key = "d_file")
 temp_dir <- file.path(tempdir(), "tmp-bucket-369")
-aws_bucket_download(bucket="tmp-bucket-369", dest_path=temp_dir)
+aws_bucket_download(bucket = "tmp-bucket-369", dest_path = temp_dir)
 
 # cleanup
 aws_bucket_delete("tmp-bucket-369")
