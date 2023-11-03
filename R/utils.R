@@ -13,10 +13,14 @@ env_var <- function(env_name) {
 # lifted directly from the devtools package within the file (MIT licensed):
 # https://github.com/r-lib/devtools/blob/main/R/release.R
 yesno <- function(msg, .envir = parent.frame()) {
-  yeses <- c("Yes", "Definitely", "For sure", "Yup",
-             "Yeah", "Of course", "Absolutely")
-  nos <- c("No way", "Not yet", "I forget", "No",
-           "Nope", "Uhhhh... Maybe?")
+  yeses <- c(
+    "Yes", "Definitely", "For sure", "Yup",
+    "Yeah", "Of course", "Absolutely"
+  )
+  nos <- c(
+    "No way", "Not yet", "I forget", "No",
+    "Nope", "Uhhhh... Maybe?"
+  )
 
   cli::cli_inform(msg, .envir = .envir)
   qs <- c(sample(yeses, 1), sample(nos, 2))
