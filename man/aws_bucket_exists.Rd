@@ -13,13 +13,14 @@ aws_bucket_exists(bucket)
 Create an S3 bucket
 }
 \note{
-internally uses \href{https://www.paws-r-sdk.com/docs/s3_head_bucket/}{head_bucket}
+internally uses
+\href{https://www.paws-r-sdk.com/docs/s3_head_bucket/}{head_bucket}
 }
 \examples{
 \dontrun{
 # exists
-aws_bucket_exists(bucket="s64-test-2")
+aws_bucket_exists(bucket = "s64-test-2")
 # does not exist
-aws_bucket_exists(bucket="no-bucket")
+aws_bucket_exists(bucket = "no-bucket")
 }
 }

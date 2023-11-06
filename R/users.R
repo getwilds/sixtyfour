@@ -11,7 +11,10 @@
 #' @param x what is this param Sean? some kind of tibble presumably
 user_list_cleanup <- function(x) {
   x %>%
-    map(~ .x[c("UserName", "UserId", "Path", "Arn", "CreateDate", "PasswordLastUsed")]) %>%
+    map(~ .x[c(
+      "UserName", "UserId", "Path",
+      "Arn", "CreateDate", "PasswordLastUsed"
+    )]) %>%
     map(\(x) map(x, \(y) ifelse(length(y) < 1, NA, y))) %>%
     map(as_tibble) %>%
     list_rbind() %>%
@@ -33,10 +36,8 @@ list_users <- function() {
 #' @export
 #' @param username A user name
 create_user <- function(username) {
-    result <- env64$iam$create_user(UserName = username)
+  result <- env64$iam$create_user(UserName = username)
 
-    result %>%
-      user_list_cleanup()
+  result %>%
+    user_list_cleanup()
 }
-
-# testUser1_keys <- batman$create_access_key("testUser1")

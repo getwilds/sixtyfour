@@ -14,16 +14,22 @@
 #' - For download: if it does not exist, function will return an error
 #' @examples \dontrun{
 #' demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
-#' aws_file_upload(demo_rds_file, s3_path("s64-test-2", basename(demo_rds_file)))
+#' aws_file_upload(
+#'   demo_rds_file,
+#'   s3_path("s64-test-2", basename(demo_rds_file))
+#' )
 #'
 #' ## many files at once
-#' links_rds_file <- file.path(system.file(), "Meta/links.rds")
+#' links_file <- file.path(system.file(), "Meta/links.rds")
 #' aws_file_upload(
-#'  c(demo_rds_file, links_rds_file),
-#'  s3_path("s64-test-2", c(basename(demo_rds_file), basename(links_rds_file))))
+#'   c(demo_rds_file, links_file),
+#'   s3_path("s64-test-2", c(basename(demo_rds_file), basename(links_file)))
+#' )
 #'
 #' # set expiration, expire 1 minute from now
-#' aws_file_upload(demo_rds_file, s3_path("s64-test-2", "ddd.rds"), Expires = Sys.time() + 60)
+#' aws_file_upload(demo_rds_file, s3_path("s64-test-2", "ddd.rds"),
+#'   Expires = Sys.time() + 60
+#' )
 #'
 #' # bucket doesn't exist
 #' aws_file_upload(demo_rds_file, "s3://not-a-bucket/eee.rds")
@@ -31,7 +37,10 @@
 #'
 #' @examplesIf interactive()
 #' # path doesn't exist
-#' aws_file_upload("file_doesnt_exist.txt", s3_path("s64-test-2", "file_doesnt_exist.txt"))
+#' aws_file_upload(
+#'   "file_doesnt_exist.txt",
+#'   s3_path("s64-test-2", "file_doesnt_exist.txt")
+#' )
 aws_file_upload <- function(path, remote_path, ...) {
   stopifnot(fs::file_exists(path))
   bucket <- path_s3_parser(remote_path)[[1]]$bucket
@@ -55,15 +64,21 @@ aws_file_upload <- function(path, remote_path, ...) {
 #' @note USES A FORK OF s3fs FOR A MINOR FIX THAT MAKES LENGTH>1 INPUTS WORK
 #' @examples \dontrun{
 #' tfile <- tempfile()
-#' aws_file_download(remote_path="s3://s64-test-2/DESCRIPTION", path=tfile)
+#' aws_file_download(remote_path = "s3://s64-test-2/DESCRIPTION", path = tfile)
 #'
 #' # many files
-#' tfiles <- replicate(n=3, tempfile())
-#' aws_file_download(remote_path=s3_path("s64-test-2", c("a_file", "c_file", "d_file")), path=tfiles)
+#' tfiles <- replicate(n = 3, tempfile())
+#' aws_file_download(
+#'   remote_path =
+#'     s3_path("s64-test-2", c("a_file", "c_file", "d_file")), path = tfiles
+#' )
 #'
 #' ## length of `remote_path` and `path` must be the same
-#' tfiles <- replicate(n=2, tempfile())
-#' aws_file_download(remote_path=s3_path("s64-test-2", c("a_file", "c_file", "d_file")), path=tfiles)
+#' tfiles <- replicate(n = 2, tempfile())
+#' aws_file_download(
+#'   remote_path =
+#'     s3_path("s64-test-2", c("a_file", "c_file", "d_file")), path = tfiles
+#' )
 #'
 #' # S3 file does not exist
 #' temp_path <- tempfile()
@@ -86,7 +101,7 @@ aws_file_download <- function(remote_path, path, ...) {
 #' # create a file
 #' tfile <- tempfile()
 #' cat("Hello World!", file = tfile)
-#' aws_file_upload(remote_path="s3://s64-test-2", path=tfile)
+#' aws_file_upload(remote_path = "s3://s64-test-2", path = tfile)
 #'
 #' # delete the file
 #' aws_file_delete(s3_path("s64-test-2", basename(tfile)))

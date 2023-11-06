@@ -9,7 +9,8 @@ aws_bucket_delete(bucket, ...)
 \arguments{
 \item{bucket}{(character) bucket name. required}
 
-\item{...}{named parameters passed on to \href{https://www.paws-r-sdk.com/docs/s3_delete_bucket/}{delete_bucket}}
+\item{...}{named parameters passed on to
+\href{https://www.paws-r-sdk.com/docs/s3_delete_bucket/}{delete_bucket}}
 }
 \value{
 an empty list
@@ -23,9 +24,9 @@ sure that you want to delete the bucket.
 }
 \examples{
 \dontrun{
-aws_bucket_create(bucket="bucket-to-delete-111")
+aws_bucket_create(bucket = "bucket-to-delete-111")
 aws_buckets()
-aws_bucket_delete(bucket="bucket-to-delete-111")
+aws_bucket_delete(bucket = "bucket-to-delete-111")
 aws_buckets()
 }
 }

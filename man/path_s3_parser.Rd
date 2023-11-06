@@ -10,7 +10,8 @@ path_s3_parser(paths)
 \item{paths}{(character) one or more s3 paths}
 }
 \value{
-an unnamed list with each slot a named list with bucket, path, and file
+an unnamed list with each slot a named list with bucket, path,
+and file
 }
 \description{
 Parse s3 paths
@@ -20,17 +21,17 @@ Parse s3 paths
 path_s3_parser("s3://s64-test-2/DESCRIPTION")
 path_s3_parser("s3://s64-test-2/some/other/path/things.csv")
 paths <- c(
- "s3://s64-test-2/DESCRIPTION",
- "s3://s64-test-2/stuff.txt",
- "s3://s64-test-2/some/other/path/things.csv"
+  "s3://s64-test-2/DESCRIPTION",
+  "s3://s64-test-2/stuff.txt",
+  "s3://s64-test-2/some/other/path/things.csv"
 )
 path_s3_parser(paths)
 
 # if a path is not an s3 path
 paths <- c(
- "s3://s64-test-2/DESCRIPTION",
- "s3://s64-test-2/stuff.txt",
- "s64-test-2/some/other/path/things.csv"
+  "s3://s64-test-2/DESCRIPTION",
+  "s3://s64-test-2/stuff.txt",
+  "s64-test-2/some/other/path/things.csv"
 )
 path_s3_parser(paths)
 \dontshow{\}) # examplesIf}

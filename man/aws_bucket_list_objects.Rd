@@ -30,6 +30,6 @@ List objects in an S3 bucket
 }
 \examples{
 \dontrun{
-aws_bucket_list_objects(bucket="s64-test-2")
+aws_bucket_list_objects(bucket = "s64-test-2")
 }
 }

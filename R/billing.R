@@ -7,7 +7,7 @@
 #' @param date_start,date_end Start and end date to get billing data for.
 #' Date format expected: `YYYY-MM-DD`
 #' @examples \dontrun{
-#' billing(date_start="2023-01-01")
+#' billing(date_start = "2023-01-01")
 #' }
 billing <- function(date_start, date_end = as.character(Sys.Date())) {
   # TODO: assertions on date formats, and possibly max date - check to
@@ -32,14 +32,26 @@ billing_factory <- function(type) {
     )
 
     raw_billing_data$ResultsByTime %>%
-      map(function(x){
-        tibble(Date = x$TimePeriod$Start,
-               Service = x$Groups %>% map(function(y){y$Keys}) %>% map_chr(~.x[1]),
-               Linked_Account = x$Groups %>% map(function(y){y$Keys}) %>% map_chr(~.x[2]),
-               "{type}" := x$Groups %>%
-                map(function(y){y$Metrics[[type]]$Amount}) %>%
-                unlist() %>%
-                as.double())
+      map(function(x) {
+        tibble(
+          Date = x$TimePeriod$Start,
+          Service = x$Groups %>%
+            map(function(y) {
+              y$Keys
+            }) %>%
+            map_chr(~ .x[1]),
+          Linked_Account = x$Groups %>%
+            map(function(y) {
+              y$Keys
+            }) %>%
+            map_chr(~ .x[2]),
+          "{type}" := x$Groups %>% # nolint
+            map(function(y) {
+              y$Metrics[[type]]$Amount
+            }) %>%
+            unlist() %>%
+            as.double()
+        )
       }) %>%
       list_rbind()
   }

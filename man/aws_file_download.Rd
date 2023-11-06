@@ -25,15 +25,21 @@ USES A FORK OF s3fs FOR A MINOR FIX THAT MAKES LENGTH>1 INPUTS WORK
 \examples{
 \dontrun{
 tfile <- tempfile()
-aws_file_download(remote_path="s3://s64-test-2/DESCRIPTION", path=tfile)
+aws_file_download(remote_path = "s3://s64-test-2/DESCRIPTION", path = tfile)
 
 # many files
-tfiles <- replicate(n=3, tempfile())
-aws_file_download(remote_path=s3_path("s64-test-2", c("a_file", "c_file", "d_file")), path=tfiles)
+tfiles <- replicate(n = 3, tempfile())
+aws_file_download(
+  remote_path =
+    s3_path("s64-test-2", c("a_file", "c_file", "d_file")), path = tfiles
+)
 
 ## length of `remote_path` and `path` must be the same
-tfiles <- replicate(n=2, tempfile())
-aws_file_download(remote_path=s3_path("s64-test-2", c("a_file", "c_file", "d_file")), path=tfiles)
+tfiles <- replicate(n = 2, tempfile())
+aws_file_download(
+  remote_path =
+    s3_path("s64-test-2", c("a_file", "c_file", "d_file")), path = tfiles
+)
 
 # S3 file does not exist
 temp_path <- tempfile()

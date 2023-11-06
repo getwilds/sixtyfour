@@ -13,8 +13,14 @@ env_var <- function(env_name) {
 # lifted directly from the devtools package within the file (MIT licensed):
 # https://github.com/r-lib/devtools/blob/main/R/release.R
 yesno <- function(msg, .envir = parent.frame()) {
-  yeses <- c("Yes", "Definitely", "For sure", "Yup", "Yeah", "Of course", "Absolutely")
-  nos <- c("No way", "Not yet", "I forget", "No", "Nope", "Uhhhh... Maybe?")
+  yeses <- c(
+    "Yes", "Definitely", "For sure", "Yup",
+    "Yeah", "Of course", "Absolutely"
+  )
+  nos <- c(
+    "No way", "Not yet", "I forget", "No",
+    "Nope", "Uhhhh... Maybe?"
+  )
 
   cli::cli_inform(msg, .envir = .envir)
   qs <- c(sample(yeses, 1), sample(nos, 2))
@@ -33,22 +39,23 @@ last <- function(x) x[length(x)]
 #'
 #' @keywords internal
 #' @param paths (character) one or more s3 paths
-#' @return an unnamed list with each slot a named list with bucket, path, and file
+#' @return an unnamed list with each slot a named list with bucket, path,
+#' and file
 #' @examplesIf interactive()
 #' path_s3_parser("s3://s64-test-2/DESCRIPTION")
 #' path_s3_parser("s3://s64-test-2/some/other/path/things.csv")
 #' paths <- c(
-#'  "s3://s64-test-2/DESCRIPTION",
-#'  "s3://s64-test-2/stuff.txt",
-#'  "s3://s64-test-2/some/other/path/things.csv"
+#'   "s3://s64-test-2/DESCRIPTION",
+#'   "s3://s64-test-2/stuff.txt",
+#'   "s3://s64-test-2/some/other/path/things.csv"
 #' )
 #' path_s3_parser(paths)
 #'
 #' # if a path is not an s3 path
 #' paths <- c(
-#'  "s3://s64-test-2/DESCRIPTION",
-#'  "s3://s64-test-2/stuff.txt",
-#'  "s64-test-2/some/other/path/things.csv"
+#'   "s3://s64-test-2/DESCRIPTION",
+#'   "s3://s64-test-2/stuff.txt",
+#'   "s64-test-2/some/other/path/things.csv"
 #' )
 #' path_s3_parser(paths)
 path_s3_parser <- function(paths) {
@@ -58,7 +65,7 @@ path_s3_parser <- function(paths) {
   paths <- strsplit(paths, "/")
   Map(function(x) {
     if (length(x) > 2) {
-      x <- c(x[1], paste(x[-c(1, length(x))], collapse="/"), last(x))
+      x <- c(x[1], paste(x[-c(1, length(x))], collapse = "/"), last(x))
       as.list(stats::setNames(x, list_names))
     } else {
       as.list(stats::setNames(c(x[1], "", last(x)), list_names))
