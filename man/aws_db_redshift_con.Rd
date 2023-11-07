@@ -4,11 +4,29 @@
 \alias{aws_db_redshift_con}
 \title{Get a database connection to Amazon Redshift}
 \usage{
-aws_db_redshift_con(host, port, dbname, user, pwd, ...)
+aws_db_redshift_con(
+  user,
+  pwd,
+  id = NULL,
+  host = NULL,
+  port = NULL,
+  dbname = NULL,
+  ...
+)
 }
 \arguments{
-\item{host, port, dbname, user, pwd, ...}{named parameters passed on to
-\href{https://dbi.r-dbi.org/reference/dbconnect}{DBI::dbConnect}}
+\item{user, pwd, host, port, dbname, ...}{named parameters passed on to
+\href{https://dbi.r-dbi.org/reference/dbconnect}{DBI::dbConnect}. Note that
+the \code{user} and \code{pwd} are for your AWS IAM account; and the same as
+those you used to create the cluster with \code{\link[=aws_db_redshift_create]{aws_db_redshift_create()}}}
+
+\item{id}{(character) Cluster identifier. If you supply \code{id}, we'll fetch
+\code{host}, \code{port}, and \code{dbname}. If \code{id} is not supplied. you have to supply
+\code{host}, \code{port}, and \code{dbname}. Refer to this parameter definition in
+\code{\link[=aws_db_redshift_create]{aws_db_redshift_create()}} for more details.}
+}
+\value{
+an object of class \code{RedshiftConnection}
 }
 \description{
 Get a database connection to Amazon Redshift
@@ -25,10 +43,17 @@ You can manage Redshift programatically via
 library(DBI)
 library(RPostgres)
 
-con <- aws_db_redshift_con()
-con
+con_rshift <- aws_db_redshift_con("<define all params here>")
+con_rshift
+library(RPostgres)
+dbListTables(con_rshift)
+dbWriteTable(con_rshift, "mtcars", mtcars)
+dbListTables(con_rshift)
 
-con <- aws_db_rds_con()
-con
+library(dplyr)
+tbl(con_rshift, "mtcars")
+
+con_rds <- aws_db_rds_con()
+con_rds
 }
 }

@@ -13,3 +13,7 @@ aws_db_rds_con(...)
 \description{
 Get a database connection to Amazon RDS
 }
+\note{
+RDS supports: Aurora (both PostgreSQL and MySQL compatible),
+PostgreSQL, MariaDB, MySQL, Orace, MS SQL Server
+}

@@ -8,18 +8,20 @@ aws_db_redshift_create(
   id,
   user,
   pwd,
-  db_name = "dev",
+  dbname = "dev",
   cluster_type = "multi-node",
   node_type = "dc2.large",
   number_nodes = 2,
+  security_group_ids = NULL,
+  wait = TRUE,
   ...
 )
 }
 \arguments{
-\item{id}{(character) Cluster identifier. Use this identifier to refer to the
-cluster for any subsequent cluster operations such as deleting or modifying.
-The identifier also appears in the Amazon Redshift console. Must be unique
-for all clusters within an Amazon Web Services account.}
+\item{id}{(characteR) Cluster identifier. Use this identifier to refer to
+the cluster for any subsequent cluster operations such as deleting or
+modifying. The identifier also appears in the Amazon Redshift console.
+Must be unique for all clusters within a Amazon Web Services account.}
 
 \item{user}{(character) User name associated with the admin user account for
 the cluster that is being created.}
@@ -27,8 +29,9 @@ the cluster that is being created.}
 \item{pwd}{(character) Password associated with the admin user account for
 the cluster that is being created.}
 
-\item{db_name}{(character) The name of the first database to be created when
-the cluster is created. default: "dev"}
+\item{dbname}{(character) The name of the first database to be created when
+the cluster is created. default: "dev". additional databases can be created
+within the cluster}
 
 \item{cluster_type}{(character) The type of the cluster: "single-node" or
 "multi-node" (default).}
@@ -39,15 +42,24 @@ defaul: "dc2.large"}
 \item{number_nodes}{(integer/numeric) number of nodes; for multi-node
 cluster type, this must be 2 or greater. default: 2}
 
+\item{security_group_ids}{(character) VPC security group identifiers; one
+or more. If none are supplied, you should go into your AWS Redshift
+dashboard and add the appropriate VPC security group.}
+
+\item{wait}{(logical) wait for cluster to initialize? default: \code{TRUE}. If
+you don't wait (\code{FALSE}) then there's many operations you can not do
+until the cluster is available. If \code{wait=FALSE} use \code{aws_db_cluster_status()} to
+check on the cluster status.}
+
 \item{...}{named parameters passed on to
 \href{https://www.paws-r-sdk.com/docs/redshift_create_cluster/}{create_cluster}}
 }
 \value{
-a redshift class from \code{paws} with methods on the object;
+a list with methods for interfacing with Redshift;
 see \url{https://www.paws-r-sdk.com/docs/redshift/}
 }
 \description{
-!NOT READY YET!
+Create a Redshift cluster
 }
 \note{
 See above link to \code{create_cluster} docs for details on requirements
