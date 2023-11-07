@@ -102,8 +102,8 @@ aws_db_rds_con <- function(...) {
 #' dashboard and add the appropriate VPC security group.
 #' @param wait (logical) wait for cluster to initialize? default: `TRUE`. If
 #' you don't wait (`FALSE`) then there's many operations you can not do
-#' until the cluster is available. If `wait=FALSE` use `aws_db_cluster_status()` to
-#' check on the cluster status.
+#' until the cluster is available. If `wait=FALSE` use
+#' `aws_db_cluster_status()` to check on the cluster status.
 #' @param ... named parameters passed on to
 #' [create_cluster](https://www.paws-r-sdk.com/docs/redshift_create_cluster/)
 #' @note See above link to `create_cluster` docs for details on requirements

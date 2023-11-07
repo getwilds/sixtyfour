@@ -48,8 +48,8 @@ dashboard and add the appropriate VPC security group.}
 
 \item{wait}{(logical) wait for cluster to initialize? default: \code{TRUE}. If
 you don't wait (\code{FALSE}) then there's many operations you can not do
-until the cluster is available. If \code{wait=FALSE} use \code{aws_db_cluster_status()} to
-check on the cluster status.}
+until the cluster is available. If \code{wait=FALSE} use
+\code{aws_db_cluster_status()} to check on the cluster status.}
 
 \item{...}{named parameters passed on to
 \href{https://www.paws-r-sdk.com/docs/redshift_create_cluster/}{create_cluster}}
