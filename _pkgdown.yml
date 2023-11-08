@@ -22,5 +22,17 @@ reference:
       - billing
   - title: Users
     contents:
-      - create_user
-      - list_users
+      - starts_with("aws_user")
+  - title: Groups
+    contents:
+      - starts_with("aws_group")
+  - title: Roles
+    contents:
+      - starts_with("aws_role")
+  - title: Policies
+    contents:
+      - starts_with("aws_polic")
+  - title: IAM
+    contents:
+      - starts_with("aws_iam")
+
