@@ -101,3 +101,26 @@ paginate_aws <- function(fun, target, ...) {
   }
   purrr::map(all_results, \(x) x[[target]]) %>% purrr::flatten()
 }
+
+#' Tidy list to tibble generator
+#'
+#' For the functions user_list_tidy, group_list_tidy, etc.
+#'
+#' @importFrom purrr map list_rbind
+#' @importFrom dplyr mutate
+#' @importFrom tibble as_tibble
+#' @importFrom lubridate as_datetime
+#' @autoglobal
+#' @noRd
+#' @param vars (character) vector of list names to get
+#' @keywords internal
+tidy_generator <- function(vars) {
+  function(x) {
+    x %>%
+      map(~ .x[vars]) %>%
+      map(\(x) map(x, \(y) ifelse(length(y) < 1, NA, y))) %>%
+      map(as_tibble) %>%
+      list_rbind() %>%
+      mutate(CreateDate = as_datetime(CreateDate))
+  }
+}
