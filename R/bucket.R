@@ -188,3 +188,30 @@ aws_buckets <- function(...) {
 aws_bucket_tree <- function(bucket, recurse = TRUE, ...) {
   s3fs::s3_dir_tree(bucket, recurse = recurse, ...)
 }
+
+#' Get a bucket ACL
+#'
+#' @export
+#' @inheritParams aws_bucket_exists
+#' @details see docs at <https://www.paws-r-sdk.com/docs/s3_get_bucket_acl/>
+#' @return xxx
+#' @examples \dontrun{
+#' aws_bucket_acl_get("s3://s64-test-2")
+#' }
+aws_bucket_acl_get <- function(bucket) {
+  bucket <- path_s3_parser(bucket)[[1]]$bucket
+  env64$s3$get_bucket_acl(bucket)
+}
+#' Modify a bucket ACL
+#'
+#' @export
+#' @inheritParams aws_bucket_exists
+#' @param ... named params passed on to
+#' <https://www.paws-r-sdk.com/docs/s3_put_bucket_acl/>
+#' @examples \dontrun{
+#' aws_bucket_acl_modify("s3://s64-test-2")
+#' }
+aws_bucket_acl_modify <- function(bucket, ...) {
+  bucket <- path_s3_parser(bucket)[[1]]$bucket
+  env64$s3$put_bucket_acl(bucket, ...)
+}
