@@ -4,7 +4,7 @@ utils::globalVariables(c(
   ".", # <aws_group>
   ".", # <aws_policy>
   ".", # <aws_role>
-  "CreateDate", # <tidy_generator>
   "PasswordLastUsed", # <user_list_tidy>
+  "CreateDate", # <tidy_generator>
   NULL
 ))
