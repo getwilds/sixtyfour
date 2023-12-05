@@ -20,9 +20,9 @@ role_list_tidy <- function(x) {
 #' [list_users](https://www.paws-r-sdk.com/docs/iam_list_roles/) method
 #' @return A tibble with information about roles
 #' @examples \dontrun{
-#' aws_roles_list()
+#' aws_roles()
 #' }
-aws_roles_list <- function(...) {
+aws_roles <- function(...) {
   paginate_aws(env64$iam$list_roles, "Roles") %>% role_list_tidy()
 }
 

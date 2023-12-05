@@ -21,9 +21,9 @@ user_list_tidy <- function(x) {
 #' [list_users](https://www.paws-r-sdk.com/docs/iam_list_users/) method
 #' @returns A tibble with information about user accounts
 #' @examples \dontrun{
-#' aws_users_list()
+#' aws_users()
 #' }
-aws_users_list <- function(...) {
+aws_users <- function(...) {
   paginate_aws(env64$iam$list_users, "Users") %>% user_list_tidy()
 }
 
@@ -43,6 +43,7 @@ aws_users_list <- function(...) {
 #' - <https://www.paws-r-sdk.com/docs/iam_list_user_policies/>
 #' - <https://www.paws-r-sdk.com/docs/iam_list_groups_for_user/>
 #' - <https://www.paws-r-sdk.com/docs/iam_list_attached_user_policies/>
+#' @note if username not supplied, gets logged in user
 #' @examples \dontrun{
 #' # if username not supplied, gets logged in user
 #' aws_user()
@@ -63,6 +64,14 @@ aws_user <- function(username = NULL) {
     groups = env64$iam$list_groups_for_user(username),
     attached_policies = env64$iam$list_attached_user_policies(username)
   )
+}
+
+#' Get the current logged-in username as a string
+#' @export
+#' @return username as character
+aws_user_current <- function() {
+  x <- aws_user()
+  x$user$UserName
 }
 
 #' Create a user

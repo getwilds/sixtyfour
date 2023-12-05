@@ -30,6 +30,9 @@ See the following docs links for details
 \item \url{https://www.paws-r-sdk.com/docs/iam_list_attached_user_policies/}
 }
 }
+\note{
+if username not supplied, gets logged in user
+}
 \examples{
 \dontrun{
 # if username not supplied, gets logged in user
