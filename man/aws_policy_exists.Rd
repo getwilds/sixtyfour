@@ -20,6 +20,6 @@ see docs \url{https://www.paws-r-sdk.com/docs/iam_get_policy/}
 }
 \examples{
 \dontrun{
-aws_policy(name="ReadOnlyAccess")
+aws_policy(name = "ReadOnlyAccess")
 }
 }

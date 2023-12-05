@@ -20,6 +20,6 @@ see docs \url{https://www.paws-r-sdk.com/docs/iam_get_role/}
 }
 \examples{
 \dontrun{
-aws_role(name="OrganizationAccountSecurityRole")
+aws_role(name = "OrganizationAccountSecurityRole")
 }
 }
