@@ -21,9 +21,9 @@ policy_list_tidy <- function(x) {
 #' [list_users](https://www.paws-r-sdk.com/docs/iam_list_policies/) method
 #' @return A tibble with information about policies
 #' @examples \dontrun{
-#' aws_policies_list()
+#' aws_policies()
 #' }
-aws_policies_list <- function(...) {
+aws_policies <- function(...) {
   paginate_aws(env64$iam$list_policies, "Policies") %>%
     policy_list_tidy()
 }
