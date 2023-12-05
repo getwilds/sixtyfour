@@ -116,7 +116,9 @@ aws_user_delete <- function(username) {
 #' @return a tibble with key details
 #' @details See <https://www.paws-r-sdk.com/docs/iam_list_access_keys/>
 #' docs for more details
-#' @examples aws_user_access_key()
+#' @examples \dontrun{
+#' # aws_user_access_key()
+#' }
 aws_user_access_key <- function() {
   env64$iam$list_access_keys()$AccessKeyMetadata[[1]] %>% as_tibble()
 }
