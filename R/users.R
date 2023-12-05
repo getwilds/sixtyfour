@@ -6,8 +6,10 @@
 #' @autoglobal
 #' @keywords internal
 user_list_tidy <- function(x) {
-  vars <- c("UserName", "UserId", "Path", "Arn", "CreateDate",
-    "PasswordLastUsed")
+  vars <- c(
+    "UserName", "UserId", "Path", "Arn", "CreateDate",
+    "PasswordLastUsed"
+  )
   tidy_generator(vars)(x) %>%
     mutate(PasswordLastUsed = as_datetime(PasswordLastUsed))
 }
@@ -51,7 +53,8 @@ aws_users_list <- function(...) {
 #' aws_user_delete("testBlueBird") # cleanup user
 #' }
 aws_user <- function(username = NULL) {
-  x <- env64$iam$get_user(username)$User %>% list(.) %>%
+  x <- env64$iam$get_user(username)$User %>%
+    list(.) %>%
     user_list_tidy()
   if (is.null(username)) username <- x$UserName
   list(

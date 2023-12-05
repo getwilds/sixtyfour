@@ -6,9 +6,11 @@
 #' @keywords internal
 #' @note leaves out: xxx
 policy_list_tidy <- function(x) {
-  vars <- c("PolicyName", "PolicyId", "Path", "Arn", "CreateDate",
+  vars <- c(
+    "PolicyName", "PolicyId", "Path", "Arn", "CreateDate",
     "UpdateDate", "AttachmentCount", "PermissionsBoundaryUsageCount",
-    "IsAttachable", "Description", "Tags")
+    "IsAttachable", "Description", "Tags"
+  )
   tidy_generator(vars)(x)
 }
 
@@ -34,7 +36,7 @@ aws_policies_list <- function(...) {
 #' @details see docs <https://www.paws-r-sdk.com/docs/iam_get_policy/>
 #' @autoglobal
 #' @examples \dontrun{
-#' aws_policy(name="ReadOnlyAccess")
+#' aws_policy(name = "ReadOnlyAccess")
 #' }
 aws_policy <- function(name) {
   env64$iam$get_policy(as_policy_arn(name))$Policy %>%
@@ -49,7 +51,7 @@ aws_policy <- function(name) {
 #' @return a tibble with policy details
 #' @details see docs <https://www.paws-r-sdk.com/docs/iam_get_policy/>
 #' @examples \dontrun{
-#' aws_policy(name="ReadOnlyAccess")
+#' aws_policy(name = "ReadOnlyAccess")
 #' }
 aws_policy_exists <- function(name) {
   !is.null(purrr::safely(aws_policy)(name)$result)
