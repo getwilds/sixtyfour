@@ -76,7 +76,6 @@ as_policy_arn <- function(name) {
 #' }
 aws_policy_attach <- function(.x, policy) {
   method <- glue::glue("attach_{entity_type(.x)}_policy")
-  aws_policy(policy)
   env64$iam[[method]](entity_value(.x), as_policy_arn(policy))
 }
 
@@ -97,7 +96,6 @@ aws_policy_attach <- function(.x, policy) {
 #' }
 aws_policy_detach <- function(.x, policy) {
   method <- glue::glue("detach_{entity_type(.x)}_policy")
-  aws_policy(policy)
   env64$iam[[method]](entity_value(.x), as_policy_arn(policy))
 }
 
