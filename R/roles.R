@@ -6,8 +6,10 @@
 #' @keywords internal
 #' @note leaves out: PermissionsBoundary, Tags, RoleLastUsed
 role_list_tidy <- function(x) {
-  vars <- c("RoleName", "RoleId", "Path", "Arn", "CreateDate",
-    "AssumeRolePolicyDocument", "Description", "MaxSessionDuration")
+  vars <- c(
+    "RoleName", "RoleId", "Path", "Arn", "CreateDate",
+    "AssumeRolePolicyDocument", "Description", "MaxSessionDuration"
+  )
   tidy_generator(vars)(x)
 }
 
@@ -32,9 +34,10 @@ aws_roles_list <- function(...) {
 #' @details see docs <https://www.paws-r-sdk.com/docs/iam_get_role/>
 #' @autoglobal
 #' @examples \dontrun{
-#' aws_role(name="OrganizationAccountSecurityRole")
+#' aws_role(name = "OrganizationAccountSecurityRole")
 #' }
 aws_role <- function(name) {
-  env64$iam$get_role(name)$Role %>% list(.) %>%
+  env64$iam$get_role(name)$Role %>%
+    list(.) %>%
     role_list_tidy()
 }
