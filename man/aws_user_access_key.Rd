@@ -18,5 +18,7 @@ See \url{https://www.paws-r-sdk.com/docs/iam_list_access_keys/}
 docs for more details
 }
 \examples{
-aws_user_access_key()
+\dontrun{
+# aws_user_access_key()
+}
 }
