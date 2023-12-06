@@ -32,6 +32,7 @@ reference:
   - title: Policies
     contents:
       - starts_with("aws_polic")
+      - as_policy_arn
   - title: IAM
     contents:
       - starts_with("aws_iam")
