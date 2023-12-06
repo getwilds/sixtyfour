@@ -1,0 +1,524 @@
+http_interactions:
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=GetUser&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '52'
+      X-Amz-Date: 20231206T212912Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: 9ac595e3-de3b-4f32-95b6-ea9db5bec121
+      content-type: text/xml
+      content-length: '467'
+      date: Wed, 06 Dec 2023 21:29:12 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <GetUserResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <GetUserResult>
+            <User>
+              <Path>/</Path>
+              <UserName>testUser2</UserName>
+              <Arn>arn:aws:iam::510628056329:user/testUser2</Arn>
+              <UserId>AIDAXNY6NZUEXZFJQI2I2</UserId>
+              <CreateDate>2023-08-08T20:27:04Z</CreateDate>
+            </User>
+          </GetUserResult>
+          <ResponseMetadata>
+            <RequestId>9ac595e3-de3b-4f32-95b6-ea9db5bec121</RequestId>
+          </ResponseMetadata>
+        </GetUserResponse>
+  recorded_at: 2023-12-06 21:29:14 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=ListUserPolicies&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '61'
+      X-Amz-Date: 20231206T212912Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: 24fcaa75-2528-4c18-b119-f32272b8b71a
+      content-type: text/xml
+      content-length: '323'
+      date: Wed, 06 Dec 2023 21:29:12 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ListUserPoliciesResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <ListUserPoliciesResult>
+            <IsTruncated>false</IsTruncated>
+            <PolicyNames/>
+          </ListUserPoliciesResult>
+          <ResponseMetadata>
+            <RequestId>24fcaa75-2528-4c18-b119-f32272b8b71a</RequestId>
+          </ResponseMetadata>
+        </ListUserPoliciesResponse>
+  recorded_at: 2023-12-06 21:29:14 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=ListAttachedUserPolicies&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '69'
+      X-Amz-Date: 20231206T212912Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: d02efc56-9c8d-470c-9ea9-c7c4bf3b40f5
+      content-type: text/xml
+      content-length: '360'
+      date: Wed, 06 Dec 2023 21:29:12 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ListAttachedUserPoliciesResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <ListAttachedUserPoliciesResult>
+            <IsTruncated>false</IsTruncated>
+            <AttachedPolicies/>
+          </ListAttachedUserPoliciesResult>
+          <ResponseMetadata>
+            <RequestId>d02efc56-9c8d-470c-9ea9-c7c4bf3b40f5</RequestId>
+          </ResponseMetadata>
+        </ListAttachedUserPoliciesResponse>
+  recorded_at: 2023-12-06 21:29:14 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=ListGroupsForUser&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '62'
+      X-Amz-Date: 20231206T212912Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: e20aca4c-871b-47de-976e-a97715f4fbc8
+      content-type: text/xml
+      content-length: '322'
+      date: Wed, 06 Dec 2023 21:29:12 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ListGroupsForUserResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <ListGroupsForUserResult>
+            <IsTruncated>false</IsTruncated>
+            <Groups/>
+          </ListGroupsForUserResult>
+          <ResponseMetadata>
+            <RequestId>e20aca4c-871b-47de-976e-a97715f4fbc8</RequestId>
+          </ResponseMetadata>
+        </ListGroupsForUserResponse>
+  recorded_at: 2023-12-06 21:29:14 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=GetUser&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '52'
+      X-Amz-Date: 20231206T212912Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: a5da5490-15eb-4d80-aa35-ab15293117f1
+      content-type: text/xml
+      content-length: '467'
+      date: Wed, 06 Dec 2023 21:29:12 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <GetUserResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <GetUserResult>
+            <User>
+              <Path>/</Path>
+              <UserName>testUser2</UserName>
+              <Arn>arn:aws:iam::510628056329:user/testUser2</Arn>
+              <UserId>AIDAXNY6NZUEXZFJQI2I2</UserId>
+              <CreateDate>2023-08-08T20:27:04Z</CreateDate>
+            </User>
+          </GetUserResult>
+          <ResponseMetadata>
+            <RequestId>a5da5490-15eb-4d80-aa35-ab15293117f1</RequestId>
+          </ResponseMetadata>
+        </GetUserResponse>
+  recorded_at: 2023-12-06 21:29:14 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=ListUserPolicies&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '61'
+      X-Amz-Date: 20231206T212913Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: 35740e03-0637-4c64-aa62-73765fd8a40a
+      content-type: text/xml
+      content-length: '323'
+      date: Wed, 06 Dec 2023 21:29:12 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ListUserPoliciesResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <ListUserPoliciesResult>
+            <IsTruncated>false</IsTruncated>
+            <PolicyNames/>
+          </ListUserPoliciesResult>
+          <ResponseMetadata>
+            <RequestId>35740e03-0637-4c64-aa62-73765fd8a40a</RequestId>
+          </ResponseMetadata>
+        </ListUserPoliciesResponse>
+  recorded_at: 2023-12-06 21:29:14 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=ListAttachedUserPolicies&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '69'
+      X-Amz-Date: 20231206T212913Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: 1c8fb9a4-df56-4053-b7c5-f0b144f31647
+      content-type: text/xml
+      content-length: '360'
+      date: Wed, 06 Dec 2023 21:29:13 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ListAttachedUserPoliciesResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <ListAttachedUserPoliciesResult>
+            <IsTruncated>false</IsTruncated>
+            <AttachedPolicies/>
+          </ListAttachedUserPoliciesResult>
+          <ResponseMetadata>
+            <RequestId>1c8fb9a4-df56-4053-b7c5-f0b144f31647</RequestId>
+          </ResponseMetadata>
+        </ListAttachedUserPoliciesResponse>
+  recorded_at: 2023-12-06 21:29:14 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=ListGroupsForUser&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '62'
+      X-Amz-Date: 20231206T212913Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: c5eae81f-413f-41d1-88be-cc01d80c3eb1
+      content-type: text/xml
+      content-length: '322'
+      date: Wed, 06 Dec 2023 21:29:13 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ListGroupsForUserResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <ListGroupsForUserResult>
+            <IsTruncated>false</IsTruncated>
+            <Groups/>
+          </ListGroupsForUserResult>
+          <ResponseMetadata>
+            <RequestId>c5eae81f-413f-41d1-88be-cc01d80c3eb1</RequestId>
+          </ResponseMetadata>
+        </ListGroupsForUserResponse>
+  recorded_at: 2023-12-06 21:29:14 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=AttachUserPolicy&PolicyArn=arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FAWSCloudHSMReadOnlyAccess&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '133'
+      X-Amz-Date: 20231206T212913Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: 7dff07cd-a6d0-4f6e-ac8d-2a03c52735e8
+      content-type: text/xml
+      content-length: '212'
+      date: Wed, 06 Dec 2023 21:29:13 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <AttachUserPolicyResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <ResponseMetadata>
+            <RequestId>7dff07cd-a6d0-4f6e-ac8d-2a03c52735e8</RequestId>
+          </ResponseMetadata>
+        </AttachUserPolicyResponse>
+  recorded_at: 2023-12-06 21:29:14 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=GetUser&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '52'
+      X-Amz-Date: 20231206T212913Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: fd5d22e3-abad-4247-9e85-60cb986f43aa
+      content-type: text/xml
+      content-length: '467'
+      date: Wed, 06 Dec 2023 21:29:13 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <GetUserResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <GetUserResult>
+            <User>
+              <Path>/</Path>
+              <UserName>testUser2</UserName>
+              <Arn>arn:aws:iam::510628056329:user/testUser2</Arn>
+              <UserId>AIDAXNY6NZUEXZFJQI2I2</UserId>
+              <CreateDate>2023-08-08T20:27:04Z</CreateDate>
+            </User>
+          </GetUserResult>
+          <ResponseMetadata>
+            <RequestId>fd5d22e3-abad-4247-9e85-60cb986f43aa</RequestId>
+          </ResponseMetadata>
+        </GetUserResponse>
+  recorded_at: 2023-12-06 21:29:14 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=ListUserPolicies&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '61'
+      X-Amz-Date: 20231206T212913Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: ed24686c-d2d3-4db8-a60c-89076fbe69de
+      content-type: text/xml
+      content-length: '323'
+      date: Wed, 06 Dec 2023 21:29:13 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ListUserPoliciesResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <ListUserPoliciesResult>
+            <IsTruncated>false</IsTruncated>
+            <PolicyNames/>
+          </ListUserPoliciesResult>
+          <ResponseMetadata>
+            <RequestId>ed24686c-d2d3-4db8-a60c-89076fbe69de</RequestId>
+          </ResponseMetadata>
+        </ListUserPoliciesResponse>
+  recorded_at: 2023-12-06 21:29:14 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=ListAttachedUserPolicies&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '69'
+      X-Amz-Date: 20231206T212914Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: 30fd57ad-4721-4561-a258-278d5cc379e1
+      content-type: text/xml
+      content-length: '554'
+      date: Wed, 06 Dec 2023 21:29:13 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ListAttachedUserPoliciesResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <ListAttachedUserPoliciesResult>
+            <IsTruncated>false</IsTruncated>
+            <AttachedPolicies>
+              <member>
+                <PolicyArn>arn:aws:iam::aws:policy/AWSCloudHSMReadOnlyAccess</PolicyArn>
+                <PolicyName>AWSCloudHSMReadOnlyAccess</PolicyName>
+              </member>
+            </AttachedPolicies>
+          </ListAttachedUserPoliciesResult>
+          <ResponseMetadata>
+            <RequestId>30fd57ad-4721-4561-a258-278d5cc379e1</RequestId>
+          </ResponseMetadata>
+        </ListAttachedUserPoliciesResponse>
+  recorded_at: 2023-12-06 21:29:14 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=ListGroupsForUser&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '62'
+      X-Amz-Date: 20231206T212914Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: e47cd2c7-132e-4e6c-8275-88f7b2fd8e30
+      content-type: text/xml
+      content-length: '322'
+      date: Wed, 06 Dec 2023 21:29:14 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ListGroupsForUserResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <ListGroupsForUserResult>
+            <IsTruncated>false</IsTruncated>
+            <Groups/>
+          </ListGroupsForUserResult>
+          <ResponseMetadata>
+            <RequestId>e47cd2c7-132e-4e6c-8275-88f7b2fd8e30</RequestId>
+          </ResponseMetadata>
+        </ListGroupsForUserResponse>
+  recorded_at: 2023-12-06 21:29:14 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
