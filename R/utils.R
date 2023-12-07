@@ -80,7 +80,7 @@ check_for_pkg <- function(x) {
     invisible(TRUE)
   }
 }
-           
+
 #' Paginate over list_* methods
 #'
 #' @importFrom purrr map flatten
@@ -130,5 +130,5 @@ tidy_generator <- function(vars) {
       map(as_tibble) %>%
       list_rbind() %>%
       mutate(CreateDate = as_datetime(CreateDate))
-   }
+  }
 }
