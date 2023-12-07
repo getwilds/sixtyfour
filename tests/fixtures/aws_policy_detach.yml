@@ -10,7 +10,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '52'
-      X-Amz-Date: 20231206T212914Z
+      X-Amz-Date: 20231207T000005Z
       Authorization: redacted
   response:
     status:
@@ -19,10 +19,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 4b860140-a819-41b4-bb3c-a035ee481166
+      x-amzn-requestid: 254c4f72-3f85-458b-8405-eb96e4480b61
       content-type: text/xml
       content-length: '467'
-      date: Wed, 06 Dec 2023 21:29:14 GMT
+      date: Thu, 07 Dec 2023 00:00:04 GMT
     body:
       encoding: ''
       file: no
@@ -38,10 +38,10 @@ http_interactions:
             </User>
           </GetUserResult>
           <ResponseMetadata>
-            <RequestId>4b860140-a819-41b4-bb3c-a035ee481166</RequestId>
+            <RequestId>254c4f72-3f85-458b-8405-eb96e4480b61</RequestId>
           </ResponseMetadata>
         </GetUserResponse>
-  recorded_at: 2023-12-06 21:29:15 GMT
+  recorded_at: 2023-12-07 00:00:07 GMT
   recorded_with: vcr/1.2.2, webmockr/0.9.0
 - request:
     method: post
@@ -54,7 +54,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '61'
-      X-Amz-Date: 20231206T212914Z
+      X-Amz-Date: 20231207T000005Z
       Authorization: redacted
   response:
     status:
@@ -63,10 +63,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 17d4d274-9f21-4518-8ddf-a3933f328f22
+      x-amzn-requestid: 6ccbcc59-54fd-48f9-9ec2-6dd51826ba73
       content-type: text/xml
       content-length: '323'
-      date: Wed, 06 Dec 2023 21:29:14 GMT
+      date: Thu, 07 Dec 2023 00:00:05 GMT
     body:
       encoding: ''
       file: no
@@ -77,10 +77,10 @@ http_interactions:
             <PolicyNames/>
           </ListUserPoliciesResult>
           <ResponseMetadata>
-            <RequestId>17d4d274-9f21-4518-8ddf-a3933f328f22</RequestId>
+            <RequestId>6ccbcc59-54fd-48f9-9ec2-6dd51826ba73</RequestId>
           </ResponseMetadata>
         </ListUserPoliciesResponse>
-  recorded_at: 2023-12-06 21:29:15 GMT
+  recorded_at: 2023-12-07 00:00:07 GMT
   recorded_with: vcr/1.2.2, webmockr/0.9.0
 - request:
     method: post
@@ -93,7 +93,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '69'
-      X-Amz-Date: 20231206T212914Z
+      X-Amz-Date: 20231207T000005Z
       Authorization: redacted
   response:
     status:
@@ -102,10 +102,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 6ee3d4ae-124b-4f83-8c03-5ee5da649eb6
+      x-amzn-requestid: 86209ae5-d0fa-48a9-ae43-f16e2f574db8
       content-type: text/xml
       content-length: '554'
-      date: Wed, 06 Dec 2023 21:29:14 GMT
+      date: Thu, 07 Dec 2023 00:00:05 GMT
     body:
       encoding: ''
       file: no
@@ -121,10 +121,10 @@ http_interactions:
             </AttachedPolicies>
           </ListAttachedUserPoliciesResult>
           <ResponseMetadata>
-            <RequestId>6ee3d4ae-124b-4f83-8c03-5ee5da649eb6</RequestId>
+            <RequestId>86209ae5-d0fa-48a9-ae43-f16e2f574db8</RequestId>
           </ResponseMetadata>
         </ListAttachedUserPoliciesResponse>
-  recorded_at: 2023-12-06 21:29:15 GMT
+  recorded_at: 2023-12-07 00:00:07 GMT
   recorded_with: vcr/1.2.2, webmockr/0.9.0
 - request:
     method: post
@@ -137,7 +137,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '62'
-      X-Amz-Date: 20231206T212914Z
+      X-Amz-Date: 20231207T000005Z
       Authorization: redacted
   response:
     status:
@@ -146,10 +146,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 182f530f-7eb8-4dd9-812a-92a15668965d
+      x-amzn-requestid: 8ceac547-3ba0-43f5-9398-0c4e7b481f40
       content-type: text/xml
       content-length: '322'
-      date: Wed, 06 Dec 2023 21:29:14 GMT
+      date: Thu, 07 Dec 2023 00:00:05 GMT
     body:
       encoding: ''
       file: no
@@ -160,10 +160,10 @@ http_interactions:
             <Groups/>
           </ListGroupsForUserResult>
           <ResponseMetadata>
-            <RequestId>182f530f-7eb8-4dd9-812a-92a15668965d</RequestId>
+            <RequestId>8ceac547-3ba0-43f5-9398-0c4e7b481f40</RequestId>
           </ResponseMetadata>
         </ListGroupsForUserResponse>
-  recorded_at: 2023-12-06 21:29:15 GMT
+  recorded_at: 2023-12-07 00:00:07 GMT
   recorded_with: vcr/1.2.2, webmockr/0.9.0
 - request:
     method: post
@@ -176,7 +176,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '52'
-      X-Amz-Date: 20231206T212914Z
+      X-Amz-Date: 20231207T000005Z
       Authorization: redacted
   response:
     status:
@@ -185,10 +185,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: d15cc30f-0af0-4c27-9f6d-8ef565dfe27c
+      x-amzn-requestid: 270ed36c-a1d2-4455-86d1-416452bdaa0b
       content-type: text/xml
       content-length: '467'
-      date: Wed, 06 Dec 2023 21:29:14 GMT
+      date: Thu, 07 Dec 2023 00:00:05 GMT
     body:
       encoding: ''
       file: no
@@ -204,10 +204,10 @@ http_interactions:
             </User>
           </GetUserResult>
           <ResponseMetadata>
-            <RequestId>d15cc30f-0af0-4c27-9f6d-8ef565dfe27c</RequestId>
+            <RequestId>270ed36c-a1d2-4455-86d1-416452bdaa0b</RequestId>
           </ResponseMetadata>
         </GetUserResponse>
-  recorded_at: 2023-12-06 21:29:15 GMT
+  recorded_at: 2023-12-07 00:00:07 GMT
   recorded_with: vcr/1.2.2, webmockr/0.9.0
 - request:
     method: post
@@ -220,7 +220,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '61'
-      X-Amz-Date: 20231206T212915Z
+      X-Amz-Date: 20231207T000006Z
       Authorization: redacted
   response:
     status:
@@ -229,10 +229,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: b2330651-c9fa-4023-a2b2-bd87a6ab88c7
+      x-amzn-requestid: bb285892-ad5e-4be3-8ecd-efcbabb08e67
       content-type: text/xml
       content-length: '323'
-      date: Wed, 06 Dec 2023 21:29:14 GMT
+      date: Thu, 07 Dec 2023 00:00:05 GMT
     body:
       encoding: ''
       file: no
@@ -243,10 +243,10 @@ http_interactions:
             <PolicyNames/>
           </ListUserPoliciesResult>
           <ResponseMetadata>
-            <RequestId>b2330651-c9fa-4023-a2b2-bd87a6ab88c7</RequestId>
+            <RequestId>bb285892-ad5e-4be3-8ecd-efcbabb08e67</RequestId>
           </ResponseMetadata>
         </ListUserPoliciesResponse>
-  recorded_at: 2023-12-06 21:29:15 GMT
+  recorded_at: 2023-12-07 00:00:07 GMT
   recorded_with: vcr/1.2.2, webmockr/0.9.0
 - request:
     method: post
@@ -259,7 +259,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '69'
-      X-Amz-Date: 20231206T212915Z
+      X-Amz-Date: 20231207T000006Z
       Authorization: redacted
   response:
     status:
@@ -268,10 +268,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: d760a3b2-b72d-46e0-9d5d-826d91747bab
+      x-amzn-requestid: ee727d85-0ecf-423b-a1e8-dd5e4135bc19
       content-type: text/xml
       content-length: '554'
-      date: Wed, 06 Dec 2023 21:29:15 GMT
+      date: Thu, 07 Dec 2023 00:00:05 GMT
     body:
       encoding: ''
       file: no
@@ -287,10 +287,10 @@ http_interactions:
             </AttachedPolicies>
           </ListAttachedUserPoliciesResult>
           <ResponseMetadata>
-            <RequestId>d760a3b2-b72d-46e0-9d5d-826d91747bab</RequestId>
+            <RequestId>ee727d85-0ecf-423b-a1e8-dd5e4135bc19</RequestId>
           </ResponseMetadata>
         </ListAttachedUserPoliciesResponse>
-  recorded_at: 2023-12-06 21:29:15 GMT
+  recorded_at: 2023-12-07 00:00:07 GMT
   recorded_with: vcr/1.2.2, webmockr/0.9.0
 - request:
     method: post
@@ -303,7 +303,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '62'
-      X-Amz-Date: 20231206T212915Z
+      X-Amz-Date: 20231207T000006Z
       Authorization: redacted
   response:
     status:
@@ -312,10 +312,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 479b479e-55ff-4d51-88a9-96bb3e0ccc52
+      x-amzn-requestid: e9f166f2-5962-42c5-8663-97cbafd1d3e6
       content-type: text/xml
       content-length: '322'
-      date: Wed, 06 Dec 2023 21:29:15 GMT
+      date: Thu, 07 Dec 2023 00:00:05 GMT
     body:
       encoding: ''
       file: no
@@ -326,10 +326,10 @@ http_interactions:
             <Groups/>
           </ListGroupsForUserResult>
           <ResponseMetadata>
-            <RequestId>479b479e-55ff-4d51-88a9-96bb3e0ccc52</RequestId>
+            <RequestId>e9f166f2-5962-42c5-8663-97cbafd1d3e6</RequestId>
           </ResponseMetadata>
         </ListGroupsForUserResponse>
-  recorded_at: 2023-12-06 21:29:15 GMT
+  recorded_at: 2023-12-07 00:00:07 GMT
   recorded_with: vcr/1.2.2, webmockr/0.9.0
 - request:
     method: post
@@ -342,7 +342,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '133'
-      X-Amz-Date: 20231206T212915Z
+      X-Amz-Date: 20231207T000006Z
       Authorization: redacted
   response:
     status:
@@ -351,18 +351,179 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 92a8f365-afad-40e2-9c6d-64e959e4792a
+      x-amzn-requestid: 4c5c5aa1-7647-4a40-9766-b4252155ed64
       content-type: text/xml
       content-length: '212'
-      date: Wed, 06 Dec 2023 21:29:15 GMT
+      date: Thu, 07 Dec 2023 00:00:06 GMT
     body:
       encoding: ''
       file: no
       string: |
         <DetachUserPolicyResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
           <ResponseMetadata>
-            <RequestId>92a8f365-afad-40e2-9c6d-64e959e4792a</RequestId>
+            <RequestId>4c5c5aa1-7647-4a40-9766-b4252155ed64</RequestId>
           </ResponseMetadata>
         </DetachUserPolicyResponse>
-  recorded_at: 2023-12-06 21:29:15 GMT
+  recorded_at: 2023-12-07 00:00:07 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=GetUser&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '52'
+      X-Amz-Date: 20231207T000006Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: 1f4371af-0924-4b0e-877a-078d449764d6
+      content-type: text/xml
+      content-length: '467'
+      date: Thu, 07 Dec 2023 00:00:06 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <GetUserResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <GetUserResult>
+            <User>
+              <Path>/</Path>
+              <UserName>testUser2</UserName>
+              <Arn>arn:aws:iam::510628056329:user/testUser2</Arn>
+              <UserId>AIDAXNY6NZUEXZFJQI2I2</UserId>
+              <CreateDate>2023-08-08T20:27:04Z</CreateDate>
+            </User>
+          </GetUserResult>
+          <ResponseMetadata>
+            <RequestId>1f4371af-0924-4b0e-877a-078d449764d6</RequestId>
+          </ResponseMetadata>
+        </GetUserResponse>
+  recorded_at: 2023-12-07 00:00:07 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=ListUserPolicies&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '61'
+      X-Amz-Date: 20231207T000006Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: 61a8ccaa-b150-404a-ac25-210c72b0a4e9
+      content-type: text/xml
+      content-length: '323'
+      date: Thu, 07 Dec 2023 00:00:06 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ListUserPoliciesResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <ListUserPoliciesResult>
+            <IsTruncated>false</IsTruncated>
+            <PolicyNames/>
+          </ListUserPoliciesResult>
+          <ResponseMetadata>
+            <RequestId>61a8ccaa-b150-404a-ac25-210c72b0a4e9</RequestId>
+          </ResponseMetadata>
+        </ListUserPoliciesResponse>
+  recorded_at: 2023-12-07 00:00:07 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=ListAttachedUserPolicies&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '69'
+      X-Amz-Date: 20231207T000006Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: ddff6e09-5605-4b24-adf2-b893661bacd0
+      content-type: text/xml
+      content-length: '360'
+      date: Thu, 07 Dec 2023 00:00:06 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ListAttachedUserPoliciesResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <ListAttachedUserPoliciesResult>
+            <IsTruncated>false</IsTruncated>
+            <AttachedPolicies/>
+          </ListAttachedUserPoliciesResult>
+          <ResponseMetadata>
+            <RequestId>ddff6e09-5605-4b24-adf2-b893661bacd0</RequestId>
+          </ResponseMetadata>
+        </ListAttachedUserPoliciesResponse>
+  recorded_at: 2023-12-07 00:00:07 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=ListGroupsForUser&UserName=testUser2&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '62'
+      X-Amz-Date: 20231207T000007Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: 31a670b9-d038-465b-82fa-29ce1d6b33a6
+      content-type: text/xml
+      content-length: '322'
+      date: Thu, 07 Dec 2023 00:00:06 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ListGroupsForUserResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <ListGroupsForUserResult>
+            <IsTruncated>false</IsTruncated>
+            <Groups/>
+          </ListGroupsForUserResult>
+          <ResponseMetadata>
+            <RequestId>31a670b9-d038-465b-82fa-29ce1d6b33a6</RequestId>
+          </ResponseMetadata>
+        </ListGroupsForUserResponse>
+  recorded_at: 2023-12-07 00:00:07 GMT
   recorded_with: vcr/1.2.2, webmockr/0.9.0

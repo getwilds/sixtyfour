@@ -10,7 +10,7 @@ aws_policy_attach(.x, policy)
 \item{.x}{result of a call to create or get method for user,
 group, or role}
 
-\item{policy}{(character) a policy name}
+\item{policy}{(character) a policy name or ARN}
 }
 \value{
 A tibble with information about policies
@@ -20,8 +20,8 @@ Attach a policy to a user, group, or role
 }
 \examples{
 \dontrun{
-aws_user() \%>\%
-  aws_policy_attach("AmazonRDSDataFullAccess")
+aws_policy("AmazonRDSDataFullAccess")
+aws_user() \%>\% aws_policy_attach("AmazonRDSDataFullAccess")
 aws_user()$attached_policies
 
 # aws_role("OrganizationAccountSecurityRole") \%>\%

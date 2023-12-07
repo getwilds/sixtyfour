@@ -10,10 +10,12 @@ aws_group(name)
 \item{name}{(character) the group name}
 }
 \value{
-A list with two elements:
+a named list with slots for:
 \itemize{
-\item group: tibble with information about the group
-\item users: tibble with users in the group
+\item group: information about the group (tibble)
+\item users: users in the group (tibble)
+\item policies (character)
+\item attached_policies (tibble)
 }
 }
 \description{

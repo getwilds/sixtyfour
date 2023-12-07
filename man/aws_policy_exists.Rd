@@ -7,7 +7,7 @@
 aws_policy_exists(name)
 }
 \arguments{
-\item{name}{(character) the policy name}
+\item{name}{(character) a policy name}
 }
 \value{
 a tibble with policy details
@@ -20,6 +20,6 @@ see docs \url{https://www.paws-r-sdk.com/docs/iam_get_policy/}
 }
 \examples{
 \dontrun{
-aws_policy(name = "ReadOnlyAccess")
+aws_policy_exists("ReadOnlyAccess")
 }
 }

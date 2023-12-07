@@ -36,8 +36,8 @@ aws_users <- function(...) {
 #' @return a named list with slots for:
 #' - user (tibble)
 #' - policies (list)
-#' - groups (list)
 #' - attached_policies (list)
+#' - groups (list)
 #' @details See the following docs links for details
 #' - <https://www.paws-r-sdk.com/docs/iam_get_user/>
 #' - <https://www.paws-r-sdk.com/docs/iam_list_user_policies/>
@@ -60,9 +60,9 @@ aws_user <- function(username = NULL) {
   if (is.null(username)) username <- x$UserName
   list(
     user = x,
-    policies = env64$iam$list_user_policies(username),
-    groups = env64$iam$list_groups_for_user(username),
-    attached_policies = env64$iam$list_attached_user_policies(username)
+    policies = policies("user", username),
+    attached_policies = policies_attached("user", username),
+    groups = env64$iam$list_groups_for_user(username)
   )
 }
 
@@ -84,7 +84,7 @@ aws_user_current <- function() {
 #' that is used to set the permissions boundary for the user. optional
 #' @param tags (list) A list of tags that you want to attach to the new user.
 #' optional
-#' @return A tibble with information about user accounts
+#' @return A tibble with information about the user created
 #' @details See <https://www.paws-r-sdk.com/docs/iam_create_user/>
 #' docs for details on the parameters
 #' @examples \dontrun{

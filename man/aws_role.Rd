@@ -10,16 +10,30 @@ aws_role(name)
 \item{name}{(character) the role name}
 }
 \value{
-a tibble with role details
+a named list with slots for:
+\itemize{
+\item role (tibble)
+\item policies (character)
+\item attached_policies (tibble)
+}
 }
 \description{
 Get a role
 }
 \details{
-see docs \url{https://www.paws-r-sdk.com/docs/iam_get_role/}
+see docs \url{https://www.paws-r-sdk.com/docs/iam_get_role/};
+also includes policies and attached policies by calling \code{list_role_policies}
+and \code{list_attached_role_policies}
 }
 \examples{
 \dontrun{
-aws_role(name = "OrganizationAccountSecurityRole")
+res <- aws_role(name = "OrganizationAccountSecurityRole")
+res
+res$role
+res$policies
+res$attached_policies
+
+aws_role("AWSServiceRoleForCloudTrail")
+aws_role("AWSServiceRoleForRedshift")
 }
 }
