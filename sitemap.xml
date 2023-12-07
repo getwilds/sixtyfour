@@ -22,6 +22,15 @@
     <loc>/issue_template.html</loc>
   </url>
   <url>
+    <loc>/reference/as_policy_arn.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_bucket_acl_get.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_bucket_acl_modify.html</loc>
+  </url>
+  <url>
     <loc>/reference/aws_bucket_create.html</loc>
   </url>
   <url>
@@ -61,10 +70,67 @@
     <loc>/reference/aws_file_upload.html</loc>
   </url>
   <url>
-    <loc>/reference/billing.html</loc>
+    <loc>/reference/aws_group.html</loc>
   </url>
   <url>
-    <loc>/reference/create_user.html</loc>
+    <loc>/reference/aws_group_create.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_group_delete.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_groups.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_iam_client.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_policies.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_policy.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_policy_attach.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_policy_detach.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_policy_exists.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_role.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_role_create.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_role_delete.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_roles.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_user.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_user_access_key.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_user_create.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_user_current.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_user_delete.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_users.html</loc>
+  </url>
+  <url>
+    <loc>/reference/billing.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
@@ -73,7 +139,7 @@
     <loc>/reference/last.html</loc>
   </url>
   <url>
-    <loc>/reference/list_users.html</loc>
+    <loc>/reference/paginate_aws.html</loc>
   </url>
   <url>
     <loc>/reference/path_s3_parser.html</loc>
