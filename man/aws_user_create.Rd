@@ -19,7 +19,7 @@ that is used to set the permissions boundary for the user. optional}
 optional}
 }
 \value{
-A tibble with information about user accounts
+A tibble with information about the user created
 }
 \description{
 Create a user

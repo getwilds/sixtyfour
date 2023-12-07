@@ -10,7 +10,7 @@ aws_policy_detach(.x, policy)
 \item{.x}{result of a call to create or get method for user,
 group, or role}
 
-\item{policy}{(character) a policy name}
+\item{policy}{(character) a policy name or ARN}
 }
 \value{
 A tibble with information about policies

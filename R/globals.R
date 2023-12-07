@@ -3,6 +3,8 @@
 utils::globalVariables(c(
   ".", # <aws_group>
   ".", # <aws_policy>
+  "PolicyName", # <as_policy_arn>
+  "Arn", # <as_policy_arn>
   ".", # <aws_role>
   "PasswordLastUsed", # <user_list_tidy>
   "CreateDate", # <tidy_generator>

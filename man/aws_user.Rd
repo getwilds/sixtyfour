@@ -14,8 +14,8 @@ a named list with slots for:
 \itemize{
 \item user (tibble)
 \item policies (list)
-\item groups (list)
 \item attached_policies (list)
+\item groups (list)
 }
 }
 \description{

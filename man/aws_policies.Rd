@@ -4,11 +4,14 @@
 \alias{aws_policies}
 \title{List policies}
 \usage{
-aws_policies(...)
+aws_policies(refresh = FALSE, ...)
 }
 \arguments{
-\item{...}{parameters passed on to the \code{paws}
-\href{https://www.paws-r-sdk.com/docs/iam_list_policies/}{list_users} method}
+\item{refresh}{(logical) refresh results? default: \code{FALSE}. to invalidate
+cache and refresh policy data, set \code{refresh=TRUE}}
+
+\item{...}{parameters passed on to
+\href{https://www.paws-r-sdk.com/docs/iam_list_policies/}{list_policies}}
 }
 \value{
 A tibble with information about policies
@@ -16,8 +19,14 @@ A tibble with information about policies
 \description{
 List policies
 }
+\details{
+uses \code{memoise} internally to cache results to speed up all
+subsequent calls to the function
+}
 \examples{
 \dontrun{
 aws_policies()
+aws_policies()
+aws_policies(refresh = TRUE)
 }
 }
