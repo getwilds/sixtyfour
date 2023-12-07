@@ -80,3 +80,55 @@ check_for_pkg <- function(x) {
     invisible(TRUE)
   }
 }
+           
+#' Paginate over list_* methods
+#'
+#' @importFrom purrr map flatten
+#' @importFrom rlang has_name
+#' @param fun (function) a function to call
+#' @param target (character) a list element to get
+#' @param ... named args passed on to `fun`
+#' @keywords internal
+#' @examples \dontrun{
+#' # FIXME: could remove target param and poach the name of the fun
+#' # e.g,. from list_roles we can get Roles
+#' paginate_aws(fun = env64$iam$list_roles, target = "Roles")
+#' paginate_aws(fun = env64$iam$list_policies, target = "Policies")
+#' }
+paginate_aws <- function(fun, target, ...) {
+  res <- fun(...)
+  if (!rlang::has_name(res, "IsTruncated")) return(res[[target]])
+  if (!res$IsTruncated) return(res[[target]])
+
+  all_results <- list(res)
+  more_results <- TRUE
+  while (more_results) {
+    res <- fun(Marker = res$Marker)
+    all_results <- c(all_results, list(res))
+    if (!res$IsTruncated) more_results <- FALSE
+  }
+  purrr::map(all_results, \(x) x[[target]]) %>% purrr::flatten()
+}
+
+#' Tidy list to tibble generator
+#'
+#' For the functions user_list_tidy, group_list_tidy, etc.
+#'
+#' @importFrom purrr map list_rbind
+#' @importFrom dplyr mutate
+#' @importFrom tibble as_tibble
+#' @importFrom lubridate as_datetime
+#' @autoglobal
+#' @noRd
+#' @param vars (character) vector of list names to get
+#' @keywords internal
+tidy_generator <- function(vars) {
+  function(x) {
+    x %>%
+      map(~ .x[vars]) %>%
+      map(\(x) map(x, \(y) ifelse(length(y) < 1, NA, y))) %>%
+      map(as_tibble) %>%
+      list_rbind() %>%
+      mutate(CreateDate = as_datetime(CreateDate))
+   }
+}
