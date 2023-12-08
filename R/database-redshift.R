@@ -29,9 +29,6 @@
 #'
 #' library(dplyr)
 #' tbl(con_rshift, "mtcars")
-#'
-#' con_rds <- aws_db_rds_con()
-#' con_rds
 #' }
 aws_db_redshift_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
                                 dbname = NULL, ...) {
@@ -62,25 +59,11 @@ aws_db_redshift_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
   )
 }
 
-#' Get a database connection to Amazon RDS
-#'
-#' @export
-#' @param ... named parameters passed on to
-#' [DBI::dbConnect](https://dbi.r-dbi.org/reference/dbconnect)
-#' @note RDS supports: Aurora (both PostgreSQL and MySQL compatible),
-#' PostgreSQL, MariaDB, MySQL, Orace, MS SQL Server
-aws_db_rds_con <- function(...) {
-  stop("not working yet, check back in later", call. = FALSE)
-  check_for_pkg("DBI")
-  check_for_pkg("RPostgres")
-  DBI::dbConnect(RPostgres::Postgres(), ...)
-}
-
 #' Create a Redshift cluster
 #'
 #' @export
 #' @importFrom paws redshift
-#' @param id (characteR) Cluster identifier. Use this identifier to refer to
+#' @param id (character) Cluster identifier. Use this identifier to refer to
 #' the cluster for any subsequent cluster operations such as deleting or
 #' modifying. The identifier also appears in the Amazon Redshift console.
 #' Must be unique for all clusters within a Amazon Web Services account.
@@ -114,7 +97,7 @@ aws_db_redshift_create <-
   function(id, user, pwd, dbname = "dev", cluster_type = "multi-node",
            node_type = "dc2.large", number_nodes = 2,
            security_group_ids = NULL, wait = TRUE, ...) {
-    env64$redshift <- paws::redshift()
+    aws_db_redshift_client()
     env64$redshift$create_cluster(
       DBName = dbname, ClusterIdentifier = id,
       ClusterType = cluster_type, NodeType = node_type,
@@ -124,7 +107,7 @@ aws_db_redshift_create <-
       ...
     )
     if (wait) {
-      wait_until_cluster_available(id)
+      wait_for_cluster(id)
     }
     return(env64$redshift)
   }
@@ -134,7 +117,7 @@ aws_db_redshift_create <-
 #' @return a list with methods for interfacing with Redshift;
 #' see <https://www.paws-r-sdk.com/docs/redshift/>
 aws_db_redshift_client <- function() {
-  env64$redshift <- paws::redshift()
+  if (is.null(env64$redshift)) env64$redshift <- paws::redshift()
   return(env64$redshift)
 }
 
@@ -172,32 +155,4 @@ aws_db_cluster_status <- function(id) {
     return("not found")
   }
   cluster[[1]]$ClusterStatus
-}
-
-#' Wait until a cluster has status "available"
-#' @importFrom cli cli_progress_bar cli_progress_update pb_spin
-#' @inheritParams aws_db_redshift_create
-#' @param sleep (integer/numeric) number of seconds to wait between
-#' checks of the cluster status (i.e., http requests)
-#' @return nothing, exits if there's an error, or if the while
-#' loop completes
-#' @keywords internal
-#' @examples \dontrun{
-#' wait_until_cluster_available(id = "scotts-test-cluster-456")
-#' }
-wait_until_cluster_available <- function(id, sleep = 3) {
-  options(cli.spinner = "simpleDots")
-  on.exit(options(cli.spinner = NULL), add = TRUE)
-  msg <- "Redshift cluster initializing" # nolint
-  cli::cli_progress_bar(format = "{cli::pb_spin} {msg}")
-  is_not_available <- TRUE
-  while (is_not_available) {
-    status <- aws_db_cluster_status(id)
-    if (status == "not found") break
-    cli::cli_progress_update()
-    Sys.sleep(sleep)
-    if (status == "available") {
-      is_not_available <- FALSE
-    }
-  }
 }
