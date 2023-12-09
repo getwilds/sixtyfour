@@ -1,18 +1,28 @@
+which_driver <- function(engine) {
+  switch(engine,
+    "mariadb" = RMariaDB::MariaDB(),
+    "mysql" = RMariaDB::MariaDB(),
+    "postgres" = RPostgres::Postgres(),
+    stop(glue::glue("{engine} not currently supported"))
+  )
+}
+
 #' Get a database connection to Amazon RDS
 #'
-#' JUST MariaDB FOR NOW!!!!
+#' JUST MariaDB, MySQL, PostgreSQL FOR NOW!!!!
 #'
 #' @export
 #' @inheritParams aws_db_redshift_con
-#' @note RDS supports: Aurora (both PostgreSQL and MySQL compatible),
-#' PostgreSQL, MariaDB, MySQL, Orace, MS SQL Server
-#' @examples \dontrun{
-#' library(DBI)
-#' library(RMariaDB)
+#' @details RDS supports: Aurora (both PostgreSQL and MySQL compatible),
+#' PostgreSQL, MariaDB, MySQL, Oracle, MS SQL Server
 #'
+#' If the `engine` you've chosen for your RDS instance is not supported
+#' with this function, you can likely connect to it on your own
+#' @examples \dontrun{
 #' con_rds <- aws_db_rds_con("<define all params here>")
 #' con_rds
 #'
+#' library(DBI)
 #' library(RMariaDB)
 #' dbListTables(con_rds)
 #' dbWriteTable(con_rds, "mtcars", mtcars)
@@ -26,6 +36,7 @@ aws_db_rds_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
                            dbname = NULL, ...) {
   check_for_pkg("DBI")
   check_for_pkg("RMariaDB")
+  check_for_pkg("RPostgres")
 
   stopifnot("user is required" = !missing(user))
   stopifnot("pwd is required" = !missing(pwd))
@@ -35,13 +46,14 @@ aws_db_rds_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
     host <- con_info$host
     port <- con_info$port
     dbname <- con_info$dbname
+    engine <- con_info$engine
   }
   if (any(vapply(list(host, port, dbname), is.null, logical(1)))) {
     stop("`host`, `port`, and `dbname` can not be NULL", call. = FALSE)
   }
 
   DBI::dbConnect(
-    RMariaDB::MariaDB(),
+    which_driver(engine),
     host = host,
     port = port,
     dbname = dbname,
@@ -105,8 +117,13 @@ aws_db_rds_create <-
     if (wait) {
       wait_for_instance(id)
     }
+    info()
     return(env64$rds)
   }
+
+info <- function(msg) {
+  cli::cli_inform("asdfdfs")
+}
 
 #' Get the `paws` RDS client
 #' @export
@@ -122,6 +139,7 @@ aws_db_rds_client <- function() {
 #' @return a list of instance details
 #' @keywords internal
 instance_details <- function() {
+  aws_db_rds_client()
   instances <- env64$rds$describe_db_instances()
   return(instances)
 }
@@ -133,7 +151,14 @@ instance_details <- function() {
 instance_con_info <- function(id) {
   deets <- instance_details()$DBInstances
   z <- Filter(function(x) x$DBInstanceIdentifier == id, deets)[[1]]
-  list(host = z$Endpoint$Address, port = z$Endpoint$Port, dbname = z$DBName)
+  list(
+    host = z$Endpoint$Address,
+    port = z$Endpoint$Port,
+    dbname = z$DBName,
+    engine = z$Engine,
+    class = z$DBInstanceClass,
+    status = z$DBInstanceStatus
+  )
 }
 
 #' Get instance status

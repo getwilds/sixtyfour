@@ -26,20 +26,21 @@ those you used to create the cluster with \code{\link[=aws_db_redshift_create]{a
 \code{\link[=aws_db_redshift_create]{aws_db_redshift_create()}} for more details.}
 }
 \description{
-JUST MariaDB FOR NOW!!!!
+JUST MariaDB, MySQL, PostgreSQL FOR NOW!!!!
 }
-\note{
+\details{
 RDS supports: Aurora (both PostgreSQL and MySQL compatible),
 PostgreSQL, MariaDB, MySQL, Orace, MS SQL Server
+
+If the \code{engine} you've chosen for your RDS instance is not supported
+with this function, you can likely connect to it on your own
 }
 \examples{
 \dontrun{
-library(DBI)
-library(RMariaDB)
-
 con_rds <- aws_db_rds_con("<define all params here>")
 con_rds
 
+library(DBI)
 library(RMariaDB)
 dbListTables(con_rds)
 dbWriteTable(con_rds, "mtcars", mtcars)
