@@ -89,10 +89,20 @@ aws_db_rds_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
 #' @param verbose (logical) verbose informational output? default: `TRUE`
 #' @param ... named parameters passed on to
 #' [create_db_instance](https://www.paws-r-sdk.com/docs/rds_create_db_instance/)
-#' @note See above link to `create_cluster` docs for details on requirements
+#' @details See above link to `create_cluster` docs for details on requirements
 #' for each parameter
+#'
+#' Note that even though you can use any option for `engine` in this function,
+#' we may not provide the ability to connect to the chosen data source
+#' in this package.
+#' @section Waiting:
+#' Note that with `wait = TRUE` this function waits for the instance to be
+#' available for returning. That wait can be around 5 - 7 minutes. You can
+#' instead set `wait = FALSE` and then check on the status of the instance
+#' yourself in the AWS dashboard.
 #' @return a list with methods for interfacing with RDS;
-#' see <https://www.paws-r-sdk.com/docs/rds/>
+#' see <https://www.paws-r-sdk.com/docs/rds/>. also prints useful
+#' connection information after instance is available.
 aws_db_rds_create <-
   function(id, class, user, pwd, dbname = "dev",
            engine = "mariadb", storage = 20,

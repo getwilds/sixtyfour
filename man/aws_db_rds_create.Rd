@@ -63,12 +63,25 @@ until the cluster is available. If \code{wait=FALSE} use
 }
 \value{
 a list with methods for interfacing with RDS;
-see \url{https://www.paws-r-sdk.com/docs/rds/}
+see \url{https://www.paws-r-sdk.com/docs/rds/}. also prints useful
+connection information after instance is available.
 }
 \description{
 Create an RDS cluster
 }
-\note{
+\details{
 See above link to \code{create_cluster} docs for details on requirements
 for each parameter
+
+Note that even though you can use any option for \code{engine} in this function,
+we may not provide the ability to connect to the chosen data source
+in this package.
 }
+\section{Waiting}{
+
+Note that with \code{wait = TRUE} this function waits for the instance to be
+available for returning. That wait can be around 5 - 7 minutes. You can
+instead set \code{wait = FALSE} and then check on the status of the instance
+yourself in the AWS dashboard.
+}
+

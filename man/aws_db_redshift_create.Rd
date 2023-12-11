@@ -59,7 +59,8 @@ until the cluster is available. If \code{wait=FALSE} use
 }
 \value{
 a list with methods for interfacing with Redshift;
-see \url{https://www.paws-r-sdk.com/docs/redshift/}
+see \url{https://www.paws-r-sdk.com/docs/redshift/}. also prints useful
+connection information after cluster is available.
 }
 \description{
 Create a Redshift cluster
@@ -68,3 +69,11 @@ Create a Redshift cluster
 See above link to \code{create_cluster} docs for details on requirements
 for each parameter
 }
+\section{Waiting}{
+
+Note that with \code{wait = TRUE} this function waits for the instance to be
+available for returning. That wait can be around 5 - 7 minutes. You can
+instead set \code{wait = FALSE} and then check on the status of the instance
+yourself in the AWS dashboard.
+}
+

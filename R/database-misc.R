@@ -1,5 +1,5 @@
 #' internal helper function
-#' @param id
+#' @param id an RDS instance ID or Redshift cluster ID
 #' @param fun a function that takes an ID for an AWS RDS instance
 #' or Redshift cluster, and returns a single boolean
 #' @noRd
