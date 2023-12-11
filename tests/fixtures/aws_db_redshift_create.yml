@@ -1,0 +1,85 @@
+http_interactions:
+- request:
+    method: post
+    uri: https://redshift.<<aws_region>>.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=CreateCluster&ClusterIdentifier=abdfghtyu&ClusterType=multi-node&DBName=dev&MasterUserPassword=xxxxxxxxxx&MasterUsername=floppy&NodeType=dc2.large&NumberOfNodes=2&Version=2012-12-01&VpcSecurityGroupIds.VpcSecurityGroupId.1=sg-xxxxxxxxx
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '293'
+      X-Amz-Date: 20231211T195156Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: 6124846d-14df-45f0-a413-157ecd799d75
+      content-type: text/xml
+      content-length: '2443'
+      date: Mon, 11 Dec 2023 19:51:57 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <CreateClusterResponse xmlns="http://redshift.amazonaws.com/doc/2012-12-01/">
+          <CreateClusterResult>
+            <Cluster>
+              <ClusterIdentifier>abdfghtyu</ClusterIdentifier>
+              <ManualSnapshotRetentionPeriod>-1</ManualSnapshotRetentionPeriod>
+              <ClusterAvailabilityStatus>Modifying</ClusterAvailabilityStatus>
+              <IsMaintenanceWindowActivated>true</IsMaintenanceWindowActivated>
+              <MasterUsername>floppy</MasterUsername>
+              <IamRoles/>
+              <NodeType>dc2.large</NodeType>
+              <ClusterSubnetGroupName>default</ClusterSubnetGroupName>
+              <Tags/>
+              <MaintenanceTrackName>current</MaintenanceTrackName>
+              <AutomatedSnapshotRetentionPeriod>1</AutomatedSnapshotRetentionPeriod>
+              <ClusterStatus>creating</ClusterStatus>
+              <AllowVersionUpgrade>true</AllowVersionUpgrade>
+              <NumberOfNodes>2</NumberOfNodes>
+              <ClusterVersion>1.0</ClusterVersion>
+              <VpcId>vpc-0f0202006f3a3a7ce</VpcId>
+              <PubliclyAccessible>true</PubliclyAccessible>
+              <DBName>dev</DBName>
+              <MultiAZ>Disabled</MultiAZ>
+              <EnhancedVpcRouting>false</EnhancedVpcRouting>
+              <ClusterNamespaceArn>arn:aws:redshift:<<aws_region>>:510628056329:namespace:f18a77f8-134b-42a6-af99-0337f1be511d</ClusterNamespaceArn>
+              <ClusterSecurityGroups/>
+              <NextMaintenanceWindowStartTime>2023-12-14T06:00:00Z</NextMaintenanceWindowStartTime>
+              <DeferredMaintenanceWindows/>
+              <VpcSecurityGroups>
+                <VpcSecurityGroup>
+                  <VpcSecurityGroupId>sg-xxxxxxxxx</VpcSecurityGroupId>
+                  <Status>active</Status>
+                </VpcSecurityGroup>
+              </VpcSecurityGroups>
+              <ClusterParameterGroups>
+                <ClusterParameterGroup>
+                  <ParameterGroupName>default.redshift-1.0</ParameterGroupName>
+                  <ParameterApplyStatus>in-sync</ParameterApplyStatus>
+                </ClusterParameterGroup>
+              </ClusterParameterGroups>
+              <Encrypted>false</Encrypted>
+              <PendingModifiedValues>
+                <MasterUserPassword>****</MasterUserPassword>
+              </PendingModifiedValues>
+              <PreferredMaintenanceWindow>thu:06:00-thu:06:30</PreferredMaintenanceWindow>
+              <AquaConfiguration>
+                <AquaConfigurationStatus>auto</AquaConfigurationStatus>
+                <AquaStatus>disabled</AquaStatus>
+              </AquaConfiguration>
+            </Cluster>
+          </CreateClusterResult>
+          <ResponseMetadata>
+            <RequestId>6124846d-14df-45f0-a413-157ecd799d75</RequestId>
+          </ResponseMetadata>
+        </CreateClusterResponse>
+  recorded_at: 2023-12-11 19:51:58 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0

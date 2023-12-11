@@ -15,6 +15,7 @@ aws_db_rds_create(
   storage_encrypted = TRUE,
   security_group_ids = NULL,
   wait = TRUE,
+  verbose = TRUE,
   ...
 )
 }
@@ -54,6 +55,8 @@ dashboard and add the appropriate VPC security group.}
 you don't wait (\code{FALSE}) then there's many operations you can not do
 until the cluster is available. If \code{wait=FALSE} use
 \code{aws_db_instance_status()} to check on the cluster status.}
+
+\item{verbose}{(logical) verbose informational output? default: \code{TRUE}}
 
 \item{...}{named parameters passed on to
 \href{https://www.paws-r-sdk.com/docs/rds_create_db_instance/}{create_db_instance}}

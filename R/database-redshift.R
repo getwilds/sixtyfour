@@ -87,6 +87,7 @@ aws_db_redshift_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
 #' you don't wait (`FALSE`) then there's many operations you can not do
 #' until the cluster is available. If `wait=FALSE` use
 #' `aws_db_cluster_status()` to check on the cluster status.
+#' @param verbose (logical) verbose informational output? default: `TRUE`
 #' @param ... named parameters passed on to
 #' [create_cluster](https://www.paws-r-sdk.com/docs/redshift_create_cluster/)
 #' @note See above link to `create_cluster` docs for details on requirements
@@ -96,7 +97,7 @@ aws_db_redshift_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
 aws_db_redshift_create <-
   function(id, user, pwd, dbname = "dev", cluster_type = "multi-node",
            node_type = "dc2.large", number_nodes = 2,
-           security_group_ids = NULL, wait = TRUE, ...) {
+           security_group_ids = NULL, wait = TRUE, verbose = TRUE, ...) {
     aws_db_redshift_client()
     env64$redshift$create_cluster(
       DBName = dbname, ClusterIdentifier = id,
@@ -109,6 +110,7 @@ aws_db_redshift_create <-
     if (wait) {
       wait_for_cluster(id)
     }
+    if (verbose) info(id, cluster_con_info)
     return(env64$redshift)
   }
 
@@ -125,6 +127,7 @@ aws_db_redshift_client <- function() {
 #' @return a list of cluster details
 #' @keywords internal
 cluster_details <- function() {
+  aws_db_redshift_client()
   clusters <- env64$redshift$describe_clusters()
   return(clusters)
 }

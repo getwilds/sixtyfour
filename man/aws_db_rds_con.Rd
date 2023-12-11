@@ -11,6 +11,7 @@ aws_db_rds_con(
   host = NULL,
   port = NULL,
   dbname = NULL,
+  engine = NULL,
   ...
 )
 }
@@ -24,13 +25,16 @@ those you used to create the cluster with \code{\link[=aws_db_redshift_create]{a
 \code{host}, \code{port}, and \code{dbname}. If \code{id} is not supplied. you have to supply
 \code{host}, \code{port}, and \code{dbname}. Refer to this parameter definition in
 \code{\link[=aws_db_redshift_create]{aws_db_redshift_create()}} for more details.}
+
+\item{engine}{(character) The engine to use. optional if \code{user}, \code{pwd}, and
+\code{id} are supplied - otherwise required}
 }
 \description{
 JUST MariaDB, MySQL, PostgreSQL FOR NOW!!!!
 }
 \details{
 RDS supports: Aurora (both PostgreSQL and MySQL compatible),
-PostgreSQL, MariaDB, MySQL, Orace, MS SQL Server
+PostgreSQL, MariaDB, MySQL, Oracle, MS SQL Server
 
 If the \code{engine} you've chosen for your RDS instance is not supported
 with this function, you can likely connect to it on your own

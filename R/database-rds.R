@@ -1,18 +1,11 @@
-which_driver <- function(engine) {
-  switch(engine,
-    "mariadb" = RMariaDB::MariaDB(),
-    "mysql" = RMariaDB::MariaDB(),
-    "postgres" = RPostgres::Postgres(),
-    stop(glue::glue("{engine} not currently supported"))
-  )
-}
-
 #' Get a database connection to Amazon RDS
 #'
 #' JUST MariaDB, MySQL, PostgreSQL FOR NOW!!!!
 #'
 #' @export
 #' @inheritParams aws_db_redshift_con
+#' @param engine (character) The engine to use. optional if `user`, `pwd`, and
+#' `id` are supplied - otherwise required
 #' @details RDS supports: Aurora (both PostgreSQL and MySQL compatible),
 #' PostgreSQL, MariaDB, MySQL, Oracle, MS SQL Server
 #'
@@ -33,10 +26,8 @@ which_driver <- function(engine) {
 #' tbl(con_rds, "mtcars")
 #' }
 aws_db_rds_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
-                           dbname = NULL, ...) {
+                           dbname = NULL, engine = NULL, ...) {
   check_for_pkg("DBI")
-  check_for_pkg("RMariaDB")
-  check_for_pkg("RPostgres")
 
   stopifnot("user is required" = !missing(user))
   stopifnot("pwd is required" = !missing(pwd))
@@ -48,8 +39,10 @@ aws_db_rds_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
     dbname <- con_info$dbname
     engine <- con_info$engine
   }
-  if (any(vapply(list(host, port, dbname), is.null, logical(1)))) {
-    stop("`host`, `port`, and `dbname` can not be NULL", call. = FALSE)
+  if (any(vapply(list(host, port, dbname, engine), is.null, logical(1)))) {
+    stop("`host`, `port`, `dbname`, and `engine` can not be NULL",
+      call. = FALSE
+    )
   }
 
   DBI::dbConnect(
@@ -93,6 +86,7 @@ aws_db_rds_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
 #' you don't wait (`FALSE`) then there's many operations you can not do
 #' until the cluster is available. If `wait=FALSE` use
 #' `aws_db_instance_status()` to check on the cluster status.
+#' @param verbose (logical) verbose informational output? default: `TRUE`
 #' @param ... named parameters passed on to
 #' [create_db_instance](https://www.paws-r-sdk.com/docs/rds_create_db_instance/)
 #' @note See above link to `create_cluster` docs for details on requirements
@@ -103,7 +97,7 @@ aws_db_rds_create <-
   function(id, class, user, pwd, dbname = "dev",
            engine = "mariadb", storage = 20,
            storage_encrypted = TRUE, security_group_ids = NULL,
-           wait = TRUE, ...) {
+           wait = TRUE, verbose = TRUE, ...) {
     aws_db_rds_client()
     env64$rds$create_db_instance(
       DBName = dbname, DBInstanceIdentifier = id,
@@ -117,13 +111,9 @@ aws_db_rds_create <-
     if (wait) {
       wait_for_instance(id)
     }
-    info()
+    if (verbose) info(id, instance_con_info)
     return(env64$rds)
   }
-
-info <- function(msg) {
-  cli::cli_inform("asdfdfs")
-}
 
 #' Get the `paws` RDS client
 #' @export
