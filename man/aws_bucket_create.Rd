@@ -12,6 +12,9 @@ aws_bucket_create(bucket, ...)
 \item{...}{named parameters passed on to
 \href{https://www.paws-r-sdk.com/docs/s3_create_bucket/}{list_objects}}
 }
+\value{
+the bucket path (character)
+}
 \description{
 Create an S3 bucket
 }

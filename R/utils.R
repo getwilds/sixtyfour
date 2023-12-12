@@ -42,14 +42,14 @@ last <- function(x) x[length(x)]
 #' @return an unnamed list with each slot a named list with bucket, path,
 #' and file
 #' @examplesIf interactive()
-#' path_s3_parser("s3://s64-test-2/DESCRIPTION")
-#' path_s3_parser("s3://s64-test-2/some/other/path/things.csv")
+#' path_s3_parse("s3://s64-test-2/DESCRIPTION")
+#' path_s3_parse("s3://s64-test-2/some/other/path/things.csv")
 #' paths <- c(
 #'   "s3://s64-test-2/DESCRIPTION",
 #'   "s3://s64-test-2/stuff.txt",
 #'   "s3://s64-test-2/some/other/path/things.csv"
 #' )
-#' path_s3_parser(paths)
+#' path_s3_parse(paths)
 #'
 #' # if a path is not an s3 path
 #' paths <- c(
@@ -57,8 +57,8 @@ last <- function(x) x[length(x)]
 #'   "s3://s64-test-2/stuff.txt",
 #'   "s64-test-2/some/other/path/things.csv"
 #' )
-#' path_s3_parser(paths)
-path_s3_parser <- function(paths) {
+#' path_s3_parse(paths)
+path_s3_parse <- function(paths) {
   list_names <- c("bucket", "path", "file")
   stopifnot("One or more paths are not s3 paths" = all(grepl("^s3://", paths)))
   paths <- gsub("s3://", "", paths)
@@ -71,6 +71,42 @@ path_s3_parser <- function(paths) {
       as.list(stats::setNames(c(x[1], "", last(x)), list_names))
     }
   }, paths)
+}
+
+#' Build s3 paths
+#'
+#' @param x unnamed list of parsed paths, from [path_s3_parse()]
+#' @examplesIf interactive()
+#' paths <- c(
+#'   "s3://s64-test-2/DESCRIPTION",
+#'   "s3://s64-test-2/stuff.txt",
+#'   "s3://s64-test-2/some/other/path/things.csv"
+#' )
+#' x <- path_s3_parse(paths)
+#' path_s3_build(x)
+path_s3_build <- function(x) {
+  purrr::map_vec(x, function(w) {
+    path <- if (nzchar(w$path)) paste0(w$path, "/") else ""
+    prefix <- if (grepl("s3://", w$bucket)) "" else "s3://"
+    glue::glue("{prefix}{w$bucket}/{path}{w$file}")
+  }) %>% as.character()
+}
+
+#' Convert a s3 like path to a single format
+#'
+#' @inheritParams path_s3_parse
+#' @return vector of s3 paths (character), Of the form:
+#' `s3://<bucket>/<path>/<file>`
+#' @examplesIf interactive()
+#' path_as_s3("http://s64-test-3.s3.amazonaws.com/")
+#' path_as_s3("https://s64-test-3.s3.amazonaws.com/")
+#' path_as_s3(c("https://s64-test-3.s3.amazonaws.com/",
+#'   "https://mybucket.s3.amazonaws.com/"))
+#' path_as_s3(c("apple", "banana", "pear", "pineapple"))
+path_as_s3 <- function(paths) {
+  paths <- gsub("https?://", "", paths)
+  paths <- gsub("\\.s3.+", "", paths)
+  sprintf("s3://%s", paths)
 }
 
 #' Paginate over list_* methods

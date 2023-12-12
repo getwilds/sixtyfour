@@ -27,6 +27,7 @@ aws_bucket_exists <- function(bucket) {
 #' @param ... named parameters passed on to
 #' [list_objects](https://www.paws-r-sdk.com/docs/s3_create_bucket/)
 #' @note Requires the env var `AWS_REGION`
+#' @return the bucket path (character)
 #' @examples \dontrun{
 #' aws_bucket_create(bucket = "s64-test-2")
 #' }
@@ -35,7 +36,17 @@ aws_bucket_create <- function(bucket, ...) {
     Bucket = bucket,
     CreateBucketConfiguration =
       list(LocationConstraint = env_var("AWS_REGION")), ...
-  )
+  )$Location
+}
+
+bucket_create_if_not <- function(bucket) {
+  if (!aws_bucket_exists(bucket)) {
+    if (yesno("{.strong {bucket}} does not exist. Create it?")) {
+      cli::cli_inform("Exiting without uploading {.strong {basename(path)}}")
+      return(invisible())
+    }
+    aws_bucket_create(bucket)
+  }
 }
 
 #' Delete an S3 bucket
@@ -199,7 +210,7 @@ aws_bucket_tree <- function(bucket, recurse = TRUE, ...) {
 #' aws_bucket_acl_get("s3://s64-test-2")
 #' }
 aws_bucket_acl_get <- function(bucket) {
-  bucket <- path_s3_parser(bucket)[[1]]$bucket
+  bucket <- path_s3_parse(bucket)[[1]]$bucket
   env64$s3$get_bucket_acl(bucket)
 }
 #' Modify a bucket ACL
@@ -212,6 +223,6 @@ aws_bucket_acl_get <- function(bucket) {
 #' aws_bucket_acl_modify("s3://s64-test-2")
 #' }
 aws_bucket_acl_modify <- function(bucket, ...) {
-  bucket <- path_s3_parser(bucket)[[1]]$bucket
+  bucket <- path_s3_parse(bucket)[[1]]$bucket
   env64$s3$put_bucket_acl(bucket, ...)
 }
