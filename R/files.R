@@ -1,3 +1,13 @@
+equal_lengths <- function(x, y) {
+  # s3fs is not checking that length(remote_path) == length(path) as
+  # it purports to be doing
+  if (length(x) != length(y)) {
+    xarg <- deparse(substitute(x))
+    yarg <- deparse(substitute(y))
+    stop(glue::glue("lengths of '{xarg}' and '{yarg}' must be equal"))
+  }
+}
+
 #' Upload a file
 #'
 #' @export
@@ -51,7 +61,7 @@ aws_file_upload <- function(path, remote_path, ...) {
     }
     aws_bucket_create(bucket)
   }
-  s3fs::s3_file_copy(path, remote_path, ...)
+  purrr::map2_vec(path, remote_path, s3fs::s3_file_copy, ...)
 }
 
 #' Download a file
@@ -85,8 +95,7 @@ aws_file_upload <- function(path, remote_path, ...) {
 #' aws_file_download(s3_path("s64-test-2", "TESTING123"), temp_path)
 #' }
 aws_file_download <- function(remote_path, path, ...) {
-  # FIXME: s3fs is not checking that length(remote_path) == length(path)
-  stopifnot(length(remote_path) == length(path))
+  equal_lengths(remote_path, path)
   s3fs::s3_file_download(remote_path, path, ...)
 }
 
@@ -147,4 +156,29 @@ aws_file_attr <- function(remote_path) {
 #' }
 aws_file_exists <- function(remote_path) {
   s3fs::s3_file_exists(remote_path)
+}
+
+#' Rename a remote file
+#'
+#' @export
+#' @inheritParams aws_file_attr
+#' @param new_remote_path (character) one or more remote S3 paths. required.
+#' length must match `remote_path`
+#' @return vector of paths, length matches `length(remote_path)`
+#' @examples \dontrun{
+#' aws_file_rename(s3_path("s64-test-2", "DESCRIPTION"),
+#'   s3_path("s64-test-2", "DESC"))
+#'
+#' # aws_file_delete(s3_path("s64-test-2", c("aaa", "bbb", "ccc")))
+#' tfiles <- replicate(n = 3, tempfile())
+#' for (i in tfiles) cat("Hello\nWorld\n", file = i)
+#' paths <- s3_path("s64-test-2", c("aaa", "bbb", "ccc"), ext = "txt")
+#' aws_file_upload(tfiles, paths)
+#' new_paths <- s3_path("s64-test-2", c("new_aaa", "new_bbb", "new_ccc"),
+#'   ext = "txt")
+#' aws_file_rename(paths, new_paths)
+#' }
+aws_file_rename <- function(remote_path, new_remote_path, ...) {
+  equal_lengths(remote_path, new_remote_path)
+  s3fs::s3_file_move(remote_path, new_remote_path, ...)
 }
