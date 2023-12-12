@@ -23,3 +23,4 @@ x <- path_s3_parse(paths)
 path_s3_build(x)
 \dontshow{\}) # examplesIf}
 }
+\keyword{internal}
