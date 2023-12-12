@@ -75,6 +75,7 @@ path_s3_parse <- function(paths) {
 
 #' Build s3 paths
 #'
+#' @keywords internal
 #' @param x unnamed list of parsed paths, from [path_s3_parse()]
 #' @examplesIf interactive()
 #' paths <- c(
@@ -94,6 +95,7 @@ path_s3_build <- function(x) {
 
 #' Convert a s3 like path to a single format
 #'
+#' @keywords internal
 #' @inheritParams path_s3_parse
 #' @return vector of s3 paths (character), Of the form:
 #' `s3://<bucket>/<path>/<file>`

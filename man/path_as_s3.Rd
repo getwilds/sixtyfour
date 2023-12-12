@@ -25,3 +25,4 @@ path_as_s3(c("https://s64-test-3.s3.amazonaws.com/",
 path_as_s3(c("apple", "banana", "pear", "pineapple"))
 \dontshow{\}) # examplesIf}
 }
+\keyword{internal}
