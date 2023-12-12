@@ -11,6 +11,8 @@ aws_file_rename(remote_path, new_remote_path, ...)
 
 \item{new_remote_path}{(character) one or more remote S3 paths. required.
 length must match \code{remote_path}}
+
+\item{...}{named parameters passed on to \code{\link[s3fs:s3_file_move]{s3fs::s3_file_move()}}}
 }
 \value{
 vector of paths, length matches \code{length(remote_path)}
@@ -23,7 +25,6 @@ Rename a remote file
 aws_file_rename(s3_path("s64-test-2", "DESCRIPTION"),
   s3_path("s64-test-2", "DESC"))
 
-# aws_file_delete(s3_path("s64-test-2", c("aaa", "bbb", "ccc")))
 tfiles <- replicate(n = 3, tempfile())
 for (i in tfiles) cat("Hello\nWorld\n", file = i)
 paths <- s3_path("s64-test-2", c("aaa", "bbb", "ccc"), ext = "txt")

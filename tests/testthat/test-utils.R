@@ -1,5 +1,5 @@
-test_that("path_s3_parser works", {
-  a <- path_s3_parser("s3://s64-test-2/DESCRIPTION")
+test_that("path_s3_parse works", {
+  a <- path_s3_parse("s3://s64-test-2/DESCRIPTION")
   expect_type(a, "list")
   expect_named(a, NULL)
   expect_named(a[[1]], c("bucket", "path", "file"))
@@ -12,7 +12,7 @@ test_that("path_s3_parser works", {
     "s3://s64-test-2/stuff.txt",
     "s3://s64-test-2/some/other/path/things.csv"
   )
-  b <- path_s3_parser(paths)
+  b <- path_s3_parse(paths)
   expect_type(b, "list")
   expect_named(b, NULL)
   for (i in b) expect_named(i, c("bucket", "path", "file"))
