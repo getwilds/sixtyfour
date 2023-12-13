@@ -233,6 +233,6 @@ aws_bucket_acl_get <- function(bucket) {
 #' aws_bucket_acl_get("s3://s64-test-2")
 #' }
 aws_bucket_acl_modify <- function(bucket, acl, ...) {
-  bucket <- path_s3_parser(bucket)[[1]]$bucket
+  bucket <- path_s3_parse(bucket)[[1]]$bucket
   env64$s3$put_bucket_acl(ACL = acl, Bucket = bucket, ...)
 }
