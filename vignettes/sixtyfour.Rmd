@@ -1,0 +1,169 @@
+---
+title: "Getting Started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+A science-focused, more humane R interface to AWS.
+
+
+```r
+library(sixtyfour)
+```
+
+## Authentication
+
+To be able to use this package you'll need two AWS secrets and an AWS region in the following three environment variables:
+
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_REGION`
+
+You can set these within R for the current R session like:
+
+```
+Sys.setenv(
+  AWS_ACCESS_KEY_ID = "",
+  AWS_SECRET_ACCESS_KEY = "",
+  AWS_REGION = "us-west-2"
+)
+```
+
+Or set them in a variety of ways to be available across R sessions. See the [R Startup chapter][book] of _What They Forgot to Teach You About R_ book for more details.
+
+
+## Package API Overview
+
+- `aws_billing`: manage AWS billing details
+- `aws_bucket*`: manage S3 buckets
+- `aws_file_*`: manage files in S3 buckets
+- `aws_user*`: manage AWS users
+- `aws_group*`: manage AWS groups
+- `aws_role*`: manage AWS roles
+- `aws_policies*`: manage AWS policies
+- `aws_db*`: interact with AWS database services Redshift and RDS
+
+## Working with S3
+
+This vignette won't touch on all of the above parts of the package API - but instead will cover working with files as that's likely the most common use case for `sixtyfour` users.
+
+### Buckets
+
+Make a random bucket name
+
+
+```r
+bucket_name <- function() {
+  paste0(sample(letters, size = 12), collapse = "")
+}
+bucket <- bucket_name()
+```
+
+Create a bucket - check if it exists first
+
+
+```r
+exists <- aws_bucket_exists(bucket)
+
+if (!exists) {
+  aws_bucket_create(bucket)
+}
+#> $Location
+#> [1] "http://hxecforjnszm.s3.amazonaws.com/"
+```
+
+Create files in a few different directories
+
+
+```r
+library(fs)
+tdir <- fs::path(tempdir(), "apples")
+fs::dir_create(tdir)
+tfiles <- replicate(n = 10, fs::file_temp(tmp_dir = tdir, ext = ".txt"))
+invisible(lapply(tfiles, function(x) write.csv(mtcars, x)))
+```
+
+Upload them to the newly created bucket
+
+
+```r
+aws_bucket_upload(path = tdir, bucket = bucket)
+#> [1] "s3://private/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T/RtmpdSaNE9/apples"
+```
+
+List objects in the bucket
+
+
+```r
+objects <- aws_bucket_list_objects(bucket)
+objects
+#> # A tibble: 10 × 8
+#>    bucket_name  key            uri    size type  owner etag  last_modified      
+#>    <chr>        <chr>          <chr> <fs:> <chr> <chr> <chr> <dttm>             
+#>  1 hxecforjnszm file47fa197c8… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:49
+#>  2 hxecforjnszm file47fa1a4e8… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:50
+#>  3 hxecforjnszm file47fa240da… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:50
+#>  4 hxecforjnszm file47fa39ac1… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:50
+#>  5 hxecforjnszm file47fa436d4… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:50
+#>  6 hxecforjnszm file47fa4b644… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:50
+#>  7 hxecforjnszm file47fa4f543… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:50
+#>  8 hxecforjnszm file47fa5340f… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:50
+#>  9 hxecforjnszm file47fa5a2c6… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:51
+#> 10 hxecforjnszm file47fa7bdd6… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:51
+```
+
+Cleanup - delete the bucket.
+
+
+```r
+aws_bucket_delete(bucket)
+```
+
+
+```
+#> Error: BucketNotEmpty (HTTP 409). The bucket you tried to delete is not empty
+```
+
+If there's files in your bucket you can not delete it. Delete files, then delete bucket again
+
+
+```r
+invisible(purrr::map(objects$uri, \(x) aws_file_delete(s3_path(bucket, x))))
+aws_bucket_delete(bucket)
+```
+
+
+```
+#> list()
+```
+
+### Files
+
+
+```r
+5
+#> [1] 5
+```
+
+xxxx
+
+
+```r
+5
+#> [1] 5
+```
+
+xxxx
+
+
+```r
+5
+#> [1] 5
+```
+
+[book]: https://rstats.wtf/r-startup.html
