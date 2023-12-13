@@ -85,6 +85,9 @@
     <loc>/reference/aws_group_delete.html</loc>
   </url>
   <url>
+    <loc>/reference/aws_group_exists.html</loc>
+  </url>
+  <url>
     <loc>/reference/aws_groups.html</loc>
   </url>
   <url>
@@ -124,6 +127,9 @@
     <loc>/reference/aws_user_access_key.html</loc>
   </url>
   <url>
+    <loc>/reference/aws_user_add_to_group.html</loc>
+  </url>
+  <url>
     <loc>/reference/aws_user_create.html</loc>
   </url>
   <url>
@@ -131,6 +137,9 @@
   </url>
   <url>
     <loc>/reference/aws_user_delete.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_user_exists.html</loc>
   </url>
   <url>
     <loc>/reference/aws_users.html</loc>
