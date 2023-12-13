@@ -58,6 +58,9 @@
     <loc>/reference/aws_file_attr.html</loc>
   </url>
   <url>
+    <loc>/reference/aws_file_copy.html</loc>
+  </url>
+  <url>
     <loc>/reference/aws_file_delete.html</loc>
   </url>
   <url>
@@ -65,6 +68,9 @@
   </url>
   <url>
     <loc>/reference/aws_file_exists.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_file_rename.html</loc>
   </url>
   <url>
     <loc>/reference/aws_file_upload.html</loc>
@@ -142,7 +148,13 @@
     <loc>/reference/paginate_aws.html</loc>
   </url>
   <url>
-    <loc>/reference/path_s3_parser.html</loc>
+    <loc>/reference/path_as_s3.html</loc>
+  </url>
+  <url>
+    <loc>/reference/path_s3_build.html</loc>
+  </url>
+  <url>
+    <loc>/reference/path_s3_parse.html</loc>
   </url>
   <url>
     <loc>/reference/reexports.html</loc>
