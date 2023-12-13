@@ -19,6 +19,11 @@ check: build
 	@rm -f `ls -1tr ${PACKAGE}*gz | tail -n1`
 	@rm -rf ${PACKAGE}.Rcheck
 
+vign_getting_started:
+	cd vignettes;\
+	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('sixtyfour.Rmd.og', output = 'sixtyfour.Rmd')";\
+	cd ..
+
 test:
 	${RSCRIPT} -e "devtools::test()"
 

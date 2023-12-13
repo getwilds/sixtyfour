@@ -1,0 +1,143 @@
+---
+title: "Getting Started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+A science-focused, more humane R interface to AWS.
+
+```{r setup}
+library(sixtyfour)
+```
+
+## Authentication
+
+To be able to use this package you'll need two AWS secrets and an AWS region in the following three environment variables:
+
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_REGION`
+
+You can set these within R for the current R session like:
+
+```
+Sys.setenv(
+  AWS_ACCESS_KEY_ID = "",
+  AWS_SECRET_ACCESS_KEY = "",
+  AWS_REGION = "us-west-2"
+)
+```
+
+Or set them in a variety of ways to be available across R sessions. See the [R Startup chapter][book] of _What They Forgot to Teach You About R_ book for more details.
+
+
+## Package API Overview
+
+- `aws_billing`: manage AWS billing details
+- `aws_bucket*`: manage S3 buckets
+- `aws_file_*`: manage files in S3 buckets
+- `aws_user*`: manage AWS users
+- `aws_group*`: manage AWS groups
+- `aws_role*`: manage AWS roles
+- `aws_policies*`: manage AWS policies
+- `aws_db*`: interact with AWS database services Redshift and RDS
+
+## Working with S3
+
+This vignette won't touch on all of the above parts of the package API - but instead will cover working with files as that's likely the most common use case for `sixtyfour` users.
+
+### Buckets
+
+Make a random bucket name
+
+```{r}
+bucket_name <- function() {
+  paste0(sample(letters, size = 12), collapse = "")
+}
+bucket <- bucket_name()
+```
+
+Create a bucket - check if it exists first
+
+```{r}
+exists <- aws_bucket_exists(bucket)
+
+if (!exists) {
+  aws_bucket_create(bucket)
+}
+```
+
+Create files in a few different directories
+
+```{r}
+library(fs)
+tdir <- fs::path(tempdir(), "apples")
+fs::dir_create(tdir)
+tfiles <- replicate(n = 10, fs::file_temp(tmp_dir = tdir, ext = ".txt"))
+invisible(lapply(tfiles, function(x) write.csv(mtcars, x)))
+```
+
+Upload them to the newly created bucket
+
+```{r}
+aws_bucket_upload(path = tdir, bucket = bucket)
+```
+
+List objects in the bucket
+
+```{r}
+objects <- aws_bucket_list_objects(bucket)
+objects
+```
+
+Cleanup - delete the bucket.
+
+```{r eval=FALSE}
+aws_bucket_delete(bucket)
+```
+
+```{r echo=FALSE, error=TRUE}
+aws_bucket_delete(bucket, force = TRUE)
+```
+
+If there's files in your bucket you can not delete it. Delete files, then delete bucket again
+
+```{r eval=FALSE}
+invisible(purrr::map(objects$uri, \(x) aws_file_delete(s3_path(bucket, x))))
+aws_bucket_delete(bucket)
+```
+
+```{r echo=FALSE}
+invisible(purrr::map(objects$uri, \(x) aws_file_delete(x)))
+aws_bucket_delete(bucket, force = TRUE)
+```
+
+### Files
+
+```{r}
+5
+```
+
+xxxx
+
+```{r}
+5
+```
+
+xxxx
+
+```{r}
+5
+```
+
+[book]: https://rstats.wtf/r-startup.html
