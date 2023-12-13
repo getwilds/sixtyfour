@@ -10,7 +10,7 @@ aws_bucket_acl_get(bucket)
 \item{bucket}{(character) bucket name. required}
 }
 \value{
-xxx
+named list, with slots: \code{Owner}, \code{Grants}
 }
 \description{
 Get a bucket ACL

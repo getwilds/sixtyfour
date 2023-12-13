@@ -4,19 +4,22 @@
 \alias{aws_bucket_acl_modify}
 \title{Modify a bucket ACL}
 \usage{
-aws_bucket_acl_modify(bucket, ...)
+aws_bucket_acl_modify(bucket, acl, ...)
 }
 \arguments{
 \item{bucket}{(character) bucket name. required}
+
+\item{acl}{(character) The canned ACL to apply to the bucket. required}
 
 \item{...}{named params passed on to
 \url{https://www.paws-r-sdk.com/docs/s3_put_bucket_acl/}}
 }
 \description{
-Modify a bucket ACL
+NOTE: Not tested as don't have access to edit ACLs
 }
 \examples{
 \dontrun{
-aws_bucket_acl_modify("s3://s64-test-2")
+aws_bucket_acl_modify("s3://s64-test-2", acl = "authenticated-read")
+aws_bucket_acl_get("s3://s64-test-2")
 }
 }
