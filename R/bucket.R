@@ -27,6 +27,7 @@ aws_bucket_exists <- function(bucket) {
 #' @param ... named parameters passed on to
 #' [list_objects](https://www.paws-r-sdk.com/docs/s3_create_bucket/)
 #' @note Requires the env var `AWS_REGION`
+#' @return the bucket path (character)
 #' @examples \dontrun{
 #' aws_bucket_create(bucket = "s64-test-2")
 #' }
@@ -35,13 +36,26 @@ aws_bucket_create <- function(bucket, ...) {
     Bucket = bucket,
     CreateBucketConfiguration =
       list(LocationConstraint = env_var("AWS_REGION")), ...
-  )
+  )$Location
+}
+
+bucket_create_if_not <- function(bucket) {
+  if (!aws_bucket_exists(bucket)) {
+    if (yesno("{.strong {bucket}} does not exist. Create it?")) {
+      cli::cli_inform("Exiting without uploading {.strong {basename(path)}}")
+      return(invisible())
+    }
+    aws_bucket_create(bucket)
+  }
 }
 
 #' Delete an S3 bucket
 #'
 #' @export
 #' @param bucket (character) bucket name. required
+#' @param force (logical) force deletion without going through the prompt.
+#' default: `FALSE`. Should only be set to `TRUE` when required for
+#' non-interactive use.
 #' @param ... named parameters passed on to
 #' [delete_bucket](https://www.paws-r-sdk.com/docs/s3_delete_bucket/)
 #' @note Requires the env var `AWS_REGION`. This function prompts you to make
@@ -53,10 +67,12 @@ aws_bucket_create <- function(bucket, ...) {
 #' aws_bucket_delete(bucket = "bucket-to-delete-111")
 #' aws_buckets()
 #' }
-aws_bucket_delete <- function(bucket, ...) {
+aws_bucket_delete <- function(bucket, force = FALSE, ...) {
   # TODO: add a package level option to override the prompt for adv. users
-  if (yesno("Are you sure you want to delete {.strong {bucket}}?")) {
-    return(invisible())
+  if (!force) {
+    if (yesno("Are you sure you want to delete {.strong {bucket}}?")) {
+      return(invisible())
+    }
   }
   env64$s3$delete_bucket(Bucket = bucket, ...)
 }
@@ -178,8 +194,9 @@ aws_buckets <- function(...) {
 #' @export
 #' @importFrom s3fs s3_dir_tree
 #' @inheritParams aws_bucket_exists
-#' @param recurse (logical): Returns all AWS S3 objects in lower sub directories
-#' @param ... Additional arguments passed to [s3fs::s3_dir_ls()]
+#' @param recurse (logical) returns all AWS S3 objects in lower sub
+#' directories, default: `TRUE`
+#' @param ... Additional arguments passed to [s3fs::s3_dir_tree()]
 #' @return character vector of objects/files within the bucket,
 #' printed as a tree
 #' @examples \dontrun{
@@ -194,24 +211,28 @@ aws_bucket_tree <- function(bucket, recurse = TRUE, ...) {
 #' @export
 #' @inheritParams aws_bucket_exists
 #' @details see docs at <https://www.paws-r-sdk.com/docs/s3_get_bucket_acl/>
-#' @return xxx
+#' @return named list, with slots: `Owner`, `Grants`
 #' @examples \dontrun{
 #' aws_bucket_acl_get("s3://s64-test-2")
 #' }
 aws_bucket_acl_get <- function(bucket) {
-  bucket <- path_s3_parser(bucket)[[1]]$bucket
+  bucket <- path_s3_parse(bucket)[[1]]$bucket
   env64$s3$get_bucket_acl(bucket)
 }
 #' Modify a bucket ACL
 #'
+#' NOTE: Not tested as don't have access to edit ACLs
+#'
 #' @export
 #' @inheritParams aws_bucket_exists
+#' @param acl (character) The canned ACL to apply to the bucket. required
 #' @param ... named params passed on to
 #' <https://www.paws-r-sdk.com/docs/s3_put_bucket_acl/>
 #' @examples \dontrun{
-#' aws_bucket_acl_modify("s3://s64-test-2")
+#' aws_bucket_acl_modify("s3://s64-test-2", acl = "authenticated-read")
+#' aws_bucket_acl_get("s3://s64-test-2")
 #' }
-aws_bucket_acl_modify <- function(bucket, ...) {
+aws_bucket_acl_modify <- function(bucket, acl, ...) {
   bucket <- path_s3_parser(bucket)[[1]]$bucket
-  env64$s3$put_bucket_acl(bucket, ...)
+  env64$s3$put_bucket_acl(ACL = acl, Bucket = bucket, ...)
 }

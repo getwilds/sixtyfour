@@ -4,10 +4,14 @@
 \alias{aws_bucket_delete}
 \title{Delete an S3 bucket}
 \usage{
-aws_bucket_delete(bucket, ...)
+aws_bucket_delete(bucket, force = FALSE, ...)
 }
 \arguments{
 \item{bucket}{(character) bucket name. required}
+
+\item{force}{(logical) force deletion without going through the prompt.
+default: \code{FALSE}. Should only be set to \code{TRUE} when required for
+non-interactive use.}
 
 \item{...}{named parameters passed on to
 \href{https://www.paws-r-sdk.com/docs/s3_delete_bucket/}{delete_bucket}}
