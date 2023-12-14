@@ -34,7 +34,7 @@ Sys.setenv(
 )
 ```
 
-Or set them in a variety of ways to be available across R sessions. See the [R Startup chapter][book] of _What They Forgot to Teach You About R_ book for more details.
+Or set them in a variety of ways to be available across R sessions. See the [R Startup chapter][r-startup] of _What They Forgot to Teach You About R_ book for more details.
 
 
 ## Package API Overview
@@ -73,8 +73,7 @@ exists <- aws_bucket_exists(bucket)
 if (!exists) {
   aws_bucket_create(bucket)
 }
-#> $Location
-#> [1] "http://hxecforjnszm.s3.amazonaws.com/"
+#> [1] "http://jbifqnmxvhoy.s3.amazonaws.com/"
 ```
 
 Create files in a few different directories
@@ -93,7 +92,7 @@ Upload them to the newly created bucket
 
 ```r
 aws_bucket_upload(path = tdir, bucket = bucket)
-#> [1] "s3://private/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T/RtmpdSaNE9/apples"
+#> [1] "s3://private/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T/RtmpfgFSLV/apples"
 ```
 
 List objects in the bucket
@@ -105,16 +104,16 @@ objects
 #> # A tibble: 10 × 8
 #>    bucket_name  key            uri    size type  owner etag  last_modified      
 #>    <chr>        <chr>          <chr> <fs:> <chr> <chr> <chr> <dttm>             
-#>  1 hxecforjnszm file47fa197c8… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:49
-#>  2 hxecforjnszm file47fa1a4e8… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:50
-#>  3 hxecforjnszm file47fa240da… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:50
-#>  4 hxecforjnszm file47fa39ac1… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:50
-#>  5 hxecforjnszm file47fa436d4… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:50
-#>  6 hxecforjnszm file47fa4b644… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:50
-#>  7 hxecforjnszm file47fa4f543… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:50
-#>  8 hxecforjnszm file47fa5340f… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:50
-#>  9 hxecforjnszm file47fa5a2c6… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:51
-#> 10 hxecforjnszm file47fa7bdd6… s3:/… 1.74K file  ""    "\"6… 2023-12-13 19:39:51
+#>  1 jbifqnmxvhoy filee9b4354bb… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42
+#>  2 jbifqnmxvhoy filee9b4377a4… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42
+#>  3 jbifqnmxvhoy filee9b43edbb… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42
+#>  4 jbifqnmxvhoy filee9b44b614… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42
+#>  5 jbifqnmxvhoy filee9b45f486… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42
+#>  6 jbifqnmxvhoy filee9b46dcb3… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42
+#>  7 jbifqnmxvhoy filee9b47ce37… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:43
+#>  8 jbifqnmxvhoy filee9b47d842… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:43
+#>  9 jbifqnmxvhoy filee9b49783e… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:43
+#> 10 jbifqnmxvhoy filee9b4ab36c… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:43
 ```
 
 Cleanup - delete the bucket.
@@ -144,26 +143,120 @@ aws_bucket_delete(bucket)
 
 ### Files
 
+All or most of the file functions are built around accepting and returning character vectors of length one or greater. This includes the functions that take two inputs, such as a source and destination file. Rather than using the `paws` package under the hood as most functions in this package use, the file functions use `s3fs` under the hood (which is itself built on `paws`) as it's a cleaner interface to S3.
 
-```r
-5
-#> [1] 5
-```
-
-xxxx
+First, create a bucket:
 
 
 ```r
-5
-#> [1] 5
+my_bucket <- "s64-test-files-3"
+aws_bucket_create(my_bucket)
+#> [1] "http://s64-test-files-3.s3.amazonaws.com/"
 ```
 
-xxxx
+Then, upload some files
 
 
 ```r
-5
-#> [1] 5
+temp_files <- replicate(n = 3, tempfile(fileext = ".txt"))
+for (i in temp_files) cat(letters, "\n", file = i)
+remote_files <- s3_path(my_bucket, basename(temp_files))
+aws_file_upload(path = temp_files, remote_path = remote_files)
+#> [1] "s3://s64-test-files-3/filee9b437e6778c.txt"
+#> [2] "s3://s64-test-files-3/filee9b47bb2a4ff.txt"
+#> [3] "s3://s64-test-files-3/filee9b4d6ea0cb.txt"
 ```
 
-[book]: https://rstats.wtf/r-startup.html
+List files in the bucket
+
+
+```r
+obs <- aws_bucket_list_objects(my_bucket)
+obs
+#> # A tibble: 3 × 8
+#>   bucket_name      key         uri    size type  owner etag  last_modified      
+#>   <chr>            <chr>       <chr> <fs:> <chr> <chr> <chr> <dttm>             
+#> 1 s64-test-files-3 filee9b437… s3:/…    53 file  ""    "\"a… 2023-12-14 19:11:47
+#> 2 s64-test-files-3 filee9b47b… s3:/…    53 file  ""    "\"a… 2023-12-14 19:11:47
+#> 3 s64-test-files-3 filee9b4d6… s3:/…    53 file  ""    "\"a… 2023-12-14 19:11:47
+```
+
+Fetch file attributes
+
+
+```r
+aws_file_attr(remote_files)
+#> # A tibble: 3 × 38
+#>   bucket_name    key   uri    size type  etag  last_modified       delete_marker
+#>   <chr>          <chr> <chr> <fs:> <chr> <chr> <dttm>              <lgl>        
+#> 1 s64-test-file… file… s3:/…    53 file  "\"a… 2023-12-14 19:11:47 NA           
+#> 2 s64-test-file… file… s3:/…    53 file  "\"a… 2023-12-14 19:11:47 NA           
+#> 3 s64-test-file… file… s3:/…    53 file  "\"a… 2023-12-14 19:11:47 NA           
+#> # ℹ 30 more variables: accept_ranges <chr>, expiration <chr>, restore <chr>,
+#> #   archive_status <chr>, checksum_crc32 <chr>, checksum_crc32_c <chr>,
+#> #   checksum_sha1 <chr>, checksum_sha256 <chr>, missing_meta <int>,
+#> #   version_id <chr>, cache_control <chr>, content_disposition <chr>,
+#> #   content_encoding <chr>, content_language <chr>, content_type <chr>,
+#> #   expires <dttm>, website_redirect_location <chr>,
+#> #   server_side_encryption <chr>, metadata <list>, …
+```
+
+Check if one or more files exist
+
+
+```r
+aws_file_exists(remote_files[1])
+#> [1] TRUE
+aws_file_exists(remote_files)
+#> [1] TRUE TRUE TRUE
+```
+
+Copy
+
+
+```r
+new_bucket <- "s64-test-files-4"
+aws_bucket_create(new_bucket)
+#> [1] "http://s64-test-files-4.s3.amazonaws.com/"
+
+# add existing files to the new bucket
+aws_file_copy(remote_files, new_bucket)
+#> [1] "s3://s64-test-files-4/filee9b437e6778c.txt"
+#> [2] "s3://s64-test-files-4/filee9b47bb2a4ff.txt"
+#> [3] "s3://s64-test-files-4/filee9b4d6ea0cb.txt"
+
+# create bucket that doesn't exist yet
+# the force=TRUE makes this work non-interactively
+aws_file_copy(remote_files, "s64-test-files-5", force = TRUE)
+#> [1] "s3://s64-test-files-5/filee9b437e6778c.txt"
+#> [2] "s3://s64-test-files-5/filee9b47bb2a4ff.txt"
+#> [3] "s3://s64-test-files-5/filee9b4d6ea0cb.txt"
+```
+
+Download
+
+
+```r
+tfile <- tempfile()
+aws_file_download(remote_files[1], tfile)
+#> [1] "/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T//RtmpfgFSLV/filee9b42f0d67e9"
+readLines(tfile)
+#> [1] "a b c d e f g h i j k l m n o p q r s t u v w x y z "
+```
+
+Rename
+
+
+```r
+aws_file_exists(remote_files[1])
+#> [1] TRUE
+aws_file_rename(remote_files[1], s3_path("s64-test-files-3", "myfile.txt"))
+#> [1] "s3://s64-test-files-3/myfile.txt"
+aws_file_exists(remote_files[1])
+#> [1] FALSE
+```
+
+
+
+[r-startup]: https://rstats.wtf/r-startup.html
+
