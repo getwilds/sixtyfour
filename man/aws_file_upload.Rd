@@ -4,13 +4,17 @@
 \alias{aws_file_upload}
 \title{Upload a file}
 \usage{
-aws_file_upload(path, remote_path, ...)
+aws_file_upload(path, remote_path, force = FALSE, ...)
 }
 \arguments{
 \item{path}{(character) a file path to read from. required}
 
 \item{remote_path}{(character) a remote path where the file
 should go. required}
+
+\item{force}{(logical) force bucket creation without going through
+the prompt. default: \code{FALSE}. Should only be set to \code{TRUE} when
+required for non-interactive use.}
 
 \item{...}{named parameters passed on to \code{\link[s3fs:copy]{s3fs::s3_file_copy()}}}
 }

@@ -13,7 +13,7 @@ equal_lengths <- function(x, y) {
 #' @export
 #' @importFrom fs file_exists
 #' @importFrom s3fs s3_file_copy
-#' @importFrom cli cli_inform
+#' @inheritParams aws_file_copy
 #' @param path (character) a file path to read from. required
 #' @param remote_path (character) a remote path where the file
 #' should go. required
@@ -51,10 +51,10 @@ equal_lengths <- function(x, y) {
 #'   "file_doesnt_exist.txt",
 #'   s3_path("s64-test-2", "file_doesnt_exist.txt")
 #' )
-aws_file_upload <- function(path, remote_path, ...) {
+aws_file_upload <- function(path, remote_path, force = FALSE, ...) {
   stopifnot(fs::file_exists(path))
   bucket <- path_s3_parse(remote_path)[[1]]$bucket
-  bucket_create_if_not(bucket)
+  bucket_create_if_not(bucket, force)
   purrr::map2_vec(path, remote_path, s3fs::s3_file_copy, ...)
 }
 
@@ -182,12 +182,15 @@ aws_file_rename <- function(remote_path, new_remote_path, ...) {
 #' @export
 #' @inheritParams aws_file_attr
 #' @param bucket (character) bucket to copy files to. required.
-#' if the bucket does not exist we prompt you asking if youl'd like
+#' if the bucket does not exist we prompt you asking if you'd like
 #' the bucket to be created
+#' @param force (logical) force bucket creation without going through
+#' the prompt. default: `FALSE`. Should only be set to `TRUE` when
+#' required for non-interactive use.
 #' @param ... named parameters passed on to [s3fs::s3_file_copy()]
 #' @return vector of paths, length matches `length(remote_path)`
 #' @examples \dontrun{
-#' # create files in an existinb bucket
+#' # create files in an existing bucket
 #' tfiles <- replicate(n = 3, tempfile())
 #' for (i in tfiles) cat("Hello\nWorld\n", file = i)
 #' paths <- s3_path("s64-test-2", c("aaa", "bbb", "ccc"), ext = "txt")
@@ -201,8 +204,8 @@ aws_file_rename <- function(remote_path, new_remote_path, ...) {
 #' # create bucket that doesn't exist yet
 #' aws_file_copy(paths, "s64-test-4")
 #' }
-aws_file_copy <- function(remote_path, bucket, ...) {
-  bucket_create_if_not(bucket)
+aws_file_copy <- function(remote_path, bucket, force = FALSE, ...) {
+  bucket_create_if_not(bucket, force)
   parsed <- path_s3_parse(remote_path)
   parsed <- purrr::map(parsed, function(x) {
     x$bucket <- bucket
