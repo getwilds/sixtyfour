@@ -66,6 +66,22 @@ aws_user <- function(username = NULL) {
   )
 }
 
+#' Check if a user exists
+#'
+#' @export
+#' @param username (character) the user name
+#' @return a single boolean
+#' @details uses `aws_group` internally. see docs
+#' <https://www.paws-r-sdk.com/docs/iam_get_group/>
+#' @examples \dontrun{
+#' aws_user_exists(aws_user_current())
+#' aws_user_exists("blueberry")
+#' }
+aws_user_exists <- function(username) {
+  check_aws_user <- purrr::safely(aws_user, otherwise = FALSE)
+  is.null(check_aws_user(username)$error)
+}
+
 #' Get the current logged-in username as a string
 #' @export
 #' @return username as character
@@ -130,4 +146,26 @@ aws_user_delete <- function(username) {
 #' }
 aws_user_access_key <- function() {
   env64$iam$list_access_keys()$AccessKeyMetadata[[1]] %>% as_tibble()
+}
+
+#' Add a user to a group
+#'
+#' @export
+#' @inheritParams aws_user_create
+#' @param groupname (character) a group name. required
+#' @inherit aws_user return
+#' @details See <https://www.paws-r-sdk.com/docs/iam_add_user_to_group/>
+#' docs for more details
+#' @examples \dontrun{
+#' if (!aws_group_exists("testgroup3")) {
+#'   aws_group_create("testgroup3")
+#' }
+#' if (!aws_user_exists("testBlueBird3")) {
+#'   aws_user_create("testBlueBird3")
+#' }
+#' aws_user_add_to_group(username = "testBlueBird3", groupname = "testgroup3")
+#' }
+aws_user_add_to_group <- function(username, groupname) {
+  env64$iam$add_user_to_group(groupname, username)
+  aws_user(username)
 }

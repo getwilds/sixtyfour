@@ -54,6 +54,22 @@ aws_group <- function(name) {
   )
 }
 
+#' Check if a group exists
+#'
+#' @export
+#' @param name (character) the group name
+#' @return a single boolean
+#' @details uses `aws_group` internally. see docs
+#' <https://www.paws-r-sdk.com/docs/iam_get_group/>
+#' @examples \dontrun{
+#' aws_group_exists(name="users")
+#' aws_group_exists(name="apples")
+#' }
+aws_group_exists <- function(name) {
+  check_aws_group <- purrr::safely(aws_group, otherwise = FALSE)
+  is.null(check_aws_group(name)$error)
+}
+
 #' Create a group
 #'
 #' @export
