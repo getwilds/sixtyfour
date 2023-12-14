@@ -47,7 +47,8 @@ bucket_create_if_not <- function(bucket, force = FALSE) {
     if (!force) {
       if (yesno("{.strong {bucket}} does not exist. Create it?")) {
         cli::cli_inform("Exiting without creating bucket {.strong {bucket}}")
-        cli::cli_inform("Run again & respond affirmatively or use `aws_bucket_create`")
+        cli::cli_inform("Run again & respond affirmatively
+          or use `aws_bucket_create`")
         return(invisible())
       }
     }
