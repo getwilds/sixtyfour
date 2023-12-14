@@ -12,6 +12,14 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+bucket_delete <- function(bucket, force = FALSE) {
+  list_obs <- purrr::safely(aws_bucket_list_objects)
+  objects <- list_obs(bucket)
+  if (NROW(objects$result) > 0) {
+    purrr::map(objects$result$uri, \(x) aws_file_delete(x))
+  }
+  aws_bucket_delete(bucket, force = force)
+}
 ```
 
 A science-focused, more humane R interface to AWS.
@@ -38,7 +46,7 @@ Sys.setenv(
 )
 ```
 
-Or set them in a variety of ways to be available across R sessions. See the [R Startup chapter][book] of _What They Forgot to Teach You About R_ book for more details.
+Or set them in a variety of ways to be available across R sessions. See the [R Startup chapter][r-startup] of _What They Forgot to Teach You About R_ book for more details.
 
 
 ## Package API Overview
@@ -117,27 +125,83 @@ invisible(purrr::map(objects$uri, \(x) aws_file_delete(s3_path(bucket, x))))
 aws_bucket_delete(bucket)
 ```
 
-```{r echo=FALSE}
-invisible(purrr::map(objects$uri, \(x) aws_file_delete(x)))
-aws_bucket_delete(bucket, force = TRUE)
+```{r cleanup-buckets, echo=FALSE}
+bucket_delete(bucket, force = TRUE)
 ```
 
 ### Files
 
-```{r}
-5
-```
+All or most of the file functions are built around accepting and returning character vectors of length one or greater. This includes the functions that take two inputs, such as a source and destination file. Rather than using the `paws` package under the hood as most functions in this package use, the file functions use `s3fs` under the hood (which is itself built on `paws`) as it's a cleaner interface to S3.
 
-xxxx
+First, create a bucket:
 
 ```{r}
-5
+my_bucket <- "s64-test-files-3"
+aws_bucket_create(my_bucket)
 ```
 
-xxxx
+Then, upload some files
 
 ```{r}
-5
+temp_files <- replicate(n = 3, tempfile(fileext = ".txt"))
+for (i in temp_files) cat(letters, "\n", file = i)
+remote_files <- s3_path(my_bucket, basename(temp_files))
+aws_file_upload(path = temp_files, remote_path = remote_files)
 ```
 
-[book]: https://rstats.wtf/r-startup.html
+List files in the bucket
+
+```{r}
+obs <- aws_bucket_list_objects(my_bucket)
+obs
+```
+
+Fetch file attributes
+
+```{r}
+aws_file_attr(remote_files)
+```
+
+Check if one or more files exist
+
+```{r}
+aws_file_exists(remote_files[1])
+aws_file_exists(remote_files)
+```
+
+Copy
+
+```{r}
+new_bucket <- "s64-test-files-4"
+aws_bucket_create(new_bucket)
+
+# add existing files to the new bucket
+aws_file_copy(remote_files, new_bucket)
+
+# create bucket that doesn't exist yet
+# the force=TRUE makes this work non-interactively
+aws_file_copy(remote_files, "s64-test-files-5", force = TRUE)
+```
+
+Download
+
+```{r}
+tfile <- tempfile()
+aws_file_download(remote_files[1], tfile)
+readLines(tfile)
+```
+
+Rename
+
+```{r}
+aws_file_exists(remote_files[1])
+aws_file_rename(remote_files[1], s3_path("s64-test-files-3", "myfile.txt"))
+aws_file_exists(remote_files[1])
+```
+
+```{r cleanup-files, echo=FALSE, results='hide'}
+purrr::map(paste0("s64-test-files-", 3:5), bucket_delete, force = TRUE)
+```
+
+[r-startup]: https://rstats.wtf/r-startup.html
+
