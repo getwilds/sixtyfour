@@ -10,7 +10,7 @@ aws_file_copy(remote_path, bucket, force = FALSE, ...)
 \item{remote_path}{(character) one or more remote S3 paths. required}
 
 \item{bucket}{(character) bucket to copy files to. required.
-if the bucket does not exist we prompt you asking if youl'd like
+if the bucket does not exist we prompt you asking if you'd like
 the bucket to be created}
 
 \item{force}{(logical) force bucket creation without going through
