@@ -39,11 +39,17 @@ aws_bucket_create <- function(bucket, ...) {
   )$Location
 }
 
-bucket_create_if_not <- function(bucket) {
+#' Create a bucket if it does not exist
+#' @inheritParams aws_bucket_delete
+#' @keywords internal
+bucket_create_if_not <- function(bucket, force = FALSE) {
   if (!aws_bucket_exists(bucket)) {
-    if (yesno("{.strong {bucket}} does not exist. Create it?")) {
-      cli::cli_inform("Exiting without uploading {.strong {basename(path)}}")
-      return(invisible())
+    if (!force) {
+      if (yesno("{.strong {bucket}} does not exist. Create it?")) {
+        cli::cli_inform("Exiting without creating bucket {.strong {bucket}}")
+        cli::cli_inform("Run again & respond affirmatively or use `aws_bucket_create`")
+        return(invisible())
+      }
     }
     aws_bucket_create(bucket)
   }

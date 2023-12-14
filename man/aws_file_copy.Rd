@@ -4,7 +4,7 @@
 \alias{aws_file_copy}
 \title{Copy files between buckets}
 \usage{
-aws_file_copy(remote_path, bucket, ...)
+aws_file_copy(remote_path, bucket, force = FALSE, ...)
 }
 \arguments{
 \item{remote_path}{(character) one or more remote S3 paths. required}
@@ -12,6 +12,10 @@ aws_file_copy(remote_path, bucket, ...)
 \item{bucket}{(character) bucket to copy files to. required.
 if the bucket does not exist we prompt you asking if youl'd like
 the bucket to be created}
+
+\item{force}{(logical) force bucket creation without going through
+the prompt. default: \code{FALSE}. Should only be set to \code{TRUE} when
+required for non-interactive use.}
 
 \item{...}{named parameters passed on to \code{\link[s3fs:copy]{s3fs::s3_file_copy()}}}
 }
@@ -23,7 +27,7 @@ Copy files between buckets
 }
 \examples{
 \dontrun{
-# create files in an existinb bucket
+# create files in an existing bucket
 tfiles <- replicate(n = 3, tempfile())
 for (i in tfiles) cat("Hello\nWorld\n", file = i)
 paths <- s3_path("s64-test-2", c("aaa", "bbb", "ccc"), ext = "txt")

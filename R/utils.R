@@ -10,8 +10,11 @@ env_var <- function(env_name) {
   return(x)
 }
 
-# lifted directly from the devtools package within the file (MIT licensed):
-# https://github.com/r-lib/devtools/blob/main/R/release.R
+#' lifted directly from the devtools package within the file (MIT licensed):
+#' https://github.com/r-lib/devtools/blob/main/R/release.R
+#' @importFrom cli cli_inform
+#' @noRd
+#' @keywords internal
 yesno <- function(msg, .envir = parent.frame()) {
   yeses <- c(
     "Yes", "Definitely", "For sure", "Yup",
