@@ -1,6 +1,7 @@
 pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
-articles: {}
-last_built: 2023-12-13T23:07Z
+articles:
+  sixtyfour: sixtyfour.html
+last_built: 2023-12-27T23:38Z
 
