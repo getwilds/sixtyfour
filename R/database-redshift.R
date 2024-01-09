@@ -68,9 +68,9 @@ aws_db_redshift_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
 #' modifying. The identifier also appears in the Amazon Redshift console.
 #' Must be unique for all clusters within a Amazon Web Services account.
 #' @param user (character) User name associated with the admin user account for
-#' the cluster that is being created.
+#' the cluster that is being created. This is the username for your IAM account
 #' @param pwd (character) Password associated with the admin user account for
-#' the cluster that is being created.
+#' the cluster that is being created. This is the password for your IAM account
 #' @param dbname (character) The name of the first database to be created when
 #' the cluster is created. default: "dev". additional databases can be created
 #' within the cluster

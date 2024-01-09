@@ -25,10 +25,10 @@ modifying. The identifier also appears in the Amazon Redshift console.
 Must be unique for all clusters within a Amazon Web Services account.}
 
 \item{user}{(character) User name associated with the admin user account for
-the cluster that is being created.}
+the cluster that is being created. This is the username for your IAM account}
 
 \item{pwd}{(character) Password associated with the admin user account for
-the cluster that is being created.}
+the cluster that is being created. This is the password for your IAM account}
 
 \item{dbname}{(character) The name of the first database to be created when
 the cluster is created. default: "dev". additional databases can be created
