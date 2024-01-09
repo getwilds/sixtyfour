@@ -1,13 +1,13 @@
 #' Get a database connection to Amazon RDS
 #'
-#' JUST MariaDB, MySQL, PostgreSQL FOR NOW!!!!
+#' Supports: MariaDB, MySQL, and PostgreSQL
 #'
 #' @export
 #' @inheritParams aws_db_redshift_con
 #' @param engine (character) The engine to use. optional if `user`, `pwd`, and
 #' `id` are supplied - otherwise required
-#' @details RDS supports: Aurora (both PostgreSQL and MySQL compatible),
-#' PostgreSQL, MariaDB, MySQL, Oracle, MS SQL Server
+#' @details RDS supports many databases, but we only provide support for
+#' MariaDB, MySQL, and PostgreSQL
 #'
 #' If the `engine` you've chosen for your RDS instance is not supported
 #' with this function, you can likely connect to it on your own
