@@ -55,6 +55,30 @@
     <loc>/reference/aws_buckets.html</loc>
   </url>
   <url>
+    <loc>/reference/aws_db_cluster_status.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_db_instance_status.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_db_rds_client.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_db_rds_con.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_db_rds_create.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_db_redshift_client.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_db_redshift_con.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_db_redshift_create.html</loc>
+  </url>
+  <url>
     <loc>/reference/aws_file_attr.html</loc>
   </url>
   <url>
@@ -151,7 +175,19 @@
     <loc>/reference/bucket_create_if_not.html</loc>
   </url>
   <url>
+    <loc>/reference/cluster_con_info.html</loc>
+  </url>
+  <url>
+    <loc>/reference/cluster_details.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>/reference/instance_con_info.html</loc>
+  </url>
+  <url>
+    <loc>/reference/instance_details.html</loc>
   </url>
   <url>
     <loc>/reference/last.html</loc>
@@ -176,5 +212,11 @@
   </url>
   <url>
     <loc>/reference/sixtyfour-package.html</loc>
+  </url>
+  <url>
+    <loc>/reference/wait_for_cluster.html</loc>
+  </url>
+  <url>
+    <loc>/reference/wait_for_instance.html</loc>
   </url>
 </urlset>
