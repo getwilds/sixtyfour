@@ -1,0 +1,32 @@
+http_interactions:
+- request:
+    method: post
+    uri: https://rds.<<aws_region>>.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=CreateDBInstance&AllocatedStorage=20&DBInstanceClass=db.t3.micro&DBInstanceIdentifier=aninstance&DBName=dev&Engine=mariadb&MasterUserPassword=zzzzzz&MasterUsername=xxxx&StorageEncrypted=true&Version=2014-10-31&VpcSecurityGroupIds.VpcSecurityGroupId.1=sg-xxxxxxxxx
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '289'
+      X-Amz-Date: 20231211T164845Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: 5b60abc6-a56d-4360-910d-977576fc5397
+      strict-transport-security: max-age=31536000
+      content-type: text/xml
+      content-length: '3725'
+      date: Mon, 11 Dec 2023 16:48:46 GMT
+    body:
+      encoding: ''
+      file: no
+      string: <CreateDBInstanceResponse xmlns="http://rds.amazonaws.com/doc/2014-10-31/"><CreateDBInstanceResult><DBInstance><AllocatedStorage>20</AllocatedStorage><AssociatedRoles/><DBParameterGroups><DBParameterGroup><DBParameterGroupName>default.mariadb10.6</DBParameterGroupName><ParameterApplyStatus>in-sync</ParameterApplyStatus></DBParameterGroup></DBParameterGroups><DBSecurityGroups/><EngineVersion>10.6.14</EngineVersion><MasterUsername>xxxx</MasterUsername><CertificateDetails><CAIdentifier>rds-ca-2019</CAIdentifier></CertificateDetails><DBInstanceClass>db.t3.micro</DBInstanceClass><StorageThroughput>0</StorageThroughput><HttpEndpointEnabled>false</HttpEndpointEnabled><ReadReplicaDBInstanceIdentifiers/><CustomerOwnedIpEnabled>false</CustomerOwnedIpEnabled><MonitoringInterval>0</MonitoringInterval><DBInstanceStatus>creating</DBInstanceStatus><BackupRetentionPeriod>1</BackupRetentionPeriod><KmsKeyId>arn:aws:kms:<<aws_region>>:510628056329:key/84537062-3947-4e47-b1d5-f67516deda17</KmsKeyId><OptionGroupMemberships><OptionGroupMembership><OptionGroupName>default:mariadb-10-6</OptionGroupName><Status>in-sync</Status></OptionGroupMembership></OptionGroupMemberships><DedicatedLogVolume>false</DedicatedLogVolume><BackupTarget>region</BackupTarget><CACertificateIdentifier>rds-ca-2019</CACertificateIdentifier><DbInstancePort>0</DbInstancePort><DbiResourceId>db-OXSB5TXJ6DCCZXYXRTKLGZIDAM</DbiResourceId><PreferredBackupWindow>07:12-07:42</PreferredBackupWindow><DeletionProtection>false</DeletionProtection><DBInstanceArn>arn:aws:rds:<<aws_region>>:510628056329:db:aninstance</DBInstanceArn><DBInstanceIdentifier>aninstance</DBInstanceIdentifier><Engine>mariadb</Engine><PubliclyAccessible>true</PubliclyAccessible><IAMDatabaseAuthenticationEnabled>false</IAMDatabaseAuthenticationEnabled><NetworkType>IPV4</NetworkType><PerformanceInsightsEnabled>false</PerformanceInsightsEnabled><DBName>dev</DBName><MultiAZ>false</MultiAZ><DomainMemberships/><StorageEncrypted>true</StorageEncrypted><DBSubnetGroup><VpcId>vpc-0f0202006f3a3a7ce</VpcId><Subnets><Subnet><SubnetIdentifier>subnet-0e982356909366ab8</SubnetIdentifier><SubnetStatus>Active</SubnetStatus><SubnetOutpost/><SubnetAvailabilityZone><Name><<aws_region>>b</Name></SubnetAvailabilityZone></Subnet><Subnet><SubnetIdentifier>subnet-0e930392c710ce58d</SubnetIdentifier><SubnetStatus>Active</SubnetStatus><SubnetOutpost/><SubnetAvailabilityZone><Name><<aws_region>>a</Name></SubnetAvailabilityZone></Subnet><Subnet><SubnetIdentifier>subnet-09d489f5ea970be38</SubnetIdentifier><SubnetStatus>Active</SubnetStatus><SubnetOutpost/><SubnetAvailabilityZone><Name><<aws_region>>c</Name></SubnetAvailabilityZone></Subnet><Subnet><SubnetIdentifier>subnet-0826d6353dff96cfe</SubnetIdentifier><SubnetStatus>Active</SubnetStatus><SubnetOutpost/><SubnetAvailabilityZone><Name><<aws_region>>d</Name></SubnetAvailabilityZone></Subnet></Subnets><SubnetGroupStatus>Complete</SubnetGroupStatus><DBSubnetGroupDescription>default</DBSubnetGroupDescription><DBSubnetGroupName>default</DBSubnetGroupName></DBSubnetGroup><VpcSecurityGroups><VpcSecurityGroupMembership><VpcSecurityGroupId>sg-xxxxxxxxx</VpcSecurityGroupId><Status>active</Status></VpcSecurityGroupMembership></VpcSecurityGroups><TagList/><LicenseModel>general-public-license</LicenseModel><PendingModifiedValues><MasterUserPassword>****</MasterUserPassword></PendingModifiedValues><PreferredMaintenanceWindow>tue:12:45-tue:13:15</PreferredMaintenanceWindow><StorageType>gp2</StorageType><AutoMinorVersionUpgrade>true</AutoMinorVersionUpgrade><CopyTagsToSnapshot>false</CopyTagsToSnapshot></DBInstance></CreateDBInstanceResult><ResponseMetadata><RequestId>5b60abc6-a56d-4360-910d-977576fc5397</RequestId></ResponseMetadata></CreateDBInstanceResponse>
+  recorded_at: 2023-12-11 16:48:47 GMT
+  recorded_with: vcr/1.2.2, webmockr/0.9.0

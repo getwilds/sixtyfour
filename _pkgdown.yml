@@ -23,6 +23,9 @@ reference:
   - title: Users
     contents:
       - starts_with("aws_user")
+  - title: Database
+    contents:
+      - starts_with("aws_db")
   - title: Groups
     contents:
       - starts_with("aws_group")
@@ -36,4 +39,3 @@ reference:
   - title: IAM
     contents:
       - starts_with("aws_iam")
-

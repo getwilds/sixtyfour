@@ -1,6 +1,6 @@
 Package: sixtyfour
 Title: Humane Interface to AWS
-Version: 0.0.0.91
+Version: 0.0.0.93
 Authors@R: c(
     person("Sean", "Kross", role = "aut"),
     person("Scott", "Chamberlain", role = c("aut", "cre"), email = "sachamber@fredhutch.org")
@@ -33,6 +33,9 @@ Suggests:
     knitr,
     rmarkdown,
     roxyglobals,
+    DBI,
+    RPostgres,
+    RMariaDB,
     testthat (>= 3.0.0),
     vcr (>= 0.6.0),
     withr

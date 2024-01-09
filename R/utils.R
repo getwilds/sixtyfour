@@ -38,6 +38,14 @@ yesno <- function(msg, .envir = parent.frame()) {
 #' @return the last element of the vector
 last <- function(x) x[length(x)]
 
+check_for_pkg <- function(x) {
+  if (!requireNamespace(x, quietly = TRUE)) {
+    stop(sprintf("Please install '%s'", x), call. = FALSE)
+  } else {
+    invisible(TRUE)
+  }
+}
+
 #' Parse s3 paths
 #'
 #' @keywords internal
