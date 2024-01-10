@@ -1,0 +1,182 @@
+http_interactions:
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=GetUser&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '33'
+      X-Amz-Date: 20240110T001222Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: 151b96a5-6327-447d-8c6c-7fa22fff8b88
+      content-type: text/xml
+      content-length: '657'
+      date: Wed, 10 Jan 2024 00:12:22 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <GetUserResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <GetUserResult>
+            <User>
+              <Path>/</Path>
+              <PasswordLastUsed>2024-01-09T23:05:09Z</PasswordLastUsed>
+              <UserName>scott</UserName>
+              <Arn>arn:aws:iam::744061095407:user/scott</Arn>
+              <UserId>AIDA22PL7JXXTBKY6TYQA</UserId>
+              <CreateDate>2023-12-13T19:29:24Z</CreateDate>
+              <Tags>
+                <member>
+                  <Value>test</Value>
+                  <Key>AKIA22PL7JXXRTCUK3NI</Key>
+                </member>
+              </Tags>
+            </User>
+          </GetUserResult>
+          <ResponseMetadata>
+            <RequestId>151b96a5-6327-447d-8c6c-7fa22fff8b88</RequestId>
+          </ResponseMetadata>
+        </GetUserResponse>
+  recorded_at: 2024-01-10 00:12:23 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=ListUserPolicies&UserName=scott&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '57'
+      X-Amz-Date: 20240110T001222Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: 4fcb1fa8-a182-459e-8c36-19c2ea666742
+      content-type: text/xml
+      content-length: '323'
+      date: Wed, 10 Jan 2024 00:12:22 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ListUserPoliciesResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <ListUserPoliciesResult>
+            <IsTruncated>false</IsTruncated>
+            <PolicyNames/>
+          </ListUserPoliciesResult>
+          <ResponseMetadata>
+            <RequestId>4fcb1fa8-a182-459e-8c36-19c2ea666742</RequestId>
+          </ResponseMetadata>
+        </ListUserPoliciesResponse>
+  recorded_at: 2024-01-10 00:12:23 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=ListAttachedUserPolicies&UserName=scott&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '65'
+      X-Amz-Date: 20240110T001222Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: 02790990-5f7d-4749-a01b-a3e7e05890ec
+      content-type: text/xml
+      content-length: '546'
+      date: Wed, 10 Jan 2024 00:12:22 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ListAttachedUserPoliciesResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <ListAttachedUserPoliciesResult>
+            <IsTruncated>false</IsTruncated>
+            <AttachedPolicies>
+              <member>
+                <PolicyArn>arn:aws:iam::aws:policy/IAMUserChangePassword</PolicyArn>
+                <PolicyName>IAMUserChangePassword</PolicyName>
+              </member>
+            </AttachedPolicies>
+          </ListAttachedUserPoliciesResult>
+          <ResponseMetadata>
+            <RequestId>02790990-5f7d-4749-a01b-a3e7e05890ec</RequestId>
+          </ResponseMetadata>
+        </ListAttachedUserPoliciesResponse>
+  recorded_at: 2024-01-10 00:12:23 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=ListGroupsForUser&UserName=scott&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '58'
+      X-Amz-Date: 20240110T001223Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: 064103d6-0cd1-4341-8738-0e84bc9e5ae1
+      content-type: text/xml
+      content-length: '586'
+      date: Wed, 10 Jan 2024 00:12:22 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ListGroupsForUserResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <ListGroupsForUserResult>
+            <IsTruncated>false</IsTruncated>
+            <Groups>
+              <member>
+                <Path>/</Path>
+                <GroupName>admin</GroupName>
+                <GroupId>AGPA22PL7JXXRD3VIP2YG</GroupId>
+                <Arn>arn:aws:iam::744061095407:group/admin</Arn>
+                <CreateDate>2023-12-13T18:51:28Z</CreateDate>
+              </member>
+            </Groups>
+          </ListGroupsForUserResult>
+          <ResponseMetadata>
+            <RequestId>064103d6-0cd1-4341-8738-0e84bc9e5ae1</RequestId>
+          </ResponseMetadata>
+        </ListGroupsForUserResponse>
+  recorded_at: 2024-01-10 00:12:23 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
