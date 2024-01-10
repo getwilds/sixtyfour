@@ -24,7 +24,6 @@ user_list_tidy <- function(x) {
 #' aws_users()
 #' }
 aws_users <- function(...) {
-  # paginate_aws(env64$iam$list_users, "Users") %>% user_list_tidy()
   users <- paginate_aws(env64$iam$list_users, "Users") %>% user_list_tidy()
   purrr::map(users$UserName, env64$iam$get_user) %>%
     purrr::map(purrr::pluck, "User") %>%
