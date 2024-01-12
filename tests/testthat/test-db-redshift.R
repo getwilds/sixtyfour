@@ -1,3 +1,5 @@
+skip("skipping until secrets stuff done")
+
 test_that("aws_db_redshift_create", {
   vcr::use_cassette("aws_db_redshift_create", {
     z <- aws_db_redshift_create(

@@ -1,9 +1,11 @@
+skip("skipping until secrets stuff done")
+
 test_that("aws_db_rds_create", {
   vcr::use_cassette("aws_db_rds_create", {
     z <- aws_db_rds_create(
       id = "aninstance", class = "db.t3.micro",
-      user = "xxxx", pwd = "zzzzzz",
-      security_group_ids = list("sg-xxxxxxxxx"),
+      user = "xxx", pwd = "xxx",
+      security_group_ids = list("sg-xxxxxx"),
       wait = FALSE, verbose = FALSE
     )
   })
