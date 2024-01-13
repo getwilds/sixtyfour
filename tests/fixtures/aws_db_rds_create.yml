@@ -68,7 +68,7 @@ http_interactions:
     uri: https://secretsmanager.<<aws_region>>.amazonaws.com/
     body:
       encoding: ''
-      string: '{"Name":"xxxx","ClientRequestToken":"xxxx","SecretString":"{\"engine\":\"mariadb\",\"host\":{},\"username\":\"xxxxxx\",\"password\":\"xxxx\",\"dbname\":\"xxxxx\",\"port\":{}}"}'
+      string: '{"Name":"xxxx","zzz":"xxxx","SecretString":"{\"engine\":\"mariadb\",\"host\":{},\"username\":\"xxxxxx\",\"password\":\"xxxx\",\"dbname\":\"xxxxx\",\"port\":{}}"}'
     headers:
       Accept: application/json, text/xml, application/xml, */*
       User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
