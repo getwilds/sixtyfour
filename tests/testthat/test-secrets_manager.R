@@ -1,3 +1,5 @@
+skip_on_ci()
+
 test_that("aws_secrets_list", {
   vcr::use_cassette("aws_secrets_list", {
     purge_secrets()

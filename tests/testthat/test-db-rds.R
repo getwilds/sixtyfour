@@ -1,4 +1,5 @@
-skip("skipping until secrets stuff done")
+skip()
+skip_on_ci()
 
 test_that("aws_db_rds_create", {
   vcr::use_cassette("aws_db_rds_create", {
