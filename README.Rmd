@@ -16,6 +16,10 @@ Development version
 pak::pkg_install("getwilds/sixtyfour")
 ```
 
+## Scanning for secrets
+
+See the make target `scan_secrets` in the Makefile to scan for secrets.
+
 ## Code of Conduct
 
 Please note that the sixtyfour project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
