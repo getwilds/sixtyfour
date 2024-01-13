@@ -15,7 +15,7 @@ invisible(vcr::vcr_configure(
 ))
 vcr::check_cassette_names()
 
-purge_secrets <- function(x) {
+purge_secrets <- function() {
   x <- aws_secrets_list()
   if (length(x$SecretList) > 0) {
     x$SecretList %>%
