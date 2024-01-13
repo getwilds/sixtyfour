@@ -25,12 +25,12 @@
 #' library(dplyr)
 #' tbl(con_rds, "mtcars")
 #' }
-aws_db_rds_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
-                           dbname = NULL, engine = NULL, ...) {
-  check_for_pkg("DBI")
+aws_db_rds_con <- function(
+    user = NULL, pwd = NULL, id = NULL, host = NULL,
+    port = NULL, dbname = NULL, engine = NULL, ...) {
 
-  stopifnot("user is required" = !missing(user))
-  stopifnot("pwd is required" = !missing(pwd))
+  check_for_pkg("DBI")
+  is_class(engine, "character")
 
   if (!is.null(id)) {
     con_info <- instance_con_info(id)
@@ -45,13 +45,15 @@ aws_db_rds_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
     )
   }
 
+  creds <- ui_fetch_secret(user, pwd, engine)
+
   DBI::dbConnect(
     which_driver(engine),
     host = host,
     port = port,
     dbname = dbname,
-    user = user,
-    password = pwd,
+    user = creds$user,
+    password = creds$password,
     ...
   )
 }
@@ -63,14 +65,16 @@ aws_db_rds_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
 #' @param id (character) required. instance identifier. The identifier for
 #' this DB instance. This parameter is stored as a lowercase string.
 #' Constraints: must contain from 1 to 63 letters, numbers, or hyphens; first
-#' character must be a letter; cn't end with a hyphen or contain two
+#' character must be a letter; can't end with a hyphen or contain two
 #' consecutive hyphens. required.
 #' @param class (character) required. The compute and memory capacity of the
 #' DB instance, for example `db.m5.large`.
 #' @param user (character) User name associated with the admin user account for
-#' the cluster that is being created.
+#' the cluster that is being created. If `NULL`, we generate a random user
+#' name, see [random_user()]
 #' @param pwd (character) Password associated with the admin user account for
-#' the cluster that is being created.
+#' the cluster that is being created. If `NULL`, we generate a random password
+#' with [aws_secrets_pwd()] (which uses the AWS Secrets Manager service)
 #' @param dbname (character) The name of the first database to be created when
 #' the cluster is created. default: "dev". additional databases can be created
 #' within the cluster
@@ -87,6 +91,8 @@ aws_db_rds_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
 #' until the cluster is available. If `wait=FALSE` use
 #' `aws_db_instance_status()` to check on the cluster status.
 #' @param verbose (logical) verbose informational output? default: `TRUE`
+#' @param aws_secrets (logical) should we manage your database credentials
+#' in AWS Secrets Manager? default: `TRUE`
 #' @param ... named parameters passed on to
 #' [create_db_instance](https://www.paws-r-sdk.com/docs/rds_create_db_instance/)
 #' @details See above link to `create_cluster` docs for details on requirements
@@ -104,11 +110,19 @@ aws_db_rds_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
 #' see <https://www.paws-r-sdk.com/docs/rds/>. also prints useful
 #' connection information after instance is available.
 aws_db_rds_create <-
-  function(id, class, user, pwd, dbname = "dev",
+  function(id, class, user = NULL, pwd = NULL, dbname = "dev",
            engine = "mariadb", storage = 20,
            storage_encrypted = TRUE, security_group_ids = NULL,
-           wait = TRUE, verbose = TRUE, ...) {
+           wait = TRUE, verbose = TRUE, aws_secrets = TRUE, ...) {
     aws_db_rds_client()
+    if (is.null(user)) {
+      user <- random_user()
+      if (verbose) cli::cli_alert_info("`user` is NULL; created user: {.strong {user}}")
+    }
+    if (is.null(pwd)) {
+      pwd <- aws_secrets_pwd()
+      if (verbose) cli::cli_alert_info("`pwd` is NULL; created password: *******")
+    }
     env64$rds$create_db_instance(
       DBName = dbname, DBInstanceIdentifier = id,
       Engine = engine, DBInstanceClass = class,
@@ -121,7 +135,22 @@ aws_db_rds_create <-
     if (wait) {
       wait_for_instance(id)
     }
-    if (verbose) info(id, instance_con_info)
+    if (aws_secrets) {
+      if (verbose) cli::cli_alert_info("Uploading user/pwd to secrets manager")
+      x <- instance_con_info(id)
+      aws_secrets_create(
+        name = paste0(id, random_str()),
+        secret = construct_db_secret(
+          engine = x$engine,
+          host = x$host,
+          username = user,
+          password = pwd,
+          dbname = x$dbname,
+          port = x$port
+        )
+      )
+    }
+    if (verbose) info(id, instance_con_info, "aws_db_rds_con")
     return(env64$rds)
   }
 

@@ -5,8 +5,8 @@
 \title{Get a database connection to Amazon RDS}
 \usage{
 aws_db_rds_con(
-  user,
-  pwd,
+  user = NULL,
+  pwd = NULL,
   id = NULL,
   host = NULL,
   port = NULL,

@@ -1,12 +1,14 @@
 #' internal helper function
-#' @param id an RDS instance ID or Redshift cluster ID
-#' @param fun a function that takes an ID for an AWS RDS instance
+#' @param id (function) an RDS instance ID or Redshift cluster ID
+#' @param fun (function) a function that takes an ID for an AWS RDS instance
 #' or Redshift cluster, and returns a single boolean
+#' @param see_fun (character) the function to point users to in the
+#' message for database connection
 #' @noRd
 #' @keywords internal
-info <- function(id, fun) {
+info <- function(id, fun, see_fun = "") {
   cli::cli_alert_success("Instance is up!")
-  cli::cli_alert_info("See `aws_db_rds_con` for connection info")
+  cli::cli_alert_info("See `{see_fun}` for connection info")
   cli::cli_alert_info("Instance details:")
   con_info <- fun(id)
   for (i in seq_along(con_info)) {
@@ -31,4 +33,8 @@ which_driver <- function(engine) {
     },
     stop(glue::glue("{engine} not currently supported"))
   )
+}
+
+random_str <- function(prefix = "-") {
+  paste0(prefix, sub("-.+", "", uuid::UUIDgenerate()))
 }

@@ -112,7 +112,7 @@ aws_db_redshift_create <-
     if (wait) {
       wait_for_cluster(id)
     }
-    if (verbose) info(id, cluster_con_info)
+    if (verbose) info(id, cluster_con_info, "aws_db_redshift_con")
     return(env64$redshift)
   }
 

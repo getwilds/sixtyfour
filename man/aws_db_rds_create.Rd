@@ -7,8 +7,8 @@
 aws_db_rds_create(
   id,
   class,
-  user,
-  pwd,
+  user = NULL,
+  pwd = NULL,
   dbname = "dev",
   engine = "mariadb",
   storage = 20,
@@ -16,6 +16,7 @@ aws_db_rds_create(
   security_group_ids = NULL,
   wait = TRUE,
   verbose = TRUE,
+  aws_secrets = TRUE,
   ...
 )
 }
@@ -23,17 +24,19 @@ aws_db_rds_create(
 \item{id}{(character) required. instance identifier. The identifier for
 this DB instance. This parameter is stored as a lowercase string.
 Constraints: must contain from 1 to 63 letters, numbers, or hyphens; first
-character must be a letter; cn't end with a hyphen or contain two
+character must be a letter; can't end with a hyphen or contain two
 consecutive hyphens. required.}
 
 \item{class}{(character) required. The compute and memory capacity of the
 DB instance, for example \code{db.m5.large}.}
 
 \item{user}{(character) User name associated with the admin user account for
-the cluster that is being created.}
+the cluster that is being created. If \code{NULL}, we generate a random user
+name, see \code{\link[=random_user]{random_user()}}}
 
 \item{pwd}{(character) Password associated with the admin user account for
-the cluster that is being created.}
+the cluster that is being created. If \code{NULL}, we generate a random password
+with \code{\link[=aws_secrets_pwd]{aws_secrets_pwd()}} (which uses the AWS Secrets Manager service)}
 
 \item{dbname}{(character) The name of the first database to be created when
 the cluster is created. default: "dev". additional databases can be created
@@ -57,6 +60,9 @@ until the cluster is available. If \code{wait=FALSE} use
 \code{aws_db_instance_status()} to check on the cluster status.}
 
 \item{verbose}{(logical) verbose informational output? default: \code{TRUE}}
+
+\item{aws_secrets}{(logical) should we manage your database credentials
+in AWS Secrets Manager? default: \code{TRUE}}
 
 \item{...}{named parameters passed on to
 \href{https://www.paws-r-sdk.com/docs/rds_create_db_instance/}{create_db_instance}}
