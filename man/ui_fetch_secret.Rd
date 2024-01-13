@@ -31,11 +31,11 @@ both user and password
 \examples{
 \dontrun{
 # user,pwd supplied, return them right away at top of fxn
-ui_fetch_secret(engine="mariadb", user="jane", password="apple")
+ui_fetch_secret(engine = "mariadb", user = "jane", password = "apple")
 
 # user,pwd null
-ui_fetch_secret(engine="redshift")
-ui_fetch_secret(engine="mariadb")
+ui_fetch_secret(engine = "redshift")
+ui_fetch_secret(engine = "mariadb")
 }
 }
 \keyword{internal}
