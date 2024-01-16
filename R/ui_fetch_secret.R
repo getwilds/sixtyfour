@@ -40,7 +40,7 @@ ui_fetch_secret <- function(user = NULL, password = NULL, engine = NULL) {
     Filter(function(x) length(x$host) > 0, new_secrets) %>%
     bind_rows()
   if (!is.null(engine)) {
-    new_secrets_df %<>% filter(engine == !!engine)
+    new_secrets_df <- filter(new_secrets_df, engine == !!engine)
   }
   if (NROW(new_secrets_df) == 0) {
     stop("No secrets found", call. = FALSE)
