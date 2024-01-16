@@ -11,7 +11,7 @@ test_that("aws_secrets_list", {
   expect_equal(length(res$SecretList), 0)
 })
 
-# Sys.sleep(5) # sleep to allow purge_secrets to finish aws side of deletion
+# Sys.sleep(5) # sleep to allow purge_secrets to finish aws side of deletion # nolint
 
 test_that("aws_secrets_create", {
   secret_name <- "Testing6789"
