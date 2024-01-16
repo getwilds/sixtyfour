@@ -1,4 +1,3 @@
-skip()
 skip_on_ci()
 
 test_that("aws_db_rds_create", {
