@@ -36,9 +36,9 @@ Note that we autogenerate a random UUID to pass to the
 \dontrun{
 aws_secrets_rotate(id = "MyTestDatabaseSecret")
 aws_secrets_rotate(id = "MyTestDatabaseSecret", rules = list(
-    Duration = "2h",
-    ScheduleExpression = "cron(0 16 1,15 * ? *)"
-  )
+  Duration = "2h",
+  ScheduleExpression = "cron(0 16 1,15 * ? *)"
+))
 }
 }
 \references{

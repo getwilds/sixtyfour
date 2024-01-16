@@ -28,7 +28,6 @@
 aws_db_rds_con <- function(
     user = NULL, pwd = NULL, id = NULL, host = NULL,
     port = NULL, dbname = NULL, engine = NULL, ...) {
-
   check_for_pkg("DBI")
   is_class(engine, "character")
 
@@ -117,11 +116,15 @@ aws_db_rds_create <-
     aws_db_rds_client()
     if (is.null(user)) {
       user <- random_user()
-      if (verbose) cli::cli_alert_info("`user` is NULL; created user: {.strong {user}}")
+      if (verbose) {
+        cli::cli_alert_info("`user` is NULL; created user: {.strong {user}}")
+      }
     }
     if (is.null(pwd)) {
       pwd <- aws_secrets_pwd()
-      if (verbose) cli::cli_alert_info("`pwd` is NULL; created password: *******")
+      if (verbose) {
+        cli::cli_alert_info("`pwd` is NULL; created password: *******")
+      }
     }
     env64$rds$create_db_instance(
       DBName = dbname, DBInstanceIdentifier = id,

@@ -31,6 +31,6 @@ construct_db_secret("postgresql", dbname = "bears", port = 5432, as = "raw")
 }
 }
 \references{
-\url{https://docs.aws.amazon.com/secretsmanager/latest/userguide/reference_secret_json_structure.html}
+\url{https://docs.aws.amazon.com/secretsmanager/latest/userguide/reference_secret_json_structure.html} # nolint
 }
 \keyword{internal}

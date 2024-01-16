@@ -210,11 +210,13 @@ aws_secrets_delete <- function(id, ...) {
 #' @examples \dontrun{
 #' aws_secrets_rotate(id = "MyTestDatabaseSecret")
 #' aws_secrets_rotate(id = "MyTestDatabaseSecret", rules = list(
-#'     Duration = "2h",
-#'     ScheduleExpression = "cron(0 16 1,15 * ? *)"
-#'   )
+#'   Duration = "2h",
+#'   ScheduleExpression = "cron(0 16 1,15 * ? *)"
+#' ))
 #' }
-aws_secrets_rotate <- function(id, lambda_arn = NULL, rules = NULL, immediately = TRUE) {
+aws_secrets_rotate <- function(
+    id, lambda_arn = NULL, rules = NULL,
+    immediately = TRUE) {
   env64$secretsmanager$rotate_secret(
     SecretId = id,
     ClientRequestToken = uuid::UUIDgenerate(),
@@ -230,7 +232,8 @@ aws_secrets_rotate <- function(id, lambda_arn = NULL, rules = NULL, immediately 
 #' go into either a json string or raw version of the json string
 #' @param as (character) one of "string" or "raw"
 #' @keywords internal
-#' @references <https://docs.aws.amazon.com/secretsmanager/latest/userguide/reference_secret_json_structure.html>
+#' @references
+#' <https://docs.aws.amazon.com/secretsmanager/latest/userguide/reference_secret_json_structure.html> # nolint
 #' @examples \dontrun{
 #' construct_db_secret("redshift", dbname = "hello", port = 5439)
 #' construct_db_secret("mariadb", dbname = "world", port = 3306)
@@ -239,8 +242,6 @@ aws_secrets_rotate <- function(id, lambda_arn = NULL, rules = NULL, immediately 
 construct_db_secret <- function(
     engine, host = "", username = "",
     password = "", dbname = "", port = "", as = "string") {
-
-
   dat <- list(
     "engine" = engine,
     "host" = host,
