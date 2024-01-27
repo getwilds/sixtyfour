@@ -62,3 +62,13 @@ aws_file_upload(
 )
 \dontshow{\}) # examplesIf}
 }
+\seealso{
+Other files: 
+\code{\link{aws_file_attr}()},
+\code{\link{aws_file_copy}()},
+\code{\link{aws_file_delete}()},
+\code{\link{aws_file_download}()},
+\code{\link{aws_file_exists}()},
+\code{\link{aws_file_rename}()}
+}
+\concept{files}

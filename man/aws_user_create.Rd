@@ -33,3 +33,14 @@ docs for details on the parameters
 aws_user_create("testBlueBird")
 }
 }
+\seealso{
+Other users: 
+\code{\link{aws_user_access_key}()},
+\code{\link{aws_user_add_to_group}()},
+\code{\link{aws_user_current}()},
+\code{\link{aws_user_delete}()},
+\code{\link{aws_user_exists}()},
+\code{\link{aws_users}()},
+\code{\link{aws_user}()}
+}
+\concept{users}

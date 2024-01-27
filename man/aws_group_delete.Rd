@@ -24,3 +24,11 @@ docs for more details
 aws_group_delete(name = "testgroup")
 }
 }
+\seealso{
+Other groups: 
+\code{\link{aws_group_create}()},
+\code{\link{aws_group_exists}()},
+\code{\link{aws_groups}()},
+\code{\link{aws_group}()}
+}
+\concept{groups}

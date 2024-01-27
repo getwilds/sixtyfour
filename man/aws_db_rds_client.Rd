@@ -16,3 +16,14 @@ Get the \code{paws} RDS client
 \note{
 returns existing client if found; a new client otherwise
 }
+\seealso{
+Other database: 
+\code{\link{aws_db_cluster_status}()},
+\code{\link{aws_db_instance_status}()},
+\code{\link{aws_db_rds_con}()},
+\code{\link{aws_db_rds_create}()},
+\code{\link{aws_db_redshift_client}()},
+\code{\link{aws_db_redshift_con}()},
+\code{\link{aws_db_redshift_create}()}
+}
+\concept{database}

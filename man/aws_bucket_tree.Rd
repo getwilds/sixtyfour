@@ -26,3 +26,14 @@ Print a tree of the objects in a bucket
 aws_bucket_tree("s3://s64-test-2")
 }
 }
+\seealso{
+Other buckets: 
+\code{\link{aws_bucket_create}()},
+\code{\link{aws_bucket_delete}()},
+\code{\link{aws_bucket_download}()},
+\code{\link{aws_bucket_exists}()},
+\code{\link{aws_bucket_list_objects}()},
+\code{\link{aws_bucket_upload}()},
+\code{\link{aws_buckets}()}
+}
+\concept{buckets}

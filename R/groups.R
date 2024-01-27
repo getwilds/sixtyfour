@@ -16,6 +16,7 @@ group_list_tidy <- function(x) {
 #' @param ... parameters passed on to `paws` `list_groups_for_user`
 #' if username is non-NULL, otherwise passed on to `list_users`
 #' @return A tibble with information about groups
+#' @family groups
 #' @examples \dontrun{
 #' aws_groups()
 #' aws_groups(username = aws_user_current())
@@ -41,6 +42,7 @@ aws_groups <- function(username = NULL, ...) {
 #' - attached_policies (tibble)
 #' @details see docs <https://www.paws-r-sdk.com/docs/iam_get_group/>
 #' @autoglobal
+#' @family groups
 #' @examples \dontrun{
 #' aws_group(name="users")
 #' }
@@ -61,6 +63,7 @@ aws_group <- function(name) {
 #' @return a single boolean
 #' @details uses `aws_group` internally. see docs
 #' <https://www.paws-r-sdk.com/docs/iam_get_group/>
+#' @family groups
 #' @examples \dontrun{
 #' aws_group_exists(name="users")
 #' aws_group_exists(name="apples")
@@ -79,6 +82,7 @@ aws_group_exists <- function(name) {
 #' @return A tibble with information about the group created
 #' @details See <https://www.paws-r-sdk.com/docs/iam_create_group/>
 #' docs for details on the parameters
+#' @family groups
 #' @examples \dontrun{
 #' aws_group_create("testgroup")
 #' }
@@ -94,6 +98,7 @@ aws_group_create <- function(name, path = NULL) {
 #' @return an empty list
 #' @details See <https://www.paws-r-sdk.com/docs/iam_delete_group/>
 #' docs for more details
+#' @family groups
 #' @examples \dontrun{
 #' aws_group_delete(name = "testgroup")
 #' }

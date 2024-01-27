@@ -11,6 +11,7 @@
 #'
 #' If the `engine` you've chosen for your RDS instance is not supported
 #' with this function, you can likely connect to it on your own
+#' @family database
 #' @examples \dontrun{
 #' con_rds <- aws_db_rds_con("<define all params here>")
 #' con_rds
@@ -100,6 +101,7 @@ aws_db_rds_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
 #' available for returning. That wait can be around 5 - 7 minutes. You can
 #' instead set `wait = FALSE` and then check on the status of the instance
 #' yourself in the AWS dashboard.
+#' @family database
 #' @return a list with methods for interfacing with RDS;
 #' see <https://www.paws-r-sdk.com/docs/rds/>. also prints useful
 #' connection information after instance is available.
@@ -128,6 +130,7 @@ aws_db_rds_create <-
 #' Get the `paws` RDS client
 #' @export
 #' @note returns existing client if found; a new client otherwise
+#' @family database
 #' @return a list with methods for interfacing with RDS;
 #' see <https://www.paws-r-sdk.com/docs/rds/>
 aws_db_rds_client <- function() {
@@ -164,6 +167,7 @@ instance_con_info <- function(id) {
 #' Get instance status
 #' @export
 #' @inheritParams aws_db_rds_create
+#' @family database
 #' @return (character) the status of the instance, e.g., "creating",
 #' "available", "not found"
 #' @examples \dontrun{

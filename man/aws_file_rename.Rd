@@ -34,3 +34,13 @@ new_paths <- s3_path("s64-test-2", c("new_aaa", "new_bbb", "new_ccc"),
 aws_file_rename(paths, new_paths)
 }
 }
+\seealso{
+Other files: 
+\code{\link{aws_file_attr}()},
+\code{\link{aws_file_copy}()},
+\code{\link{aws_file_delete}()},
+\code{\link{aws_file_download}()},
+\code{\link{aws_file_exists}()},
+\code{\link{aws_file_upload}()}
+}
+\concept{files}

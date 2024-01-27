@@ -33,3 +33,14 @@ aws_bucket_download(bucket = "tmp-bucket-369", dest_path = temp_dir)
 aws_bucket_delete("tmp-bucket-369")
 }
 }
+\seealso{
+Other buckets: 
+\code{\link{aws_bucket_create}()},
+\code{\link{aws_bucket_delete}()},
+\code{\link{aws_bucket_exists}()},
+\code{\link{aws_bucket_list_objects}()},
+\code{\link{aws_bucket_tree}()},
+\code{\link{aws_bucket_upload}()},
+\code{\link{aws_buckets}()}
+}
+\concept{buckets}

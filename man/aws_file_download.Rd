@@ -46,3 +46,13 @@ temp_path <- tempfile()
 aws_file_download(s3_path("s64-test-2", "TESTING123"), temp_path)
 }
 }
+\seealso{
+Other files: 
+\code{\link{aws_file_attr}()},
+\code{\link{aws_file_copy}()},
+\code{\link{aws_file_delete}()},
+\code{\link{aws_file_exists}()},
+\code{\link{aws_file_rename}()},
+\code{\link{aws_file_upload}()}
+}
+\concept{files}

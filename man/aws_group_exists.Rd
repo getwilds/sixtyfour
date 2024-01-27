@@ -25,3 +25,11 @@ aws_group_exists(name="users")
 aws_group_exists(name="apples")
 }
 }
+\seealso{
+Other groups: 
+\code{\link{aws_group_create}()},
+\code{\link{aws_group_delete}()},
+\code{\link{aws_groups}()},
+\code{\link{aws_group}()}
+}
+\concept{groups}

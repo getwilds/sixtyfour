@@ -37,3 +37,10 @@ aws_role("AWSServiceRoleForCloudTrail")
 aws_role("AWSServiceRoleForRedshift")
 }
 }
+\seealso{
+Other roles: 
+\code{\link{aws_role_create}()},
+\code{\link{aws_role_delete}()},
+\code{\link{aws_roles}()}
+}
+\concept{roles}

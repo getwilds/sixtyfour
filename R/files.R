@@ -22,6 +22,7 @@ equal_lengths <- function(x, y) {
 #' @details
 #' - For upload: if it does exist it will be created
 #' - For download: if it does not exist, function will return an error
+#' @family files
 #' @examples \dontrun{
 #' demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 #' aws_file_upload(
@@ -66,6 +67,7 @@ aws_file_upload <- function(path, remote_path, force = FALSE, ...) {
 #' @param ... named parameters passed on to [s3fs::s3_file_download()]
 #' @return (character) a vector of local file paths
 #' @note USES A FORK OF s3fs FOR A MINOR FIX THAT MAKES LENGTH>1 INPUTS WORK
+#' @family files
 #' @examples \dontrun{
 #' tfile <- tempfile()
 #' aws_file_download(remote_path = "s3://s64-test-2/DESCRIPTION", path = tfile)
@@ -99,6 +101,7 @@ aws_file_download <- function(remote_path, path, ...) {
 #' @importFrom s3fs s3_file_delete
 #' @param remote_path (character) one or more remote S3 paths. required
 #' @param ... named parameters passed on to [s3fs::s3_file_delete()]
+#' @family files
 #' @return (character) a vector of remote file paths
 #' @examples \dontrun{
 #' # create a file
@@ -123,6 +126,7 @@ aws_file_delete <- function(remote_path, ...) {
 #' @return a tibble with many columns, with number of rows matching length
 #' of `remote_path`
 #' @note uses [s3fs::s3_file_info()] internally
+#' @family files
 #' @examples \dontrun{
 #' # files one by one
 #' aws_file_attr(s3_path("s64-test-2", "DESCRIPTION"))
@@ -143,6 +147,7 @@ aws_file_attr <- function(remote_path) {
 #' @inheritParams aws_file_attr
 #' @return vector of booleans (`TRUE` or `FALSE`), length matches
 #' `length(remote_path)`
+#' @family files
 #' @examples \dontrun{
 #' aws_file_exists(s3_path("s64-test-2", "DESCRIPTION"))
 #' aws_file_exists(s3_path("s64-test-2", "doesntexist"))
@@ -160,6 +165,7 @@ aws_file_exists <- function(remote_path) {
 #' length must match `remote_path`
 #' @param ... named parameters passed on to [s3fs::s3_file_move()]
 #' @return vector of paths, length matches `length(remote_path)`
+#' @family files
 #' @examples \dontrun{
 #' aws_file_rename(s3_path("s64-test-2", "DESCRIPTION"),
 #'   s3_path("s64-test-2", "DESC"))
@@ -189,6 +195,7 @@ aws_file_rename <- function(remote_path, new_remote_path, ...) {
 #' required for non-interactive use.
 #' @param ... named parameters passed on to [s3fs::s3_file_copy()]
 #' @return vector of paths, length matches `length(remote_path)`
+#' @family files
 #' @examples \dontrun{
 #' # create files in an existing bucket
 #' tfiles <- replicate(n = 3, tempfile())

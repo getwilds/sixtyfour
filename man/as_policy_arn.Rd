@@ -29,3 +29,12 @@ as_policy_arn("AmazonRDSDataFullAccess")
 # as_policy_arn(5)
 }
 }
+\seealso{
+Other policies: 
+\code{\link{aws_policies}()},
+\code{\link{aws_policy_attach}()},
+\code{\link{aws_policy_detach}()},
+\code{\link{aws_policy_exists}()},
+\code{\link{aws_policy}()}
+}
+\concept{policies}

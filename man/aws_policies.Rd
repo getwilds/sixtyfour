@@ -30,3 +30,12 @@ aws_policies()
 aws_policies(refresh = TRUE)
 }
 }
+\seealso{
+Other policies: 
+\code{\link{as_policy_arn}()},
+\code{\link{aws_policy_attach}()},
+\code{\link{aws_policy_detach}()},
+\code{\link{aws_policy_exists}()},
+\code{\link{aws_policy}()}
+}
+\concept{policies}
