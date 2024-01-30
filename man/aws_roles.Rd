@@ -21,3 +21,10 @@ List roles
 aws_roles()
 }
 }
+\seealso{
+Other roles: 
+\code{\link{aws_role_create}()},
+\code{\link{aws_role_delete}()},
+\code{\link{aws_role}()}
+}
+\concept{roles}

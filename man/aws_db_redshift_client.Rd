@@ -13,3 +13,14 @@ see \url{https://www.paws-r-sdk.com/docs/redshift/}
 \description{
 Get the \code{paws} Redshift client
 }
+\seealso{
+Other database: 
+\code{\link{aws_db_cluster_status}()},
+\code{\link{aws_db_instance_status}()},
+\code{\link{aws_db_rds_client}()},
+\code{\link{aws_db_rds_con}()},
+\code{\link{aws_db_rds_create}()},
+\code{\link{aws_db_redshift_con}()},
+\code{\link{aws_db_redshift_create}()}
+}
+\concept{database}

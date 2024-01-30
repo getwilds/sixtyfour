@@ -15,6 +15,7 @@
 #'
 #' You can manage Redshift programatically via
 #' [paws::redshift](https://www.paws-r-sdk.com/docs/redshift/)
+#' @family database
 #' @return an object of class `RedshiftConnection`
 #' @examples \dontrun{
 #' library(DBI)
@@ -93,6 +94,7 @@ aws_db_redshift_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
 #' @note See above link to `create_cluster` docs for details on requirements
 #' for each parameter
 #' @inheritSection aws_db_rds_create Waiting
+#' @family database
 #' @return returns `NULL`, this function called for the side effect of
 #' creating an Redshift instance
 aws_db_redshift_create <-
@@ -117,6 +119,7 @@ aws_db_redshift_create <-
 
 #' Get the `paws` Redshift client
 #' @export
+#' @family database
 #' @return a list with methods for interfacing with Redshift;
 #' see <https://www.paws-r-sdk.com/docs/redshift/>
 aws_db_redshift_client <- function() {
@@ -146,6 +149,7 @@ cluster_con_info <- function(id) {
 #' Get cluster status
 #' @export
 #' @inheritParams aws_db_redshift_create
+#' @family database
 #' @return (character) the status of the cluster, e.g., "creating",
 #' "available", "not found"
 #' @examples \dontrun{

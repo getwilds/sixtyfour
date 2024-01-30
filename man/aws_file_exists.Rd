@@ -23,3 +23,13 @@ aws_file_exists(s3_path("s64-test-2", "doesntexist"))
 aws_file_exists(s3_path("s64-test-2", c("DESCRIPTION", "doesntexist")))
 }
 }
+\seealso{
+Other files: 
+\code{\link{aws_file_attr}()},
+\code{\link{aws_file_copy}()},
+\code{\link{aws_file_delete}()},
+\code{\link{aws_file_download}()},
+\code{\link{aws_file_rename}()},
+\code{\link{aws_file_upload}()}
+}
+\concept{files}

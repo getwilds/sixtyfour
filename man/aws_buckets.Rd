@@ -35,3 +35,14 @@ information about your buckets rather than what's cached locally
 aws_buckets()
 }
 }
+\seealso{
+Other buckets: 
+\code{\link{aws_bucket_create}()},
+\code{\link{aws_bucket_delete}()},
+\code{\link{aws_bucket_download}()},
+\code{\link{aws_bucket_exists}()},
+\code{\link{aws_bucket_list_objects}()},
+\code{\link{aws_bucket_tree}()},
+\code{\link{aws_bucket_upload}()}
+}
+\concept{buckets}

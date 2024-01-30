@@ -42,3 +42,13 @@ aws_file_copy(paths, path_as_s3(new_bucket))
 aws_file_copy(paths, "s64-test-4")
 }
 }
+\seealso{
+Other files: 
+\code{\link{aws_file_attr}()},
+\code{\link{aws_file_delete}()},
+\code{\link{aws_file_download}()},
+\code{\link{aws_file_exists}()},
+\code{\link{aws_file_rename}()},
+\code{\link{aws_file_upload}()}
+}
+\concept{files}

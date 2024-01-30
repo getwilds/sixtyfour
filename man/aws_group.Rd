@@ -29,3 +29,11 @@ see docs \url{https://www.paws-r-sdk.com/docs/iam_get_group/}
 aws_group(name="users")
 }
 }
+\seealso{
+Other groups: 
+\code{\link{aws_group_create}()},
+\code{\link{aws_group_delete}()},
+\code{\link{aws_group_exists}()},
+\code{\link{aws_groups}()}
+}
+\concept{groups}

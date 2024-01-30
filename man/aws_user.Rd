@@ -44,3 +44,14 @@ aws_user(username = "testBlueBird")
 aws_user_delete("testBlueBird") # cleanup user
 }
 }
+\seealso{
+Other users: 
+\code{\link{aws_user_access_key}()},
+\code{\link{aws_user_add_to_group}()},
+\code{\link{aws_user_create}()},
+\code{\link{aws_user_current}()},
+\code{\link{aws_user_delete}()},
+\code{\link{aws_user_exists}()},
+\code{\link{aws_users}()}
+}
+\concept{users}

@@ -19,6 +19,7 @@ role_list_tidy <- function(x) {
 #' @export
 #' @param ... parameters passed on to the `paws`
 #' [list_users](https://www.paws-r-sdk.com/docs/iam_list_roles/) method
+#' @family roles
 #' @return A tibble with information about roles
 #' @examples \dontrun{
 #' aws_roles()
@@ -39,6 +40,7 @@ aws_roles <- function(...) {
 #' also includes policies and attached policies by calling `list_role_policies`
 #' and `list_attached_role_policies`
 #' @autoglobal
+#' @family roles
 #' @examples \dontrun{
 #' res <- aws_role(name = "OrganizationAccountSecurityRole")
 #' res
@@ -79,6 +81,7 @@ aws_role <- function(name) {
 #' @return A tibble with information about the role created
 #' @details See <https://www.paws-r-sdk.com/docs/iam_create_role/>
 #' docs for details on the parameters
+#' @family roles
 #' @examples \dontrun{
 #' role_name <- "MyRole"
 #' trust_policy <- list(
@@ -124,6 +127,7 @@ aws_role_create <- function(
 #' @return an empty list
 #' @details See <https://www.paws-r-sdk.com/docs/iam_delete_role/>
 #' docs for more details
+#' @family roles
 #' @examples \dontrun{
 #' aws_role_delete(name = "MyRole")
 #' }

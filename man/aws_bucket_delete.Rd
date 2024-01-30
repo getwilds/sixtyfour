@@ -34,3 +34,14 @@ aws_bucket_delete(bucket = "bucket-to-delete-111")
 aws_buckets()
 }
 }
+\seealso{
+Other buckets: 
+\code{\link{aws_bucket_create}()},
+\code{\link{aws_bucket_download}()},
+\code{\link{aws_bucket_exists}()},
+\code{\link{aws_bucket_list_objects}()},
+\code{\link{aws_bucket_tree}()},
+\code{\link{aws_bucket_upload}()},
+\code{\link{aws_buckets}()}
+}
+\concept{buckets}

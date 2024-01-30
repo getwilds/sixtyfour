@@ -25,3 +25,14 @@ aws_user_exists(aws_user_current())
 aws_user_exists("blueberry")
 }
 }
+\seealso{
+Other users: 
+\code{\link{aws_user_access_key}()},
+\code{\link{aws_user_add_to_group}()},
+\code{\link{aws_user_create}()},
+\code{\link{aws_user_current}()},
+\code{\link{aws_user_delete}()},
+\code{\link{aws_users}()},
+\code{\link{aws_user}()}
+}
+\concept{users}

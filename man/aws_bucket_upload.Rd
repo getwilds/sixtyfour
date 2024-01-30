@@ -40,3 +40,14 @@ aws_file_delete(objs$uri)
 aws_bucket_delete("a-new-bucket-345")
 }
 }
+\seealso{
+Other buckets: 
+\code{\link{aws_bucket_create}()},
+\code{\link{aws_bucket_delete}()},
+\code{\link{aws_bucket_download}()},
+\code{\link{aws_bucket_exists}()},
+\code{\link{aws_bucket_list_objects}()},
+\code{\link{aws_bucket_tree}()},
+\code{\link{aws_buckets}()}
+}
+\concept{buckets}

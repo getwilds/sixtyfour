@@ -30,6 +30,7 @@ all_policies <- memoise::memoise(function(...) {
 #' [list_policies](https://www.paws-r-sdk.com/docs/iam_list_policies/)
 #' @details uses `memoise` internally to cache results to speed up all
 #' subsequent calls to the function
+#' @family policies
 #' @return A tibble with information about policies
 #' @examples \dontrun{
 #' aws_policies()
@@ -48,6 +49,7 @@ aws_policies <- function(refresh = FALSE, ...) {
 #' @return a tibble with policy details
 #' @details see docs <https://www.paws-r-sdk.com/docs/iam_get_policy/>
 #' @autoglobal
+#' @family policies
 #' @examples \dontrun{
 #' aws_policy("ReadOnlyAccess")
 #' aws_policy("arn:aws:iam::aws:policy/ReadOnlyAccess")
@@ -64,6 +66,7 @@ aws_policy <- function(name) {
 #' @param name (character) a policy name
 #' @return a tibble with policy details
 #' @details see docs <https://www.paws-r-sdk.com/docs/iam_get_policy/>
+#' @family policies
 #' @examples \dontrun{
 #' aws_policy_exists("ReadOnlyAccess")
 #' }
@@ -80,6 +83,7 @@ aws_policy_exists <- function(name) {
 #' beware as there is no validation is done of a user input policy arn
 #' @return a policy ARN
 #' @autoglobal
+#' @family policies
 #' @examples \dontrun{
 #' as_policy_arn("ReadOnlyAccess")
 #' as_policy_arn("arn:aws:iam::aws:policy/ReadOnlyAccess")
@@ -122,6 +126,7 @@ call_x_method <- function(x) {
 #' @param .x result of a call to create or get method for user,
 #' group, or role
 #' @param policy (character) a policy name or ARN
+#' @family policies
 #' @return A tibble with information about policies
 #' @examples \dontrun{
 #' aws_policy("AmazonRDSDataFullAccess")
@@ -143,6 +148,7 @@ aws_policy_attach <- function(.x, policy) {
 #' @param .x result of a call to create or get method for user,
 #' group, or role
 #' @param policy (character) a policy name or ARN
+#' @family policies
 #' @return A tibble with information about policies
 #' @examples \dontrun{
 #' aws_user() %>%

@@ -4,6 +4,7 @@
 #' @param bucket (character) bucket name. required
 #' @note internally uses
 #' [head_bucket](https://www.paws-r-sdk.com/docs/s3_head_bucket/)
+#' @family buckets
 #' @examples \dontrun{
 #' # exists
 #' aws_bucket_exists(bucket = "s64-test-2")
@@ -28,6 +29,7 @@ aws_bucket_exists <- function(bucket) {
 #' [list_objects](https://www.paws-r-sdk.com/docs/s3_create_bucket/)
 #' @note Requires the env var `AWS_REGION`
 #' @return the bucket path (character)
+#' @family buckets
 #' @examples \dontrun{
 #' aws_bucket_create(bucket = "s64-test-2")
 #' }
@@ -67,6 +69,7 @@ bucket_create_if_not <- function(bucket, force = FALSE) {
 #' [delete_bucket](https://www.paws-r-sdk.com/docs/s3_delete_bucket/)
 #' @note Requires the env var `AWS_REGION`. This function prompts you to make
 #' sure that you want to delete the bucket.
+#' @family buckets
 #' @return an empty list
 #' @examples \dontrun{
 #' aws_bucket_create(bucket = "bucket-to-delete-111")
@@ -92,6 +95,7 @@ aws_bucket_delete <- function(bucket, force = FALSE, ...) {
 #' @param ... named parameters passed on to [s3fs::s3_dir_download()]
 #' @note Requires the env var `AWS_REGION`. This function prompts you to make
 #' sure that you want to delete the bucket.
+#' @family buckets
 #' @examples \dontrun{
 #' aws_bucket_create(bucket = "tmp-bucket-369")
 #' desc_file <- file.path(system.file(), "DESCRIPTION")
@@ -118,6 +122,7 @@ aws_bucket_download <- function(bucket, dest_path, ...) {
 #' @param ... named parameters passed on to [s3fs::s3_dir_upload()]
 #' @note Requires the env var `AWS_REGION`. This function prompts you to make
 #' sure that you want to delete the bucket.
+#' @family buckets
 #' @examples \dontrun{
 #' library(fs)
 #' tdir <- path(tempdir(), "apples")
@@ -155,6 +160,7 @@ aws_bucket_upload <- function(
 #' @importFrom s3fs s3_dir_info
 #' @param bucket (character) bucket name. required
 #' @param ... named parameters passed on to [s3fs::s3_dir_info()]
+#' @family buckets
 #' @return if no objects found, an empty tibble. if tibble has rows each
 #' is an S3 bucket, with 8 columns:
 #' * bucket_name (character)
@@ -184,6 +190,7 @@ aws_bucket_list_objects <- function(bucket, ...) {
 #' @inherit aws_bucket_list_objects
 #' @note we set `refresh=TRUE` internally to make sure we return up to date
 #' information about your buckets rather than what's cached locally
+#' @family buckets
 #' @examples \dontrun{
 #' aws_buckets()
 #' }
@@ -204,6 +211,7 @@ aws_buckets <- function(...) {
 #' @param recurse (logical) returns all AWS S3 objects in lower sub
 #' directories, default: `TRUE`
 #' @param ... Additional arguments passed to [s3fs::s3_dir_tree()]
+#' @family buckets
 #' @return character vector of objects/files within the bucket,
 #' printed as a tree
 #' @examples \dontrun{

@@ -31,3 +31,13 @@ aws_file_delete(s3_path("s64-test-2", basename(tfile)))
 aws_file_delete(s3_path("s64-test-2", "TESTING123"))
 }
 }
+\seealso{
+Other files: 
+\code{\link{aws_file_attr}()},
+\code{\link{aws_file_copy}()},
+\code{\link{aws_file_download}()},
+\code{\link{aws_file_exists}()},
+\code{\link{aws_file_rename}()},
+\code{\link{aws_file_upload}()}
+}
+\concept{files}

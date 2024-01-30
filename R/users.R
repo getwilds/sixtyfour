@@ -19,6 +19,7 @@ user_list_tidy <- function(x) {
 #' @export
 #' @param ... parameters passed on to the `paws`
 #' [list_users](https://www.paws-r-sdk.com/docs/iam_list_users/) method
+#' @family users
 #' @returns A tibble with information about user accounts
 #' @examples \dontrun{
 #' aws_users()
@@ -47,6 +48,7 @@ aws_users <- function(...) {
 #' - <https://www.paws-r-sdk.com/docs/iam_list_groups_for_user/>
 #' - <https://www.paws-r-sdk.com/docs/iam_list_attached_user_policies/>
 #' @note if username not supplied, gets logged in user
+#' @family users
 #' @examples \dontrun{
 #' # if username not supplied, gets logged in user
 #' aws_user()
@@ -76,6 +78,7 @@ aws_user <- function(username = NULL) {
 #' @return a single boolean
 #' @details uses `aws_group` internally. see docs
 #' <https://www.paws-r-sdk.com/docs/iam_get_group/>
+#' @family users
 #' @examples \dontrun{
 #' aws_user_exists(aws_user_current())
 #' aws_user_exists("blueberry")
@@ -87,6 +90,7 @@ aws_user_exists <- function(username) {
 
 #' Get the current logged-in username as a string
 #' @export
+#' @family users
 #' @return username as character
 aws_user_current <- function() {
   x <- aws_user()
@@ -106,6 +110,7 @@ aws_user_current <- function() {
 #' @return A tibble with information about the user created
 #' @details See <https://www.paws-r-sdk.com/docs/iam_create_user/>
 #' docs for details on the parameters
+#' @family users
 #' @examples \dontrun{
 #' aws_user_create("testBlueBird")
 #' }
@@ -128,6 +133,7 @@ aws_user_create <- function(
 #' @return an empty list
 #' @details See <https://www.paws-r-sdk.com/docs/iam_delete_user/>
 #' docs for more details
+#' @family users
 #' @examples \dontrun{
 #' aws_user_delete(username = "testBlueBird")
 #' }
@@ -144,6 +150,7 @@ aws_user_delete <- function(username) {
 #' @return a tibble with key details
 #' @details See <https://www.paws-r-sdk.com/docs/iam_list_access_keys/>
 #' docs for more details
+#' @family users
 #' @examples \dontrun{
 #' # aws_user_access_key()
 #' }
@@ -159,6 +166,7 @@ aws_user_access_key <- function() {
 #' @inherit aws_user return
 #' @details See <https://www.paws-r-sdk.com/docs/iam_add_user_to_group/>
 #' docs for more details
+#' @family users
 #' @examples \dontrun{
 #' if (!aws_group_exists("testgroup3")) {
 #'   aws_group_create("testgroup3")
