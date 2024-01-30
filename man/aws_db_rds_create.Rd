@@ -68,9 +68,8 @@ in AWS Secrets Manager? default: \code{TRUE}}
 \href{https://www.paws-r-sdk.com/docs/rds_create_db_instance/}{create_db_instance}}
 }
 \value{
-a list with methods for interfacing with RDS;
-see \url{https://www.paws-r-sdk.com/docs/rds/}. also prints useful
-connection information after instance is available.
+returns \code{NULL}, this function called for the side effect of
+creating an RDS instance
 }
 \description{
 Create an RDS cluster

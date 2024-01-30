@@ -93,9 +93,8 @@ aws_db_redshift_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
 #' @note See above link to `create_cluster` docs for details on requirements
 #' for each parameter
 #' @inheritSection aws_db_rds_create Waiting
-#' @return a list with methods for interfacing with Redshift;
-#' see <https://www.paws-r-sdk.com/docs/redshift/>. also prints useful
-#' connection information after cluster is available.
+#' @return returns `NULL`, this function called for the side effect of
+#' creating an Redshift instance
 aws_db_redshift_create <-
   function(id, user, pwd, dbname = "dev", cluster_type = "multi-node",
            node_type = "dc2.large", number_nodes = 2,
@@ -113,7 +112,7 @@ aws_db_redshift_create <-
       wait_for_cluster(id)
     }
     if (verbose) info(id, cluster_con_info, "aws_db_redshift_con")
-    return(env64$redshift)
+    invisible()
   }
 
 #' Get the `paws` Redshift client

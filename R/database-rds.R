@@ -105,9 +105,8 @@ aws_db_rds_con <- function(
 #' available for returning. That wait can be around 5 - 7 minutes. You can
 #' instead set `wait = FALSE` and then check on the status of the instance
 #' yourself in the AWS dashboard.
-#' @return a list with methods for interfacing with RDS;
-#' see <https://www.paws-r-sdk.com/docs/rds/>. also prints useful
-#' connection information after instance is available.
+#' @return returns `NULL`, this function called for the side effect of
+#' creating an RDS instance
 aws_db_rds_create <-
   function(id, class, user = NULL, pwd = NULL, dbname = "dev",
            engine = "mariadb", storage = 20,
@@ -154,7 +153,7 @@ aws_db_rds_create <-
       )
     }
     if (verbose) info(id, instance_con_info, "aws_db_rds_con")
-    return(env64$rds)
+    invisible()
   }
 
 #' Get the `paws` RDS client

@@ -58,9 +58,8 @@ until the cluster is available. If \code{wait=FALSE} use
 \href{https://www.paws-r-sdk.com/docs/redshift_create_cluster/}{create_cluster}}
 }
 \value{
-a list with methods for interfacing with Redshift;
-see \url{https://www.paws-r-sdk.com/docs/redshift/}. also prints useful
-connection information after cluster is available.
+returns \code{NULL}, this function called for the side effect of
+creating an Redshift instance
 }
 \description{
 Create a Redshift cluster
