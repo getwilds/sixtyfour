@@ -22,15 +22,18 @@ Rename a remote file
 }
 \examples{
 \dontrun{
-aws_file_rename(s3_path("s64-test-2", "DESCRIPTION"),
-  s3_path("s64-test-2", "DESC"))
+aws_file_rename(
+  s3_path("s64-test-2", "DESCRIPTION"),
+  s3_path("s64-test-2", "DESC")
+)
 
 tfiles <- replicate(n = 3, tempfile())
 for (i in tfiles) cat("Hello\nWorld\n", file = i)
 paths <- s3_path("s64-test-2", c("aaa", "bbb", "ccc"), ext = "txt")
 aws_file_upload(tfiles, paths)
 new_paths <- s3_path("s64-test-2", c("new_aaa", "new_bbb", "new_ccc"),
-  ext = "txt")
+  ext = "txt"
+)
 aws_file_rename(paths, new_paths)
 }
 }

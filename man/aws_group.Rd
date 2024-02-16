@@ -26,7 +26,7 @@ see docs \url{https://www.paws-r-sdk.com/docs/iam_get_group/}
 }
 \examples{
 \dontrun{
-aws_group(name="users")
+aws_group(name = "users")
 }
 }
 \seealso{

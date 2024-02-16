@@ -18,6 +18,6 @@ List VPCs
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 aws_vpcs()
-aws_vpcs(MaxResults=6)
+aws_vpcs(MaxResults = 6)
 \dontshow{\}) # examplesIf}
 }
