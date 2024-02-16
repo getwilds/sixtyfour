@@ -42,7 +42,8 @@ with \code{\link[=aws_secrets_pwd]{aws_secrets_pwd()}} (which uses the AWS Secre
 the cluster is created. default: "dev". additional databases can be created
 within the cluster}
 
-\item{engine}{(character) The engine to use. default: "mariadb". required.}
+\item{engine}{(character) The engine to use. default: "mariadb". required.
+one of: mariadb, mysql, or postgres}
 
 \item{storage}{(character) The amount of storage in gibibytes (GiB) to
 allocate for the DB instance. default: 20}

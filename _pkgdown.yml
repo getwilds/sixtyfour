@@ -43,3 +43,12 @@ reference:
     contents:
       - starts_with("aws_secret")
       - random_user
+  - title: VPCs
+    contents:
+      - aws_vpc
+      - aws_vpcs
+  - title: VPC Security Groups
+    contents:
+      - starts_with("aws_vpc_security_group")
+      - aws_ec2_client
+      - ip_permissions_generator

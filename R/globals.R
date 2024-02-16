@@ -10,5 +10,6 @@ utils::globalVariables(c(
   "secret_str", # <aws_secrets_rotate>
   "PasswordLastUsed", # <user_list_tidy>
   "CreateDate", # <tidy_generator>
+  "IpPermissions", # <security_group_handler>
   NULL
 ))

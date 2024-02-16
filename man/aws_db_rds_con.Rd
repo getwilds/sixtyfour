@@ -30,11 +30,11 @@ those you used to create the cluster with \code{\link[=aws_db_redshift_create]{a
 \code{id} are supplied - otherwise required}
 }
 \description{
-Supports: MariaDB, MySQL, and PostgreSQL
+Supports: MariaDB, MySQL, and Postgres
 }
 \details{
 RDS supports many databases, but we only provide support for
-MariaDB, MySQL, and PostgreSQL
+MariaDB, MySQL, and Postgres
 
 If the \code{engine} you've chosen for your RDS instance is not supported
 with this function, you can likely connect to it on your own

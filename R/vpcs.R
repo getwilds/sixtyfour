@@ -1,0 +1,36 @@
+#' List VPCs
+#' @export
+#' @param ... parameters passed on to [describe_vpcs](
+#' https://www.paws-r-sdk.com/docs/ec2_describe_vpcs/)
+#' @return (list) list with VPCs
+#' @examplesIf interactive()
+#' aws_vpcs()
+#' aws_vpcs(MaxResults=6)
+aws_vpcs <- function(...) {
+  aws_ec2_client()
+  env64$ec2$describe_vpcs(...)
+}
+
+#' Get a VPC by id
+#' @export
+#' @param id (character) The id of the VPC. required
+#' @inheritParams aws_vpcs
+#' @return (list) with fields:
+#' - Vpcs (list) each VPC group
+#' - NextToken (character) token for paginating
+#'
+#' Each element of Vpcs is a list with slots:
+#' - CidrBlock
+#' - DhcpOptionsId
+#' - State
+#' - VpcId
+#' - OwnerId
+#' - InstanceTenancy
+#' - Ipv6CidrBlockAssociationSet
+#' - CidrBlockAssociationSet
+#' - IsDefault
+#' - Tags
+aws_vpc <- function(id, ...) {
+  aws_ec2_client()
+  aws_vpcs(VpcIds = id, ...)
+}

@@ -1,13 +1,13 @@
 #' Get a database connection to Amazon RDS
 #'
-#' Supports: MariaDB, MySQL, and PostgreSQL
+#' Supports: MariaDB, MySQL, and Postgres
 #'
 #' @export
 #' @inheritParams aws_db_redshift_con
 #' @param engine (character) The engine to use. optional if `user`, `pwd`, and
 #' `id` are supplied - otherwise required
 #' @details RDS supports many databases, but we only provide support for
-#' MariaDB, MySQL, and PostgreSQL
+#' MariaDB, MySQL, and Postgres
 #'
 #' If the `engine` you've chosen for your RDS instance is not supported
 #' with this function, you can likely connect to it on your own
@@ -79,6 +79,7 @@ aws_db_rds_con <- function(
 #' the cluster is created. default: "dev". additional databases can be created
 #' within the cluster
 #' @param engine (character) The engine to use. default: "mariadb". required.
+#' one of: mariadb, mysql, or postgres
 #' @param storage (character) The amount of storage in gibibytes (GiB) to
 #' allocate for the DB instance. default: 20
 #' @param storage_encrypted (logical) Whether the DB instance is encrypted.
@@ -127,6 +128,7 @@ aws_db_rds_create <-
         cli::cli_alert_info("`pwd` is NULL; created password: *******")
       }
     }
+    security_group_ids <- security_group_handler(security_group_ids, engine)
     env64$rds$create_db_instance(
       DBName = dbname, DBInstanceIdentifier = id,
       Engine = engine, DBInstanceClass = class,
@@ -179,12 +181,14 @@ instance_details <- function() {
 }
 
 #' Get connection information for all instances
+#' @importFrom purrr keep
 #' @inheritParams aws_db_redshift_create
 #' @return a list of cluster details
 #' @keywords internal
 instance_con_info <- function(id) {
   deets <- instance_details()$DBInstances
-  z <- Filter(function(x) x$DBInstanceIdentifier == id, deets)[[1]]
+  z <- keep(deets, \(x) x$DBInstanceIdentifier == id)
+  if (!length(z)) rlang::abort(glue("Instance identifier {id} not found"))
   list(
     host = z$Endpoint$Address,
     port = z$Endpoint$Port,
