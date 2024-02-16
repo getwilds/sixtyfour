@@ -26,7 +26,8 @@ aws_groups <- function(username = NULL, ...) {
     paginate_aws(env64$iam$list_groups, "Groups", ...) %>% group_list_tidy()
   } else {
     paginate_aws(env64$iam$list_groups_for_user, "Groups",
-                 UserName = username, ...) %>%
+      UserName = username, ...
+    ) %>%
       group_list_tidy()
   }
 }
@@ -44,7 +45,7 @@ aws_groups <- function(username = NULL, ...) {
 #' @autoglobal
 #' @family groups
 #' @examples \dontrun{
-#' aws_group(name="users")
+#' aws_group(name = "users")
 #' }
 aws_group <- function(name) {
   x <- env64$iam$get_group(name)
@@ -65,8 +66,8 @@ aws_group <- function(name) {
 #' <https://www.paws-r-sdk.com/docs/iam_get_group/>
 #' @family groups
 #' @examples \dontrun{
-#' aws_group_exists(name="users")
-#' aws_group_exists(name="apples")
+#' aws_group_exists(name = "users")
+#' aws_group_exists(name = "apples")
 #' }
 aws_group_exists <- function(name) {
   check_aws_group <- purrr::safely(aws_group, otherwise = FALSE)

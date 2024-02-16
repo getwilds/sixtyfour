@@ -5,7 +5,7 @@
 #' @return (list) list with VPCs
 #' @examplesIf interactive()
 #' aws_vpcs()
-#' aws_vpcs(MaxResults=6)
+#' aws_vpcs(MaxResults = 6)
 aws_vpcs <- function(...) {
   aws_ec2_client()
   env64$ec2$describe_vpcs(...)

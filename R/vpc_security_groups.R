@@ -15,12 +15,15 @@ create_security_group <- function(engine) {
 #' @autoglobal
 #' @keywords internal
 security_group_handler <- function(ids, engine) {
-  if (!is.null(ids)) return(ids)
+  if (!is.null(ids)) {
+    return(ids)
+  }
   port <- engine2port(engine)
   ip <- ip_address()
   sgs <- aws_vpc_security_groups()
   sgsdf <- jsonlite::fromJSON(
-    jsonlite::toJSON(sgs$SecurityGroups, auto_unbox = TRUE))
+    jsonlite::toJSON(sgs$SecurityGroups, auto_unbox = TRUE)
+  )
 
   port_df <- dplyr::filter(
     sgsdf,
@@ -29,15 +32,18 @@ security_group_handler <- function(ids, engine) {
   if (!NROW(port_df)) {
     cli::cli_alert_danger(c(
       "No security groups with access for ",
-      "{.strong {engine}} and port {.strong {port}}"))
+      "{.strong {engine}} and port {.strong {port}}"
+    ))
     cli::cli_alert_info(c(
       "Creating security group with access for ",
-      "{.strong {engine}} and port {.strong {port}}"))
+      "{.strong {engine}} and port {.strong {port}}"
+    ))
     trysg <- tryCatch(create_security_group(engine), error = function(e) e)
     if (rlang::is_error(trysg)) {
       cli::cli_alert_danger(c(
         "An error occurred while creating the security group; ",
-        "please use paramater {.strong security_group_ids}"))
+        "please use paramater {.strong security_group_ids}"
+      ))
       return(NULL)
     } else {
       cli::cli_alert_success("Using security group {.strong {trysg}}")
@@ -52,7 +58,8 @@ security_group_handler <- function(ids, engine) {
   if (!NROW(ip_df)) {
     cli::cli_alert_danger(c(
       "Found security groups w/ access for {.strong {engine}}, ",
-      "{.emph but} not with your IP address {.strong {ip}}"))
+      "{.emph but} not with your IP address {.strong {ip}}"
+    ))
     cli::cli_alert_info("Which security group do you want to modify?")
     pick_sg_options <-
       port_df %>%
@@ -71,23 +78,29 @@ security_group_handler <- function(ids, engine) {
 
     if (picked == 0) {
       cli::cli_alert_danger(
-        "No security group selected; please use paramater {.strong security_group_ids}")
+        "No security group selected; please use paramater {.strong security_group_ids}"
+      )
       return(NULL)
     } else {
       picked_id <- port_df[picked, "GroupId"]
     }
     cli::cli_alert_info(
-      "Adding your IP address {.strong {ip}} to security group {.strong {picked_id}}")
-    try_ingress <- tryCatch({
-      aws_vpc_security_group_ingress(
-        id = picked_id,
-        ip_permissions = ip_permissions_generator(engine)
-      )
-    }, error = function(e) e)
+      "Adding your IP address {.strong {ip}} to security group {.strong {picked_id}}"
+    )
+    try_ingress <- tryCatch(
+      {
+        aws_vpc_security_group_ingress(
+          id = picked_id,
+          ip_permissions = ip_permissions_generator(engine)
+        )
+      },
+      error = function(e) e
+    )
     if (rlang::is_error(try_ingress)) {
       cli::cli_alert_danger(c(
         "An error occurred while creating the security group; ",
-        "please use paramater {.strong security_group_ids}"))
+        "please use paramater {.strong security_group_ids}"
+      ))
       return(NULL)
     } else {
       cli::cli_alert_success("Using security group {.strong {try_ingress}}")
@@ -98,7 +111,8 @@ security_group_handler <- function(ids, engine) {
   if (NROW(ip_df) == 1) {
     cli::cli_alert_success(c(
       "Found security group {.strong {ip_df$GroupId}} ",
-      "w/ access for {.strong {engine}} and your IP address {.strong {ip}}"))
+      "w/ access for {.strong {engine}} and your IP address {.strong {ip}}"
+    ))
     return(ip_df$GroupId)
   } else {
     sgoptions <-
@@ -119,7 +133,8 @@ security_group_handler <- function(ids, engine) {
     if (picked == 0) {
       cli::cli_alert_danger(c(
         "Found security group {.strong {ip_df$GroupId}} ",
-        "w/ access for {.strong {engine}}, {.emph but} not with your IP address {.strong {ip}}"))
+        "w/ access for {.strong {engine}}, {.emph but} not with your IP address {.strong {ip}}"
+      ))
       return(NULL)
     } else {
       idtouse <- ip_df[picked, "GroupId"]
@@ -192,9 +207,9 @@ aws_vpc_security_group <- function(id, ...) {
 #'   ip_permissions = ip_permissions_generator("mariadb")
 #' )
 #' }
-aws_vpc_security_group_create <- function(name, engine, description = NULL,
-  vpc_id = NULL, tags = NULL, ...) {
-
+aws_vpc_security_group_create <- function(
+    name, engine, description = NULL,
+    vpc_id = NULL, tags = NULL, ...) {
   aws_ec2_client()
   if (is.null(description)) {
     description <- glue("Access to {engine}")
@@ -279,9 +294,9 @@ ip_address <- function() {
 #'   - ReferencedGroupInfo
 #'   - Description
 #'   - Tags
-aws_vpc_security_group_ingress <- function(id = NULL,
-  ip_permissions = NULL, ...) {
-
+aws_vpc_security_group_ingress <- function(
+    id = NULL,
+    ip_permissions = NULL, ...) {
   aws_ec2_client()
   env64$ec2$authorize_security_group_ingress(
     GroupId = id,
