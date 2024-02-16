@@ -4,13 +4,20 @@
 \alias{aws_secrets_list}
 \title{List secrets}
 \usage{
-aws_secrets_list()
+aws_secrets_list(...)
+}
+\arguments{
+\item{...}{parameters passed on to the \code{paws} method}
 }
 \value{
 (list) list with secrets
 }
 \description{
 List secrets
+}
+\note{
+see \url{https://www.paws-r-sdk.com/docs/secretsmanager_list_secrets/}
+for available parameters
 }
 \examples{
 \dontrun{

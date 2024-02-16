@@ -1,11 +1,14 @@
 #' List secrets
 #' @export
+#' @param ... parameters passed on to the `paws` method
+#' @note see <https://www.paws-r-sdk.com/docs/secretsmanager_list_secrets/>
+#' for available parameters
 #' @return (list) list with secrets
 #' @examples \dontrun{
 #' aws_secrets_list()
 #' }
-aws_secrets_list <- function() {
-  env64$secretsmanager$list_secrets()
+aws_secrets_list <- function(...) {
+  env64$secretsmanager$list_secrets(...)
 }
 
 #' Get all secret values
