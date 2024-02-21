@@ -189,6 +189,7 @@ instance_con_info <- function(id) {
   deets <- instance_details()$DBInstances
   z <- keep(deets, \(x) x$DBInstanceIdentifier == id)
   if (!length(z)) rlang::abort(glue("Instance identifier {id} not found"))
+  z <- z[[1]]
   list(
     host = z$Endpoint$Address,
     port = z$Endpoint$Port,
