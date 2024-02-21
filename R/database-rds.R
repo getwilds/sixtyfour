@@ -180,6 +180,26 @@ instance_details <- function() {
   return(instances)
 }
 
+#' Get information for all RDS instances
+#' @export
+#' @family database
+#' @return a tibble of instance details;
+#' see <https://www.paws-r-sdk.com/docs/describe_db_instances/>
+#' @examplesIf interactive()
+#' aws_db_rds_list()
+aws_db_rds_list <- function() {
+  lst <- instance_details()
+  dbs <- lst$DBInstances
+  map(dbs, \(x) as_tibble(x[c(
+      "DBInstanceIdentifier",
+      "DBInstanceClass",
+      "Engine",
+      "DBInstanceStatus",
+      "DBName"
+    )])
+  ) %>% list_rbind()
+}
+
 #' Get connection information for all instances
 #' @importFrom purrr keep
 #' @inheritParams aws_db_redshift_create
