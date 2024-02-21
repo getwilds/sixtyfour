@@ -191,13 +191,12 @@ aws_db_rds_list <- function() {
   lst <- instance_details()
   dbs <- lst$DBInstances
   map(dbs, \(x) as_tibble(x[c(
-      "DBInstanceIdentifier",
-      "DBInstanceClass",
-      "Engine",
-      "DBInstanceStatus",
-      "DBName"
-    )])
-  ) %>% list_rbind()
+    "DBInstanceIdentifier",
+    "DBInstanceClass",
+    "Engine",
+    "DBInstanceStatus",
+    "DBName"
+  )])) %>% list_rbind()
 }
 
 #' Get connection information for all instances
