@@ -103,8 +103,8 @@ security_group_handler <- function(ids, engine) {
       ))
       return(NULL)
     } else {
-      cli::cli_alert_success("Using security group {.strong {try_ingress}}")
-      return(try_ingress)
+      cli::cli_alert_success("Using security group {.strong {picked_id}}")
+      return(picked_id)
     }
   }
 
