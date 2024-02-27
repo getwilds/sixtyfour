@@ -26,7 +26,7 @@ also includes policies and attached policies by calling \code{list_role_policies
 and \code{list_attached_role_policies}
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 res <- aws_role(name = "OrganizationAccountSecurityRole")
 res
 res$role
@@ -35,7 +35,7 @@ res$attached_policies
 
 aws_role("AWSServiceRoleForCloudTrail")
 aws_role("AWSServiceRoleForRedshift")
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other roles: 

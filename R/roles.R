@@ -41,7 +41,7 @@ aws_roles <- function(...) {
 #' and `list_attached_role_policies`
 #' @autoglobal
 #' @family roles
-#' @examples \dontrun{
+#' @examplesIf interactive()
 #' res <- aws_role(name = "OrganizationAccountSecurityRole")
 #' res
 #' res$role
@@ -50,7 +50,6 @@ aws_roles <- function(...) {
 #'
 #' aws_role("AWSServiceRoleForCloudTrail")
 #' aws_role("AWSServiceRoleForRedshift")
-#' }
 aws_role <- function(name) {
   df <- env64$iam$get_role(name)$Role %>%
     list(.) %>%
