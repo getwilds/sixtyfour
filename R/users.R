@@ -71,6 +71,8 @@ aws_user <- function(username = NULL) {
   )
 }
 
+check_aws_user <- purrr::safely(aws_user, otherwise = FALSE)
+
 #' Check if a user exists
 #'
 #' @export
@@ -84,7 +86,6 @@ aws_user <- function(username = NULL) {
 #' aws_user_exists("blueberry")
 #' }
 aws_user_exists <- function(username) {
-  check_aws_user <- purrr::safely(aws_user, otherwise = FALSE)
   is.null(check_aws_user(username)$error)
 }
 
