@@ -190,3 +190,10 @@ is_class <- function(x, class) {
     )
   }
 }
+
+stop_if_not <- function(cond, msg) {
+  if (!cond) rlang::abort(msg)
+}
+stop_if <- function(cond, msg) {
+  if (cond) rlang::abort(msg)
+}
