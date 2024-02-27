@@ -25,20 +25,8 @@ ui_fetch_secret <- function(user = NULL, password = NULL, engine = NULL) {
     return(list(user = user, password = password))
   }
 
-  # get all secrets data
-  secrets <- aws_secrets_all()
+  new_secrets_df <- aws_secrets_all()
 
-  # organize secrets
-  new_secrets <- list()
-  for (i in seq_along(secrets)) {
-    new_secrets[[i]] <- c(
-      list(name = secrets[[i]]$Name),
-      jsonlite::fromJSON(secrets[[i]]$SecretString)
-    )
-  }
-  new_secrets_df <-
-    Filter(function(x) length(x$host) > 0, new_secrets) %>%
-    bind_rows()
   if (!is.null(engine)) {
     new_secrets_df <- filter(new_secrets_df, engine == !!engine)
   }

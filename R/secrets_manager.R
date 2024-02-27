@@ -12,15 +12,32 @@ aws_secrets_list <- function(...) {
 }
 
 #' Get all secret values
+#' @importFrom dplyr relocate last_col
 #' @export
 #' @return (list) list with secrets
+#' @autoglobal
 #' @examples \dontrun{
 #' aws_secrets_list()
 #' }
 aws_secrets_all <- function() {
-  env64$secretsmanager$list_secrets() %>%
+  tmp <- env64$secretsmanager$list_secrets() %>%
     .$SecretList %>%
     purrr::map(function(x) aws_secrets_get(x$Name))
+
+  new_secrets <- list()
+  for (i in seq_along(tmp)) {
+    new_secrets[[i]] <- c(
+      list(
+        name = tmp[[i]]$Name,
+        arn = tmp[[i]]$ARN,
+        created_date = tmp[[i]]$CreatedDate
+      ),
+      jsonlite::fromJSON(tmp[[i]]$SecretString)
+    )
+  }
+  Filter(function(x) length(x$host) > 0, new_secrets) %>%
+    bind_rows() %>%
+    relocate(arn, created_date, .after = last_col())
 }
 
 check_secret <- function(secret) {
