@@ -94,6 +94,8 @@ aws_db_rds_con <- function(
 #' @param verbose (logical) verbose informational output? default: `TRUE`
 #' @param aws_secrets (logical) should we manage your database credentials
 #' in AWS Secrets Manager? default: `TRUE`
+#' @param iam_database_auth (logical) Use IAM database authentication?
+#' default: `FALSE`
 #' @param ... named parameters passed on to
 #' [create_db_instance](https://www.paws-r-sdk.com/docs/rds_create_db_instance/)
 #' @details See above link to `create_cluster` docs for details on requirements
@@ -114,7 +116,8 @@ aws_db_rds_create <-
   function(id, class, user = NULL, pwd = NULL, dbname = "dev",
            engine = "mariadb", storage = 20,
            storage_encrypted = TRUE, security_group_ids = NULL,
-           wait = TRUE, verbose = TRUE, aws_secrets = TRUE, ...) {
+           wait = TRUE, verbose = TRUE, aws_secrets = TRUE,
+           iam_database_auth = FALSE,...) {
     aws_db_rds_client()
     if (is.null(user)) {
       user <- random_user()
@@ -136,6 +139,7 @@ aws_db_rds_create <-
       MasterUsername = user, MasterUserPassword = pwd,
       VpcSecurityGroupIds = security_group_ids,
       StorageEncrypted = storage_encrypted,
+      EnableIAMDatabaseAuthentication = iam_database_auth,
       ...
     )
     if (wait) {
@@ -180,11 +184,17 @@ instance_details <- function() {
   return(instances)
 }
 
+split_grep <- function(column, split, pattern) {
+  grep(glue("^{pattern}$"), strsplit(column, split)[[1]], value = TRUE)
+}
+
 #' Get information for all RDS instances
+#' @importFrom dplyr select
 #' @export
 #' @family database
 #' @return a tibble of instance details;
 #' see <https://www.paws-r-sdk.com/docs/describe_db_instances/>
+#' @autoglobal
 #' @examplesIf interactive()
 #' aws_db_rds_list()
 aws_db_rds_list <- function() {
@@ -195,8 +205,16 @@ aws_db_rds_list <- function() {
     "DBInstanceClass",
     "Engine",
     "DBInstanceStatus",
-    "DBName"
-  )])) %>% list_rbind()
+    "DBName",
+    "DbiResourceId",
+    "DBInstanceArn"
+  )])) %>%
+    list_rbind() %>%
+    mutate(
+      AccountId = split_grep(DBInstanceArn, ":", "^[0-9]+$"),
+      Region = split_grep(DBInstanceArn, ":", "^[a-z]+-[a-z]+-[0-9]$")
+    ) %>%
+    select(-DBInstanceArn)
 }
 
 #' Get connection information for all instances

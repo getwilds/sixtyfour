@@ -17,6 +17,7 @@ aws_db_rds_create(
   wait = TRUE,
   verbose = TRUE,
   aws_secrets = TRUE,
+  iam_database_auth = FALSE,
   ...
 )
 }
@@ -64,6 +65,9 @@ until the cluster is available. If \code{wait=FALSE} use
 
 \item{aws_secrets}{(logical) should we manage your database credentials
 in AWS Secrets Manager? default: \code{TRUE}}
+
+\item{iam_database_auth}{(logical) Use IAM database authentication?
+default: \code{FALSE}}
 
 \item{...}{named parameters passed on to
 \href{https://www.paws-r-sdk.com/docs/rds_create_db_instance/}{create_db_instance}}
