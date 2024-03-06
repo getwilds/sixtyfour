@@ -79,9 +79,11 @@ billing_factory <- function(type) {
       list(Type = "DIMENSION", Key = "SERVICE"),
       list(Type = "DIMENSION", Key = "LINKED_ACCOUNT")
     )
-    raw_billing_data <- aws_billing_raw(date_start, metrics = type,
+    raw_billing_data <- aws_billing_raw(date_start,
+      metrics = type,
       granularity = "daily", group_by = groupby,
-      date_end = date_end)
+      date_end = date_end
+    )
 
     raw_billing_data$ResultsByTime %>%
       map(function(x) {
@@ -133,12 +135,14 @@ billing_blended <- billing_factory("BlendedCost")
 #' - DimensionValueAttributes
 #' @examplesIf interactive()
 #' aws_billing_x(date_start = "2023-02-01", metrics = "BlendedCost")
-aws_billing_raw <- function(date_start, metrics, granularity = "daily",
-  filter = NULL, group_by = NULL, date_end = as.character(Sys.Date())) {
-
+aws_billing_raw <- function(
+    date_start, metrics, granularity = "daily",
+    filter = NULL, group_by = NULL, date_end = as.character(Sys.Date())) {
   grans <- c("hourly", "daily", "monthly")
-  stopifnot("`granularity` must be one of hourly/daily/monthly" =
-    granularity %in% grans)
+  stopifnot(
+    "`granularity` must be one of hourly/daily/monthly" =
+      granularity %in% grans
+  )
   env64$costexplorer$get_cost_and_usage(
     TimePeriod = list(Start = date_start, End = date_end),
     Granularity = toupper(granularity),
