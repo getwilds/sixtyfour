@@ -14,3 +14,15 @@
 #' @importFrom glue glue
 ## usethis namespace: end
 NULL
+
+#' Mapping of full names of AWS services to acronyms
+#'
+#' @format ## `service_map`
+#' A data frame with 178 rows and 2 columns:
+#' \describe{
+#'   \item{service}{Service name in full}
+#'   \item{acronym}{The acronym, from 2 to 5 characters in length}
+#'   ...
+#' }
+#' @source <https://tommymaynard.com/aws-service-acronyms/>
+"service_map"

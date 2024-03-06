@@ -1,0 +1,179 @@
+service,acronym
+Application Auto Scaling,AAS
+AWS Certificate Manager,ACM
+Application Discovery Service,ADS
+Amazon API Gateway,AG
+Amazon API Gateway V2,AG2
+Amazon API Gateway Management API,AGM
+Alexa For Business,ALXB
+AWS Amplify,AMP
+AWS App Mesh,AMSH
+AWS AppStream,APS
+Auto Scaling,AS
+AWS Support API,ASA
+AWS Auto Scaling Plans,ASP
+AWS AppSync,ASYN
+Amazon Athena,ATH
+Amazon Backup,BAK
+AWS Batch,BAT
+AWS Budgets,BGT
+AWS Cloud9,C9
+AWS CodeBuild,CB
+AWS CodeCommit,CC
+AWS CodeDeploy,CD
+AWS Cloud Directory,CDIR
+AWS Cost Explorer,CE
+Amazon CloudFront,CF
+AWS Config,CFG
+AWS CloudFormation,CFN
+Amazon Cognito Identity,CGI
+Amazon Cognito Identity Provider,CGIP
+Amazon Cognito Sync,CGIS
+Amazon Chime,CHM
+AWS Comprehend Medical,CMPM
+Amazon Comprehend,COMP
+Amazon Connect Service,CONN
+AWS CodePipeline,CP
+Amazon CloudSearch,CS
+Amazon CloudSearchDomain,CSD
+AWS CloudShell,CSH
+AWS CodeStar,CST
+AWS CloudTrail,CT
+AWS Cost and Usage Report,CUR
+Amazon CloudWatch,CW
+AmazonCloudWatch,CW
+Amazon CloudWatch Application Insights,CWAI
+Amazon CloudWatch Events,CWE
+Amazon CloudWatch Logs,CWL
+Amazon DynamoDB Accelerator (DAX,DAX
+AWS Direct Connect,DC
+Amazon DynamoDB,DDB
+AWS Device Farm,DF
+Amazon Data Lifecycle Manager,DLM
+AWS Database Migration Service,DMS
+Amazon DocumentDB,DOC
+AWS Data Pipeline,DP
+AWS Directory Service,DS
+AWS DataSync,DSYN
+AWS Elastic Beanstalk,EB
+Amazon ElastiCache,EC
+Amazon Elastic Compute Cloud,EC2
+Amazon EC2 Container Registry,ECR
+Amazon EC2 Container Service,ECS
+Amazon Elastic File System,EFS
+Amazon Elastic Container Service for Kubernetes,EKS
+Elastic Load Balancing,ELB
+Elastic Load Balancing V2,ELB2
+AWS Elemental MediaConvert,EMC
+AWS Elemental MediaConnect,EMCN
+AWS Elemental MediaLive,EML
+AWS Elemental MediaPackage,EMP
+AWS Elemental MediaPackage VOD,EMPV
+Amazon Elastic MapReduce,EMR
+AWS Elemental MediaStore,EMS
+AWS Elemental MediaStore Data Plane,EMSD
+AWS Elemental MediaTailor,EMT
+Amazon Elasticsearch,ES
+Amazon Elastic Transcoder,ETS
+Amazon EventBridge,EVB
+Firewall Management Service,FMS
+Amazon FSx,FSX
+AWS Global Accelerator,GACL
+Amazon GuardDuty,GD
+AWS Greengrass,GG
+Amazon Glacier,GLC
+AWS Glue,GLUE
+Amazon GameLift Service,GML
+AWS Ground Station,GS
+AWS Health,HLTH
+AWS Cloud HSM,HSM
+AWS Cloud HSM V2,HSM2
+AWS Identity and Access Management,IAM
+AWS Import/Export,IE
+Amazon Inspector,INS
+AWS IoT,IOT
+AWS IoT Events,IOTE
+AWS IoT Events Data,IOTED
+AWS IoT Jobs Data Plane,IOTJ
+AWS IoT Things Graph,IOTTG
+Amazon Kinesis,KIN
+Amazon Kinesis Analytics,KINA
+Amazon Kinesis Analytics (v2,KINA2
+Amazon Kinesis Firehose,KINF
+AWS Key Management Service,KMS
+Amazon Kinesis Video Streams,KV
+Amazon Kinesis Video Streams Media,KVM
+Amazon Lex,LEX
+AWS License Manager,LICM
+AWS Lambda,LM
+Amazon Lex Model Building Service,LMB
+Amazon Lightsail,LS
+Amazon Macie,MAC
+Amazon Managed Blockchain,MBC
+AWS Marketplace Commerce Analytics,MCA
+AWS Marketplace Entitlement Service,MES
+AWS Migration Hub,MH
+Amazon Machine Learning,ML
+AWS Marketplace Metering,MM
+AWS Mobile,MOBL
+Amazon MQ,MQ
+Managed Streaming for Kafka,MSK
+Amazon MTurk Service,MTR
+Amazon Neptune,NPT
+AWS OpsWorks,OPS
+AWS Organizations,ORG
+AWS OpsWorksCM,OWCM
+AWS Certificate Manager Private Certificate Authority,PCA
+AWS Personalize,PERS
+Amazon Personalize Events,PERSE
+AWS Personalize Runtime,PERSR
+AWS Performance Insights,PI
+Amazon Pinpoint,PIN
+Amazon Pinpoint Email,PINE
+AWS Price List Service,PLS
+Amazon Polly,POL
+Amazon QuickSight,QS
+Amazon Route 53,R53
+Amazon Route 53 Domains,R53D
+Amazon Route 53 Resolver,R53R
+AWS Resource Access Manager,RAM
+Amazon Relational Database Service,RDS
+AWS RDS DataService,RDSD
+Amazon Rekognition,REK
+AWS Resource Groups,RG
+AWS Resource Groups Tagging API,RGT
+AWS RoboMaker,ROBO
+Amazon Redshift,RS
+Amazon Simple Storage Service,S3
+Amazon S3 Control,S3C
+AWS Serverless Application Repository,SAR
+AWS Service Catalog,SC
+Amazon Route 53 Auto Naming,SD
+AWS Secrets Manager,SEC
+Amazon Simple Email Service,SES
+AWS Step Functions,SFN
+AWS Storage Gateway,SG
+AWS Shield,SHLD
+AWS Security Hub,SHUB
+Amazon SageMaker Service,SM
+Amazon SageMaker Runtime,SMR
+Amazon Server Migration Service,SMS
+AWS Import/Export Snowball,SNOW
+Amazon Simple Notification Service,SNS
+AWS Service Quotas,SQ
+Amazon Simple Queue Service,SQS
+AWS Systems Manager,SSM
+AWS Security Token Service,STS
+AWS Simple Workflow Service,SWF
+AWS Transfer for SFTP,TFR
+Amazon Translate,TRN
+Amazon Transcribe Service,TRS
+Amazon Textract,TXT
+AWS WAF,WAF
+AWS WAF Regional,WAFR
+Amazon WorkDocs,WD
+Amazon WorkSpaces,WKS
+Amazon WorkLink,WL
+Amazon WorkMail,WM
+AWS X-Ray,XR
+Amazon Virtual Private Cloud,VPC

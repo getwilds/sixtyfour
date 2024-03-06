@@ -8,3 +8,4 @@
 ^.lintr$
 ^README\.Rmd$
 ^data-raw$
+vignettes/figure

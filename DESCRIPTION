@@ -14,6 +14,7 @@ VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
     "roxyglobals::global_roclet"))
 RoxygenNote: 7.2.3
+LazyData: true
 Depends:
     R (>= 2.10)
 Imports: 
@@ -38,7 +39,8 @@ Suggests:
     RMariaDB,
     testthat (>= 3.0.0),
     vcr (>= 0.6.0),
-    withr
+    withr,
+    ggplot2
 Config/roxyglobals/filename: globals.R
 Config/roxyglobals/unique: FALSE
 Config/testthat/edition: 3
