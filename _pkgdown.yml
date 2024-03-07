@@ -42,3 +42,7 @@ reference:
   - title: Secrets manager
     contents:
       - starts_with("aws_secret")
+  - title: VPCs
+    contents:
+      - aws_vpc
+      - aws_vpcs
