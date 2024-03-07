@@ -2,6 +2,8 @@ PACKAGE := $(shell grep '^Package:' DESCRIPTION | sed -E 's/^Package:[[:space:]]
 RSCRIPT = Rscript --no-init-file
 FILE_TARGET := "R/${FILE}"
 
+.PHONY: docs
+
 install: doc build
 	R CMD INSTALL . && rm *.tar.gz
 
@@ -10,6 +12,9 @@ build:
 
 doc:
 	${RSCRIPT} -e "devtools::document()"
+
+docs:
+	${RSCRIPT} -e "pkgdown::build_site(); pkgdown::preview_site(preview=TRUE)"
 
 eg:
 	${RSCRIPT} -e "devtools::run_examples(run_dontrun = TRUE)"
@@ -22,6 +27,11 @@ check: build
 vign_getting_started:
 	cd vignettes;\
 	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('sixtyfour.Rmd.og', output = 'sixtyfour.Rmd')";\
+	cd ..
+
+vign_billing:
+	cd vignettes;\
+	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('billing.Rmd.og', output = 'billing.Rmd')";\
 	cd ..
 
 test:
@@ -40,6 +50,9 @@ style_file:
 
 style_package:
 	${RSCRIPT} -e "styler::style_pkg()"
+
+update_data:
+	${RSCRIPT} -e "source('data-raw/service-mapping.R')"
 
 scan_secrets:
 	@echo "scanning for leaks in commits\n"
