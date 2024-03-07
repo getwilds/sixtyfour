@@ -8,4 +8,5 @@ env64 <- new.env()
   # iam and costexplorer services
   env64$iam <- paws::iam()
   env64$costexplorer <- paws::costexplorer()
+  env64$secretsmanager <- paws::secretsmanager()
 }

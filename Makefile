@@ -53,3 +53,10 @@ style_package:
 
 update_data:
 	${RSCRIPT} -e "source('data-raw/service-mapping.R')"
+
+scan_secrets:
+	@echo "scanning for leaks in commits\n"
+	gitleaks detect --source . -v
+	@echo "\n\n\n"
+	@echo "scanning for leaks in uncommitted files\n"
+	gitleaks protect --source . -v
