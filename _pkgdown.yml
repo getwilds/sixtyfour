@@ -23,6 +23,7 @@ reference:
   - title: Users
     contents:
       - starts_with("aws_user")
+      - random_user
   - title: Database
     contents:
       - starts_with("aws_db")
