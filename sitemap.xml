@@ -79,6 +79,9 @@
     <loc>/reference/aws_db_redshift_create.html</loc>
   </url>
   <url>
+    <loc>/reference/aws_ec2_client.html</loc>
+  </url>
+  <url>
     <loc>/reference/aws_file_attr.html</loc>
   </url>
   <url>
@@ -145,6 +148,30 @@
     <loc>/reference/aws_roles.html</loc>
   </url>
   <url>
+    <loc>/reference/aws_secrets_all.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_secrets_create.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_secrets_delete.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_secrets_get.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_secrets_list.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_secrets_pwd.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_secrets_rotate.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_secrets_update.html</loc>
+  </url>
+  <url>
     <loc>/reference/aws_user.html</loc>
   </url>
   <url>
@@ -169,6 +196,27 @@
     <loc>/reference/aws_users.html</loc>
   </url>
   <url>
+    <loc>/reference/aws_vpc.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_vpc_sec_group_rules.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_vpc_security_group.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_vpc_security_group_create.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_vpc_security_group_ingress.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_vpc_security_groups.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_vpcs.html</loc>
+  </url>
+  <url>
     <loc>/reference/billing.html</loc>
   </url>
   <url>
@@ -181,6 +229,9 @@
     <loc>/reference/cluster_details.html</loc>
   </url>
   <url>
+    <loc>/reference/construct_db_secret.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
@@ -188,6 +239,12 @@
   </url>
   <url>
     <loc>/reference/instance_details.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ip_address.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ip_permissions_generator.html</loc>
   </url>
   <url>
     <loc>/reference/last.html</loc>
