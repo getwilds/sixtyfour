@@ -13,5 +13,6 @@
 #' @importFrom s3fs s3_file_system
 #' @importFrom glue glue
 #' @importFrom jsonlite toJSON fromJSON
+#' @importFrom curl curl_fetch_memory
 ## usethis namespace: end
 NULL

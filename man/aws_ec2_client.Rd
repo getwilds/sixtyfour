@@ -16,4 +16,12 @@ Get the \code{paws} EC2 client - primarily for usage of VPC security groups
 \note{
 returns existing client if found; a new client otherwise
 }
+\seealso{
+Other security groups: 
+\code{\link{aws_vpc_security_group_create}()},
+\code{\link{aws_vpc_security_group_ingress}()},
+\code{\link{aws_vpc_security_group_modify_rules}()},
+\code{\link{aws_vpc_security_groups}()},
+\code{\link{aws_vpc_security_group}()}
+}
 \concept{security groups}

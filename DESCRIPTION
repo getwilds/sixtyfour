@@ -30,7 +30,8 @@ Imports:
     glue,
     memoise,
     uuid,
-    jsonlite
+    jsonlite,
+    curl
 Suggests: 
     knitr,
     rmarkdown,
