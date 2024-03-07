@@ -23,8 +23,8 @@ security_group_handler <- function(ids, engine) {
   if (!is.null(ids)) {
     return(ids)
   }
-  port <- engine2port(engine)
-  ip <- ip_address()
+  port <- engine2port(engine) #nolint
+  ip <- ip_address() #nolint
   sgs <- aws_vpc_security_groups()
   sgsdf <- jsonlite::fromJSON(
     jsonlite::toJSON(sgs$SecurityGroups, auto_unbox = TRUE)
@@ -83,14 +83,16 @@ security_group_handler <- function(ids, engine) {
 
     if (picked == 0) {
       cli::cli_alert_danger(
-        "No security group selected; please use paramater {.strong security_group_ids}"
+        "No security group selected; please use ",
+        "paramater {.strong security_group_ids}"
       )
       return(NULL)
     } else {
       picked_id <- port_df[picked, "GroupId"]
     }
     cli::cli_alert_info(
-      "Adding your IP address {.strong {ip}} to security group {.strong {picked_id}}"
+      "Adding your IP address {.strong {ip}} to security ",
+      "group {.strong {picked_id}}"
     )
     try_ingress <- tryCatch(
       {
@@ -138,7 +140,8 @@ security_group_handler <- function(ids, engine) {
     if (picked == 0) {
       cli::cli_alert_danger(c(
         "Found security group {.strong {ip_df$GroupId}} ",
-        "w/ access for {.strong {engine}}, {.emph but} not with your IP address {.strong {ip}}"
+        "w/ access for {.strong {engine}},",
+        "{.emph but} not with your IP address {.strong {ip}}"
       ))
       return(NULL)
     } else {
@@ -331,7 +334,7 @@ aws_vpc_security_group_ingress <- function(
 #'     )
 #'   )
 #' )
-aws_vpc_security_group_modify_rules <- function(id, rules, ...) {
+aws_vpc_sec_group_rules <- function(id, rules, ...) {
   aws_ec2_client()
   env64$ec2$modify_security_group_rules(
     GroupId = id,
