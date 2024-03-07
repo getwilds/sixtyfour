@@ -95,8 +95,9 @@ aws_policy_exists <- function(name) {
 #' aws_policy_document_create()
 #' aws_policy_create("RdsAllow", document = doc)
 #' }
-aws_policy_create <- function(name, document, path = NULL,
-  description = NULL, tags = NULL) {
+aws_policy_create <- function(
+    name, document, path = NULL,
+    description = NULL, tags = NULL) {
   env64$iam$create_policy(
     PolicyName = name,
     PolicyDocument = document,
@@ -132,16 +133,21 @@ aws_policy_create <- function(name, document, path = NULL,
 #' # all DB instances for a AWS account and AWS Region, single DB account
 #' aws_policy_document_create("us-east-2", "1234567890", "*", "jane_doe")
 #' # single DB instasnce, single DB account
-#' aws_policy_document_create("us-east-2",
-#'  "1234567890", "db-ABCDEFGHIJKL01234", "jane_doe")
+#' aws_policy_document_create(
+#'   "us-east-2",
+#'   "1234567890", "db-ABCDEFGHIJKL01234", "jane_doe"
+#' )
 #' # single DB instance, many users
-#' aws_policy_document_create("us-east-2", "1234567890",
-#'  "db-ABCDEFGHIJKL01234", c("jane_doe", "mary_roe"))
-aws_policy_document_create <- function(region, account_id, resource_id, user,
-  effect = "Allow", ...) {
-
+#' aws_policy_document_create(
+#'   "us-east-2", "1234567890",
+#'   "db-ABCDEFGHIJKL01234", c("jane_doe", "mary_roe")
+#' )
+aws_policy_document_create <- function(
+    region, account_id, resource_id, user,
+    effect = "Allow", ...) {
   resource <- glue(
-    "arn:aws:rds-db:{region}:{account_id}:dbuser:{resource_id}/{user}")
+    "arn:aws:rds-db:{region}:{account_id}:dbuser:{resource_id}/{user}"
+  )
   doc <- list(
     Version = "2012-10-17",
     Statement = list(

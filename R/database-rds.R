@@ -27,9 +27,8 @@
 #' tbl(con_rds, "mtcars")
 #' }
 aws_db_rds_con <- function(
-  user = NULL, pwd = NULL, id = NULL, host = NULL,
-  port = NULL, dbname = NULL, engine = NULL, ...) {
-
+    user = NULL, pwd = NULL, id = NULL, host = NULL,
+    port = NULL, dbname = NULL, engine = NULL, ...) {
   check_for_pkg("DBI")
   is_class(engine, "character")
 

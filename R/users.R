@@ -195,12 +195,16 @@ aws_user_add_to_group <- function(username, groupname) {
 aws_user_add_to_rds <- function(user, id) {
   # error handling
   checked_user <- check_aws_user(user)
-  stop_if(rlang::is_error(checked_user$error),
-    glue("user `{user}` does not exist"))
+  stop_if(
+    rlang::is_error(checked_user$error),
+    glue("user `{user}` does not exist")
+  )
   dbs <- aws_db_rds_list()
   picked <- dplyr::filter(dbs, DBInstanceIdentifier == {{ id }})
-  stop_if_not(NROW(picked) > 0,
-    glue("database `{id}` does not exist"))
+  stop_if_not(
+    NROW(picked) > 0,
+    glue("database `{id}` does not exist")
+  )
 
   # policy handling
   doc <- aws_policy_document_create(
@@ -229,8 +233,8 @@ aws_user_add_to_rds <- function(user, id) {
         CREATE USER {`user`}
         IDENTIFIED WITH AWSAuthenticationPlugin
         AS 'RDS'",
-        .con = con
-      )
+      .con = con
+    )
     # DBI::dbSendQuery(con, qry)
     res <- DBI::dbSendQuery(con, "CREATE USER ? IDENTIFIED WITH AWSAuthenticationPlugin AS 'RDS'")
     DBI::dbBind(res, list(user))

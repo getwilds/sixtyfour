@@ -23,8 +23,8 @@ security_group_handler <- function(ids, engine) {
   if (!is.null(ids)) {
     return(ids)
   }
-  port <- engine2port(engine) #nolint
-  ip <- ip_address() #nolint
+  port <- engine2port(engine) # nolint
+  ip <- ip_address() # nolint
   sgs <- aws_vpc_security_groups()
   sgsdf <- jsonlite::fromJSON(
     jsonlite::toJSON(sgs$SecurityGroups, auto_unbox = TRUE)
