@@ -28,7 +28,10 @@ Imports:
     s3fs (>= 0.1.3),
     cli,
     glue,
-    memoise
+    memoise,
+    uuid,
+    jsonlite,
+    curl
 Suggests: 
     knitr,
     rmarkdown,

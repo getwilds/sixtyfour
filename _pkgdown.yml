@@ -39,3 +39,18 @@ reference:
   - title: IAM
     contents:
       - starts_with("aws_iam")
+  - title: Secrets manager
+    contents:
+      - starts_with("aws_secret")
+  - title: VPCs
+    contents:
+      - aws_vpc
+      - aws_vpcs
+  - title: VPC Security Groups
+    contents:
+      - starts_with("aws_vpc_security_group")
+      - aws_vpc_sec_group_rules
+      - ip_permissions_generator
+  - title: EC2
+    contents:
+      - aws_ec2_client
