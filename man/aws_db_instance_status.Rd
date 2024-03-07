@@ -10,7 +10,7 @@ aws_db_instance_status(id)
 \item{id}{(character) required. instance identifier. The identifier for
 this DB instance. This parameter is stored as a lowercase string.
 Constraints: must contain from 1 to 63 letters, numbers, or hyphens; first
-character must be a letter; cn't end with a hyphen or contain two
+character must be a letter; can't end with a hyphen or contain two
 consecutive hyphens. required.}
 }
 \value{
@@ -31,6 +31,7 @@ Other database:
 \code{\link{aws_db_rds_client}()},
 \code{\link{aws_db_rds_con}()},
 \code{\link{aws_db_rds_create}()},
+\code{\link{aws_db_rds_list}()},
 \code{\link{aws_db_redshift_client}()},
 \code{\link{aws_db_redshift_con}()},
 \code{\link{aws_db_redshift_create}()}

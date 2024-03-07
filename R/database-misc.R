@@ -34,3 +34,7 @@ which_driver <- function(engine) {
     stop(glue::glue("{engine} not currently supported"))
   )
 }
+
+random_str <- function(prefix = "-") {
+  paste0(prefix, sub("-.+", "", uuid::UUIDgenerate()))
+}

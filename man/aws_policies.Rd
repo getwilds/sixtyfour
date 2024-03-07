@@ -34,6 +34,7 @@ aws_policies(refresh = TRUE)
 Other policies: 
 \code{\link{as_policy_arn}()},
 \code{\link{aws_policy_attach}()},
+\code{\link{aws_policy_create}()},
 \code{\link{aws_policy_detach}()},
 \code{\link{aws_policy_exists}()},
 \code{\link{aws_policy}()}
