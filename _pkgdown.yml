@@ -49,6 +49,7 @@ reference:
   - title: VPC Security Groups
     contents:
       - starts_with("aws_vpc_security_group")
+      - aws_vpc_sec_group_rules
       - ip_permissions_generator
   - title: EC2
     contents:
