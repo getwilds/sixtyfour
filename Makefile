@@ -40,3 +40,10 @@ style_file:
 
 style_package:
 	${RSCRIPT} -e "styler::style_pkg()"
+
+scan_secrets:
+	@echo "scanning for leaks in commits\n"
+	gitleaks detect --source . -v
+	@echo "\n\n\n"
+	@echo "scanning for leaks in uncommitted files\n"
+	gitleaks protect --source . -v
