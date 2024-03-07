@@ -6,6 +6,11 @@ utils::globalVariables(c(
   "PolicyName", # <as_policy_arn>
   "Arn", # <as_policy_arn>
   ".", # <aws_role>
+  ".", # <aws_secrets_all>
+  "arn", # <aws_secrets_all>
+  "created_date", # <aws_secrets_all>
+  "secret_raw", # <aws_secrets_rotate>
+  "secret_str", # <aws_secrets_rotate>
   "PasswordLastUsed", # <user_list_tidy>
   "CreateDate", # <tidy_generator>
   NULL

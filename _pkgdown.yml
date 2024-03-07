@@ -39,3 +39,6 @@ reference:
   - title: IAM
     contents:
       - starts_with("aws_iam")
+  - title: Secrets manager
+    contents:
+      - starts_with("aws_secret")
