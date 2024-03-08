@@ -48,4 +48,4 @@ Config/roxyglobals/filename: globals.R
 Config/roxyglobals/unique: FALSE
 Config/testthat/edition: 3
 Remotes:
-    sckott/s3fs@sckott/file_download_vec
+    sckott/s3fs@sckott/file-download
