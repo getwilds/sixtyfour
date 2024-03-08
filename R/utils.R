@@ -113,8 +113,10 @@ path_s3_build <- function(x) {
 #' @examplesIf interactive()
 #' path_as_s3("http://s64-test-3.s3.amazonaws.com/")
 #' path_as_s3("https://s64-test-3.s3.amazonaws.com/")
-#' path_as_s3(c("https://s64-test-3.s3.amazonaws.com/",
-#'   "https://mybucket.s3.amazonaws.com/"))
+#' path_as_s3(c(
+#'   "https://s64-test-3.s3.amazonaws.com/",
+#'   "https://mybucket.s3.amazonaws.com/"
+#' ))
 #' path_as_s3(c("apple", "banana", "pear", "pineapple"))
 path_as_s3 <- function(paths) {
   paths <- gsub("https?://", "", paths)
@@ -138,8 +140,12 @@ path_as_s3 <- function(paths) {
 #' }
 paginate_aws <- function(fun, target, ...) {
   res <- fun(...)
-  if (!rlang::has_name(res, "IsTruncated")) return(res[[target]])
-  if (!res$IsTruncated) return(res[[target]])
+  if (!rlang::has_name(res, "IsTruncated")) {
+    return(res[[target]])
+  }
+  if (!res$IsTruncated) {
+    return(res[[target]])
+  }
 
   all_results <- list(res)
   more_results <- TRUE
