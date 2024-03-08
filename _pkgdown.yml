@@ -7,19 +7,20 @@ reference:
       High level overview of package
     contents:
       - sixtyfour
+  - title: Billing
+    contents:
+      - starts_with("aws_billing")
   - title: Files
     desc: >
       All file functions are vectorized. That is, you can pass in 1 or more local or s3 remote paths to the file functions.
     contents:
       - starts_with("aws_file")
+      - service_map
   - title: Buckets
     desc: >
       All bucket functions are NOT vectorized.
     contents:
       - starts_with("aws_bucket")
-  - title: Billing
-    contents:
-      - billing
   - title: Users
     contents:
       - starts_with("aws_user")

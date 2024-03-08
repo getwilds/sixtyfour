@@ -2,6 +2,11 @@
 
 utils::globalVariables(c(
   "DBInstanceArn", # <aws_db_rds_list>
+  "UnblendedCost", # <aws_billing>
+  "BlendedCost", # <aws_billing>
+  "service_map", # <billing_factory>
+  "acronym", # <billing_factory>
+  "Service", # <billing_factory>
   ".", # <aws_group>
   ".", # <aws_policy>
   "PolicyName", # <as_policy_arn>
