@@ -26,7 +26,7 @@ Imports:
     rlang,
     tibble,
     fs,
-    s3fs (>= 0.1.3),
+    s3fs (>= 0.1.4),
     cli,
     glue,
     memoise,
@@ -48,4 +48,4 @@ Config/roxyglobals/filename: globals.R
 Config/roxyglobals/unique: FALSE
 Config/testthat/edition: 3
 Remotes:
-    sckott/s3fs@sckott/file-download
+    DyfanJones/s3fs
