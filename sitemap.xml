@@ -139,7 +139,13 @@
     <loc>/reference/aws_policy_attach.html</loc>
   </url>
   <url>
+    <loc>/reference/aws_policy_create.html</loc>
+  </url>
+  <url>
     <loc>/reference/aws_policy_detach.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_policy_document_create.html</loc>
   </url>
   <url>
     <loc>/reference/aws_policy_exists.html</loc>
