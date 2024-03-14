@@ -25,7 +25,7 @@ DB instance}
 
 \item{user}{(character) a user name that has an IAM account. length>=1}
 
-\item{action}{(character) an action. see}
+\item{action}{(character) an action. required. see Actions below.}
 
 \item{effect}{(character) valid values: "Allow" (default), "Deny". length==1}
 
@@ -45,6 +45,16 @@ a few document items are hard-coded:
 \item \code{Action} is set to "rds-db:connect"
 }
 }
+\section{Actions}{
+
+Actions documentation appears to be all over the web. Here's a start:
+\itemize{
+\item S3: \url{https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazons3.html} # nolint
+\item EC2: \url{https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Operations.html} # nolint
+\item IAM: \url{https://docs.aws.amazon.com/IAM/latest/APIReference/API_Operations.html} # nolint
+}
+}
+
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 ### DB account = user in a database that has access to it
@@ -69,6 +79,6 @@ aws_policy_document_create(
 }
 \references{
 #no lint start
-https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html
+\url{https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html}
 #no lint end
 }

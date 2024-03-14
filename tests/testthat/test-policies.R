@@ -81,7 +81,8 @@ test_that("aws_policy_document_create", {
     account_id = "1234567890",
     resource_id = "*",
     user = "*",
-    action = "rds-db:connect")
+    action = "rds-db:connect"
+  )
   doc1lst <- jsonlite::fromJSON(doc1, FALSE)
 
   expect_type(doc1, "character")
