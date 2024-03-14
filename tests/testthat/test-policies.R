@@ -74,3 +74,41 @@ test_that("aws_policy_detach", {
   expect_equal(NROW(user_before$attached_policies), 1)
   expect_equal(NROW(user_after$attached_policies), 0)
 })
+
+test_that("aws_policy_document_create", {
+  doc1 <- aws_policy_document_create(
+    region = "us-east-2",
+    account_id = "1234567890",
+    resource_id = "*",
+    user = "*",
+    action = "rds-db:connect")
+  doc1lst <- jsonlite::fromJSON(doc1, FALSE)
+
+  expect_type(doc1, "character")
+  expect_s3_class(doc1, "json")
+  expect_named(doc1lst, c("Version", "Statement"))
+  expect_named(doc1lst$Statement[[1]], c("Effect", "Action", "Resource"))
+  expect_equal(doc1lst$Statement[[1]]$Effect, "Allow")
+  expect_equal(doc1lst$Statement[[1]]$Action, "rds-db:connect")
+})
+
+test_that("aws_policy_create", {
+  withr::local_envvar(c("TESTING64" = TRUE))
+
+  my_doc <- aws_policy_document_create(
+    region = "us-east-2",
+    account_id = "1234567890",
+    resource_id = "db-ABCDEFGHIJKL01234",
+    user = c("jane_doe", "mary_roe"),
+    action = "s3:ListAllMyBuckets"
+  )
+
+  vcr::use_cassette("aws_policy_create", {
+    polisee <- aws_policy_create("MyTestPolicy", document = my_doc)
+  })
+
+  expect_type(polisee, "list")
+  expect_named(polisee, "Policy")
+  expect_equal(polisee$Policy$PolicyName, "MyTestPolicy")
+  expect_match(polisee$Policy$PolicyName, "MyTestPolicy")
+})

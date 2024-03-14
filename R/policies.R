@@ -139,12 +139,15 @@ aws_policy_create <- function(
 #' )
 #' # single DB instance, many users
 #' aws_policy_document_create(
-#'   "us-east-2", "1234567890",
-#'   "db-ABCDEFGHIJKL01234", c("jane_doe", "mary_roe")
+#'   region = "us-east-2",
+#'   account_id = "1234567890",
+#'   resource_id = "db-ABCDEFGHIJKL01234",
+#'   user = c("jane_doe", "mary_roe"),
+#'   action = "rds-db:connect"
 #' )
 aws_policy_document_create <- function(
     region, account_id, resource_id, user,
-    effect = "Allow", ...) {
+    action, effect = "Allow", ...) {
   resource <- glue(
     "arn:aws:rds-db:{region}:{account_id}:dbuser:{resource_id}/{user}"
   )
@@ -153,7 +156,7 @@ aws_policy_document_create <- function(
     Statement = list(
       list(
         Effect = effect,
-        Action = "rds-db:connect",
+        Action = action,
         Resource = resource
       )
     )
