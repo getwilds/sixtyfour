@@ -116,6 +116,7 @@ aws_policy_create <- function(
 #' DB instance
 #' @param resource_id (character) the identifier for the DB instance. length==1
 #' @param user (character) a user name that has an IAM account. length>=1
+#' @param action (character) an action. required. see Actions below.
 #' @param effect (character) valid values: "Allow" (default), "Deny". length==1
 #' @param ... named args passed to [jsonlite::toJSON()]
 #' @references #no lint start
@@ -126,6 +127,11 @@ aws_policy_create <- function(
 #' @note a few document items are hard-coded:
 #' - `Version` is set to 2012-10-17"
 #' - `Action` is set to "rds-db:connect"
+#' @section Actions:
+#' Actions documentation appears to be all over the web. Here's a start:
+#' - S3: <https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazons3.html> # nolint
+#' - EC2: <https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Operations.html> # nolint
+#' - IAM: <https://docs.aws.amazon.com/IAM/latest/APIReference/API_Operations.html> # nolint
 #' @examplesIf interactive()
 #' ### DB account = user in a database that has access to it
 #' # all DB instances & DB accounts for a AWS account and AWS Region

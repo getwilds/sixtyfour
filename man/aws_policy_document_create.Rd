@@ -9,6 +9,7 @@ aws_policy_document_create(
   account_id,
   resource_id,
   user,
+  action,
   effect = "Allow",
   ...
 )
@@ -23,6 +24,8 @@ DB instance}
 \item{resource_id}{(character) the identifier for the DB instance. length==1}
 
 \item{user}{(character) a user name that has an IAM account. length>=1}
+
+\item{action}{(character) an action. see}
 
 \item{effect}{(character) valid values: "Allow" (default), "Deny". length==1}
 
@@ -56,8 +59,11 @@ aws_policy_document_create(
 )
 # single DB instance, many users
 aws_policy_document_create(
-  "us-east-2", "1234567890",
-  "db-ABCDEFGHIJKL01234", c("jane_doe", "mary_roe")
+  region = "us-east-2",
+  account_id = "1234567890",
+  resource_id = "db-ABCDEFGHIJKL01234",
+  user = c("jane_doe", "mary_roe"),
+  action = "rds-db:connect"
 )
 \dontshow{\}) # examplesIf}
 }
