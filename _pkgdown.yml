@@ -21,6 +21,7 @@ reference:
       All bucket functions are NOT vectorized.
     contents:
       - starts_with("aws_bucket")
+      - aws_s3_policy_doc_create
   - title: Users
     contents:
       - starts_with("aws_user")
