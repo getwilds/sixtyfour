@@ -11,6 +11,7 @@ aws_policy_document_create(
   user,
   action,
   effect = "Allow",
+  sid = NULL,
   ...
 )
 }
@@ -28,6 +29,10 @@ DB instance}
 \item{action}{(character) an action. required. see Actions below.}
 
 \item{effect}{(character) valid values: "Allow" (default), "Deny". length==1}
+
+\item{sid}{(character) statement ID as an optional identifier for the policy
+statement. optional. see
+\url{https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_sid.html} # nolint}
 
 \item{...}{named args passed to \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}}}
 }
@@ -59,13 +64,28 @@ Actions documentation appears to be all over the web. Here's a start:
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 ### DB account = user in a database that has access to it
 # all DB instances & DB accounts for a AWS account and AWS Region
-aws_policy_document_create("us-east-2", "1234567890", "*", "*")
+aws_policy_document_create(
+  region = "us-east-2",
+  account_id = "1234567890",
+  resource_id = "*",
+  user = "*",
+  action = "rds-db:connect"
+)
 # all DB instances for a AWS account and AWS Region, single DB account
-aws_policy_document_create("us-east-2", "1234567890", "*", "jane_doe")
+aws_policy_document_create(
+  region = "us-east-2",
+  account_id = "1234567890",
+  resource_id = "*",
+  user = "jane_doe",
+  action = "rds-db:connect"
+)
 # single DB instasnce, single DB account
 aws_policy_document_create(
-  "us-east-2",
-  "1234567890", "db-ABCDEFGHIJKL01234", "jane_doe"
+  region = "us-east-2",
+  account_id = "1234567890",
+  resource_id = "db-ABCDEFGHIJKL01234",
+  user = "jane_doe",
+  action = "rds-db:connect"
 )
 # single DB instance, many users
 aws_policy_document_create(
@@ -75,10 +95,17 @@ aws_policy_document_create(
   user = c("jane_doe", "mary_roe"),
   action = "rds-db:connect"
 )
+# specify a sid
+aws_policy_document_create(
+  region = "us-east-2",
+  account_id = "1234567890",
+  resource_id = "*",
+  user = "jane_doe",
+  action = "rds-db:connect",
+  sid = "AllDBsForJane"
+)
 \dontshow{\}) # examplesIf}
 }
 \references{
-#no lint start
-\url{https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html}
-#no lint end
+\url{https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html} # nolint
 }

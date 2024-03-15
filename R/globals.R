@@ -11,6 +11,12 @@ utils::globalVariables(c(
   "PolicyName", # <as_policy_arn>
   "Arn", # <as_policy_arn>
   ".", # <aws_role>
+  "user", # <aws_bucket_remove_user>
+  "user", # <aws_bucket_get_permissions>
+  "permissions", # <aws_bucket_get_permissions>
+  "PolicyArn", # <permissions_user_bucket>
+  "resource_arn", # <permissions_user_bucket>
+  "group", # <permissions_groups>
   ".", # <aws_secrets_all>
   "arn", # <aws_secrets_all>
   "created_date", # <aws_secrets_all>

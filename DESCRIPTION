@@ -32,7 +32,8 @@ Imports:
     memoise,
     uuid,
     jsonlite,
-    curl
+    curl,
+    snakecase
 Suggests: 
     knitr,
     rmarkdown,

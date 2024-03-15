@@ -14,6 +14,7 @@
 #' @importFrom glue glue
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom curl curl_fetch_memory
+#' @importFrom rlang abort
 ## usethis namespace: end
 NULL
 
