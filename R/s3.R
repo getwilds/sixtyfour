@@ -73,7 +73,12 @@ aws_s3_policy_doc_create <- function(bucket, action, effect = "Allow",
 #'   permissions = "read"
 #' )
 #' \dontrun{
-#' aws_bucket_add_user("mybucket", "scott", permissions = "stuff")
+#' # not a valid permissions string
+#' aws_bucket_add_user(
+#'   bucket = "mybucket",
+#'   username = "scott",
+#'   permissions = "notavalidpermission"
+#' )
 #' }
 aws_bucket_add_user <- function(bucket, username, permissions) {
   stopifnot(

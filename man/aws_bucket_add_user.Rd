@@ -39,7 +39,12 @@ aws_bucket_add_user(
   permissions = "read"
 )
 \dontrun{
-aws_bucket_add_user("mybucket", "scott", permissions = "stuff")
+# not a valid permissions string
+aws_bucket_add_user(
+  bucket = "mybucket",
+  username = "scott",
+  permissions = "notavalidpermission"
+)
 }
 \dontshow{\}) # examplesIf}
 }
