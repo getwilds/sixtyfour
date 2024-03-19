@@ -19,26 +19,32 @@ multipart}
 \description{
 Upload a folder of files to create an S3 bucket
 }
+\details{
+To upload individual files see \code{\link[=aws_file_upload]{aws_file_upload()}}
+}
 \note{
 Requires the env var \code{AWS_REGION}. This function prompts you to make
 sure that you want to delete the bucket.
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(fs)
 tdir <- path(tempdir(), "apples")
 dir.create(tdir)
 tfiles <- replicate(n = 10, file_temp(tmp_dir = tdir, ext = ".txt"))
 invisible(lapply(tfiles, function(x) write.csv(mtcars, x)))
 
-aws_bucket_upload(path = tdir, bucket = "a-new-bucket-345")
-aws_bucket_list_objects("a-new-bucket-345")
+bucket_name <- "a-new-bucket-345"
+if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
+aws_bucket_upload(path = tdir, bucket = bucket_name)
+aws_bucket_list_objects(bucket_name)
 
 # cleanup
-objs <- aws_bucket_list_objects("a-new-bucket-345")
+objs <- aws_bucket_list_objects(bucket_name)
 aws_file_delete(objs$uri)
-aws_bucket_delete("a-new-bucket-345")
-}
+aws_bucket_delete(bucket_name, force=TRUE)
+aws_bucket_exists(bucket_name)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other buckets: 

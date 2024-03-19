@@ -22,6 +22,8 @@ equal_lengths <- function(x, y) {
 #' @details
 #' - For upload: if it does exist it will be created
 #' - For download: if it does not exist, function will return an error
+#'
+#' To upload a folder of files see [aws_bucket_upload()]
 #' @family files
 #' @examples \dontrun{
 #' demo_rds_file <- file.path(system.file(), "Meta/demo.rds")

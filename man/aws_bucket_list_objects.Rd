@@ -29,9 +29,16 @@ is an S3 bucket, with 8 columns:
 List objects in an S3 bucket
 }
 \examples{
-\dontrun{
-aws_bucket_list_objects(bucket = "s64-test-2")
-}
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+bucket_name <- "s64-test-67"
+if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
+links_file <- file.path(system.file(), "Meta/links.rds")
+aws_file_upload(
+  links_file,
+  s3_path(bucket_name, basename(links_file))
+)
+aws_bucket_list_objects(bucket = bucket_name)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other buckets: 
