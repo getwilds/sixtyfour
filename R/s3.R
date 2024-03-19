@@ -52,6 +52,17 @@ aws_s3_policy_doc_create <- function(bucket, action, effect = "Allow",
   jsonlite::toJSON(doc, auto_unbox = TRUE, ...)
 }
 
+add_user_already <- c(
+  "{.strong {username}} already",
+  " has {.strong {permissions}} access",
+  " to bucket {.strong {bucket}}"
+)
+add_user_now_has <- c(
+  "{.strong {username}}",
+  " now has {.strong {permissions}} access",
+  " to bucket {.strong {bucket}}"
+)
+
 #' Add a user to a bucket
 #' @export
 #' @importFrom snakecase to_upper_camel_case
@@ -102,19 +113,16 @@ aws_bucket_add_user <- function(bucket, username, permissions) {
     aws_policy_create(policy_name, document = mydoc)
   }
   user_data <- aws_user(username)
+  if (NROW(user_data$attached_policies) == 0) {
+		aws_user(username) %>% aws_policy_attach(policy_name)
+		cli::cli_alert_success(add_user_now_has)
+		return(invisible())
+  }
   if (policy_name %in% user_data$attached_policies$PolicyName) {
-    cli::cli_alert_success(c(
-      "{.strong {username}} already",
-      " has {.strong {permissions}} access",
-      " to bucket {.strong {bucket}}"
-    ))
+    cli::cli_alert_success(add_user_already)
   } else {
     aws_user(username) %>% aws_policy_attach(policy_name)
-    cli::cli_alert_success(c(
-      "{.strong {username}}",
-      " now has {.strong {permissions}} access",
-      " to bucket {.strong {bucket}}"
-    ))
+    cli::cli_alert_success(add_user_now_has)
   }
 }
 
