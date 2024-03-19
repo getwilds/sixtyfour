@@ -109,7 +109,7 @@ more details.</p>
 </h2>
 <ul>
 <li>
-<code>aws_billing</code>: manage AWS billing details</li>
+<code>aws_billing*</code>: manage AWS billing details</li>
 <li>
 <code>aws_bucket*</code>: manage S3 buckets</li>
 <li>
@@ -121,27 +121,31 @@ more details.</p>
 <li>
 <code>aws_role*</code>: manage AWS roles</li>
 <li>
-<code>aws_policies*</code>: manage AWS policies</li>
+<code>aws_policy*</code>: manage AWS policies</li>
 <li>
 <code>aws_db*</code>: interact with AWS database services Redshift
 and RDS</li>
+<li>
+<code>aws_secrets*</code>: secrets manager</li>
+<li>
+<code>aws_vpc_security*</code>: VPC security groups</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="working-with-s3">Working with S3<a class="anchor" aria-label="anchor" href="#working-with-s3"></a>
 </h2>
 <p>This vignette won’t touch on all of the above parts of the package
-API - but instead will cover working with files as that’s likely the
-most common use case for <code>sixtyfour</code> users.</p>
+API - but instead will cover working with files as that’s likely a
+common use case for <code>sixtyfour</code> users.</p>
 <div class="section level3">
 <h3 id="buckets">Buckets<a class="anchor" aria-label="anchor" href="#buckets"></a>
 </h3>
 <p>Make a random bucket name</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bucket_name</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">letters</span>, size <span class="op">=</span> <span class="fl">12</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">random_bucket_name</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html" class="external-link">glue</a></span><span class="op">(</span><span class="st">"egs-{paste0(sample(letters, size = 12), collapse = '')}"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="va">bucket</span> <span class="op">&lt;-</span> <span class="fu">bucket_name</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">bucket</span> <span class="op">&lt;-</span> <span class="fu">random_bucket_name</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Create a bucket - check if it exists first</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">exists</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aws_bucket_exists.html">aws_bucket_exists</a></span><span class="op">(</span><span class="va">bucket</span><span class="op">)</span></span>
@@ -149,7 +153,7 @@ most common use case for <code>sixtyfour</code> users.</p>
 <span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="va">exists</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="../reference/aws_bucket_create.html">aws_bucket_create</a></span><span class="op">(</span><span class="va">bucket</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="co">#&gt; [1] "http://jbifqnmxvhoy.s3.amazonaws.com/"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "http://egs-tnxoekbrjcdl.s3.amazonaws.com/"</span></span></code></pre></div>
 <p>Create files in a few different directories</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://fs.r-lib.org" class="external-link">fs</a></span><span class="op">)</span></span>
@@ -160,24 +164,24 @@ most common use case for <code>sixtyfour</code> users.</p>
 <p>Upload them to the newly created bucket</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/aws_bucket_upload.html">aws_bucket_upload</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">tdir</span>, bucket <span class="op">=</span> <span class="va">bucket</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "s3://private/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T/RtmpfgFSLV/apples"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "s3://private/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T/RtmpyTGZNW/apples"</span></span></code></pre></div>
 <p>List objects in the bucket</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">objects</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aws_bucket_list_objects.html">aws_bucket_list_objects</a></span><span class="op">(</span><span class="va">bucket</span><span class="op">)</span></span>
 <span><span class="va">objects</span></span>
 <span><span class="co">#&gt; # A tibble: 10 × 8</span></span>
-<span><span class="co">#&gt;    bucket_name  key            uri    size type  owner etag  last_modified      </span></span>
-<span><span class="co">#&gt;    &lt;chr&gt;        &lt;chr&gt;          &lt;chr&gt; &lt;fs:&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;dttm&gt;             </span></span>
-<span><span class="co">#&gt;  1 jbifqnmxvhoy filee9b4354bb… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42</span></span>
-<span><span class="co">#&gt;  2 jbifqnmxvhoy filee9b4377a4… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42</span></span>
-<span><span class="co">#&gt;  3 jbifqnmxvhoy filee9b43edbb… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42</span></span>
-<span><span class="co">#&gt;  4 jbifqnmxvhoy filee9b44b614… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42</span></span>
-<span><span class="co">#&gt;  5 jbifqnmxvhoy filee9b45f486… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42</span></span>
-<span><span class="co">#&gt;  6 jbifqnmxvhoy filee9b46dcb3… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42</span></span>
-<span><span class="co">#&gt;  7 jbifqnmxvhoy filee9b47ce37… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:43</span></span>
-<span><span class="co">#&gt;  8 jbifqnmxvhoy filee9b47d842… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:43</span></span>
-<span><span class="co">#&gt;  9 jbifqnmxvhoy filee9b49783e… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:43</span></span>
-<span><span class="co">#&gt; 10 jbifqnmxvhoy filee9b4ab36c… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:43</span></span></code></pre></div>
+<span><span class="co">#&gt;    bucket_name      key        uri    size type  owner etag  last_modified</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;            &lt;chr&gt;      &lt;chr&gt; &lt;fs:&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;dttm&gt;</span></span>
+<span><span class="co">#&gt;  1 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  &lt;NA&gt;  "\"6… 2024-03-19 23:28:06</span></span>
+<span><span class="co">#&gt;  2 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  &lt;NA&gt;  "\"6… 2024-03-19 23:28:06</span></span>
+<span><span class="co">#&gt;  3 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  &lt;NA&gt;  "\"6… 2024-03-19 23:28:06</span></span>
+<span><span class="co">#&gt;  4 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  &lt;NA&gt;  "\"6… 2024-03-19 23:28:06</span></span>
+<span><span class="co">#&gt;  5 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  &lt;NA&gt;  "\"6… 2024-03-19 23:28:06</span></span>
+<span><span class="co">#&gt;  6 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  &lt;NA&gt;  "\"6… 2024-03-19 23:28:07</span></span>
+<span><span class="co">#&gt;  7 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  &lt;NA&gt;  "\"6… 2024-03-19 23:28:07</span></span>
+<span><span class="co">#&gt;  8 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  &lt;NA&gt;  "\"6… 2024-03-19 23:28:07</span></span>
+<span><span class="co">#&gt;  9 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  &lt;NA&gt;  "\"6… 2024-03-19 23:28:07</span></span>
+<span><span class="co">#&gt; 10 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  &lt;NA&gt;  "\"6… 2024-03-19 23:28:07</span></span></code></pre></div>
 <p>Cleanup - delete the bucket.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/aws_bucket_delete.html">aws_bucket_delete</a></span><span class="op">(</span><span class="va">bucket</span><span class="op">)</span></span></code></pre></div>
@@ -185,9 +189,8 @@ most common use case for <code>sixtyfour</code> users.</p>
 <p>If there’s files in your bucket you can not delete it. Delete files,
 then delete bucket again</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">objects</span><span class="op">$</span><span class="va">uri</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="../reference/aws_file_delete.html">aws_file_delete</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/s3fs/man/path.html" class="external-link">s3_path</a></span><span class="op">(</span><span class="va">bucket</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/aws_file_delete.html">aws_file_delete</a></span><span class="op">(</span><span class="va">objects</span><span class="op">$</span><span class="va">uri</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/aws_bucket_delete.html">aws_bucket_delete</a></span><span class="op">(</span><span class="va">bucket</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; list()</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="files">Files<a class="anchor" aria-label="anchor" href="#files"></a>
@@ -200,38 +203,38 @@ functions in this package use, the file functions use <code>s3fs</code>
 under the hood (which is itself built on <code>paws</code>) as it’s a
 cleaner interface to S3.</p>
 <p>First, create a bucket:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_bucket</span> <span class="op">&lt;-</span> <span class="st">"s64-test-files-3"</span></span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_bucket</span> <span class="op">&lt;-</span> <span class="fu">random_bucket_name</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/aws_bucket_create.html">aws_bucket_create</a></span><span class="op">(</span><span class="va">my_bucket</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "http://s64-test-files-3.s3.amazonaws.com/"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "http://egs-fzpqkyhmtxlg.s3.amazonaws.com/"</span></span></code></pre></div>
 <p>Then, upload some files</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">temp_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".txt"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="va">temp_files</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="va">letters</span>, <span class="st">"\n"</span>, file <span class="op">=</span> <span class="va">i</span><span class="op">)</span></span>
 <span><span class="va">remote_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/s3fs/man/path.html" class="external-link">s3_path</a></span><span class="op">(</span><span class="va">my_bucket</span>, <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">basename</a></span><span class="op">(</span><span class="va">temp_files</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/aws_file_upload.html">aws_file_upload</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">temp_files</span>, remote_path <span class="op">=</span> <span class="va">remote_files</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "s3://s64-test-files-3/filee9b437e6778c.txt"</span></span>
-<span><span class="co">#&gt; [2] "s3://s64-test-files-3/filee9b47bb2a4ff.txt"</span></span>
-<span><span class="co">#&gt; [3] "s3://s64-test-files-3/filee9b4d6ea0cb.txt"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "s3://egs-fzpqkyhmtxlg/file102ee45c0b74.txt"</span></span>
+<span><span class="co">#&gt; [2] "s3://egs-fzpqkyhmtxlg/file102ee36f3eee8.txt"</span></span>
+<span><span class="co">#&gt; [3] "s3://egs-fzpqkyhmtxlg/file102ee48c9dd87.txt"</span></span></code></pre></div>
 <p>List files in the bucket</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">obs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aws_bucket_list_objects.html">aws_bucket_list_objects</a></span><span class="op">(</span><span class="va">my_bucket</span><span class="op">)</span></span>
 <span><span class="va">obs</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 8</span></span>
-<span><span class="co">#&gt;   bucket_name      key         uri    size type  owner etag  last_modified      </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;            &lt;chr&gt;       &lt;chr&gt; &lt;fs:&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;dttm&gt;             </span></span>
-<span><span class="co">#&gt; 1 s64-test-files-3 filee9b437… s3:/…    53 file  ""    "\"a… 2023-12-14 19:11:47</span></span>
-<span><span class="co">#&gt; 2 s64-test-files-3 filee9b47b… s3:/…    53 file  ""    "\"a… 2023-12-14 19:11:47</span></span>
-<span><span class="co">#&gt; 3 s64-test-files-3 filee9b4d6… s3:/…    53 file  ""    "\"a… 2023-12-14 19:11:47</span></span></code></pre></div>
+<span><span class="co">#&gt;   bucket_name      key         uri    size type  owner etag  last_modified</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;            &lt;chr&gt;       &lt;chr&gt; &lt;fs:&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;dttm&gt;</span></span>
+<span><span class="co">#&gt; 1 egs-fzpqkyhmtxlg file102ee3… s3:/…    53 file  &lt;NA&gt;  "\"a… 2024-03-19 23:28:10</span></span>
+<span><span class="co">#&gt; 2 egs-fzpqkyhmtxlg file102ee4… s3:/…    53 file  &lt;NA&gt;  "\"a… 2024-03-19 23:28:10</span></span>
+<span><span class="co">#&gt; 3 egs-fzpqkyhmtxlg file102ee4… s3:/…    53 file  &lt;NA&gt;  "\"a… 2024-03-19 23:28:10</span></span></code></pre></div>
 <p>Fetch file attributes</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/aws_file_attr.html">aws_file_attr</a></span><span class="op">(</span><span class="va">remote_files</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 3 × 38</span></span>
 <span><span class="co">#&gt;   bucket_name    key   uri    size type  etag  last_modified       delete_marker</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt; &lt;fs:&gt; &lt;chr&gt; &lt;chr&gt; &lt;dttm&gt;              &lt;lgl&gt;        </span></span>
-<span><span class="co">#&gt; 1 s64-test-file… file… s3:/…    53 file  "\"a… 2023-12-14 19:11:47 NA           </span></span>
-<span><span class="co">#&gt; 2 s64-test-file… file… s3:/…    53 file  "\"a… 2023-12-14 19:11:47 NA           </span></span>
-<span><span class="co">#&gt; 3 s64-test-file… file… s3:/…    53 file  "\"a… 2023-12-14 19:11:47 NA           </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt; &lt;fs:&gt; &lt;chr&gt; &lt;chr&gt; &lt;dttm&gt;              &lt;lgl&gt;</span></span>
+<span><span class="co">#&gt; 1 egs-fzpqkyhmt… file… s3:/…    53 file  "\"a… 2024-03-19 23:28:10 NA</span></span>
+<span><span class="co">#&gt; 2 egs-fzpqkyhmt… file… s3:/…    53 file  "\"a… 2024-03-19 23:28:10 NA</span></span>
+<span><span class="co">#&gt; 3 egs-fzpqkyhmt… file… s3:/…    53 file  "\"a… 2024-03-19 23:28:10 NA</span></span>
 <span><span class="co">#&gt; # ℹ 30 more variables: accept_ranges &lt;chr&gt;, expiration &lt;chr&gt;, restore &lt;chr&gt;,</span></span>
 <span><span class="co">#&gt; #   archive_status &lt;chr&gt;, checksum_crc32 &lt;chr&gt;, checksum_crc32_c &lt;chr&gt;,</span></span>
 <span><span class="co">#&gt; #   checksum_sha1 &lt;chr&gt;, checksum_sha256 &lt;chr&gt;, missing_meta &lt;int&gt;,</span></span>
@@ -240,42 +243,42 @@ cleaner interface to S3.</p>
 <span><span class="co">#&gt; #   expires &lt;dttm&gt;, website_redirect_location &lt;chr&gt;,</span></span>
 <span><span class="co">#&gt; #   server_side_encryption &lt;chr&gt;, metadata &lt;list&gt;, …</span></span></code></pre></div>
 <p>Check if one or more files exist</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/aws_file_exists.html">aws_file_exists</a></span><span class="op">(</span><span class="va">remote_files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span>
 <span><span class="fu"><a href="../reference/aws_file_exists.html">aws_file_exists</a></span><span class="op">(</span><span class="va">remote_files</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE TRUE TRUE</span></span></code></pre></div>
 <p>Copy</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">new_bucket</span> <span class="op">&lt;-</span> <span class="st">"s64-test-files-4"</span></span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">new_bucket</span> <span class="op">&lt;-</span> <span class="fu">random_bucket_name</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/aws_bucket_create.html">aws_bucket_create</a></span><span class="op">(</span><span class="va">new_bucket</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "http://s64-test-files-4.s3.amazonaws.com/"</span></span>
+<span><span class="co">#&gt; [1] "http://egs-gqalfwjhukzr.s3.amazonaws.com/"</span></span>
 <span></span>
 <span><span class="co"># add existing files to the new bucket</span></span>
 <span><span class="fu"><a href="../reference/aws_file_copy.html">aws_file_copy</a></span><span class="op">(</span><span class="va">remote_files</span>, <span class="va">new_bucket</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "s3://s64-test-files-4/filee9b437e6778c.txt"</span></span>
-<span><span class="co">#&gt; [2] "s3://s64-test-files-4/filee9b47bb2a4ff.txt"</span></span>
-<span><span class="co">#&gt; [3] "s3://s64-test-files-4/filee9b4d6ea0cb.txt"</span></span>
+<span><span class="co">#&gt; [1] "s3://egs-gqalfwjhukzr/file102ee45c0b74.txt"</span></span>
+<span><span class="co">#&gt; [2] "s3://egs-gqalfwjhukzr/file102ee36f3eee8.txt"</span></span>
+<span><span class="co">#&gt; [3] "s3://egs-gqalfwjhukzr/file102ee48c9dd87.txt"</span></span>
 <span></span>
 <span><span class="co"># create bucket that doesn't exist yet</span></span>
 <span><span class="co"># the force=TRUE makes this work non-interactively</span></span>
-<span><span class="fu"><a href="../reference/aws_file_copy.html">aws_file_copy</a></span><span class="op">(</span><span class="va">remote_files</span>, <span class="st">"s64-test-files-5"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "s3://s64-test-files-5/filee9b437e6778c.txt"</span></span>
-<span><span class="co">#&gt; [2] "s3://s64-test-files-5/filee9b47bb2a4ff.txt"</span></span>
-<span><span class="co">#&gt; [3] "s3://s64-test-files-5/filee9b4d6ea0cb.txt"</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/aws_file_copy.html">aws_file_copy</a></span><span class="op">(</span><span class="va">remote_files</span>, <span class="fu">random_bucket_name</span><span class="op">(</span><span class="op">)</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "s3://egs-tsadhcfyrjmo/file102ee45c0b74.txt"</span></span>
+<span><span class="co">#&gt; [2] "s3://egs-tsadhcfyrjmo/file102ee36f3eee8.txt"</span></span>
+<span><span class="co">#&gt; [3] "s3://egs-tsadhcfyrjmo/file102ee48c9dd87.txt"</span></span></code></pre></div>
 <p>Download</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/aws_file_download.html">aws_file_download</a></span><span class="op">(</span><span class="va">remote_files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">tfile</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T//RtmpfgFSLV/filee9b42f0d67e9"</span></span>
+<span><span class="co">#&gt; [1] "/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T//RtmpyTGZNW/file102ee497415cd"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">tfile</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "a b c d e f g h i j k l m n o p q r s t u v w x y z "</span></span></code></pre></div>
 <p>Rename</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/aws_file_exists.html">aws_file_exists</a></span><span class="op">(</span><span class="va">remote_files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span>
-<span><span class="fu"><a href="../reference/aws_file_rename.html">aws_file_rename</a></span><span class="op">(</span><span class="va">remote_files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/pkg/s3fs/man/path.html" class="external-link">s3_path</a></span><span class="op">(</span><span class="st">"s64-test-files-3"</span>, <span class="st">"myfile.txt"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "s3://s64-test-files-3/myfile.txt"</span></span>
+<span><span class="fu"><a href="../reference/aws_file_rename.html">aws_file_rename</a></span><span class="op">(</span><span class="va">remote_files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/pkg/s3fs/man/path.html" class="external-link">s3_path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="va">remote_files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>, <span class="st">"myfile.txt"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "s3://egs-fzpqkyhmtxlg/myfile.txt"</span></span>
 <span><span class="fu"><a href="../reference/aws_file_exists.html">aws_file_exists</a></span><span class="op">(</span><span class="va">remote_files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
 </div>
