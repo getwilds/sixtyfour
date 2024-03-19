@@ -22,9 +22,29 @@ printed as a tree
 Print a tree of the objects in a bucket
 }
 \examples{
-\dontrun{
-aws_bucket_tree("s3://s64-test-2")
-}
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+bucket_name <- "s64-test-69"
+if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
+links_file <- file.path(system.file(), "Meta/links.rds")
+pkgs_file <- file.path(system.file(), "Meta/package.rds")
+demo_file <- file.path(system.file(), "Meta/demo.rds")
+aws_file_upload(
+  c(links_file, pkgs_file, demo_file),
+  s3_path(bucket_name,
+    c(basename(links_file),
+      basename(pkgs_file),
+      basename(demo_file)
+    )
+  )
+)
+aws_bucket_tree(bucket_name)
+
+# cleanup
+objs <- aws_bucket_list_objects(bucket_name)
+aws_file_delete(objs$uri)
+aws_bucket_delete(bucket_name, force=TRUE)
+aws_bucket_exists(bucket_name)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other buckets: 

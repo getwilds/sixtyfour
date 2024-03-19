@@ -29,6 +29,8 @@ Upload a file
 \item For upload: if it does exist it will be created
 \item For download: if it does not exist, function will return an error
 }
+
+To upload a folder of files see \code{\link[=aws_bucket_upload]{aws_bucket_upload()}}
 }
 \examples{
 \dontrun{

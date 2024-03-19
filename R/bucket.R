@@ -70,12 +70,14 @@ bucket_create_if_not <- function(bucket, force = FALSE) {
 #' @note Requires the env var `AWS_REGION`. This function prompts you to make
 #' sure that you want to delete the bucket.
 #' @family buckets
-#' @return an empty list
-#' @examples \dontrun{
-#' aws_bucket_create(bucket = "bucket-to-delete-111")
-#' aws_buckets()
-#' aws_bucket_delete(bucket = "bucket-to-delete-111")
-#' aws_buckets()
+#' @return `NULL`, invisibly
+#' @examplesIf interactive()
+#' bucket_name <- "bucket-to-delete-113"
+#' if (!aws_bucket_exists(bucket_name)) {
+#'  aws_bucket_create(bucket = bucket_name)
+#'  aws_buckets()
+#'  aws_bucket_delete(bucket = bucket_name)
+#'  aws_buckets()
 #' }
 aws_bucket_delete <- function(bucket, force = FALSE, ...) {
   # TODO: add a package level option to override the prompt for adv. users
@@ -85,6 +87,7 @@ aws_bucket_delete <- function(bucket, force = FALSE, ...) {
     }
   }
   env64$s3$delete_bucket(Bucket = bucket, ...)
+  return(invisible())
 }
 
 #' Download an S3 bucket
@@ -96,7 +99,7 @@ aws_bucket_delete <- function(bucket, force = FALSE, ...) {
 #' @note Requires the env var `AWS_REGION`. This function prompts you to make
 #' sure that you want to delete the bucket.
 #' @family buckets
-#' @examples \dontrun{
+#' @examplesIf interactive()
 #' aws_bucket_create(bucket = "tmp-bucket-369")
 #' desc_file <- file.path(system.file(), "DESCRIPTION")
 #' aws_file_upload(bucket = "tmp-bucket-369", path = desc_file)
@@ -106,7 +109,6 @@ aws_bucket_delete <- function(bucket, force = FALSE, ...) {
 #'
 #' # cleanup
 #' aws_bucket_delete("tmp-bucket-369")
-#' }
 aws_bucket_download <- function(bucket, dest_path, ...) {
   s3fs::s3_dir_download(path = bucket, new_path = dest_path, ...)
 }
@@ -123,21 +125,24 @@ aws_bucket_download <- function(bucket, dest_path, ...) {
 #' @note Requires the env var `AWS_REGION`. This function prompts you to make
 #' sure that you want to delete the bucket.
 #' @family buckets
-#' @examples \dontrun{
+#' @details To upload individual files see [aws_file_upload()]
+#' @examplesIf interactive()
 #' library(fs)
 #' tdir <- path(tempdir(), "apples")
 #' dir.create(tdir)
 #' tfiles <- replicate(n = 10, file_temp(tmp_dir = tdir, ext = ".txt"))
 #' invisible(lapply(tfiles, function(x) write.csv(mtcars, x)))
 #'
-#' aws_bucket_upload(path = tdir, bucket = "a-new-bucket-345")
-#' aws_bucket_list_objects("a-new-bucket-345")
+#' bucket_name <- "a-new-bucket-345"
+#' if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
+#' aws_bucket_upload(path = tdir, bucket = bucket_name)
+#' aws_bucket_list_objects(bucket_name)
 #'
 #' # cleanup
-#' objs <- aws_bucket_list_objects("a-new-bucket-345")
+#' objs <- aws_bucket_list_objects(bucket_name)
 #' aws_file_delete(objs$uri)
-#' aws_bucket_delete("a-new-bucket-345")
-#' }
+#' aws_bucket_delete(bucket_name, force=TRUE)
+#' aws_bucket_exists(bucket_name)
 aws_bucket_upload <- function(
     path, bucket, max_batch = fs::fs_bytes("100MB"),
     ...) {
@@ -171,9 +176,15 @@ aws_bucket_upload <- function(
 #' * owner (character)
 #' * etag (character)
 #' * last_modified (dttm)
-#' @examples \dontrun{
-#' aws_bucket_list_objects(bucket = "s64-test-2")
-#' }
+#' @examplesIf interactive()
+#' bucket_name <- "s64-test-67"
+#' if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
+#' links_file <- file.path(system.file(), "Meta/links.rds")
+#' aws_file_upload(
+#'   links_file,
+#'   s3_path(bucket_name, basename(links_file))
+#' )
+#' aws_bucket_list_objects(bucket = bucket_name)
 aws_bucket_list_objects <- function(bucket, ...) {
   out <- s3fs::s3_dir_info(bucket, ...)
   if (is.data.frame(out) && NROW(out) > 0) {
@@ -214,9 +225,28 @@ aws_buckets <- function(...) {
 #' @family buckets
 #' @return character vector of objects/files within the bucket,
 #' printed as a tree
-#' @examples \dontrun{
-#' aws_bucket_tree("s3://s64-test-2")
-#' }
+#' @examplesIf interactive()
+#' bucket_name <- "s64-test-69"
+#' if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
+#' links_file <- file.path(system.file(), "Meta/links.rds")
+#' pkgs_file <- file.path(system.file(), "Meta/package.rds")
+#' demo_file <- file.path(system.file(), "Meta/demo.rds")
+#' aws_file_upload(
+#'   c(links_file, pkgs_file, demo_file),
+#'   s3_path(bucket_name,
+#'     c(basename(links_file),
+#'       basename(pkgs_file),
+#'       basename(demo_file)
+#'     )
+#'   )
+#' )
+#' aws_bucket_tree(bucket_name)
+#'
+#' # cleanup
+#' objs <- aws_bucket_list_objects(bucket_name)
+#' aws_file_delete(objs$uri)
+#' aws_bucket_delete(bucket_name, force=TRUE)
+#' aws_bucket_exists(bucket_name)
 aws_bucket_tree <- function(bucket, recurse = TRUE, ...) {
-  s3fs::s3_dir_tree(bucket, recurse = recurse, ...)
+  s3fs::s3_dir_tree(s3_path(bucket), recurse = recurse, ...)
 }
