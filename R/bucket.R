@@ -74,10 +74,10 @@ bucket_create_if_not <- function(bucket, force = FALSE) {
 #' @examplesIf interactive()
 #' bucket_name <- "bucket-to-delete-113"
 #' if (!aws_bucket_exists(bucket_name)) {
-#'  aws_bucket_create(bucket = bucket_name)
-#'  aws_buckets()
-#'  aws_bucket_delete(bucket = bucket_name)
-#'  aws_buckets()
+#'   aws_bucket_create(bucket = bucket_name)
+#'   aws_buckets()
+#'   aws_bucket_delete(bucket = bucket_name)
+#'   aws_buckets()
 #' }
 aws_bucket_delete <- function(bucket, force = FALSE, ...) {
   # TODO: add a package level option to override the prompt for adv. users
@@ -141,7 +141,7 @@ aws_bucket_download <- function(bucket, dest_path, ...) {
 #' # cleanup
 #' objs <- aws_bucket_list_objects(bucket_name)
 #' aws_file_delete(objs$uri)
-#' aws_bucket_delete(bucket_name, force=TRUE)
+#' aws_bucket_delete(bucket_name, force = TRUE)
 #' aws_bucket_exists(bucket_name)
 aws_bucket_upload <- function(
     path, bucket, max_batch = fs::fs_bytes("100MB"),
@@ -233,8 +233,10 @@ aws_buckets <- function(...) {
 #' demo_file <- file.path(system.file(), "Meta/demo.rds")
 #' aws_file_upload(
 #'   c(links_file, pkgs_file, demo_file),
-#'   s3_path(bucket_name,
-#'     c(basename(links_file),
+#'   s3_path(
+#'     bucket_name,
+#'     c(
+#'       basename(links_file),
 #'       basename(pkgs_file),
 #'       basename(demo_file)
 #'     )
@@ -245,7 +247,7 @@ aws_buckets <- function(...) {
 #' # cleanup
 #' objs <- aws_bucket_list_objects(bucket_name)
 #' aws_file_delete(objs$uri)
-#' aws_bucket_delete(bucket_name, force=TRUE)
+#' aws_bucket_delete(bucket_name, force = TRUE)
 #' aws_bucket_exists(bucket_name)
 aws_bucket_tree <- function(bucket, recurse = TRUE, ...) {
   s3fs::s3_dir_tree(s3_path(bucket), recurse = recurse, ...)

@@ -114,9 +114,9 @@ aws_bucket_add_user <- function(bucket, username, permissions) {
   }
   user_data <- aws_user(username)
   if (NROW(user_data$attached_policies) == 0) {
-		aws_user(username) %>% aws_policy_attach(policy_name)
-		cli::cli_alert_success(add_user_now_has)
-		return(invisible())
+    aws_user(username) %>% aws_policy_attach(policy_name)
+    cli::cli_alert_success(add_user_now_has)
+    return(invisible())
   }
   if (policy_name %in% user_data$attached_policies$PolicyName) {
     cli::cli_alert_success(add_user_already)
