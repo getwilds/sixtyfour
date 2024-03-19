@@ -39,18 +39,20 @@ Or set them in a variety of ways to be available across R sessions. See the [R S
 
 ## Package API Overview
 
-- `aws_billing`: manage AWS billing details
+- `aws_billing*`: manage AWS billing details
 - `aws_bucket*`: manage S3 buckets
 - `aws_file_*`: manage files in S3 buckets
 - `aws_user*`: manage AWS users
 - `aws_group*`: manage AWS groups
 - `aws_role*`: manage AWS roles
-- `aws_policies*`: manage AWS policies
+- `aws_policy*`: manage AWS policies
 - `aws_db*`: interact with AWS database services Redshift and RDS
+- `aws_secrets*`: secrets manager
+- `aws_vpc_security*`: VPC security groups
 
 ## Working with S3
 
-This vignette won't touch on all of the above parts of the package API - but instead will cover working with files as that's likely the most common use case for `sixtyfour` users.
+This vignette won't touch on all of the above parts of the package API - but instead will cover working with files as that's likely a common use case for `sixtyfour` users.
 
 ### Buckets
 
@@ -58,10 +60,10 @@ Make a random bucket name
 
 
 ```r
-bucket_name <- function() {
-  paste0(sample(letters, size = 12), collapse = "")
+random_bucket_name <- function() {
+  glue::glue("egs-{paste0(sample(letters, size = 12), collapse = '')}")
 }
-bucket <- bucket_name()
+bucket <- random_bucket_name()
 ```
 
 Create a bucket - check if it exists first
@@ -73,7 +75,7 @@ exists <- aws_bucket_exists(bucket)
 if (!exists) {
   aws_bucket_create(bucket)
 }
-#> [1] "http://jbifqnmxvhoy.s3.amazonaws.com/"
+#> [1] "http://egs-tnxoekbrjcdl.s3.amazonaws.com/"
 ```
 
 Create files in a few different directories
@@ -92,7 +94,7 @@ Upload them to the newly created bucket
 
 ```r
 aws_bucket_upload(path = tdir, bucket = bucket)
-#> [1] "s3://private/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T/RtmpfgFSLV/apples"
+#> [1] "s3://private/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T/RtmpyTGZNW/apples"
 ```
 
 List objects in the bucket
@@ -102,18 +104,18 @@ List objects in the bucket
 objects <- aws_bucket_list_objects(bucket)
 objects
 #> # A tibble: 10 × 8
-#>    bucket_name  key            uri    size type  owner etag  last_modified      
-#>    <chr>        <chr>          <chr> <fs:> <chr> <chr> <chr> <dttm>             
-#>  1 jbifqnmxvhoy filee9b4354bb… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42
-#>  2 jbifqnmxvhoy filee9b4377a4… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42
-#>  3 jbifqnmxvhoy filee9b43edbb… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42
-#>  4 jbifqnmxvhoy filee9b44b614… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42
-#>  5 jbifqnmxvhoy filee9b45f486… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42
-#>  6 jbifqnmxvhoy filee9b46dcb3… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:42
-#>  7 jbifqnmxvhoy filee9b47ce37… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:43
-#>  8 jbifqnmxvhoy filee9b47d842… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:43
-#>  9 jbifqnmxvhoy filee9b49783e… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:43
-#> 10 jbifqnmxvhoy filee9b4ab36c… s3:/… 1.74K file  ""    "\"6… 2023-12-14 19:11:43
+#>    bucket_name      key        uri    size type  owner etag  last_modified
+#>    <chr>            <chr>      <chr> <fs:> <chr> <chr> <chr> <dttm>
+#>  1 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:06
+#>  2 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:06
+#>  3 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:06
+#>  4 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:06
+#>  5 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:06
+#>  6 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:07
+#>  7 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:07
+#>  8 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:07
+#>  9 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:07
+#> 10 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:07
 ```
 
 Cleanup - delete the bucket.
@@ -132,14 +134,11 @@ If there's files in your bucket you can not delete it. Delete files, then delete
 
 
 ```r
-invisible(purrr::map(objects$uri, \(x) aws_file_delete(s3_path(bucket, x))))
+aws_file_delete(objects$uri)
 aws_bucket_delete(bucket)
 ```
 
 
-```
-#> list()
-```
 
 ### Files
 
@@ -149,9 +148,9 @@ First, create a bucket:
 
 
 ```r
-my_bucket <- "s64-test-files-3"
+my_bucket <- random_bucket_name()
 aws_bucket_create(my_bucket)
-#> [1] "http://s64-test-files-3.s3.amazonaws.com/"
+#> [1] "http://egs-fzpqkyhmtxlg.s3.amazonaws.com/"
 ```
 
 Then, upload some files
@@ -162,9 +161,9 @@ temp_files <- replicate(n = 3, tempfile(fileext = ".txt"))
 for (i in temp_files) cat(letters, "\n", file = i)
 remote_files <- s3_path(my_bucket, basename(temp_files))
 aws_file_upload(path = temp_files, remote_path = remote_files)
-#> [1] "s3://s64-test-files-3/filee9b437e6778c.txt"
-#> [2] "s3://s64-test-files-3/filee9b47bb2a4ff.txt"
-#> [3] "s3://s64-test-files-3/filee9b4d6ea0cb.txt"
+#> [1] "s3://egs-fzpqkyhmtxlg/file102ee45c0b74.txt"
+#> [2] "s3://egs-fzpqkyhmtxlg/file102ee36f3eee8.txt"
+#> [3] "s3://egs-fzpqkyhmtxlg/file102ee48c9dd87.txt"
 ```
 
 List files in the bucket
@@ -174,11 +173,11 @@ List files in the bucket
 obs <- aws_bucket_list_objects(my_bucket)
 obs
 #> # A tibble: 3 × 8
-#>   bucket_name      key         uri    size type  owner etag  last_modified      
-#>   <chr>            <chr>       <chr> <fs:> <chr> <chr> <chr> <dttm>             
-#> 1 s64-test-files-3 filee9b437… s3:/…    53 file  ""    "\"a… 2023-12-14 19:11:47
-#> 2 s64-test-files-3 filee9b47b… s3:/…    53 file  ""    "\"a… 2023-12-14 19:11:47
-#> 3 s64-test-files-3 filee9b4d6… s3:/…    53 file  ""    "\"a… 2023-12-14 19:11:47
+#>   bucket_name      key         uri    size type  owner etag  last_modified
+#>   <chr>            <chr>       <chr> <fs:> <chr> <chr> <chr> <dttm>
+#> 1 egs-fzpqkyhmtxlg file102ee3… s3:/…    53 file  <NA>  "\"a… 2024-03-19 23:28:10
+#> 2 egs-fzpqkyhmtxlg file102ee4… s3:/…    53 file  <NA>  "\"a… 2024-03-19 23:28:10
+#> 3 egs-fzpqkyhmtxlg file102ee4… s3:/…    53 file  <NA>  "\"a… 2024-03-19 23:28:10
 ```
 
 Fetch file attributes
@@ -188,10 +187,10 @@ Fetch file attributes
 aws_file_attr(remote_files)
 #> # A tibble: 3 × 38
 #>   bucket_name    key   uri    size type  etag  last_modified       delete_marker
-#>   <chr>          <chr> <chr> <fs:> <chr> <chr> <dttm>              <lgl>        
-#> 1 s64-test-file… file… s3:/…    53 file  "\"a… 2023-12-14 19:11:47 NA           
-#> 2 s64-test-file… file… s3:/…    53 file  "\"a… 2023-12-14 19:11:47 NA           
-#> 3 s64-test-file… file… s3:/…    53 file  "\"a… 2023-12-14 19:11:47 NA           
+#>   <chr>          <chr> <chr> <fs:> <chr> <chr> <dttm>              <lgl>
+#> 1 egs-fzpqkyhmt… file… s3:/…    53 file  "\"a… 2024-03-19 23:28:10 NA
+#> 2 egs-fzpqkyhmt… file… s3:/…    53 file  "\"a… 2024-03-19 23:28:10 NA
+#> 3 egs-fzpqkyhmt… file… s3:/…    53 file  "\"a… 2024-03-19 23:28:10 NA
 #> # ℹ 30 more variables: accept_ranges <chr>, expiration <chr>, restore <chr>,
 #> #   archive_status <chr>, checksum_crc32 <chr>, checksum_crc32_c <chr>,
 #> #   checksum_sha1 <chr>, checksum_sha256 <chr>, missing_meta <int>,
@@ -215,22 +214,22 @@ Copy
 
 
 ```r
-new_bucket <- "s64-test-files-4"
+new_bucket <- random_bucket_name()
 aws_bucket_create(new_bucket)
-#> [1] "http://s64-test-files-4.s3.amazonaws.com/"
+#> [1] "http://egs-gqalfwjhukzr.s3.amazonaws.com/"
 
 # add existing files to the new bucket
 aws_file_copy(remote_files, new_bucket)
-#> [1] "s3://s64-test-files-4/filee9b437e6778c.txt"
-#> [2] "s3://s64-test-files-4/filee9b47bb2a4ff.txt"
-#> [3] "s3://s64-test-files-4/filee9b4d6ea0cb.txt"
+#> [1] "s3://egs-gqalfwjhukzr/file102ee45c0b74.txt"
+#> [2] "s3://egs-gqalfwjhukzr/file102ee36f3eee8.txt"
+#> [3] "s3://egs-gqalfwjhukzr/file102ee48c9dd87.txt"
 
 # create bucket that doesn't exist yet
 # the force=TRUE makes this work non-interactively
-aws_file_copy(remote_files, "s64-test-files-5", force = TRUE)
-#> [1] "s3://s64-test-files-5/filee9b437e6778c.txt"
-#> [2] "s3://s64-test-files-5/filee9b47bb2a4ff.txt"
-#> [3] "s3://s64-test-files-5/filee9b4d6ea0cb.txt"
+aws_file_copy(remote_files, random_bucket_name(), force = TRUE)
+#> [1] "s3://egs-tsadhcfyrjmo/file102ee45c0b74.txt"
+#> [2] "s3://egs-tsadhcfyrjmo/file102ee36f3eee8.txt"
+#> [3] "s3://egs-tsadhcfyrjmo/file102ee48c9dd87.txt"
 ```
 
 Download
@@ -239,7 +238,7 @@ Download
 ```r
 tfile <- tempfile()
 aws_file_download(remote_files[1], tfile)
-#> [1] "/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T//RtmpfgFSLV/filee9b42f0d67e9"
+#> [1] "/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T//RtmpyTGZNW/file102ee497415cd"
 readLines(tfile)
 #> [1] "a b c d e f g h i j k l m n o p q r s t u v w x y z "
 ```
@@ -250,8 +249,8 @@ Rename
 ```r
 aws_file_exists(remote_files[1])
 #> [1] TRUE
-aws_file_rename(remote_files[1], s3_path("s64-test-files-3", "myfile.txt"))
-#> [1] "s3://s64-test-files-3/myfile.txt"
+aws_file_rename(remote_files[1], s3_path(dirname(remote_files[1]), "myfile.txt"))
+#> [1] "s3://egs-fzpqkyhmtxlg/myfile.txt"
 aws_file_exists(remote_files[1])
 #> [1] FALSE
 ```
