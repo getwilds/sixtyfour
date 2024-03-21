@@ -21,8 +21,8 @@ uses \code{aws_group} internally. see docs
 }
 \examples{
 \dontrun{
-aws_group_exists(name="users")
-aws_group_exists(name="apples")
+aws_group_exists(name = "users")
+aws_group_exists(name = "apples")
 }
 }
 \seealso{

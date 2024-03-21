@@ -21,7 +21,7 @@ Requires the env var \code{AWS_REGION}. This function prompts you to make
 sure that you want to delete the bucket.
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 aws_bucket_create(bucket = "tmp-bucket-369")
 desc_file <- file.path(system.file(), "DESCRIPTION")
 aws_file_upload(bucket = "tmp-bucket-369", path = desc_file)
@@ -31,7 +31,7 @@ aws_bucket_download(bucket = "tmp-bucket-369", dest_path = temp_dir)
 
 # cleanup
 aws_bucket_delete("tmp-bucket-369")
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other buckets: 

@@ -62,8 +62,10 @@ trust_policy <- list(
 )
 doc <- jsonlite::toJSON(trust_policy, auto_unbox = TRUE)
 desc <- "My test role"
-z <- aws_role_create(role_name, assume_role_policy_document = doc,
-   description = desc)
+z <- aws_role_create(role_name,
+  assume_role_policy_document = doc,
+  description = desc
+)
 z
 # attach a policy
 z \%>\% aws_policy_attach("AWSLambdaBasicExecutionRole")

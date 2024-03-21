@@ -17,7 +17,7 @@ non-interactive use.}
 \href{https://www.paws-r-sdk.com/docs/s3_delete_bucket/}{delete_bucket}}
 }
 \value{
-an empty list
+\code{NULL}, invisibly
 }
 \description{
 Delete an S3 bucket
@@ -27,12 +27,15 @@ Requires the env var \code{AWS_REGION}. This function prompts you to make
 sure that you want to delete the bucket.
 }
 \examples{
-\dontrun{
-aws_bucket_create(bucket = "bucket-to-delete-111")
-aws_buckets()
-aws_bucket_delete(bucket = "bucket-to-delete-111")
-aws_buckets()
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+bucket_name <- "bucket-to-delete-113"
+if (!aws_bucket_exists(bucket_name)) {
+ aws_bucket_create(bucket = bucket_name)
+ aws_buckets()
+ aws_bucket_delete(bucket = bucket_name)
+ aws_buckets()
 }
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other buckets: 

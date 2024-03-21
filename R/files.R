@@ -22,6 +22,8 @@ equal_lengths <- function(x, y) {
 #' @details
 #' - For upload: if it does exist it will be created
 #' - For download: if it does not exist, function will return an error
+#'
+#' To upload a folder of files see [aws_bucket_upload()]
 #' @family files
 #' @examples \dontrun{
 #' demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
@@ -167,15 +169,18 @@ aws_file_exists <- function(remote_path) {
 #' @return vector of paths, length matches `length(remote_path)`
 #' @family files
 #' @examples \dontrun{
-#' aws_file_rename(s3_path("s64-test-2", "DESCRIPTION"),
-#'   s3_path("s64-test-2", "DESC"))
+#' aws_file_rename(
+#'   s3_path("s64-test-2", "DESCRIPTION"),
+#'   s3_path("s64-test-2", "DESC")
+#' )
 #'
 #' tfiles <- replicate(n = 3, tempfile())
 #' for (i in tfiles) cat("Hello\nWorld\n", file = i)
 #' paths <- s3_path("s64-test-2", c("aaa", "bbb", "ccc"), ext = "txt")
 #' aws_file_upload(tfiles, paths)
 #' new_paths <- s3_path("s64-test-2", c("new_aaa", "new_bbb", "new_ccc"),
-#'   ext = "txt")
+#'   ext = "txt"
+#' )
 #' aws_file_rename(paths, new_paths)
 #' }
 aws_file_rename <- function(remote_path, new_remote_path, ...) {

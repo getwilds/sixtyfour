@@ -13,6 +13,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 bucket_delete <- function(bucket, force = FALSE) {
+  if (!aws_bucket_exists(bucket)) return()
   list_obs <- purrr::safely(aws_bucket_list_objects)
   objects <- list_obs(bucket)
   if (NROW(objects$result) > 0) {
@@ -51,28 +52,30 @@ Or set them in a variety of ways to be available across R sessions. See the [R S
 
 ## Package API Overview
 
-- `aws_billing`: manage AWS billing details
+- `aws_billing*`: manage AWS billing details
 - `aws_bucket*`: manage S3 buckets
 - `aws_file_*`: manage files in S3 buckets
 - `aws_user*`: manage AWS users
 - `aws_group*`: manage AWS groups
 - `aws_role*`: manage AWS roles
-- `aws_policies*`: manage AWS policies
+- `aws_policy*`: manage AWS policies
 - `aws_db*`: interact with AWS database services Redshift and RDS
+- `aws_secrets*`: secrets manager
+- `aws_vpc_security*`: VPC security groups
 
 ## Working with S3
 
-This vignette won't touch on all of the above parts of the package API - but instead will cover working with files as that's likely the most common use case for `sixtyfour` users.
+This vignette won't touch on all of the above parts of the package API - but instead will cover working with files as that's likely a common use case for `sixtyfour` users.
 
 ### Buckets
 
 Make a random bucket name
 
 ```{r}
-bucket_name <- function() {
-  paste0(sample(letters, size = 12), collapse = "")
+random_bucket_name <- function() {
+  glue::glue("egs-{paste0(sample(letters, size = 12), collapse = '')}")
 }
-bucket <- bucket_name()
+bucket <- random_bucket_name()
 ```
 
 Create a bucket - check if it exists first
@@ -121,7 +124,7 @@ aws_bucket_delete(bucket, force = TRUE)
 If there's files in your bucket you can not delete it. Delete files, then delete bucket again
 
 ```{r eval=FALSE}
-invisible(purrr::map(objects$uri, \(x) aws_file_delete(s3_path(bucket, x))))
+aws_file_delete(objects$uri)
 aws_bucket_delete(bucket)
 ```
 
@@ -136,7 +139,7 @@ All or most of the file functions are built around accepting and returning chara
 First, create a bucket:
 
 ```{r}
-my_bucket <- "s64-test-files-3"
+my_bucket <- random_bucket_name()
 aws_bucket_create(my_bucket)
 ```
 
@@ -172,7 +175,7 @@ aws_file_exists(remote_files)
 Copy
 
 ```{r}
-new_bucket <- "s64-test-files-4"
+new_bucket <- random_bucket_name()
 aws_bucket_create(new_bucket)
 
 # add existing files to the new bucket
@@ -180,7 +183,7 @@ aws_file_copy(remote_files, new_bucket)
 
 # create bucket that doesn't exist yet
 # the force=TRUE makes this work non-interactively
-aws_file_copy(remote_files, "s64-test-files-5", force = TRUE)
+aws_file_copy(remote_files, random_bucket_name(), force = TRUE)
 ```
 
 Download
@@ -195,12 +198,13 @@ Rename
 
 ```{r}
 aws_file_exists(remote_files[1])
-aws_file_rename(remote_files[1], s3_path("s64-test-files-3", "myfile.txt"))
+aws_file_rename(remote_files[1], s3_path(dirname(remote_files[1]), "myfile.txt"))
 aws_file_exists(remote_files[1])
 ```
 
 ```{r cleanup-files, echo=FALSE, results='hide'}
-purrr::map(paste0("s64-test-files-", 3:5), bucket_delete, force = TRUE)
+these_buckets <- grep("egs-.+", aws_buckets()$bucket_name, value = TRUE)
+invisible(purrr::map(these_buckets, bucket_delete, force = TRUE))
 ```
 
 [r-startup]: https://rstats.wtf/r-startup.html
