@@ -119,9 +119,8 @@ aws_policy_create <- function(
 #' @param action (character) an action. required. see Actions below.
 #' @param effect (character) valid values: "Allow" (default), "Deny". length==1
 #' @param ... named args passed to [jsonlite::toJSON()]
-#' @references # nolint start
-#' <https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html>
-#' # nolint end
+#' @references
+#' <https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html> #nolint
 #' @return a json class string. use [as.character()] to coerce to a regular
 #' string
 #' @note a few document items are hard-coded:

@@ -78,7 +78,5 @@ aws_policy_document_create(
 \dontshow{\}) # examplesIf}
 }
 \references{
-nolint start
-
-\url{https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html}nolint end
+\url{https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html} #nolint
 }
