@@ -31,6 +31,7 @@ s3_actions_full <- function() {
 #' There's this separate function for creating policy docs for S3 because
 #' buckets are globally unique, so AWS figures out the region and account
 #' ID for you.
+#' @return a policy document as JSON (of class `json`)
 #' @examplesIf interactive()
 #' aws_s3_policy_doc_create(
 #'   bucket = "s64-test-22",
@@ -63,9 +64,14 @@ add_user_now_has <- c(
   " to bucket {.strong {bucket}}"
 )
 
+#' @importFrom snakecase to_upper_camel_case
+#' @keywords internal
+bucket_to_policy_name <- function(bucket) {
+  glue("S3ReadOnlyAccess{to_upper_camel_case(bucket)}")
+}
+
 #' Add a user to a bucket
 #' @export
-#' @importFrom snakecase to_upper_camel_case
 #' @param bucket (character) bucket name. required
 #' @param username (character) A user name. required
 #' @param permissions (character) user permissions, one of
@@ -75,19 +81,19 @@ add_user_now_has <- c(
 #' - write: write (in addition to read); includes deleting files; does
 #' not include deleting buckets
 #' - admin: change user permissions (in addition to read and write);
-#' includes deleting buckets
+#' includes deleting buckets (THIS OPTION NOT ACCEPTED YET!)
 #' @return invisibly returns nothing
 #' @examplesIf interactive()
 #' aws_bucket_add_user(
 #'   bucket = "s64-test-22",
-#'   username = "scott",
+#'   username = "userdmgziqpt",
 #'   permissions = "read"
 #' )
 #' \dontrun{
 #' # not a valid permissions string
 #' aws_bucket_add_user(
 #'   bucket = "mybucket",
-#'   username = "scott",
+#'   username = "userdmgziqpt",
 #'   permissions = "notavalidpermission"
 #' )
 #' }
@@ -98,10 +104,7 @@ aws_bucket_add_user <- function(bucket, username, permissions) {
   )
   stopifnot("permissions must be length 1" = length(permissions) == 1)
 
-  # refresh memoised policies data before proceeding
-  invisible(aws_policies(refresh = TRUE))
-
-  policy_name <- glue("S3ReadOnlyAccess{to_upper_camel_case(bucket)}")
+  policy_name <- bucket_to_policy_name(bucket)
   if (!aws_policy_exists(policy_name)) {
     mydoc <- aws_s3_policy_doc_create(
       bucket = bucket,
@@ -124,12 +127,13 @@ aws_bucket_add_user <- function(bucket, username, permissions) {
     aws_user(username) %>% aws_policy_attach(policy_name)
     cli::cli_alert_success(add_user_now_has)
   }
+  invisible()
 }
 
 #' Change user or group permissions for a bucket
 #' @export
 #' @inheritParams aws_bucket_add_user
-#' @return xxx
+#' @return invisibly returns nothing
 #' @examplesIf interactive()
 #' aws_bucket_change_user("mybucket", "sean", "write")
 #' aws_bucket_change_user("mybucket", "sean", c("write", "read"))
@@ -143,7 +147,7 @@ aws_bucket_change_user <- function(bucket, username, permissions) {
 #' @autoglobal
 #' @details This function detaches a policy from a user for accessing
 #' the bucket; the policy itself is untouched
-#' @return inviv
+#' @return invisibly returns nothing
 #' @examplesIf interactive()
 #' aws_bucket_remove_user("s64-test-22", "scott")
 aws_bucket_remove_user <- function(bucket, username) {
@@ -167,12 +171,14 @@ aws_bucket_remove_user <- function(bucket, username) {
   cli::cli_alert_info(
     "Note: group permissions are unaltered; see {.strong ?aws_groups}"
   )
+  invisible()
 }
 
 #' Get permissions for a bucket
 #' @export
 #' @importFrom purrr keep
 #' @importFrom dplyr case_when distinct group_by ungroup rowwise select
+#' @importFrom cli cli_abort
 #' @inheritParams aws_bucket_add_user
 #' @autoglobal
 #' @return tibble with a row for each user, with columns:
@@ -183,6 +189,9 @@ aws_bucket_remove_user <- function(bucket, username) {
 #' @examplesIf interactive()
 #' aws_bucket_get_permissions("s64-test-22")
 aws_bucket_get_permissions <- function(bucket) {
+  if (!aws_bucket_exists(bucket)) {
+    cli::cli_abort("{.strong {bucket}} does not exist")
+  }
   user_perms <-
     permissions_user_bucket(bucket) %>%
     mutate(

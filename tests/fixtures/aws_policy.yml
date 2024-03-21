@@ -6,11 +6,11 @@ http_interactions:
       encoding: ''
       string: Action=GetPolicy&PolicyArn=arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FReadOnlyAccess&Version=2010-05-08
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '96'
-      X-Amz-Date: 20231206T212911Z
+      X-Amz-Date: 20240321T054923Z
       Authorization: redacted
   response:
     status:
@@ -19,10 +19,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 5646fb2e-81e2-4756-b008-e70c5b55ef6d
+      date: Thu, 21 Mar 2024 05:49:23 GMT
+      x-amzn-requestid: f8660526-e15c-41ba-9b06-9dceaf4f5e5f
       content-type: text/xml
       content-length: '848'
-      date: Wed, 06 Dec 2023 21:29:11 GMT
     body:
       encoding: ''
       file: no
@@ -32,24 +32,24 @@ http_interactions:
             <Policy>
               <PermissionsBoundaryUsageCount>0</PermissionsBoundaryUsageCount>
               <Path>/</Path>
-              <UpdateDate>2023-12-01T17:23:47Z</UpdateDate>
-              <DefaultVersionId>v108</DefaultVersionId>
+              <UpdateDate>2024-02-05T15:00:23Z</UpdateDate>
+              <DefaultVersionId>v111</DefaultVersionId>
               <PolicyId>ANPAILL3HVNFSB6DCOWYQ</PolicyId>
               <IsAttachable>true</IsAttachable>
               <PolicyName>ReadOnlyAccess</PolicyName>
               <Description>Provides read-only access to AWS services and resources.</Description>
               <AttachmentCount>0</AttachmentCount>
               <Arn>arn:aws:iam::aws:policy/ReadOnlyAccess</Arn>
-              <CreateDate>2015-02-06T18:39:48Z</CreateDate>
               <Tags/>
+              <CreateDate>2015-02-06T18:39:48Z</CreateDate>
             </Policy>
           </GetPolicyResult>
           <ResponseMetadata>
-            <RequestId>5646fb2e-81e2-4756-b008-e70c5b55ef6d</RequestId>
+            <RequestId>f8660526-e15c-41ba-9b06-9dceaf4f5e5f</RequestId>
           </ResponseMetadata>
         </GetPolicyResponse>
-  recorded_at: 2023-12-06 21:29:12 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+  recorded_at: 2024-03-21 05:49:24 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
     uri: https://iam.amazonaws.com/
@@ -57,11 +57,11 @@ http_interactions:
       encoding: ''
       string: Action=GetPolicy&PolicyArn=arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FReadOnlyAccess&Version=2010-05-08
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '96'
-      X-Amz-Date: 20231206T212911Z
+      X-Amz-Date: 20240321T054924Z
       Authorization: redacted
   response:
     status:
@@ -70,10 +70,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 781aa2aa-b3b5-4c07-aacf-4291496c7510
+      date: Thu, 21 Mar 2024 05:49:24 GMT
+      x-amzn-requestid: e35651e9-dc0e-490e-8add-e1867abe9414
       content-type: text/xml
       content-length: '848'
-      date: Wed, 06 Dec 2023 21:29:11 GMT
     body:
       encoding: ''
       file: no
@@ -83,21 +83,21 @@ http_interactions:
             <Policy>
               <PermissionsBoundaryUsageCount>0</PermissionsBoundaryUsageCount>
               <Path>/</Path>
-              <UpdateDate>2023-12-01T17:23:47Z</UpdateDate>
-              <DefaultVersionId>v108</DefaultVersionId>
+              <UpdateDate>2024-02-05T15:00:23Z</UpdateDate>
+              <DefaultVersionId>v111</DefaultVersionId>
               <PolicyId>ANPAILL3HVNFSB6DCOWYQ</PolicyId>
               <IsAttachable>true</IsAttachable>
               <PolicyName>ReadOnlyAccess</PolicyName>
               <Description>Provides read-only access to AWS services and resources.</Description>
               <AttachmentCount>0</AttachmentCount>
               <Arn>arn:aws:iam::aws:policy/ReadOnlyAccess</Arn>
-              <CreateDate>2015-02-06T18:39:48Z</CreateDate>
               <Tags/>
+              <CreateDate>2015-02-06T18:39:48Z</CreateDate>
             </Policy>
           </GetPolicyResult>
           <ResponseMetadata>
-            <RequestId>781aa2aa-b3b5-4c07-aacf-4291496c7510</RequestId>
+            <RequestId>e35651e9-dc0e-490e-8add-e1867abe9414</RequestId>
           </ResponseMetadata>
         </GetPolicyResponse>
-  recorded_at: 2023-12-06 21:29:12 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+  recorded_at: 2024-03-21 05:49:24 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0

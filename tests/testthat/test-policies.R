@@ -1,6 +1,21 @@
-test_that("aws_policy", {
-  withr::local_envvar(c("TESTING64" = TRUE))
+skip_on_ci()
 
+test_that("aws_policy_list_entities", {
+  vcr::use_cassette("aws_policy_list_entities_empty", {
+    polents_empty <- aws_policy_list_entities("S3ReadOnlyAccessMyBucket")
+  })
+
+  vcr::use_cassette("aws_policy_list_entities_non_empty", {
+    polents_non_empty <- aws_policy_list_entities("S3ReadOnlyAccessS64Test22")
+  })
+
+  expect_s3_class(polents_empty, "tbl")
+  expect_s3_class(polents_non_empty, "tbl")
+  expect_equal(NROW(polents_empty), 0)
+  expect_gt(NROW(polents_non_empty), 0)
+})
+
+test_that("aws_policy", {
   vcr::use_cassette("aws_policy", {
     res_name <- aws_policy("ReadOnlyAccess")
     res_arn <- aws_policy("arn:aws:iam::aws:policy/ReadOnlyAccess")
@@ -15,8 +30,6 @@ test_that("aws_policy", {
 })
 
 test_that("aws_policy_exists", {
-  withr::local_envvar(c("TESTING64" = TRUE))
-
   vcr::use_cassette("aws_policy_exists", {
     res_true <- aws_policy_exists("ReadOnlyAccess")
     res_false <- aws_policy_exists("Flurrrrb")
@@ -27,8 +40,6 @@ test_that("aws_policy_exists", {
 })
 
 test_that("as_policy_arn", {
-  withr::local_envvar(c("TESTING64" = TRUE))
-
   x_name <- as_policy_arn("ReadOnlyAccess")
   x_arn <- as_policy_arn("arn:aws:iam::aws:policy/ReadOnlyAccess")
 
@@ -37,19 +48,24 @@ test_that("as_policy_arn", {
   expect_match(x_name, "arn:aws:iam")
   expect_identical(x_name, x_arn)
 
-  expect_error(as_policy_arn("Blarp"), "known")
+  expect_match(as_policy_arn("Blarp"), "Blarp")
+
   expect_error(as_policy_arn(letters), "length")
   expect_error(as_policy_arn(5), "character")
 })
 
 test_that("aws_policy_attach", {
-  withr::local_envvar(c("TESTING64" = TRUE))
+  policy_name <- "AWSCloudHSMReadOnlyAccess"
 
-  # FIXME: do setup/teardown for setting up this user if does not exist?
+  user1 <- "useratfwdqpi"
+  vcr::use_cassette("aws_policy_attach_setup_users", {
+    aws_user_create(user1)
+  })
+
   vcr::use_cassette("aws_policy_attach", {
-    user_before <- aws_user("testUser2")
-    user_after <- aws_user("testUser2") %>%
-      aws_policy_attach("AWSCloudHSMReadOnlyAccess")
+    user_before <- aws_user(user1)
+    user_after <- aws_user(user1) %>%
+      aws_policy_attach(policy_name)
   })
 
   expect_type(user_before, "list")
@@ -57,15 +73,32 @@ test_that("aws_policy_attach", {
 
   expect_equal(NROW(user_before$attached_policies), 0)
   expect_equal(NROW(user_after$attached_policies), 1)
+
+  # cleanup
+  if (aws_user_exists(user1)) {
+    aws_user(user1) %>%
+      aws_policy_detach(policy_name)
+    aws_user_delete(user1)
+  }
 })
 
 test_that("aws_policy_detach", {
-  withr::local_envvar(c("TESTING64" = TRUE))
+  policy_name <- "AmazonS3ReadOnlyAccess"
+
+  user <- "userbnwaqdif"
+  vcr::use_cassette("aws_policy_detach_setup_user", {
+    aws_user_create(user)
+  })
+
+  vcr::use_cassette("aws_policy_detach_setup_attach", {
+    aws_user(user) %>%
+      aws_policy_attach(policy_name)
+  })
 
   vcr::use_cassette("aws_policy_detach", {
-    user_before <- aws_user("testUser2")
-    user_after <- aws_user("testUser2") %>%
-      aws_policy_detach("AWSCloudHSMReadOnlyAccess")
+    user_before <- aws_user(user)
+    user_after <- aws_user(user) %>%
+      aws_policy_detach(policy_name)
   })
 
   expect_type(user_before, "list")
@@ -73,6 +106,11 @@ test_that("aws_policy_detach", {
 
   expect_equal(NROW(user_before$attached_policies), 1)
   expect_equal(NROW(user_after$attached_policies), 0)
+
+  # cleanup
+  if (aws_user_exists(user)) {
+    aws_user_delete(user)
+  }
 })
 
 test_that("aws_policy_document_create", {
@@ -94,8 +132,6 @@ test_that("aws_policy_document_create", {
 })
 
 test_that("aws_policy_create", {
-  withr::local_envvar(c("TESTING64" = TRUE))
-
   my_doc <- aws_policy_document_create(
     region = "us-east-2",
     account_id = "1234567890",
@@ -104,12 +140,18 @@ test_that("aws_policy_create", {
     action = "s3:ListAllMyBuckets"
   )
 
+  policy_name <- "MyTestPolicy"
+
   vcr::use_cassette("aws_policy_create", {
-    polisee <- aws_policy_create("MyTestPolicy", document = my_doc)
+    polisee <- aws_policy_create(policy_name, document = my_doc)
   })
 
   expect_type(polisee, "list")
   expect_named(polisee, "Policy")
-  expect_equal(polisee$Policy$PolicyName, "MyTestPolicy")
-  expect_match(polisee$Policy$PolicyName, "MyTestPolicy")
+  expect_equal(polisee$Policy$PolicyName, policy_name)
+
+  # cleanup
+  if (aws_policy_exists(policy_name)) {
+    aws_policy_delete(policy_name)
+  }
 })

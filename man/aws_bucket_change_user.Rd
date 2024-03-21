@@ -15,7 +15,7 @@ aws_bucket_change_user(bucket, username, permissions)
 read or write. write includes read}
 }
 \value{
-xxx
+invisibly returns nothing
 }
 \description{
 Change user or group permissions for a bucket

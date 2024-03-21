@@ -12,7 +12,7 @@ aws_bucket_remove_user(bucket, username)
 \item{username}{(character) A user name. required}
 }
 \value{
-inviv
+invisibly returns nothing
 }
 \description{
 Remove a user from a bucket

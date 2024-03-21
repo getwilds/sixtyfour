@@ -27,7 +27,7 @@ Add a user to a bucket
 \item write: write (in addition to read); includes deleting files; does
 not include deleting buckets
 \item admin: change user permissions (in addition to read and write);
-includes deleting buckets
+includes deleting buckets (THIS OPTION NOT ACCEPTED YET!)
 }
 }
 
@@ -35,14 +35,14 @@ includes deleting buckets
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 aws_bucket_add_user(
   bucket = "s64-test-22",
-  username = "scott",
+  username = "userdmgziqpt",
   permissions = "read"
 )
 \dontrun{
 # not a valid permissions string
 aws_bucket_add_user(
   bucket = "mybucket",
-  username = "scott",
+  username = "userdmgziqpt",
   permissions = "notavalidpermission"
 )
 }

@@ -23,3 +23,9 @@ purge_secrets <- function() {
       purrr::map(aws_secrets_delete)
   }
 }
+
+random_string <- function(prefix, size = 8) {
+  glue::glue(
+    "{prefix}{paste0(sample(letters, size = size), collapse = '')}"
+  )
+}

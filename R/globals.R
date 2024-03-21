@@ -8,8 +8,7 @@ utils::globalVariables(c(
   "Service", # <billing_factory>
   ".", # <aws_group>
   ".", # <aws_policy>
-  "PolicyName", # <as_policy_arn>
-  "Arn", # <as_policy_arn>
+  "type", # <aws_policy_list_entities>
   ".", # <aws_role>
   "user", # <aws_bucket_remove_user>
   "user", # <aws_bucket_get_permissions>

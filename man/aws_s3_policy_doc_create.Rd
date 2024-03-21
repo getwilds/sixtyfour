@@ -19,6 +19,9 @@ statement. optional. see
 
 \item{...}{named args passed to \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}}}
 }
+\value{
+a policy document as JSON (of class \code{json})
+}
 \description{
 Create a policy document for an S3 bucket
 }
