@@ -4,7 +4,10 @@
 \alias{aws_policy_exists}
 \title{Check if a policy exists}
 \usage{
-aws_policy_exists(arn)
+aws_policy_exists(name)
+}
+\arguments{
+\item{name}{(character) a policy name or arn}
 }
 \value{
 single logical, \code{TRUE} or \code{FALSE}
