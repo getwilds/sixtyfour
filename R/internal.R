@@ -4,9 +4,9 @@
 #' - UserId: the ID for the user
 #' - Account: account ID the user is in
 #' - Arn: arn for the user
-account_id <- function() {
+account_id <- memoise::memoise(function() {
   paws::sts()$get_caller_identity()$Account
-}
+})
 
 #' Get bucket region
 #' @keywords internal
