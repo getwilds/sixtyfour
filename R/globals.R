@@ -6,16 +6,17 @@ utils::globalVariables(c(
   "service_map", # <billing_factory>
   "acronym", # <billing_factory>
   "Service", # <billing_factory>
+  "DBInstanceArn", # <aws_db_rds_list>
   ".", # <aws_group>
   ".", # <aws_policy>
   "PolicyName", # <as_policy_arn>
   "Arn", # <as_policy_arn>
   ".", # <aws_role>
-  ".", # <aws_secrets_all>
   "arn", # <aws_secrets_all>
   "created_date", # <aws_secrets_all>
   "secret_raw", # <aws_secrets_rotate>
   "secret_str", # <aws_secrets_rotate>
+  "name", # <ui_fetch_secret>
   "PasswordLastUsed", # <user_list_tidy>
   "CreateDate", # <tidy_generator>
   "IpPermissions", # <security_group_handler>

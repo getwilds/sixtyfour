@@ -5,8 +5,8 @@
 \title{Get a database connection to Amazon RDS}
 \usage{
 aws_db_rds_con(
-  user,
-  pwd,
+  user = NULL,
+  pwd = NULL,
   id = NULL,
   host = NULL,
   port = NULL,
@@ -30,11 +30,11 @@ those you used to create the cluster with \code{\link[=aws_db_redshift_create]{a
 \code{id} are supplied - otherwise required}
 }
 \description{
-Supports: MariaDB, MySQL, and PostgreSQL
+Supports: MariaDB, MySQL, and Postgres
 }
 \details{
 RDS supports many databases, but we only provide support for
-MariaDB, MySQL, and PostgreSQL
+MariaDB, MySQL, and Postgres
 
 If the \code{engine} you've chosen for your RDS instance is not supported
 with this function, you can likely connect to it on your own
@@ -61,6 +61,7 @@ Other database:
 \code{\link{aws_db_instance_status}()},
 \code{\link{aws_db_rds_client}()},
 \code{\link{aws_db_rds_create}()},
+\code{\link{aws_db_rds_list}()},
 \code{\link{aws_db_redshift_client}()},
 \code{\link{aws_db_redshift_con}()},
 \code{\link{aws_db_redshift_create}()}

@@ -23,9 +23,10 @@ group_list_tidy <- function(x) {
 #' }
 aws_groups <- function(username = NULL, ...) {
   if (is.null(username)) {
-    paginate_aws(env64$iam$list_groups, "Groups", ...) %>% group_list_tidy()
+    paginate_aws_marker(env64$iam$list_groups, "Groups", ...) %>%
+      group_list_tidy()
   } else {
-    paginate_aws(env64$iam$list_groups_for_user, "Groups",
+    paginate_aws_marker(env64$iam$list_groups_for_user, "Groups",
       UserName = username, ...
     ) %>%
       group_list_tidy()

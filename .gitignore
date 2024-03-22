@@ -5,7 +5,8 @@
 .DS_Store
 docs
 inst/doc
+
+# tests fixtures
 tests/fixtures/aws_db_rds_create.yml
 tests/fixtures/aws_db_redshift_create.yml
 tests/fixtures/aws_secret*.yml
-tests/fixtures/aws_db_rds_create.yml
