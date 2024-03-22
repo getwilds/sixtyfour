@@ -25,7 +25,8 @@ user_list_tidy <- function(x) {
 #' aws_users()
 #' }
 aws_users <- function(...) {
-  users <- paginate_aws(env64$iam$list_users, "Users") %>% user_list_tidy()
+  users <- paginate_aws_marker(env64$iam$list_users, "Users") %>%
+    user_list_tidy()
   purrr::map(users$UserName, env64$iam$get_user) %>%
     purrr::map(purrr::pluck, "User") %>%
     user_list_tidy()
@@ -180,76 +181,4 @@ aws_user_access_key <- function() {
 aws_user_add_to_group <- function(username, groupname) {
   env64$iam$add_user_to_group(groupname, username)
   aws_user(username)
-}
-
-#' Grant a user access to an RDS database
-#'
-#' @export
-#' @param user (character) an IAM username. required
-#' @param id (character) instance identifier. required
-#' @return xxx
-#' @autoglobal
-#' @examples \dontrun{
-#' aws_user_add_to_rds(user = "sean", id = "bluebird")
-#' }
-aws_user_add_to_rds <- function(user, id) {
-  # error handling
-  checked_user <- check_aws_user(user)
-  stop_if(
-    rlang::is_error(checked_user$error),
-    glue("user `{user}` does not exist")
-  )
-  dbs <- aws_db_rds_list()
-  picked <- dplyr::filter(dbs, DBInstanceIdentifier == {{ id }})
-  stop_if_not(
-    NROW(picked) > 0,
-    glue("database `{id}` does not exist")
-  )
-
-  # policy handling
-  doc <- aws_policy_document_create(
-    picked$Region,
-    picked$AccountId,
-    picked$DbiResourceId,
-    user
-  )
-  policy_name <- glue("RdsAllow{id}{user}")
-  policy <- aws_policy_create(policy_name, doc)
-  invisible(aws_policies(refresh = TRUE)) # refresh policy data
-  checked_user$result %>% aws_policy_attach(policy_name)
-
-  # database user
-  current_user <- aws_user()
-  # current_user$user$UserName
-  secrets <- aws_secrets_all()
-  sec <- dplyr::filter(secrets, grepl(id, arn))
-  if (NROW(sec) == 0) {
-    rlang::abort("no secrets found for current user and database")
-  }
-  if (NROW(sec) == 1) {
-    con <- aws_db_rds_con(sec$username, sec$password, id = id)
-    on.exit(DBI::dbDisconnect(con))
-    qry <- glue::glue_sql("
-        CREATE USER {`user`}
-        IDENTIFIED WITH AWSAuthenticationPlugin
-        AS 'RDS'",
-      .con = con
-    )
-    # DBI::dbSendQuery(con, qry)
-    res <- DBI::dbSendQuery(con, "CREATE USER ? IDENTIFIED WITH AWSAuthenticationPlugin AS 'RDS'")
-    DBI::dbBind(res, list(user))
-    DBI::dbFetch(res, n = 3)
-    DBI::dbClearResult(res)
-
-    query <- glue::glue_sql("CREATE USER {user} IDENTIFIED WITH AWSAuthenticationPlugin AS 'RDS'", .con = con)
-    out <- DBI::dbGetQuery(con, query)
-    # head(df, 3)
-
-    qry <- glue::glue("CREATE USER {user}
-        IDENTIFIED WITH AWSAuthenticationPlugin
-        AS 'RDS'")
-    out <- DBI::dbGetQuery(con, qry)
-  } else {
-    rlang::abort("more than one set of secrets found")
-  }
 }
