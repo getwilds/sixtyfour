@@ -34,6 +34,11 @@ vign_billing:
 	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('billing.Rmd.og', output = 'billing.Rmd')";\
 	cd ..
 
+vign_db:
+	cd vignettes;\
+	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('databases.Rmd.og', output = 'databases.Rmd')";\
+	cd ..
+
 test:
 	${RSCRIPT} -e "devtools::test()"
 
