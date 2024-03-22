@@ -19,7 +19,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Scott Chamberlain \email{sachamber@fredhutch.org}
+\strong{Maintainer}: Scott Chamberlain \email{sachamber@fredhutch.org} (\href{https://orcid.org/0000-0003-1444-9135}{ORCID})
 
 Authors:
 \itemize{
