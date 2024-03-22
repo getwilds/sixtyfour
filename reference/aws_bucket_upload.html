@@ -28,6 +28,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/billing.html">Explore Billing Data</a>
+    <a class="dropdown-item" href="../articles/databases.html">Databases</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -117,7 +118,7 @@ sure that you want to delete the bucket.</p>
 <span class="r-in"><span><span class="co"># cleanup</span></span></span>
 <span class="r-in"><span><span class="va">objs</span> <span class="op">&lt;-</span> <span class="fu"><a href="aws_bucket_list_objects.html">aws_bucket_list_objects</a></span><span class="op">(</span><span class="va">bucket_name</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="aws_file_delete.html">aws_file_delete</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">uri</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="aws_bucket_delete.html">aws_bucket_delete</a></span><span class="op">(</span><span class="va">bucket_name</span>, force<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="aws_bucket_delete.html">aws_bucket_delete</a></span><span class="op">(</span><span class="va">bucket_name</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="aws_bucket_exists.html">aws_bucket_exists</a></span><span class="op">(</span><span class="va">bucket_name</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>

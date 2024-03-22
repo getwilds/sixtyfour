@@ -28,6 +28,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/billing.html">Explore Billing Data</a>
+    <a class="dropdown-item" href="../articles/databases.html">Databases</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -60,8 +61,8 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">aws_db_rds_create</span><span class="op">(</span></span>
 <span>  <span class="va">id</span>,</span>
 <span>  <span class="va">class</span>,</span>
-<span>  <span class="va">user</span>,</span>
-<span>  <span class="va">pwd</span>,</span>
+<span>  user <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pwd <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dbname <span class="op">=</span> <span class="st">"dev"</span>,</span>
 <span>  engine <span class="op">=</span> <span class="st">"mariadb"</span>,</span>
 <span>  storage <span class="op">=</span> <span class="fl">20</span>,</span>
@@ -69,6 +70,8 @@
 <span>  security_group_ids <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  wait <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  aws_secrets <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  iam_database_auth <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -79,7 +82,7 @@
 <dd><p>(character) required. instance identifier. The identifier for
 this DB instance. This parameter is stored as a lowercase string.
 Constraints: must contain from 1 to 63 letters, numbers, or hyphens; first
-character must be a letter; cn't end with a hyphen or contain two
+character must be a letter; can't end with a hyphen or contain two
 consecutive hyphens. required.</p></dd>
 
 
@@ -90,12 +93,14 @@ DB instance, for example <code>db.m5.large</code>.</p></dd>
 
 <dt>user</dt>
 <dd><p>(character) User name associated with the admin user account for
-the cluster that is being created.</p></dd>
+the cluster that is being created. If <code>NULL</code>, we generate a random user
+name, see <code><a href="random_user.html">random_user()</a></code></p></dd>
 
 
 <dt>pwd</dt>
 <dd><p>(character) Password associated with the admin user account for
-the cluster that is being created.</p></dd>
+the cluster that is being created. If <code>NULL</code>, we generate a random password
+with <code><a href="aws_secrets_pwd.html">aws_secrets_pwd()</a></code> (which uses the AWS Secrets Manager service)</p></dd>
 
 
 <dt>dbname</dt>
@@ -105,7 +110,8 @@ within the cluster</p></dd>
 
 
 <dt>engine</dt>
-<dd><p>(character) The engine to use. default: "mariadb". required.</p></dd>
+<dd><p>(character) The engine to use. default: "mariadb". required.
+one of: mariadb, mysql, or postgres</p></dd>
 
 
 <dt>storage</dt>
@@ -135,6 +141,16 @@ until the cluster is available. If <code>wait=FALSE</code> use
 <dd><p>(logical) verbose informational output? default: <code>TRUE</code></p></dd>
 
 
+<dt>aws_secrets</dt>
+<dd><p>(logical) should we manage your database credentials
+in AWS Secrets Manager? default: <code>TRUE</code></p></dd>
+
+
+<dt>iam_database_auth</dt>
+<dd><p>(logical) Use IAM database authentication?
+default: <code>FALSE</code></p></dd>
+
+
 <dt>...</dt>
 <dd><p>named parameters passed on to
 <a href="https://www.paws-r-sdk.com/docs/rds_create_db_instance/" class="external-link">create_db_instance</a></p></dd>
@@ -144,14 +160,13 @@ until the cluster is available. If <code>wait=FALSE</code> use
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>a list with methods for interfacing with RDS;
-see <a href="https://www.paws-r-sdk.com/docs/rds/" class="external-link">https://www.paws-r-sdk.com/docs/rds/</a>. also prints useful
-connection information after instance is available.</p>
+<p>returns <code>NULL</code>, this function called for the side effect of
+creating an RDS instance</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>See above link to <code>create_cluster</code> docs for details on requirements
-for each parameter</p>
+    <p>See above link to <code>create_db_instance</code> docs for details on
+requirements for each parameter</p>
 <p>Note that even though you can use any option for <code>engine</code> in this function,
 we may not provide the ability to connect to the chosen data source
 in this package.</p>
@@ -172,6 +187,7 @@ yourself in the AWS dashboard.</p>
 <code><a href="aws_db_instance_status.html">aws_db_instance_status</a>()</code>,
 <code><a href="aws_db_rds_client.html">aws_db_rds_client</a>()</code>,
 <code><a href="aws_db_rds_con.html">aws_db_rds_con</a>()</code>,
+<code><a href="aws_db_rds_list.html">aws_db_rds_list</a>()</code>,
 <code><a href="aws_db_redshift_client.html">aws_db_redshift_client</a>()</code>,
 <code><a href="aws_db_redshift_con.html">aws_db_redshift_con</a>()</code>,
 <code><a href="aws_db_redshift_create.html">aws_db_redshift_create</a>()</code></p></div>

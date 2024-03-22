@@ -16,6 +16,9 @@
     <loc>/articles/billing.html</loc>
   </url>
   <url>
+    <loc>/articles/databases.html</loc>
+  </url>
+  <url>
     <loc>/articles/index.html</loc>
   </url>
   <url>
@@ -77,6 +80,9 @@
   </url>
   <url>
     <loc>/reference/aws_db_rds_create.html</loc>
+  </url>
+  <url>
+    <loc>/reference/aws_db_rds_list.html</loc>
   </url>
   <url>
     <loc>/reference/aws_db_redshift_client.html</loc>
@@ -229,6 +235,9 @@
     <loc>/reference/aws_vpc_security_groups.html</loc>
   </url>
   <url>
+    <loc>/reference/aws_vpc_sg_with_ingresss.html</loc>
+  </url>
+  <url>
     <loc>/reference/aws_vpcs.html</loc>
   </url>
   <url>
@@ -262,7 +271,10 @@
     <loc>/reference/last.html</loc>
   </url>
   <url>
-    <loc>/reference/paginate_aws.html</loc>
+    <loc>/reference/paginate_aws_marker.html</loc>
+  </url>
+  <url>
+    <loc>/reference/paginate_aws_token.html</loc>
   </url>
   <url>
     <loc>/reference/path_as_s3.html</loc>
@@ -272,6 +284,9 @@
   </url>
   <url>
     <loc>/reference/path_s3_parse.html</loc>
+  </url>
+  <url>
+    <loc>/reference/random_user.html</loc>
   </url>
   <url>
     <loc>/reference/reexports.html</loc>
@@ -284,6 +299,9 @@
   </url>
   <url>
     <loc>/reference/sixtyfour-package.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ui_fetch_secret.html</loc>
   </url>
   <url>
     <loc>/reference/wait_for_cluster.html</loc>
