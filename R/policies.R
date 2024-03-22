@@ -18,7 +18,8 @@ all_policies <- memoise::memoise(function(...) {
   if (Sys.getenv("TESTING64", FALSE)) {
     return(policies_sample)
   }
-  paginate_aws(env64$iam$list_policies, "Policies", ...) %>% policy_list_tidy()
+  paginate_aws_marker(env64$iam$list_policies, "Policies", ...) %>%
+    policy_list_tidy()
 })
 
 #' List policies

@@ -20,8 +20,10 @@ aws_secrets_list <- function(...) {
 #' aws_secrets_list()
 #' }
 aws_secrets_all <- function() {
-  tmp <- env64$secretsmanager$list_secrets() %>%
-    .$SecretList %>%
+    tmp <- paginate_aws_token(
+      env64$secretsmanager$list_secrets,
+      "SecretList"
+    ) %>%
     purrr::map(function(x) aws_secrets_get(x$Name))
 
   new_secrets <- list()

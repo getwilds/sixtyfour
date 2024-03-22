@@ -124,7 +124,7 @@ path_as_s3 <- function(paths) {
   sprintf("s3://%s", paths)
 }
 
-#' Paginate over list_* methods
+#' Paginate over list_* methods with Marker/IsTruncated
 #'
 #' @importFrom purrr map flatten
 #' @importFrom rlang has_name
@@ -135,10 +135,10 @@ path_as_s3 <- function(paths) {
 #' @examples \dontrun{
 #' # FIXME: could remove target param and poach the name of the fun
 #' # e.g,. from list_roles we can get Roles
-#' paginate_aws(fun = env64$iam$list_roles, target = "Roles")
-#' paginate_aws(fun = env64$iam$list_policies, target = "Policies")
+#' paginate_aws_marker(fun = env64$iam$list_roles, target = "Roles")
+#' paginate_aws_marker(fun = env64$iam$list_policies, target = "Policies")
 #' }
-paginate_aws <- function(fun, target, ...) {
+paginate_aws_marker <- function(fun, target, ...) {
   res <- fun(...)
   if (!rlang::has_name(res, "IsTruncated")) {
     return(res[[target]])
@@ -153,6 +153,34 @@ paginate_aws <- function(fun, target, ...) {
     res <- fun(Marker = res$Marker)
     all_results <- c(all_results, list(res))
     if (!res$IsTruncated) more_results <- FALSE
+  }
+  purrr::map(all_results, \(x) x[[target]]) %>% purrr::flatten()
+}
+
+#' Paginate over list_* methods with NextToken
+#'
+#' @importFrom rlang is_empty
+#' @inheritParams paginate_aws_marker
+#' @keywords internal
+#' @examples \dontrun{
+#' paginate_aws_token(fun = env64$secretsmanager$list_secrets,
+#' target = "SecretList")
+#' }
+paginate_aws_token <- function(fun, target, ...) {
+  res <- fun(...)
+  if (!rlang::has_name(res, "NextToken")) {
+    return(res[[target]])
+  }
+  if (rlang::is_empty(res$NextToken)) {
+    return(res[[target]])
+  }
+
+  all_results <- list(res)
+  more_results <- TRUE
+  while (more_results) {
+    res <- fun(NextToken = res$NextToken)
+    all_results <- c(all_results, list(res))
+    if (rlang::is_empty(res$NextToken)) more_results <- FALSE
   }
   purrr::map(all_results, \(x) x[[target]]) %>% purrr::flatten()
 }
