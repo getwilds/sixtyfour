@@ -98,8 +98,8 @@ aws_db_rds_con <- function(
 #' default: `FALSE`
 #' @param ... named parameters passed on to
 #' [create_db_instance](https://www.paws-r-sdk.com/docs/rds_create_db_instance/)
-#' @details See above link to `create_cluster` docs for details on requirements
-#' for each parameter
+#' @details See above link to `create_db_instance` docs for details on
+#' requirements for each parameter
 #'
 #' Note that even though you can use any option for `engine` in this function,
 #' we may not provide the ability to connect to the chosen data source

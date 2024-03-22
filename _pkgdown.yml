@@ -53,6 +53,7 @@ reference:
       - starts_with("aws_vpc_security_group")
       - aws_vpc_sec_group_rules
       - ip_permissions_generator
+      - aws_vpc_sg_with_ingresss
   - title: EC2
     contents:
       - aws_ec2_client

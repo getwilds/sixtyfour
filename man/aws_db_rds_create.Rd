@@ -80,8 +80,8 @@ creating an RDS instance
 Create an RDS cluster
 }
 \details{
-See above link to \code{create_cluster} docs for details on requirements
-for each parameter
+See above link to \code{create_db_instance} docs for details on
+requirements for each parameter
 
 Note that even though you can use any option for \code{engine} in this function,
 we may not provide the ability to connect to the chosen data source

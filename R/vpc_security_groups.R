@@ -1,4 +1,14 @@
-create_security_group <- function(engine) {
+#' Get a security group with one ingress rule based on the engine
+#' @export
+#' @param engine (character) The engine to use. default: "mariadb". required.
+#' one of: mariadb, mysql, postgres, or redshift
+#' @details Adds an ingress rule specific to the `engine` supplied (port
+#' changes based on the engine), and your IP address. To create your own
+#' security group and ingress rules see [aws_vpc_security_group_create()]
+#' and [aws_vpc_security_group_ingress()]
+#' @family security groups
+#' @return (character) security group ID
+aws_vpc_sg_with_ingresss <- function(engine) {
   sg <- aws_vpc_security_group_create(
     name = glue("{engine}-{paste0(sample(1:9, size = 4), collapse = '')}"),
     engine = engine
@@ -43,7 +53,9 @@ security_group_handler <- function(ids, engine) {
       "Creating security group with access for ",
       "{.strong {engine}} and port {.strong {port}}"
     ))
-    trysg <- tryCatch(create_security_group(engine), error = function(e) e)
+    trysg <- tryCatch(aws_vpc_sg_with_ingresss(engine),
+      error = function(e) e
+    )
     if (rlang::is_error(trysg)) {
       cli::cli_alert_danger(c(
         "An error occurred while creating the security group; ",
@@ -236,6 +248,7 @@ engine2port <- function(engine) {
     mariadb = 3306L,
     mysql = 3306L,
     postgres = 5432L,
+    redshift = 5439L,
     stop(glue::glue("{engine} not currently supported"))
   )
 }
