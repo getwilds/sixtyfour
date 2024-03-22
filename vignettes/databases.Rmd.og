@@ -1,0 +1,153 @@
+---
+title: "Databases"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Databases}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+There are many databases available in AWS services. This package deals with a subset of them, including:
+
+- RDS: MariaDB, MySQL, Postgres
+- Redshift
+
+We only handle a subset as `sixtyfour` aims to be an opinionated package providing easy to use interfaces - achieving that goal means supporting the subset of the most well troden paths.
+
+```{r setup}
+library(sixtyfour)
+```
+
+All database related functions in `sixtyfour` should start with `aws_db`.
+
+## Redshift
+
+The `aws_db_redshift_create` function creates a cluster for you (a Redshift instance is called a "cluster").
+
+There's an important distinction between Redshift and RDS. Redshift uses IAM username/password, whereas with RDS you can use username/password setup for each instance of a RDS database, or do authentication through IAM. However, with RDS you can't simply pass your IAM username/password (see notes below).
+
+First, let's create a security group with an ingress rule so you can access your Redshift cluster.
+
+```{r}
+my_security_group <- aws_vpc_sg_with_ingresss("redshift")
+```
+
+Notes on the parameters used in the example below:
+
+- `id`: this is an ID you come up with, it must be unique for all clusters within your AWS account
+- `user`/`pwd`: your IAM username and password
+- `security_group_ids`: it's best to first create a security group to handle permissions to your Redshift cluster. See example above for how to do that. Pass in it's identifier here
+- `wait`: Since we're using `wait=TRUE` the call to `aws_db_redshift_create` will likely take about 3 minutes to run. You can set `wait=FALSE` and not wait, but then you'll want to check yourself when the instance is available.
+
+```{r}
+aws_db_redshift_create(
+  id = "some-id",
+  user = "your-username",
+  pwd = "your-pwd",
+  security_group_ids = list(my_security_group),
+  wait = TRUE
+)
+```
+
+Connect to the cluster
+
+```{r}
+con <- aws_db_redshift_con(
+  user = "your-username",
+  pwd = "your-pwd",
+  id = "some-id"
+)
+```
+
+List tables, create a table, etc
+
+```{r}
+library(DBI)
+dbListTables(con)
+dbWriteTable(con, "mtcars", mtcars)
+dbListTables(con)
+dbReadTable(con, "mtcars")
+```
+
+Use dplyr/et al.
+
+```{r}
+library(dplyr)
+tbl(con, "mtcars") %>%
+  filter(mpg == 4)
+```
+
+Important: Remember to delete your cluster when your done!
+
+## RDS
+
+The process for MariaDB, MySQL, and Postgres are more or less the same, so we'll only demonstrate MariaDB.
+
+In a future version of this package you'll be able to use IAM to authenticate with RDS, but for now `sixtyfour` does not support IAM for RDS. The current "happy path" (read: easy) process of starting an RDS instance with `aws_db_rds_create` is as follows:
+
+- Supply an ID (identifier) for your instance that you create
+- A random username is created and used for database authentication
+- A random password is created (via AWS Secretamanager) and used for database authentication
+- A security groups is created
+  - An ingress rule is added to the security group with your IP address
+- On RDS instance creation, we use the above username, password, and security group
+- The username, password, and security group information are stored in AWS Secretamanager for subsequent use
+
+To connect to your RDS instance, you use `aws_db_rds_con`. The "happy path" for connecting is:
+
+- Pass in only the ID used above
+- We fetch secrets from the AWS Secretamanager and ask you which you'd like to use
+- We gather all the necessary details to connect to your instance
+- Return a DBI connection object, e.g., `MariaDBConnection` for MariaDB
+
+Let's walk through the steps with some code.
+
+First, create an RDS instance - in this case for MariaDB.
+
+Notes on the parameters used in the example below:
+
+- `id`: this is an ID you come up with. see `?aws_db_rds_create` for constraints
+- `class`: The compute and memory capacity of the instance; see the [AWS docs](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html) for instance class options. The default for this parameter (`db.t3.micro`) gives you an instance with relatively small capacity in terms of memory and compute - but is set that way to minimize costs in case you forget to turn it off if you're not using it!
+- `engine`: the default is `mariadb`; other options are mysql or postgres
+- `wait`: Since we're using `wait=TRUE` (the default for this function) the call to `aws_db_rds_create` will likely take about 5 minutes to run. You can set `wait=FALSE` and not wait, but then you'll want to check yourself when the instance is available.
+
+```{r}
+aws_db_rds_create(
+  id = "myinstance",
+  class = "db.t3.micro",
+  engine = "mariadb",
+  wait = TRUE
+)
+```
+
+Connect to the instance
+
+```{r}
+con <- aws_db_rds_con(id = "myinstance")
+```
+
+List tables, create a table, etc
+
+```{r}
+library(DBI)
+dbListTables(con)
+dbWriteTable(con, "mtcars", mtcars)
+dbListTables(con)
+dbReadTable(con, "mtcars")
+```
+
+Use dplyr/et al.
+
+```{r}
+library(dplyr)
+tbl(con, "mtcars") %>%
+  filter(mpg == 4)
+```

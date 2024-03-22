@@ -1,7 +1,10 @@
 # wait fxn generator
 wait_until <- function(fun, message) {
   function(id, sleep = 2, status_target = "available") {
-    cli::cli_alert_info("Waiting for instance status: {.emph status_target}")
+    cli::cli_alert_info(c(
+      "Waiting for instance status: {.emph {status_target}}",
+      " (to not wait set `wait=FALSE`)"
+    ))
     options(cli.spinner = "simpleDots")
     on.exit(options(cli.spinner = NULL), add = TRUE)
     cli::cli_progress_bar(format = "{cli::pb_spin} {message}") # nolint

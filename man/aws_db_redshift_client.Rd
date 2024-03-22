@@ -20,6 +20,7 @@ Other database:
 \code{\link{aws_db_rds_client}()},
 \code{\link{aws_db_rds_con}()},
 \code{\link{aws_db_rds_create}()},
+\code{\link{aws_db_rds_list}()},
 \code{\link{aws_db_redshift_con}()},
 \code{\link{aws_db_redshift_create}()}
 }

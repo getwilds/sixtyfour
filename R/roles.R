@@ -25,7 +25,7 @@ role_list_tidy <- function(x) {
 #' aws_roles()
 #' }
 aws_roles <- function(...) {
-  paginate_aws(env64$iam$list_roles, "Roles") %>% role_list_tidy()
+  paginate_aws_marker(env64$iam$list_roles, "Roles") %>% role_list_tidy()
 }
 
 #' Get a role

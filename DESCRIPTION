@@ -1,9 +1,11 @@
 Package: sixtyfour
 Title: Humane Interface to AWS
-Version: 0.0.0.97
+Version: 0.0.0.98
 Authors@R: c(
     person("Sean", "Kross", role = "aut"),
-    person("Scott", "Chamberlain", role = c("aut", "cre"), email = "sachamber@fredhutch.org")
+    person("Scott", "Chamberlain", role = c("aut", "cre"),
+        email = "sachamber@fredhutch.org",
+        comment = c(ORCID = "0000-0003-1444-9135"))
   )
 Description: Humane Interface to AWS. And more text. Even more text.
 URL: https://github.com/getwilds/sixtyfour
@@ -26,7 +28,7 @@ Imports:
     rlang,
     tibble,
     fs,
-    s3fs (>= 0.1.4),
+    s3fs (>= 0.1.5),
     cli,
     glue,
     memoise,
@@ -48,5 +50,3 @@ Suggests:
 Config/roxyglobals/filename: globals.R
 Config/roxyglobals/unique: FALSE
 Config/testthat/edition: 3
-Remotes:
-    DyfanJones/s3fs
