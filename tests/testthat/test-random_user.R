@@ -5,7 +5,6 @@ test_that("random_user", {
   expect_true(nzchar(random_user()))
   # all no longer than 16 length
   for (i in replicate(100, random_user())) {
-    # print(nchar(i))
     expect_true(nchar(i) <= 16)
   }
 })

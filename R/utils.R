@@ -163,8 +163,10 @@ paginate_aws_marker <- function(fun, target, ...) {
 #' @inheritParams paginate_aws_marker
 #' @keywords internal
 #' @examples \dontrun{
-#' paginate_aws_token(fun = env64$secretsmanager$list_secrets,
-#' target = "SecretList")
+#' paginate_aws_token(
+#'   fun = env64$secretsmanager$list_secrets,
+#'   target = "SecretList"
+#' )
 #' }
 paginate_aws_token <- function(fun, target, ...) {
   res <- fun(...)

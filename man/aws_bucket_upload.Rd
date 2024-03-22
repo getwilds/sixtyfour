@@ -42,7 +42,7 @@ aws_bucket_list_objects(bucket_name)
 # cleanup
 objs <- aws_bucket_list_objects(bucket_name)
 aws_file_delete(objs$uri)
-aws_bucket_delete(bucket_name, force=TRUE)
+aws_bucket_delete(bucket_name, force = TRUE)
 aws_bucket_exists(bucket_name)
 \dontshow{\}) # examplesIf}
 }

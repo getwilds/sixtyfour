@@ -30,10 +30,10 @@ sure that you want to delete the bucket.
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 bucket_name <- "bucket-to-delete-113"
 if (!aws_bucket_exists(bucket_name)) {
- aws_bucket_create(bucket = bucket_name)
- aws_buckets()
- aws_bucket_delete(bucket = bucket_name)
- aws_buckets()
+  aws_bucket_create(bucket = bucket_name)
+  aws_buckets()
+  aws_bucket_delete(bucket = bucket_name)
+  aws_buckets()
 }
 \dontshow{\}) # examplesIf}
 }

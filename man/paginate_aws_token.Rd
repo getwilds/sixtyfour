@@ -18,8 +18,10 @@ Paginate over list_* methods with NextToken
 }
 \examples{
 \dontrun{
-paginate_aws_token(fun = env64$secretsmanager$list_secrets,
-target = "SecretList")
+paginate_aws_token(
+  fun = env64$secretsmanager$list_secrets,
+  target = "SecretList"
+)
 }
 }
 \keyword{internal}

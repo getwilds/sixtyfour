@@ -200,15 +200,17 @@ split_grep <- function(column, split, pattern) {
 aws_db_rds_list <- function() {
   lst <- instance_details()
   dbs <- lst$DBInstances
-  map(dbs, \(x) as_tibble(x[c(
-    "DBInstanceIdentifier",
-    "DBInstanceClass",
-    "Engine",
-    "DBInstanceStatus",
-    "DBName",
-    "DbiResourceId",
-    "DBInstanceArn"
-  )])) %>%
+  map(dbs, \(x) {
+    as_tibble(x[c(
+      "DBInstanceIdentifier",
+      "DBInstanceClass",
+      "Engine",
+      "DBInstanceStatus",
+      "DBName",
+      "DbiResourceId",
+      "DBInstanceArn"
+    )])
+  }) %>%
     list_rbind() %>%
     mutate(
       AccountId = split_grep(DBInstanceArn, ":", "^[0-9]+$"),

@@ -22,9 +22,9 @@
 #' ui_fetch_secret(engine = "redshift")
 #' ui_fetch_secret(engine = "mariadb")
 #' }
-ui_fetch_secret <- function(user = NULL, password = NULL, engine = NULL,
-  id = NULL) {
-
+ui_fetch_secret <- function(
+    user = NULL, password = NULL, engine = NULL,
+    id = NULL) {
   # if user and password supplied return them
   if (!is.null(user) && !is.null(password)) {
     return(list(user = user, password = password))
