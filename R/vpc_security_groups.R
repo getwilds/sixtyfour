@@ -90,10 +90,10 @@ security_group_handler <- function(ids, engine) {
     } else {
       picked_id <- port_df[picked, "GroupId"]
     }
-    cli::cli_alert_info(
+    cli::cli_alert_info(c(
       "Adding your IP address {.strong {ip}} to security ",
       "group {.strong {picked_id}}"
-    )
+    ))
     try_ingress <- tryCatch(
       {
         aws_vpc_security_group_ingress(
