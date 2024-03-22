@@ -2,7 +2,7 @@
 % Please edit documentation in R/s3.R
 \name{aws_bucket_change_user}
 \alias{aws_bucket_change_user}
-\title{Change user or group permissions for a bucket}
+\title{Change user permissions for a bucket}
 \usage{
 aws_bucket_change_user(bucket, username, permissions)
 }
@@ -18,11 +18,30 @@ read or write. write includes read}
 invisibly returns nothing
 }
 \description{
-Change user or group permissions for a bucket
+Change user permissions for a bucket
 }
+\section{Important}{
+
+This function is built around policies named by this package. If you use
+your own policies that you name this function may not work.
+}
+
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-aws_bucket_change_user("mybucket", "sean", "write")
-aws_bucket_change_user("mybucket", "sean", c("write", "read"))
+# create user
+if (!aws_user_exists("jane")) {
+  aws_user_create("jane")
+}
+
+# user doesn't have any permissions for the bucket
+# - use aws_bucket_add_user to add permissions
+aws_bucket_change_user(bucket="s64-test-22", username="jane", permissions = "read")
+aws_bucket_add_user(bucket="s64-test-22", username="jane", permissions = "read")
+
+# want to change to read to write, makes the change
+aws_bucket_change_user(bucket="s64-test-22", username="jane", permissions = "write")
+
+# want to change to write - but already has read
+aws_bucket_change_user(bucket="s64-test-22", username="jane", permissions = "read")
 \dontshow{\}) # examplesIf}
 }

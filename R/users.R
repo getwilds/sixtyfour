@@ -8,7 +8,7 @@
 user_list_tidy <- function(x) {
   vars <- c(
     "UserName", "UserId", "Path", "Arn", "CreateDate",
-    "PasswordLastUsed", "Tags"
+    "PasswordLastUsed"
   )
   tidy_generator(vars)(x) %>%
     mutate(PasswordLastUsed = as_datetime(PasswordLastUsed))
@@ -20,15 +20,18 @@ user_list_tidy <- function(x) {
 #' @param ... parameters passed on to the `paws`
 #' [list_users](https://www.paws-r-sdk.com/docs/iam_list_users/) method
 #' @family users
-#' @returns A tibble with information about user accounts
+#' @returns A tibble with information about user accounts, with columns:
+#' - UserName
+#' - UserId
+#' - Path
+#' - Arn
+#' - CreateDate
+#' - PasswordLastUsed
 #' @examples \dontrun{
 #' aws_users()
 #' }
 aws_users <- function(...) {
-  users <- paginate_aws_marker(env64$iam$list_users, "Users") %>%
-    user_list_tidy()
-  purrr::map(users$UserName, env64$iam$get_user) %>%
-    purrr::map(purrr::pluck, "User") %>%
+  paginate_aws_marker(env64$iam$list_users, "Users") %>%
     user_list_tidy()
 }
 

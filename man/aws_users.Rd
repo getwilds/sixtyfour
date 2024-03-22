@@ -11,7 +11,15 @@ aws_users(...)
 \href{https://www.paws-r-sdk.com/docs/iam_list_users/}{list_users} method}
 }
 \value{
-A tibble with information about user accounts
+A tibble with information about user accounts, with columns:
+\itemize{
+\item UserName
+\item UserId
+\item Path
+\item Arn
+\item CreateDate
+\item PasswordLastUsed
+}
 }
 \description{
 List Users

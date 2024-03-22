@@ -35,7 +35,7 @@ includes deleting buckets (THIS OPTION NOT ACCEPTED YET!)
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 aws_bucket_add_user(
   bucket = "s64-test-22",
-  username = "userdmgziqpt",
+  username = "jane",
   permissions = "read"
 )
 \dontrun{

@@ -22,6 +22,10 @@ reference:
     contents:
       - starts_with("aws_bucket")
       - aws_s3_policy_doc_create
+      - aws_bucket_add_user
+      - aws_bucket_change_user
+      - aws_bucket_remove_user
+      - aws_bucket_permissions
   - title: Users
     contents:
       - starts_with("aws_user")

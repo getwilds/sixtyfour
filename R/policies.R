@@ -87,8 +87,8 @@ aws_policy_safe <- purrr::safely(aws_policy)
 #' aws_policy_exists("ReadOnlyAccess")
 #' aws_policy_exists("arn:aws:iam::aws:policy/ReadOnlyAccess")
 aws_policy_exists <- function(name) {
-  !is.null(aws_policy_safe(arn)$result) ||
-    !is.null(aws_policy_safe(arn, local = TRUE)$result)
+  !is.null(aws_policy_safe(name)$result) ||
+    !is.null(aws_policy_safe(name, local = TRUE)$result)
 }
 
 #' Create a policy

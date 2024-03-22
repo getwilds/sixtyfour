@@ -12,8 +12,10 @@ utils::globalVariables(c(
   "type", # <aws_policy_list_entities>
   ".", # <aws_role>
   "user", # <aws_bucket_remove_user>
-  "user", # <aws_bucket_get_permissions>
-  "permissions", # <aws_bucket_get_permissions>
+  "user", # <aws_bucket_permissions>
+  "permissions", # <aws_bucket_permissions>
+  "PolicyName", # <aws_bucket_permissions>
+  "permissions2", # <aws_bucket_permissions>
   "PolicyArn", # <permissions_user_bucket>
   "resource_arn", # <permissions_user_bucket>
   "group", # <permissions_groups>

@@ -72,7 +72,7 @@ test_that("aws_bucket_add_user", {
   expect_null(user_added)
 
   # cleanup
-  policy_name <- bucket_to_policy_name(bucket_name)
+  policy_name <- bucket_to_policy_name(bucket_name, "read")
   if (aws_user_exists(user_name)) {
     aws_user(user_name) %>%
       aws_policy_detach(policy_name)
@@ -87,26 +87,26 @@ test_that("aws_bucket_add_user", {
 })
 
 
-test_that("aws_bucket_get_permissions", {
-  expect_error(aws_bucket_get_permissions("asdf"), "does not exist")
+test_that("aws_bucket_permissions", {
+  expect_error(aws_bucket_permissions("asdf"), "does not exist")
 
   # setup
   # user_name <- random_string("user") #nolint
   user1 <- "userioubcghd"
   user2 <- "userbqaczysg"
-  vcr::use_cassette("aws_bucket_get_permissions_setup_users", {
+  vcr::use_cassette("aws_bucket_permissions_setup_users", {
     aws_user_create(user1)
     aws_user_create(user2)
   })
   # bucket_name <- random_string("bucket") #nolint
   bucket_name <- "bucketihvmjysp"
-  vcr::use_cassette("aws_bucket_get_permissions_setup_bucket", {
+  vcr::use_cassette("aws_bucket_permissions_setup_bucket", {
     aws_bucket_create(bucket_name)
   })
 
   # the function
-  vcr::use_cassette("aws_bucket_get_permissions", {
-    res <- aws_bucket_get_permissions(bucket_name)
+  vcr::use_cassette("aws_bucket_permissions", {
+    res <- aws_bucket_permissions(bucket_name)
   })
 
   expect_s3_class(res, "tbl")
@@ -168,7 +168,7 @@ test_that("aws_bucket_remove_user", {
   expect_null(user_removed)
 
   # cleanup
-  policy_name <- bucket_to_policy_name(bucket_name)
+  policy_name <- bucket_to_policy_name(bucket_name, "read")
   if (aws_user_exists(user_name)) {
     aws_user_delete(user_name)
   }

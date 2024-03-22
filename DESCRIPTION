@@ -35,7 +35,8 @@ Imports:
     uuid,
     jsonlite,
     curl,
-    snakecase
+    snakecase,
+    tidyr
 Suggests: 
     knitr,
     rmarkdown,

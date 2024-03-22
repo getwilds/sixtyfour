@@ -66,8 +66,22 @@ add_user_now_has <- c(
 
 #' @importFrom snakecase to_upper_camel_case
 #' @keywords internal
-bucket_to_policy_name <- function(bucket) {
-  glue("S3ReadOnlyAccess{to_upper_camel_case(bucket)}")
+bucket_to_policy_name <- function(bucket, permissions) {
+  perm <- switch(permissions, read = "ReadOnlyAccess", write = "FullAccess")
+  glue("S3{perm}{to_upper_camel_case(bucket)}")
+}
+
+create_policy_if_missing <- function(bucket, permissions) {
+  policy_name <- bucket_to_policy_name(bucket, permissions)
+  if (aws_policy_exists(policy_name)) return(invisible())
+  mydoc <- aws_s3_policy_doc_create(
+    bucket = bucket,
+    action = switch(permissions,
+      read = s3_actions_read(),
+      write = s3_actions_full()
+    )
+  )
+  aws_policy_create(policy_name, document = mydoc)
 }
 
 #' Add a user to a bucket
@@ -86,7 +100,7 @@ bucket_to_policy_name <- function(bucket) {
 #' @examplesIf interactive()
 #' aws_bucket_add_user(
 #'   bucket = "s64-test-22",
-#'   username = "userdmgziqpt",
+#'   username = "jane",
 #'   permissions = "read"
 #' )
 #' \dontrun{
@@ -104,17 +118,8 @@ aws_bucket_add_user <- function(bucket, username, permissions) {
   )
   stopifnot("permissions must be length 1" = length(permissions) == 1)
 
-  policy_name <- bucket_to_policy_name(bucket)
-  if (!aws_policy_exists(policy_name)) {
-    mydoc <- aws_s3_policy_doc_create(
-      bucket = bucket,
-      action = switch(permissions,
-        read = s3_actions_read(),
-        write = s3_actions_full()
-      )
-    )
-    aws_policy_create(policy_name, document = mydoc)
-  }
+  policy_name <- bucket_to_policy_name(bucket, permissions)
+  create_policy_if_missing(bucket, permissions)
   user_data <- aws_user(username)
   if (NROW(user_data$attached_policies) == 0) {
     aws_user(username) %>% aws_policy_attach(policy_name)
@@ -130,15 +135,83 @@ aws_bucket_add_user <- function(bucket, username, permissions) {
   invisible()
 }
 
-#' Change user or group permissions for a bucket
+#' Change user permissions for a bucket
 #' @export
+#' @importFrom purrr discard
+#' @importFrom dplyr starts_with
 #' @inheritParams aws_bucket_add_user
 #' @return invisibly returns nothing
+#' @section Important:
+#' This function is built around policies named by this package. If you use
+#' your own policies that you name this function may not work.
 #' @examplesIf interactive()
-#' aws_bucket_change_user("mybucket", "sean", "write")
-#' aws_bucket_change_user("mybucket", "sean", c("write", "read"))
+#' # create user
+#' if (!aws_user_exists("jane")) {
+#'   aws_user_create("jane")
+#' }
+#'
+#' # user doesn't have any permissions for the bucket
+#' # - use aws_bucket_add_user to add permissions
+#' aws_bucket_change_user(bucket="s64-test-22",
+#'   username="jane", permissions = "read")
+#' aws_bucket_add_user(bucket="s64-test-22", username="jane",
+#'   permissions = "read")
+#'
+#' # want to change to read to write, makes the change
+#' aws_bucket_change_user(bucket="s64-test-22", username="jane",
+#'   permissions = "write")
+#'
+#' # want to change to write - but already has read
+#' aws_bucket_change_user(bucket="s64-test-22", username="jane",
+#'   permissions = "read")
 aws_bucket_change_user <- function(bucket, username, permissions) {
-  abort("not working yet")
+  stopifnot(
+    "permissions must be one of read or write" =
+      permissions %in% c("read", "write")
+  )
+  stopifnot("permissions must be length 1" = length(permissions) == 1)
+
+  perms <- filter(aws_bucket_permissions(bucket), user == username)
+  if (NROW(perms) == 0) {
+    cli::cli_alert_warning(c(
+      "No {.strong {bucket}} specific permissions",
+      " found for {.strong {username}}"
+    ))
+    cli::cli_alert_info(c(
+      "Use {.strong aws_bucket_add_user} to add a user to a bucket"
+    ))
+    return(invisible())
+  }
+
+  if (grepl(permissions, perms$permissions)) {
+    cli::cli_alert_success(add_user_already)
+    return(invisible())
+  }
+
+  # detach policies that do not have the target permissions
+  if (glue("policy_{permissions}") %in% names(perms)) {
+    perms <- perms %>%
+      select(!(!!glue("policy_{permissions}")))
+  }
+  policies_to_detach <- perms %>%
+    select(starts_with("policy")) %>%
+    as.character() %>%
+    discard(rlang::is_na)
+  map(policies_to_detach, \(policy) {
+    aws_policy_detach(aws_user(username), policy)
+  })
+
+  # create new policy if needed
+  create_policy_if_missing(bucket, permissions)
+
+  # attach new policy to the user
+  policy_name <- bucket_to_policy_name(bucket, permissions)
+  aws_user(username) %>% aws_policy_attach(policy_name)
+
+  # let em know
+  cli::cli_alert_success(add_user_now_has)
+
+  invisible()
 }
 
 #' Remove a user from a bucket
@@ -153,24 +226,21 @@ aws_bucket_change_user <- function(bucket, username, permissions) {
 aws_bucket_remove_user <- function(bucket, username) {
   perms <- permissions_user_bucket(bucket) %>%
     filter(user == username)
-  userobj <- aws_user(username)
   if (NROW(perms) == 0) {
     cli::cli_alert_warning(c(
       "No {.strong {bucket}} specific permissions",
       " found for {.strong {username}}"
     ))
-    return(invisible(NULL))
+    return(invisible())
   }
 
+  userobj <- aws_user(username)
   map(perms$PolicyName, \(policy) aws_policy_detach(userobj, policy))
 
   cli::cli_alert_success(c(
     "{.strong {username}} access to",
     " {.strong {bucket}} has been removed"
   ))
-  cli::cli_alert_info(
-    "Note: group permissions are unaltered; see {.strong ?aws_groups}"
-  )
   invisible()
 }
 
@@ -179,6 +249,7 @@ aws_bucket_remove_user <- function(bucket, username) {
 #' @importFrom purrr keep
 #' @importFrom dplyr case_when distinct group_by ungroup rowwise select
 #' @importFrom cli cli_abort
+#' @importFrom tidyr pivot_wider
 #' @inheritParams aws_bucket_add_user
 #' @autoglobal
 #' @return tibble with a row for each user, with columns:
@@ -187,8 +258,8 @@ aws_bucket_remove_user <- function(bucket, username) {
 #'
 #' Note that users with no persmissions are not shown; see [aws_users()]
 #' @examplesIf interactive()
-#' aws_bucket_get_permissions("s64-test-22")
-aws_bucket_get_permissions <- function(bucket) {
+#' aws_bucket_permissions("s64-test-22")
+aws_bucket_permissions <- function(bucket) {
   if (!aws_bucket_exists(bucket)) {
     cli::cli_abort("{.strong {bucket}} does not exist")
   }
@@ -200,23 +271,30 @@ aws_bucket_get_permissions <- function(bucket) {
         grepl("full", tolower(PolicyName)) ~ "write"
       )
     ) %>%
-    select(user, permissions)
+    select(user, permissions, PolicyName)
 
   group_perms <- permissions_groups()
 
   bind_rows(user_perms, group_perms) %>%
     group_by(user) %>%
-    mutate(permissions = paste0(permissions, collapse = ",")) %>%
+    mutate(permissions2 = paste0(permissions, collapse = ",")) %>%
+    pivot_wider(
+      names_from = permissions,
+      values_from = PolicyName,
+      names_prefix = "policy_"
+    ) %>%
     distinct() %>%
-    ungroup()
+    ungroup() %>%
+    rename(permissions = permissions2)
 }
 
 #' @autoglobal
 permissions_user_bucket <- function(bucket) {
+  aws_user_mem <- memoise::memoise(aws_user)
   aws_users()$UserName %>%
-    keep(\(user) NROW(aws_user(user)$attached_policies) > 0) %>%
+    keep(\(user) NROW(aws_user_mem(user)$attached_policies) > 0) %>%
     map(\(user) {
-      aws_user(user)$attached_policies %>%
+      aws_user_mem(user)$attached_policies %>%
         rowwise() %>%
         mutate(
           user = user,
@@ -232,12 +310,13 @@ permissions_user_bucket <- function(bucket) {
 
 #' @autoglobal
 permissions_groups <- function() {
+  aws_user_mem <- memoise::memoise(aws_user)
   aws_users()$UserName %>%
-    keep(\(user) length(aws_user(user)$groups$Groups) > 0) %>%
+    keep(\(user) length(aws_user_mem(user)$groups$Groups) > 0) %>%
     map(\(user) {
       tibble(
         user = user,
-        group = map_chr(aws_user(user)$groups$Groups, "GroupName")
+        group = map_chr(aws_user_mem(user)$groups$Groups, "GroupName")
       )
     }) %>%
     list_rbind() %>%
