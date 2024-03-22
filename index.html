@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="index.html">sixtyfour</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.97</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.98</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,12 +79,26 @@
 <p>Development version</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"getwilds/sixtyfour"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"getwilds/sixtyfour"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="scanning-for-secrets">Scanning for secrets<a class="anchor" aria-label="anchor" href="#scanning-for-secrets"></a>
+<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h2>
-<p>See the make target <code>scan_secrets</code> in the Makefile to scan for secrets.</p>
+<p>Go to <a href="http://getwilds.org/sixtyfour/" class="external-link uri">http://getwilds.org/sixtyfour/</a> for <code>sixtyfour</code> package documentation. Go to the <strong>Get Started</strong> vignette to get started.</p>
+<p>This package leans primarily on the packages <a href="https://www.paws-r-sdk.com/" class="external-link">paws</a> and <a href="https://dyfanjones.github.io/s3fs/" class="external-link">s3fs</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="bugs-features">Bugs? Features?<a class="anchor" aria-label="anchor" href="#bugs-features"></a>
+</h2>
+<p>Open an issue on our <a href="https://github.com/getwilds/sixtyfour/issues/" class="external-link">issue tracker</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="developers">Developers<a class="anchor" aria-label="anchor" href="#developers"></a>
+</h2>
+<ul>
+<li>See the targets in the Makefile for various package maintenance tasks.</li>
+<li>For scanning for secrets see the make target <code>scan_secrets</code> in the Makefile.</li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
@@ -126,14 +140,14 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Sean Kross <br><small class="roles"> Author </small>  </li>
-<li>Scott Chamberlain <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Scott Chamberlain <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-1444-9135" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://getwilds.github.io/badges/#concept" class="external-link"><img src="https://getwilds.github.io/badges/badges/concept.svg" alt="Project Status: Concept – Not useable, no support, not open to feedback, unstable API."></a></li>
+<li><a href="https://getwilds.org/badges/#prototype" class="external-link"><img src="https://getwilds.org/badges/badges/prototype.svg" alt="Project Status: Prototype – Useable, some support, open to feedback, unstable API."></a></li>
 <li><a href="https://github.com/getwilds/sixtyfour/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/getwilds/sixtyfour/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
