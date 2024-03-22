@@ -4,6 +4,9 @@
 #' @param password (character) password
 #' @param engine (character) engine to filter secrets with. if not supplied
 #' (`NULL`) all secrets are considered
+#' @param id (character) the id of the instance. if supplied, we filter
+#' the secret names by this id
+#' @autoglobal
 #' @section How the function works:
 #' - If user and password are supplied they are returned immediately
 #' - If user and password are not supplied, we fetch all secrets in
@@ -19,7 +22,9 @@
 #' ui_fetch_secret(engine = "redshift")
 #' ui_fetch_secret(engine = "mariadb")
 #' }
-ui_fetch_secret <- function(user = NULL, password = NULL, engine = NULL) {
+ui_fetch_secret <- function(user = NULL, password = NULL, engine = NULL,
+  id = NULL) {
+
   # if user and password supplied return them
   if (!is.null(user) && !is.null(password)) {
     return(list(user = user, password = password))
@@ -29,6 +34,15 @@ ui_fetch_secret <- function(user = NULL, password = NULL, engine = NULL) {
 
   if (!is.null(engine)) {
     new_secrets_df <- filter(new_secrets_df, engine == !!engine)
+  }
+  if (!is.null(id)) {
+    id_match <- filter(new_secrets_df, grepl(glue("^{id}"), name))
+    if (NROW(id_match) > 0) {
+      new_secrets_df <- bind_rows(
+        id_match,
+        filter(new_secrets_df, !grepl(glue("^{id}"), name))
+      )
+    }
   }
   if (NROW(new_secrets_df) == 0) {
     stop("No secrets found", call. = FALSE)

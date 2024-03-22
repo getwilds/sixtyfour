@@ -32,9 +32,6 @@ aws_db_rds_con <- function(
   check_for_pkg("DBI")
   is_class(engine, "character")
 
-  stopifnot("user is required" = !missing(user))
-  stopifnot("pwd is required" = !missing(pwd))
-
   if (!is.null(id)) {
     con_info <- instance_con_info(id)
     host <- con_info$host
@@ -48,7 +45,7 @@ aws_db_rds_con <- function(
     )
   }
 
-  creds <- ui_fetch_secret(user, pwd, engine)
+  creds <- ui_fetch_secret(user, pwd, engine, id)
 
   DBI::dbConnect(
     which_driver(engine),
@@ -56,7 +53,7 @@ aws_db_rds_con <- function(
     port = port,
     dbname = dbname,
     user = creds$user,
-    password = creds$pwd,
+    password = creds$password,
     ...
   )
 }

@@ -4,7 +4,7 @@
 \alias{ui_fetch_secret}
 \title{Fetch secrets}
 \usage{
-ui_fetch_secret(user = NULL, password = NULL, engine = NULL)
+ui_fetch_secret(user = NULL, password = NULL, engine = NULL, id = NULL)
 }
 \arguments{
 \item{user}{(character) xx}
@@ -13,6 +13,9 @@ ui_fetch_secret(user = NULL, password = NULL, engine = NULL)
 
 \item{engine}{(character) engine to filter secrets with. if not supplied
 (\code{NULL}) all secrets are considered}
+
+\item{id}{(character) the id of the instance. if supplied, we filter
+the secret names by this id}
 }
 \description{
 Fetch secrets
