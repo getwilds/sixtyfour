@@ -49,12 +49,12 @@ jobs:
 
       - name: Start Minio
         run: |
-          if runner.os == "Linux"; then
+          if [ '$RUNNER_OS' == 'Linux' ]; then
             wget https://dl.min.io/server/minio/release/linux-amd64/archive/minio_20240315010719.0.0_amd64.deb -O minio.deb
             sudo dpkg -i minio.deb
             mkdir ~/minio
             minio server ~/minio --console-address :9001 &
-          elif runner.os == "macOS"; then
+          elif [ '$RUNNER_OS' == 'macOS' ]; then
             curl -O https://dl.min.io/server/minio/release/darwin-arm64/minio
             chmod +x ./minio
             sudo mv ./minio /usr/local/bin/
