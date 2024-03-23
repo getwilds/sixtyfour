@@ -39,7 +39,7 @@ jobs:
           wget https://dl.min.io/server/minio/release/linux-amd64/archive/minio_20240315010719.0.0_amd64.deb -O minio.deb
           sudo dpkg -i minio.deb
           mkdir ~/minio
-          minio server ~/minio --console-address :9000 &
+          minio server ~/minio --console-address :9001 &
         env:
           MINIO_USER: ${{ secrets.MINIO_USER }}
           MINIO_PWD: ${{ secrets.MINIO_PWD }}
