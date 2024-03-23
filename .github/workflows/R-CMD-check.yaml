@@ -48,22 +48,12 @@ jobs:
           needs: check
 
       - name: Start Minio
+        if: runner.os == 'Linux'
         run: |
-          if [ '$RUNNER_OS' == 'Linux' ]; then
-            wget https://dl.min.io/server/minio/release/linux-amd64/archive/minio_20240315010719.0.0_amd64.deb -O minio.deb
-            sudo dpkg -i minio.deb
-            mkdir ~/minio
-            minio server ~/minio --console-address :9001 &
-          elif [ '$RUNNER_OS' == 'macOS' ]; then
-            curl -O https://dl.min.io/server/minio/release/darwin-arm64/minio
-            chmod +x ./minio
-            sudo mv ./minio /usr/local/bin/
-            export MINIO_CONFIG_ENV_FILE=/etc/default/minio
-            minio server --console-address :9001 &
-          else;
-            echo "not doing windows for now"
-          fi
-        shell: bash
+          wget https://dl.min.io/server/minio/release/linux-amd64/archive/minio_20240315010719.0.0_amd64.deb -O minio.deb
+          sudo dpkg -i minio.deb
+          mkdir ~/minio
+          minio server ~/minio --console-address :9001 &
 
       - uses: r-lib/actions/check-r-package@v2
         with:
