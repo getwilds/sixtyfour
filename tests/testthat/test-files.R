@@ -1,3 +1,5 @@
+skip_on_os("windows")
+
 invisible(env64$s3 <- set_s3_interface("minio"))
 buckets_empty()
 
