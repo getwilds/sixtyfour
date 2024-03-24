@@ -1,4 +1,5 @@
-skip_on_os(c("windows", "mac"))
+# skip_on_os(c("windows", "mac"))
+skip_if_not(minio_available(), "Minio Not Available")
 
 invisible(env64$s3 <- set_s3_interface("minio"))
 buckets_empty()

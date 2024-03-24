@@ -14,3 +14,8 @@ buckets_empty <- function() {
     invisible(purrr::map(buckets$bucket_name, bucket_delete, force = TRUE))
   }
 }
+
+minio_available <- function() {
+  curl_check <- purrr::safely(curl::curl_fetch_memory, FALSE)
+  is.null(curl_check("http://127.0.0.1:9000")$error)
+}
