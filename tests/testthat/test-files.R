@@ -43,7 +43,8 @@ test_that("aws_file_upload - many files", {
   for (f in the_files) cat(letters, file = f)
 
   res <- aws_file_upload(
-    the_files, s3_path("upload", basename(the_files)))
+    the_files, s3_path("upload", basename(the_files))
+  )
 
   expect_length(res, length(the_files))
   for (f in res) expect_type(f, "character")
@@ -63,7 +64,7 @@ test_that("aws_file_download - error behavior", {
   expect_error(
     aws_file_download(
       s3_path("download", "file_does_not_exist.txt"),
-      tempfile("file_does_not_exist", fileext=".txt")
+      tempfile("file_does_not_exist", fileext = ".txt")
     ),
     "Remote file not found"
   )
@@ -90,7 +91,8 @@ test_that("aws_file_download - many files", {
   for (f in the_files) cat(letters, "\n", file = f)
 
   res <- aws_file_upload(
-    the_files, s3_path("download", basename(the_files)))
+    the_files, s3_path("download", basename(the_files))
+  )
 
   downloaded_files <- replicate(50, tempfile(fileext = ".txt"))
   out <- aws_file_download(
@@ -130,7 +132,7 @@ test_that("aws_file_delete - error behavior", {
 test_that("aws_file_delete", {
   aws_bucket_create("b-bucket")
 
-  tfile <- tempfile(fileext=".txt")
+  tfile <- tempfile(fileext = ".txt")
   cat("Hello World!", file = tfile)
   remote_path <- s3_path("b-bucket", basename(tfile))
   aws_file_upload(tfile, remote_path)
@@ -166,7 +168,7 @@ test_that("aws_file_attr - error behavior", {
 test_that("aws_file_attr", {
   aws_bucket_create("attr-bucket")
 
-  tfile <- tempfile(fileext=".txt")
+  tfile <- tempfile(fileext = ".txt")
   cat("Hello World!", file = tfile)
   remote_path <- s3_path("attr-bucket", basename(tfile))
   aws_file_upload(tfile, remote_path)
@@ -200,7 +202,7 @@ test_that("aws_file_exists", {
   bucket <- random_str("bucket")
   aws_bucket_create(bucket)
 
-  files <- replicate(25, tempfile(fileext=".txt"))
+  files <- replicate(25, tempfile(fileext = ".txt"))
   for (i in files) {
     cat("Hello World!\n\n", file = i)
     remote_path <- s3_path(bucket, basename(i))
