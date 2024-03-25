@@ -12,7 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      MINIO_USER: ${{ secrets.MINIO_USER }}
+      MINIO_PWD: ${{ secrets.MINIO_PWD }}
+      MINIO_ENDPOINT: ${{ secrets.MINIO_ENDPOINT }}
 
     steps:
       - uses: actions/checkout@v4
@@ -26,6 +28,13 @@ jobs:
           extra-packages: any::covr
           needs: coverage
 
+      - name: Start Minio
+        run: |
+          wget https://dl.min.io/server/minio/release/linux-amd64/archive/minio_20240315010719.0.0_amd64.deb -O minio.deb
+          sudo dpkg -i minio.deb
+          mkdir ~/minio
+          minio server ~/minio --console-address :9001 &
+
       - name: Test coverage
         run: |
           covr::codecov(
@@ -34,6 +43,10 @@ jobs:
             install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package")
           )
         shell: Rscript {0}
+        env:
+          AWS_REGION: a
+          AWS_ACCESS_KEY_ID: b
+          AWS_SECRET_ACCESS_KEY: c
 
       - name: Show testthat output
         if: always()
