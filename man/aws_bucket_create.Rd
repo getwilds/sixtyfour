@@ -10,7 +10,7 @@ aws_bucket_create(bucket, ...)
 \item{bucket}{(character) bucket name. required}
 
 \item{...}{named parameters passed on to
-\href{https://www.paws-r-sdk.com/docs/s3_create_bucket/}{list_objects}}
+\href{https://www.paws-r-sdk.com/docs/s3_create_bucket/}{create_bucket}}
 }
 \value{
 the bucket path (character)

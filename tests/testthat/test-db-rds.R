@@ -2,7 +2,7 @@ test_that("aws_db_rds_create", {
   skip_on_ci()
   vcr::use_cassette("aws_db_rds_create", {
     z <- aws_db_rds_create(
-      id = "bananas", class = "db.t3.micro",
+      id = "bananas2", class = "db.t3.micro",
       security_group_ids = list("sg-0ade14818d03997a4"),
       BackupRetentionPeriod = 0,
       wait = FALSE,

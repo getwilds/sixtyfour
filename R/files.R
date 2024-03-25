@@ -64,11 +64,11 @@ aws_file_upload <- function(path, remote_path, force = FALSE, ...) {
 #' Download a file
 #'
 #' @export
+#' @importFrom cli cli_abort
 #' @param remote_path (character) one or more remote S3 paths. required
 #' @param path (character) one or more file paths to write to. required
 #' @param ... named parameters passed on to [s3fs::s3_file_download()]
 #' @return (character) a vector of local file paths
-#' @note USES A FORK OF s3fs FOR A MINOR FIX THAT MAKES LENGTH>1 INPUTS WORK
 #' @family files
 #' @examples \dontrun{
 #' tfile <- tempfile()
@@ -94,7 +94,18 @@ aws_file_upload <- function(path, remote_path, force = FALSE, ...) {
 #' }
 aws_file_download <- function(remote_path, path, ...) {
   equal_lengths(remote_path, path)
-  s3fs::s3_file_download(remote_path, path, ...)
+  res <- tryCatch(
+    s3fs::s3_file_download(remote_path, path),
+    error = function(e) e
+  )
+  if (rlang::is_error(res)) {
+    if (grepl("SerializationError", res$message)) {
+      cli::cli_abort(c("Remote file not found", "S3 error: {res$message}"))
+    } else {
+      cli::cli_abort(res$message)
+    }
+  }
+  res
 }
 
 #' Delete a file
@@ -118,7 +129,16 @@ aws_file_download <- function(remote_path, path, ...) {
 #' aws_file_delete(s3_path("s64-test-2", "TESTING123"))
 #' }
 aws_file_delete <- function(remote_path, ...) {
-  s3fs::s3_file_delete(remote_path, ...)
+  # FIXME: this s3fs fxn not working for some reason, not sure why yet
+  # using paws for now
+  # s3fs::s3_file_delete(remote_path, ...)
+  path_parsed <- path_s3_parse(remote_path)
+  key <- if (nchar(path_parsed[[1]]$path)) {
+    file.path(path_parsed[[1]]$path, path_parsed[[1]]$file)
+  } else {
+    path_parsed[[1]]$file
+  }
+  env64$s3$delete_object(path_parsed[[1]]$bucket, key)
 }
 
 #' File attributes
@@ -217,6 +237,8 @@ aws_file_rename <- function(remote_path, new_remote_path, ...) {
 #' aws_file_copy(paths, "s64-test-4")
 #' }
 aws_file_copy <- function(remote_path, bucket, force = FALSE, ...) {
+  stop_if(rlang::is_missing(remote_path), "{.strong remote_path} is required")
+  stop_if(rlang::is_missing(bucket), "{.strong bucket} is required")
   bucket_create_if_not(bucket, force)
   parsed <- path_s3_parse(remote_path)
   parsed <- purrr::map(parsed, function(x) {

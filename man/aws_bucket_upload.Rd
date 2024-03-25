@@ -4,7 +4,13 @@
 \alias{aws_bucket_upload}
 \title{Upload a folder of files to create an S3 bucket}
 \usage{
-aws_bucket_upload(path, bucket, max_batch = fs::fs_bytes("100MB"), ...)
+aws_bucket_upload(
+  path,
+  bucket,
+  max_batch = fs::fs_bytes("100MB"),
+  force = FALSE,
+  ...
+)
 }
 \arguments{
 \item{path}{(character) local path to a directory. required}
@@ -13,6 +19,10 @@ aws_bucket_upload(path, bucket, max_batch = fs::fs_bytes("100MB"), ...)
 
 \item{max_batch}{(fs_bytes) maximum batch size being uploaded with each
 multipart}
+
+\item{force}{(logical) force deletion without going through the prompt.
+default: \code{FALSE}. Should only be set to \code{TRUE} when required for
+non-interactive use.}
 
 \item{...}{named parameters passed on to \code{\link[s3fs:upload]{s3fs::s3_dir_upload()}}}
 }

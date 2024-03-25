@@ -26,6 +26,9 @@ is an S3 bucket, with 8 columns:
 \description{
 List S3 buckets
 }
+\details{
+internally uses \code{\link[s3fs:info]{s3fs::s3_dir_info()}}
+}
 \note{
 we set \code{refresh=TRUE} internally to make sure we return up to date
 information about your buckets rather than what's cached locally
