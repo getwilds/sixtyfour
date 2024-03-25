@@ -7,7 +7,7 @@
 aws_bucket_tree(bucket, recurse = TRUE, ...)
 }
 \arguments{
-\item{bucket}{(character) bucket name. required}
+\item{bucket}{(character) bucket name; must be length 1. required}
 
 \item{recurse}{(logical) returns all AWS S3 objects in lower sub
 directories, default: \code{TRUE}}

@@ -19,9 +19,6 @@ aws_file_download(remote_path, path, ...)
 \description{
 Download a file
 }
-\note{
-USES A FORK OF s3fs FOR A MINOR FIX THAT MAKES LENGTH>1 INPUTS WORK
-}
 \examples{
 \dontrun{
 tfile <- tempfile()
