@@ -131,7 +131,7 @@ aws_file_download <- function(remote_path, path, ...) {
 aws_file_delete <- function(remote_path, ...) {
   # FIXME: this s3fs fxn not working for some reason, not sure why yet
   # using paws for now
-  # s3fs::s3_file_delete(remote_path, ...)
+  # s3fs::s3_file_delete(remote_path, ...) #nolint
   path_parsed <- path_s3_parse(remote_path)
   key <- if (nchar(path_parsed[[1]]$path)) {
     file.path(path_parsed[[1]]$path, path_parsed[[1]]$file)
