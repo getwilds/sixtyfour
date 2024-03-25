@@ -1,5 +1,7 @@
 bucket_delete <- function(bucket, force = FALSE) {
-  if (!aws_bucket_exists(bucket)) return()
+  if (!aws_bucket_exists(bucket)) {
+    return()
+  }
   list_obs <- purrr::safely(aws_bucket_list_objects)
   objects <- list_obs(bucket)
   if (NROW(objects$result) > 0) {
