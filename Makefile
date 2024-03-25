@@ -70,4 +70,4 @@ minio_start:
 	MINIO_USER=${MINIO_USER} ;\
 	MINIO_PWD=${MINIO_PWD} ;\
 	MINIO_ENDPOINT=${MINIO_ENDPOINT} ;\
-	minio server start --console-address :9090
+	minio server /tmp/minio --console-address :9090
