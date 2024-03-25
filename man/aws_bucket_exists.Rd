@@ -2,15 +2,18 @@
 % Please edit documentation in R/bucket.R
 \name{aws_bucket_exists}
 \alias{aws_bucket_exists}
-\title{Create an S3 bucket}
+\title{Check if an S3 bucket exists}
 \usage{
 aws_bucket_exists(bucket)
 }
 \arguments{
-\item{bucket}{(character) bucket name. required}
+\item{bucket}{(character) bucket name; must be length 1. required}
+}
+\value{
+a single boolean (logical)
 }
 \description{
-Create an S3 bucket
+Check if an S3 bucket exists
 }
 \note{
 internally uses

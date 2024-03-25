@@ -3,6 +3,7 @@
 <!-- badges: start -->
 [![Project Status: Prototype – Useable, some support, open to feedback, unstable API.](https://getwilds.org/badges/badges/prototype.svg)](https://getwilds.org/badges/#prototype)
 [![R-CMD-check](https://github.com/getwilds/sixtyfour/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/getwilds/sixtyfour/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/getwilds/sixtyfour/graph/badge.svg?token=BMER9MWIDN)](https://codecov.io/gh/getwilds/sixtyfour)
 <!-- badges: end -->
 
 A science-focused, more humane R interface to AWS.
@@ -31,6 +32,7 @@ Open an issue on our [issue tracker](https://github.com/getwilds/sixtyfour/issue
 
 - See the targets in the Makefile for various package maintenance tasks.
 - For scanning for secrets see the make target `scan_secrets` in the Makefile.
+- We use [minio][] for testing functions in this package (start with `aws_bucket`, and `aws_file`) for interacting with S3. See the make target `minio_start` for starting minio locally. The `R-CMD-check` workflow in `.github/workflows/` includes spinning up minio for running unit tests - only on linux. If you run tests and minio is not available then tests that require it will be skipped.
 
 ## Code of Conduct
 
@@ -39,3 +41,4 @@ Please note that the sixtyfour project is released with a [Contributor Code of C
 
 [paws]: https://www.paws-r-sdk.com/
 [s3fs]: https://dyfanjones.github.io/s3fs/
+[minio]: https://min.io/

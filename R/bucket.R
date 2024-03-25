@@ -1,10 +1,11 @@
-#' Create an S3 bucket
+#' Check if an S3 bucket exists
 #'
 #' @export
-#' @param bucket (character) bucket name. required
+#' @param bucket (character) bucket name; must be length 1. required
 #' @note internally uses
 #' [head_bucket](https://www.paws-r-sdk.com/docs/s3_head_bucket/)
 #' @family buckets
+#' @return a single boolean (logical)
 #' @examples \dontrun{
 #' # exists
 #' aws_bucket_exists(bucket = "s64-test-2")
@@ -12,6 +13,8 @@
 #' aws_bucket_exists(bucket = "no-bucket")
 #' }
 aws_bucket_exists <- function(bucket) {
+  stop_if_not(rlang::is_character(bucket), "bucket must be character")
+  stop_if_not(length(bucket) == 1, "length(bucket) != 1")
   res <- tryCatch(
     {
       env64$s3$head_bucket(Bucket = bucket)
@@ -26,7 +29,7 @@ aws_bucket_exists <- function(bucket) {
 #' @export
 #' @param bucket (character) bucket name. required
 #' @param ... named parameters passed on to
-#' [list_objects](https://www.paws-r-sdk.com/docs/s3_create_bucket/)
+#' [create_bucket](https://www.paws-r-sdk.com/docs/s3_create_bucket/)
 #' @note Requires the env var `AWS_REGION`
 #' @return the bucket path (character)
 #' @family buckets
@@ -34,6 +37,8 @@ aws_bucket_exists <- function(bucket) {
 #' aws_bucket_create(bucket = "s64-test-2")
 #' }
 aws_bucket_create <- function(bucket, ...) {
+  stop_if_not(rlang::is_character(bucket), "bucket must be character")
+  stop_if_not(length(bucket) == 1, "length(bucket) != 1")
   env64$s3$create_bucket(
     Bucket = bucket,
     CreateBucketConfiguration =
@@ -80,6 +85,8 @@ bucket_create_if_not <- function(bucket, force = FALSE) {
 #'   aws_buckets()
 #' }
 aws_bucket_delete <- function(bucket, force = FALSE, ...) {
+  stop_if_not(rlang::is_character(bucket), "bucket must be character")
+  stop_if_not(length(bucket) == 1, "length(bucket) != 1")
   # TODO: add a package level option to override the prompt for adv. users
   if (!force) {
     if (yesno("Are you sure you want to delete {.strong {bucket}}?")) {
@@ -118,10 +125,10 @@ aws_bucket_download <- function(bucket, dest_path, ...) {
 #' @export
 #' @importFrom fs fs_bytes
 #' @param path (character) local path to a directory. required
-#' @param bucket (character) bucket name. required
 #' @param max_batch (fs_bytes) maximum batch size being uploaded with each
 #' multipart
 #' @param ... named parameters passed on to [s3fs::s3_dir_upload()]
+#' @inheritParams aws_bucket_delete
 #' @note Requires the env var `AWS_REGION`. This function prompts you to make
 #' sure that you want to delete the bucket.
 #' @family buckets
@@ -144,18 +151,24 @@ aws_bucket_download <- function(bucket, dest_path, ...) {
 #' aws_bucket_delete(bucket_name, force = TRUE)
 #' aws_bucket_exists(bucket_name)
 aws_bucket_upload <- function(
-    path, bucket, max_batch = fs::fs_bytes("100MB"),
+    path, bucket, max_batch = fs::fs_bytes("100MB"), force = FALSE,
     ...) {
+  stop_if(rlang::is_missing(path), "{.strong path} is required")
+  stop_if(rlang::is_missing(bucket), "{.strong bucket} is required")
   if (!aws_bucket_exists(bucket)) {
-    if (yesno("{.strong {bucket}} does not exist. Create it?")) {
-      cli::cli_inform("Exiting without uploading {.strong {basename(path)}}")
-      return(invisible())
+    if (!force) {
+      if (yesno("{.strong {bucket}} does not exist. Create it?")) {
+        cli::cli_inform("Exiting without uploading {.strong {basename(path)}}")
+        return(invisible())
+      }
     }
     aws_bucket_create(bucket)
   }
   s3fs::s3_dir_upload(
-    path = path, new_path = bucket,
-    max_batch = max_batch
+    path = path,
+    new_path = bucket,
+    max_batch = max_batch,
+    ...
   )
 }
 
@@ -199,6 +212,7 @@ aws_bucket_list_objects <- function(bucket, ...) {
 #' @export
 #' @importFrom s3fs s3_dir_info
 #' @inherit aws_bucket_list_objects
+#' @details internally uses [s3fs::s3_dir_info()]
 #' @note we set `refresh=TRUE` internally to make sure we return up to date
 #' information about your buckets rather than what's cached locally
 #' @family buckets
