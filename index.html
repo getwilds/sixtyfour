@@ -98,6 +98,7 @@
 <ul>
 <li>See the targets in the Makefile for various package maintenance tasks.</li>
 <li>For scanning for secrets see the make target <code>scan_secrets</code> in the Makefile.</li>
+<li>We use <a href="https://min.io/" class="external-link">minio</a> for testing functions in this package (start with <code>aws_bucket</code>, and <code>aws_file</code>) for interacting with S3. See the make target <code>minio_start</code> for starting minio locally. The <code>R-CMD-check</code> workflow in <code>.github/workflows/</code> includes spinning up minio for running unit tests - only on linux. If you run tests and minio is not available then tests that require it will be skipped.</li>
 </ul>
 </div>
 <div class="section level2">
@@ -149,6 +150,7 @@
 <ul class="list-unstyled">
 <li><a href="https://getwilds.org/badges/#prototype" class="external-link"><img src="https://getwilds.org/badges/badges/prototype.svg" alt="Project Status: Prototype – Useable, some support, open to feedback, unstable API."></a></li>
 <li><a href="https://github.com/getwilds/sixtyfour/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/getwilds/sixtyfour/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://codecov.io/gh/getwilds/sixtyfour" class="external-link"><img src="https://codecov.io/gh/getwilds/sixtyfour/graph/badge.svg?token=BMER9MWIDN" alt="codecov"></a></li>
 </ul>
 </div>
 

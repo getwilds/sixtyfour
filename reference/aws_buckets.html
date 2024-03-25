@@ -82,6 +82,10 @@ is an S3 bucket, with 8 columns:</p><ul><li><p>bucket_name (character)</p></li>
 <li><p>last_modified (dttm)</p></li>
 </ul></div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>internally uses <code><a href="https://rdrr.io/pkg/s3fs/man/info.html" class="external-link">s3fs::s3_dir_info()</a></code></p>
+    </div>
+    <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
     <p>we set <code>refresh=TRUE</code> internally to make sure we return up to date
 information about your buckets rather than what's cached locally</p>
