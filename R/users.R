@@ -6,6 +6,7 @@
 #' @autoglobal
 #' @keywords internal
 user_list_tidy <- function(x) {
+  if (length(x) == 0) return(tibble())
   vars <- c(
     "UserName", "UserId", "Path", "Arn", "CreateDate",
     "PasswordLastUsed"
