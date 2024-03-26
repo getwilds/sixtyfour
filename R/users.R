@@ -146,21 +146,50 @@ aws_user_delete <- function(username) {
   env64$iam$delete_user(username)
 }
 
-#' Get the current user's AWS Access Key
+#' Get AWS Access Key for a user
 #'
 #' IMPORTANT: the secret access key is only accessible during key
 #' and user creation
 #'
 #' @export
+#' @inheritParams aws_user_create
+#' @param ... further named args passed on to
+#' [list_access_keys](https://www.paws-r-sdk.com/docs/iam_list_access_keys/)
 #' @return a tibble with key details
 #' @details See <https://www.paws-r-sdk.com/docs/iam_list_access_keys/>
 #' docs for more details
 #' @family users
-#' @examples \dontrun{
-#' # aws_user_access_key()
-#' }
-aws_user_access_key <- function() {
-  env64$iam$list_access_keys()$AccessKeyMetadata[[1]] %>% as_tibble()
+aws_user_access_key <- function(username = NULL, ...) {
+  out <- env64$iam$list_access_keys(username, ...)
+  if (length(out$AccessKeyMetadata) == 0) {
+    cli::cli_alert_warning("No access keys found for {.strong {username}}")
+    return(invisible())
+  }
+  out$AccessKeyMetadata[[1]] %>%
+    as_tibble()
+}
+
+#' Delete current user's AWS Access Key
+#'
+#' @export
+#' @param access_key_id (character) The access key ID for the access key ID
+#' and secret access key you want to delete. required.
+#' @param username (character) A user name. optional. however, if you do
+#' not supply a username, `paws` will likely use the current user, and so
+#' may not be the user the access key id is associated - and then you'll get
+#' an error like `NoSuchEntity (HTTP 404). The Access Key with id
+#' AKIA22PL7JXX6X6O62OT cannot be found`
+#' @return NULL, invisibly
+#' @details See <https://www.paws-r-sdk.com/docs/iam_delete_access_key/>
+#' docs for more details
+#' @family users
+#' @examplesIf interactive()
+#' aws_user_access_key_delete(access_key_id="adfasdfadfadfasdf")
+#' aws_user_access_key_delete(access_key_id="adfasdf", username="jane")
+aws_user_access_key_delete <- function(access_key_id, username = NULL) {
+  env64$iam$delete_access_key(UserName = username, AccessKeyId = access_key_id)
+  cli::cli_alert_success("Access Key ID {.strong access_key_id} deleted")
+  invisible()
 }
 
 #' Add a user to a group

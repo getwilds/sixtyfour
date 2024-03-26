@@ -35,13 +35,17 @@ if (!aws_user_exists("jane")) {
 
 # user doesn't have any permissions for the bucket
 # - use aws_bucket_add_user to add permissions
-aws_bucket_change_user(bucket="s64-test-22", username="jane", permissions = "read")
-aws_bucket_add_user(bucket="s64-test-22", username="jane", permissions = "read")
+aws_bucket_change_user(bucket="s64-test-22",
+  username="jane", permissions = "read")
+aws_bucket_add_user(bucket="s64-test-22", username="jane",
+  permissions = "read")
 
 # want to change to read to write, makes the change
-aws_bucket_change_user(bucket="s64-test-22", username="jane", permissions = "write")
+aws_bucket_change_user(bucket="s64-test-22", username="jane",
+  permissions = "write")
 
 # want to change to write - but already has read
-aws_bucket_change_user(bucket="s64-test-22", username="jane", permissions = "read")
+aws_bucket_change_user(bucket="s64-test-22", username="jane",
+  permissions = "read")
 \dontshow{\}) # examplesIf}
 }

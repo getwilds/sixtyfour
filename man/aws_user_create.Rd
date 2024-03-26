@@ -35,6 +35,7 @@ aws_user_create("testBlueBird")
 }
 \seealso{
 Other users: 
+\code{\link{aws_user_access_key_delete}()},
 \code{\link{aws_user_access_key}()},
 \code{\link{aws_user_add_to_group}()},
 \code{\link{aws_user_current}()},

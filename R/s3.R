@@ -292,6 +292,91 @@ aws_bucket_permissions <- function(bucket) {
     rename(permissions = permissions2)
 }
 
+creds_template <- "Hi,
+
+Here's your AWS credentials for your username {username}.
+
+Make sure to save these in a place where you won't lose them.
+For example, save them in your .Renviron file like:
+
+AWS_ACCESS_KEY_ID={creds$AccessKey$AccessKeyId}
+AWS_SECRET_ACCESS_KEY={creds$AccessKey$SecretAccessKey}
+AWS_REGION={Sys.getenv('AWS_REGION')}
+"
+
+#' Create access keys for a user
+#'
+#' Creates a new Amazon Web Services secret access key and
+#' corresponding Amazon Web Services access key ID
+#'
+#' @export
+#' @importFrom cli cli_alert_success cli_alert_info
+#' @importFrom dplyr case_match
+#' @param username (character) A user name. required
+#' @param copy_to_cp (logical) Copy to clipboard. Default: `FALSE`. See
+#' section "Clipboard" below for more details.
+#' @details A user can have more than one pair of access keys.
+#' By default a user can have up to 2 pairs of access keys.
+#' Using this function will not replace an existing set of keys;
+#' but instead adds an additional set of keys.
+#'
+#' See <https://rstats.wtf/r-startup.html> for help on bringing in secrets
+#' to an R session.
+#' @section Important:
+#' Save the secret key after running this function as it can not be
+#' viewed again.
+#' @section Clipboard:
+#' If you set `copy_to_cp=TRUE` we'll copy to your clipboard an
+#' email template with the credentials and a small amount of instructions.
+#' Please do edit that email with information tailored to your
+#' group and how you'd like to store secrets.
+#' @section Known error behaviors:
+#' - `LimitExceeded (HTTP 409). Cannot exceed quota for AccessKeysPerUser: 2`
+#' - `NoSuchEntity (HTTP 404). The user with name xxx cannot be found.`
+#' @return list with slots:
+#' - UserName (character)
+#' - AccessKeyId (character)
+#' - Status (character)
+#' - SecretAccessKey (character)
+#' - CreateDate (POSIXct)
+#' @seealso [aws_user_access_key()], [aws_user_access_key_delete()]
+#' @examplesIf interactive()
+#' if (!aws_user_exists("jane")) aws_user_create("jane")
+#' aws_user_creds("jane")
+#' aws_user_access_key("jane")
+#' aws_user_creds("jane", copy_to_cp = TRUE)
+aws_user_creds <- function(username, copy_to_cp = FALSE) {
+  creds <- tryCatch(
+    env64$iam$create_access_key(UserName = username),
+    error = function(e) e
+  )
+
+  if (rlang::is_error(creds)) {
+    help_msg <- if (grepl("LimitExceeded", creds$message)) {
+      "See {.strong aws_user_access_key_delete}"
+    } else if (grepl("NoSuchEntity", creds$message)) {
+      "Check username spelling? Add a user with {.strong aws_user_create}"
+    } else {
+      ""
+    }
+    cli_abort(c(creds$message, help_msg))
+  }
+
+  cli_alert_success("Key pair created for {.strong {username}}")
+  for (i in seq_along(creds$AccessKey)) {
+    cli_alert_info("{names(creds$AccessKey)[i]}: {creds$AccessKey[[i]]}")
+  }
+
+  if (copy_to_cp) {
+    rlang::check_installed("clipr")
+    cli_alert_info("Email template copied to your clipboard")
+    glue(creds_template)
+    clipr::write_clip(glue(creds_template))
+  }
+
+  creds$AccessKey
+}
+
 #' @autoglobal
 permissions_user_bucket <- function(bucket) {
   aws_user_mem <- memoise::memoise(aws_user)
