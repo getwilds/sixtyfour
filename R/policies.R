@@ -513,3 +513,47 @@ policies_attached <- function(which, name) {
   res <- env64$iam[[method]](name)
   res$AttachedPolicies %>% bind_rows()
 }
+
+policy_set_read <- c(
+  "IAMReadOnlyAccess",
+  "AmazonS3ReadOnlyAccess",
+  "AmazonRDSReadOnlyAccess",
+  "AmazonRedshiftReadOnlyAccess",
+  "AWSBillingReadOnlyAccess"
+)
+
+policy_set_write <- c(
+  "IAMFullAccess",
+  "AmazonS3FullAccess",
+  "AmazonRDSFullAccess",
+  "AmazonRedshiftFullAccess",
+  "Billing"
+)
+
+#' Get a set of policies for either read or write
+#' @export
+#' @param set (character) one of "read" or "write"
+#' @return character vector of AWS managed policy names
+#' @examples
+#' aws_policy_set("read")
+#' aws_policy_set("write")
+#' # aws_policy_set("apple")
+aws_policy_set <- function(set) {
+  switch(set,
+    read = policy_set_read,
+    write = policy_set_write,
+    cli_abort("{set} not supported")
+  )
+}
+
+#' Attach more than one policy to a user, group, or role
+#' @export
+#' @inheritParams aws_policy_attach
+#' @param policies (character) vector of policies
+#' @return NULL, invisibly
+#' @examplesIf interactive()
+#' aws_group("read") %>% aws_policies_attach(aws_policy_set("read"))
+aws_policies_attach <- function(.x, policies) {
+  map(policies, \(policy) aws_policy_attach(.x, policy))
+  invisible()
+}
