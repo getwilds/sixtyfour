@@ -10,7 +10,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '433'
-      X-Amz-Date: 20240314T223539Z
+      X-Amz-Date: 20240321T162300Z
       Authorization: redacted
   response:
     status:
@@ -19,8 +19,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 14 Mar 2024 22:35:39 GMT
-      x-amzn-requestid: 9658ed62-7912-4611-8019-b55ba1196714
+      date: Thu, 21 Mar 2024 16:23:00 GMT
+      x-amzn-requestid: d571225b-e362-4dda-a59f-15c31ba37b5b
       content-type: text/xml
       content-length: '759'
     body:
@@ -32,19 +32,19 @@ http_interactions:
             <Policy>
               <PermissionsBoundaryUsageCount>0</PermissionsBoundaryUsageCount>
               <Path>/</Path>
-              <UpdateDate>2024-03-14T22:35:40Z</UpdateDate>
+              <UpdateDate>2024-03-21T16:23:00Z</UpdateDate>
               <DefaultVersionId>v1</DefaultVersionId>
-              <PolicyId>ANPA22PL7JXXQK37HQPA6</PolicyId>
+              <PolicyId>ANPA22PL7JXXWNPBVWUAM</PolicyId>
               <IsAttachable>true</IsAttachable>
               <PolicyName>MyTestPolicy</PolicyName>
               <AttachmentCount>0</AttachmentCount>
               <Arn>arn:aws:iam::744061095407:policy/MyTestPolicy</Arn>
-              <CreateDate>2024-03-14T22:35:40Z</CreateDate>
+              <CreateDate>2024-03-21T16:23:00Z</CreateDate>
             </Policy>
           </CreatePolicyResult>
           <ResponseMetadata>
-            <RequestId>9658ed62-7912-4611-8019-b55ba1196714</RequestId>
+            <RequestId>d571225b-e362-4dda-a59f-15c31ba37b5b</RequestId>
           </ResponseMetadata>
         </CreatePolicyResponse>
-  recorded_at: 2024-03-14 22:35:40 GMT
+  recorded_at: 2024-03-21 16:23:00 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0

@@ -9,9 +9,16 @@ utils::globalVariables(c(
   "DBInstanceArn", # <aws_db_rds_list>
   ".", # <aws_group>
   ".", # <aws_policy>
-  "PolicyName", # <as_policy_arn>
-  "Arn", # <as_policy_arn>
+  "type", # <aws_policy_list_entities>
   ".", # <aws_role>
+  "user", # <aws_bucket_remove_user>
+  "user", # <aws_bucket_permissions>
+  "permissions", # <aws_bucket_permissions>
+  "PolicyName", # <aws_bucket_permissions>
+  "permissions2", # <aws_bucket_permissions>
+  "PolicyArn", # <permissions_user_bucket>
+  "resource_arn", # <permissions_user_bucket>
+  "group", # <permissions_groups>
   "arn", # <aws_secrets_all>
   "created_date", # <aws_secrets_all>
   "secret_raw", # <aws_secrets_rotate>

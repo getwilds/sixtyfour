@@ -4,13 +4,13 @@ http_interactions:
     uri: https://iam.amazonaws.com/
     body:
       encoding: ''
-      string: Action=GetUser&UserName=testUser2&Version=2010-05-08
+      string: Action=GetUser&UserName=userbnwaqdif&Version=2010-05-08
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
-      Content-Length: '52'
-      X-Amz-Date: 20231207T000005Z
+      Content-Length: '55'
+      X-Amz-Date: 20240321T173610Z
       Authorization: redacted
   response:
     status:
@@ -19,10 +19,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 254c4f72-3f85-458b-8405-eb96e4480b61
+      date: Thu, 21 Mar 2024 17:36:10 GMT
+      x-amzn-requestid: 2468cc3f-2d09-4728-967f-2ab2329acaae
       content-type: text/xml
-      content-length: '467'
-      date: Thu, 07 Dec 2023 00:00:04 GMT
+      content-length: '473'
     body:
       encoding: ''
       file: no
@@ -31,30 +31,30 @@ http_interactions:
           <GetUserResult>
             <User>
               <Path>/</Path>
-              <UserName>testUser2</UserName>
-              <Arn>arn:aws:iam::510628056329:user/testUser2</Arn>
-              <UserId>AIDAXNY6NZUEXZFJQI2I2</UserId>
-              <CreateDate>2023-08-08T20:27:04Z</CreateDate>
+              <UserName>userbnwaqdif</UserName>
+              <Arn>arn:aws:iam::744061095407:user/userbnwaqdif</Arn>
+              <UserId>AIDA22PL7JXXSCS2UFXMU</UserId>
+              <CreateDate>2024-03-21T17:36:08Z</CreateDate>
             </User>
           </GetUserResult>
           <ResponseMetadata>
-            <RequestId>254c4f72-3f85-458b-8405-eb96e4480b61</RequestId>
+            <RequestId>2468cc3f-2d09-4728-967f-2ab2329acaae</RequestId>
           </ResponseMetadata>
         </GetUserResponse>
-  recorded_at: 2023-12-07 00:00:07 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
     uri: https://iam.amazonaws.com/
     body:
       encoding: ''
-      string: Action=ListUserPolicies&UserName=testUser2&Version=2010-05-08
+      string: Action=ListUserPolicies&UserName=userbnwaqdif&Version=2010-05-08
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
-      Content-Length: '61'
-      X-Amz-Date: 20231207T000005Z
+      Content-Length: '64'
+      X-Amz-Date: 20240321T173610Z
       Authorization: redacted
   response:
     status:
@@ -63,10 +63,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 6ccbcc59-54fd-48f9-9ec2-6dd51826ba73
+      date: Thu, 21 Mar 2024 17:36:10 GMT
+      x-amzn-requestid: 66f5cb19-ee2e-47da-ae69-ee340b1772ab
       content-type: text/xml
       content-length: '323'
-      date: Thu, 07 Dec 2023 00:00:05 GMT
     body:
       encoding: ''
       file: no
@@ -77,23 +77,23 @@ http_interactions:
             <PolicyNames/>
           </ListUserPoliciesResult>
           <ResponseMetadata>
-            <RequestId>6ccbcc59-54fd-48f9-9ec2-6dd51826ba73</RequestId>
+            <RequestId>66f5cb19-ee2e-47da-ae69-ee340b1772ab</RequestId>
           </ResponseMetadata>
         </ListUserPoliciesResponse>
-  recorded_at: 2023-12-07 00:00:07 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
     uri: https://iam.amazonaws.com/
     body:
       encoding: ''
-      string: Action=ListAttachedUserPolicies&UserName=testUser2&Version=2010-05-08
+      string: Action=ListAttachedUserPolicies&UserName=userbnwaqdif&Version=2010-05-08
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
-      Content-Length: '69'
-      X-Amz-Date: 20231207T000005Z
+      Content-Length: '72'
+      X-Amz-Date: 20240321T173610Z
       Authorization: redacted
   response:
     status:
@@ -102,10 +102,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 86209ae5-d0fa-48a9-ae43-f16e2f574db8
+      date: Thu, 21 Mar 2024 17:36:10 GMT
+      x-amzn-requestid: 5d224619-dbe7-487a-a265-f2e6ebf5f830
       content-type: text/xml
-      content-length: '554'
-      date: Thu, 07 Dec 2023 00:00:05 GMT
+      content-length: '548'
     body:
       encoding: ''
       file: no
@@ -115,29 +115,29 @@ http_interactions:
             <IsTruncated>false</IsTruncated>
             <AttachedPolicies>
               <member>
-                <PolicyArn>arn:aws:iam::aws:policy/AWSCloudHSMReadOnlyAccess</PolicyArn>
-                <PolicyName>AWSCloudHSMReadOnlyAccess</PolicyName>
+                <PolicyArn>arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess</PolicyArn>
+                <PolicyName>AmazonS3ReadOnlyAccess</PolicyName>
               </member>
             </AttachedPolicies>
           </ListAttachedUserPoliciesResult>
           <ResponseMetadata>
-            <RequestId>86209ae5-d0fa-48a9-ae43-f16e2f574db8</RequestId>
+            <RequestId>5d224619-dbe7-487a-a265-f2e6ebf5f830</RequestId>
           </ResponseMetadata>
         </ListAttachedUserPoliciesResponse>
-  recorded_at: 2023-12-07 00:00:07 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
     uri: https://iam.amazonaws.com/
     body:
       encoding: ''
-      string: Action=ListGroupsForUser&UserName=testUser2&Version=2010-05-08
+      string: Action=ListGroupsForUser&UserName=userbnwaqdif&Version=2010-05-08
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
-      Content-Length: '62'
-      X-Amz-Date: 20231207T000005Z
+      Content-Length: '65'
+      X-Amz-Date: 20240321T173610Z
       Authorization: redacted
   response:
     status:
@@ -146,10 +146,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 8ceac547-3ba0-43f5-9398-0c4e7b481f40
+      date: Thu, 21 Mar 2024 17:36:10 GMT
+      x-amzn-requestid: 06a91fb6-f297-41fa-a234-8064cb775086
       content-type: text/xml
       content-length: '322'
-      date: Thu, 07 Dec 2023 00:00:05 GMT
     body:
       encoding: ''
       file: no
@@ -160,23 +160,23 @@ http_interactions:
             <Groups/>
           </ListGroupsForUserResult>
           <ResponseMetadata>
-            <RequestId>8ceac547-3ba0-43f5-9398-0c4e7b481f40</RequestId>
+            <RequestId>06a91fb6-f297-41fa-a234-8064cb775086</RequestId>
           </ResponseMetadata>
         </ListGroupsForUserResponse>
-  recorded_at: 2023-12-07 00:00:07 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
     uri: https://iam.amazonaws.com/
     body:
       encoding: ''
-      string: Action=GetUser&UserName=testUser2&Version=2010-05-08
+      string: Action=GetUser&UserName=userbnwaqdif&Version=2010-05-08
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
-      Content-Length: '52'
-      X-Amz-Date: 20231207T000005Z
+      Content-Length: '55'
+      X-Amz-Date: 20240321T173611Z
       Authorization: redacted
   response:
     status:
@@ -185,10 +185,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 270ed36c-a1d2-4455-86d1-416452bdaa0b
+      date: Thu, 21 Mar 2024 17:36:10 GMT
+      x-amzn-requestid: aee5c9be-3cd9-4d08-8202-57a99d6524c6
       content-type: text/xml
-      content-length: '467'
-      date: Thu, 07 Dec 2023 00:00:05 GMT
+      content-length: '473'
     body:
       encoding: ''
       file: no
@@ -197,30 +197,30 @@ http_interactions:
           <GetUserResult>
             <User>
               <Path>/</Path>
-              <UserName>testUser2</UserName>
-              <Arn>arn:aws:iam::510628056329:user/testUser2</Arn>
-              <UserId>AIDAXNY6NZUEXZFJQI2I2</UserId>
-              <CreateDate>2023-08-08T20:27:04Z</CreateDate>
+              <UserName>userbnwaqdif</UserName>
+              <Arn>arn:aws:iam::744061095407:user/userbnwaqdif</Arn>
+              <UserId>AIDA22PL7JXXSCS2UFXMU</UserId>
+              <CreateDate>2024-03-21T17:36:08Z</CreateDate>
             </User>
           </GetUserResult>
           <ResponseMetadata>
-            <RequestId>270ed36c-a1d2-4455-86d1-416452bdaa0b</RequestId>
+            <RequestId>aee5c9be-3cd9-4d08-8202-57a99d6524c6</RequestId>
           </ResponseMetadata>
         </GetUserResponse>
-  recorded_at: 2023-12-07 00:00:07 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
     uri: https://iam.amazonaws.com/
     body:
       encoding: ''
-      string: Action=ListUserPolicies&UserName=testUser2&Version=2010-05-08
+      string: Action=ListUserPolicies&UserName=userbnwaqdif&Version=2010-05-08
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
-      Content-Length: '61'
-      X-Amz-Date: 20231207T000006Z
+      Content-Length: '64'
+      X-Amz-Date: 20240321T173611Z
       Authorization: redacted
   response:
     status:
@@ -229,10 +229,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: bb285892-ad5e-4be3-8ecd-efcbabb08e67
+      date: Thu, 21 Mar 2024 17:36:10 GMT
+      x-amzn-requestid: 147d577c-4b06-4691-bf63-71b750254eda
       content-type: text/xml
       content-length: '323'
-      date: Thu, 07 Dec 2023 00:00:05 GMT
     body:
       encoding: ''
       file: no
@@ -243,23 +243,23 @@ http_interactions:
             <PolicyNames/>
           </ListUserPoliciesResult>
           <ResponseMetadata>
-            <RequestId>bb285892-ad5e-4be3-8ecd-efcbabb08e67</RequestId>
+            <RequestId>147d577c-4b06-4691-bf63-71b750254eda</RequestId>
           </ResponseMetadata>
         </ListUserPoliciesResponse>
-  recorded_at: 2023-12-07 00:00:07 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
     uri: https://iam.amazonaws.com/
     body:
       encoding: ''
-      string: Action=ListAttachedUserPolicies&UserName=testUser2&Version=2010-05-08
+      string: Action=ListAttachedUserPolicies&UserName=userbnwaqdif&Version=2010-05-08
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
-      Content-Length: '69'
-      X-Amz-Date: 20231207T000006Z
+      Content-Length: '72'
+      X-Amz-Date: 20240321T173611Z
       Authorization: redacted
   response:
     status:
@@ -268,10 +268,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: ee727d85-0ecf-423b-a1e8-dd5e4135bc19
+      date: Thu, 21 Mar 2024 17:36:10 GMT
+      x-amzn-requestid: 079a2d20-b790-466b-bc0c-eee723700b99
       content-type: text/xml
-      content-length: '554'
-      date: Thu, 07 Dec 2023 00:00:05 GMT
+      content-length: '548'
     body:
       encoding: ''
       file: no
@@ -281,29 +281,29 @@ http_interactions:
             <IsTruncated>false</IsTruncated>
             <AttachedPolicies>
               <member>
-                <PolicyArn>arn:aws:iam::aws:policy/AWSCloudHSMReadOnlyAccess</PolicyArn>
-                <PolicyName>AWSCloudHSMReadOnlyAccess</PolicyName>
+                <PolicyArn>arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess</PolicyArn>
+                <PolicyName>AmazonS3ReadOnlyAccess</PolicyName>
               </member>
             </AttachedPolicies>
           </ListAttachedUserPoliciesResult>
           <ResponseMetadata>
-            <RequestId>ee727d85-0ecf-423b-a1e8-dd5e4135bc19</RequestId>
+            <RequestId>079a2d20-b790-466b-bc0c-eee723700b99</RequestId>
           </ResponseMetadata>
         </ListAttachedUserPoliciesResponse>
-  recorded_at: 2023-12-07 00:00:07 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
     uri: https://iam.amazonaws.com/
     body:
       encoding: ''
-      string: Action=ListGroupsForUser&UserName=testUser2&Version=2010-05-08
+      string: Action=ListGroupsForUser&UserName=userbnwaqdif&Version=2010-05-08
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
-      Content-Length: '62'
-      X-Amz-Date: 20231207T000006Z
+      Content-Length: '65'
+      X-Amz-Date: 20240321T173611Z
       Authorization: redacted
   response:
     status:
@@ -312,10 +312,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: e9f166f2-5962-42c5-8663-97cbafd1d3e6
+      date: Thu, 21 Mar 2024 17:36:11 GMT
+      x-amzn-requestid: 72821f4e-90bf-4c80-8c90-e2287640ef19
       content-type: text/xml
       content-length: '322'
-      date: Thu, 07 Dec 2023 00:00:05 GMT
     body:
       encoding: ''
       file: no
@@ -326,23 +326,112 @@ http_interactions:
             <Groups/>
           </ListGroupsForUserResult>
           <ResponseMetadata>
-            <RequestId>e9f166f2-5962-42c5-8663-97cbafd1d3e6</RequestId>
+            <RequestId>72821f4e-90bf-4c80-8c90-e2287640ef19</RequestId>
           </ResponseMetadata>
         </ListGroupsForUserResponse>
-  recorded_at: 2023-12-07 00:00:07 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
     uri: https://iam.amazonaws.com/
     body:
       encoding: ''
-      string: Action=DetachUserPolicy&PolicyArn=arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FAWSCloudHSMReadOnlyAccess&UserName=testUser2&Version=2010-05-08
+      string: Action=GetPolicy&PolicyArn=arn%3Aaws%3Aiam%3A%3A744061095407%3Apolicy%2FAmazonS3ReadOnlyAccess&Version=2010-05-08
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '113'
+      X-Amz-Date: 20240321T173611Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 404
+      category: Client error
+      reason: Not Found
+      message: 'Client error: (404) Not Found'
+    headers:
+      date: Thu, 21 Mar 2024 17:36:11 GMT
+      x-amzn-requestid: 3b579ba2-3b9e-4e2c-9804-2a2e2c921b97
+      content-type: text/xml
+      content-length: '321'
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ErrorResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <Error>
+            <Type>Sender</Type>
+            <Code>NoSuchEntity</Code>
+            <Message>Policy arn:aws:iam::744061095407:policy/AmazonS3ReadOnlyAccess was not found.</Message>
+          </Error>
+          <RequestId>3b579ba2-3b9e-4e2c-9804-2a2e2c921b97</RequestId>
+        </ErrorResponse>
+  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=GetPolicy&PolicyArn=arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FAmazonS3ReadOnlyAccess&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '104'
+      X-Amz-Date: 20240321T173611Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      date: Thu, 21 Mar 2024 17:36:11 GMT
+      x-amzn-requestid: ec87b70f-193f-4ae6-8a22-21db5dd889b3
+      content-type: text/xml
+      content-length: '878'
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <GetPolicyResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <GetPolicyResult>
+            <Policy>
+              <PermissionsBoundaryUsageCount>0</PermissionsBoundaryUsageCount>
+              <Path>/</Path>
+              <UpdateDate>2023-08-10T21:31:39Z</UpdateDate>
+              <DefaultVersionId>v3</DefaultVersionId>
+              <PolicyId>ANPAIZTJ4DXE7G6AGAE6M</PolicyId>
+              <IsAttachable>true</IsAttachable>
+              <PolicyName>AmazonS3ReadOnlyAccess</PolicyName>
+              <Description>Provides read only access to all buckets via the AWS Management Console.</Description>
+              <AttachmentCount>1</AttachmentCount>
+              <Arn>arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess</Arn>
+              <Tags/>
+              <CreateDate>2015-02-06T18:40:59Z</CreateDate>
+            </Policy>
+          </GetPolicyResult>
+          <ResponseMetadata>
+            <RequestId>ec87b70f-193f-4ae6-8a22-21db5dd889b3</RequestId>
+          </ResponseMetadata>
+        </GetPolicyResponse>
+  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=DetachUserPolicy&PolicyArn=arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FAmazonS3ReadOnlyAccess&UserName=userbnwaqdif&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '133'
-      X-Amz-Date: 20231207T000006Z
+      X-Amz-Date: 20240321T173611Z
       Authorization: redacted
   response:
     status:
@@ -351,33 +440,33 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 4c5c5aa1-7647-4a40-9766-b4252155ed64
+      date: Thu, 21 Mar 2024 17:36:11 GMT
+      x-amzn-requestid: aaff1d8e-2669-4c2d-a6f9-dc0ed4e9f46d
       content-type: text/xml
       content-length: '212'
-      date: Thu, 07 Dec 2023 00:00:06 GMT
     body:
       encoding: ''
       file: no
       string: |
         <DetachUserPolicyResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
           <ResponseMetadata>
-            <RequestId>4c5c5aa1-7647-4a40-9766-b4252155ed64</RequestId>
+            <RequestId>aaff1d8e-2669-4c2d-a6f9-dc0ed4e9f46d</RequestId>
           </ResponseMetadata>
         </DetachUserPolicyResponse>
-  recorded_at: 2023-12-07 00:00:07 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
     uri: https://iam.amazonaws.com/
     body:
       encoding: ''
-      string: Action=GetUser&UserName=testUser2&Version=2010-05-08
+      string: Action=GetUser&UserName=userbnwaqdif&Version=2010-05-08
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
-      Content-Length: '52'
-      X-Amz-Date: 20231207T000006Z
+      Content-Length: '55'
+      X-Amz-Date: 20240321T173612Z
       Authorization: redacted
   response:
     status:
@@ -386,10 +475,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 1f4371af-0924-4b0e-877a-078d449764d6
+      date: Thu, 21 Mar 2024 17:36:11 GMT
+      x-amzn-requestid: ec3a3c34-3968-4b7c-8381-5d5ce5bb0e2b
       content-type: text/xml
-      content-length: '467'
-      date: Thu, 07 Dec 2023 00:00:06 GMT
+      content-length: '473'
     body:
       encoding: ''
       file: no
@@ -398,30 +487,30 @@ http_interactions:
           <GetUserResult>
             <User>
               <Path>/</Path>
-              <UserName>testUser2</UserName>
-              <Arn>arn:aws:iam::510628056329:user/testUser2</Arn>
-              <UserId>AIDAXNY6NZUEXZFJQI2I2</UserId>
-              <CreateDate>2023-08-08T20:27:04Z</CreateDate>
+              <UserName>userbnwaqdif</UserName>
+              <Arn>arn:aws:iam::744061095407:user/userbnwaqdif</Arn>
+              <UserId>AIDA22PL7JXXSCS2UFXMU</UserId>
+              <CreateDate>2024-03-21T17:36:08Z</CreateDate>
             </User>
           </GetUserResult>
           <ResponseMetadata>
-            <RequestId>1f4371af-0924-4b0e-877a-078d449764d6</RequestId>
+            <RequestId>ec3a3c34-3968-4b7c-8381-5d5ce5bb0e2b</RequestId>
           </ResponseMetadata>
         </GetUserResponse>
-  recorded_at: 2023-12-07 00:00:07 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
     uri: https://iam.amazonaws.com/
     body:
       encoding: ''
-      string: Action=ListUserPolicies&UserName=testUser2&Version=2010-05-08
+      string: Action=ListUserPolicies&UserName=userbnwaqdif&Version=2010-05-08
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
-      Content-Length: '61'
-      X-Amz-Date: 20231207T000006Z
+      Content-Length: '64'
+      X-Amz-Date: 20240321T173612Z
       Authorization: redacted
   response:
     status:
@@ -430,10 +519,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 61a8ccaa-b150-404a-ac25-210c72b0a4e9
+      date: Thu, 21 Mar 2024 17:36:11 GMT
+      x-amzn-requestid: 16bb651a-cc8c-4378-b50e-1c9553b81a7c
       content-type: text/xml
       content-length: '323'
-      date: Thu, 07 Dec 2023 00:00:06 GMT
     body:
       encoding: ''
       file: no
@@ -444,23 +533,23 @@ http_interactions:
             <PolicyNames/>
           </ListUserPoliciesResult>
           <ResponseMetadata>
-            <RequestId>61a8ccaa-b150-404a-ac25-210c72b0a4e9</RequestId>
+            <RequestId>16bb651a-cc8c-4378-b50e-1c9553b81a7c</RequestId>
           </ResponseMetadata>
         </ListUserPoliciesResponse>
-  recorded_at: 2023-12-07 00:00:07 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
     uri: https://iam.amazonaws.com/
     body:
       encoding: ''
-      string: Action=ListAttachedUserPolicies&UserName=testUser2&Version=2010-05-08
+      string: Action=ListAttachedUserPolicies&UserName=userbnwaqdif&Version=2010-05-08
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
-      Content-Length: '69'
-      X-Amz-Date: 20231207T000006Z
+      Content-Length: '72'
+      X-Amz-Date: 20240321T173612Z
       Authorization: redacted
   response:
     status:
@@ -469,10 +558,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: ddff6e09-5605-4b24-adf2-b893661bacd0
+      date: Thu, 21 Mar 2024 17:36:11 GMT
+      x-amzn-requestid: d9316810-622e-41b8-997b-95e1f353f23b
       content-type: text/xml
       content-length: '360'
-      date: Thu, 07 Dec 2023 00:00:06 GMT
     body:
       encoding: ''
       file: no
@@ -483,23 +572,23 @@ http_interactions:
             <AttachedPolicies/>
           </ListAttachedUserPoliciesResult>
           <ResponseMetadata>
-            <RequestId>ddff6e09-5605-4b24-adf2-b893661bacd0</RequestId>
+            <RequestId>d9316810-622e-41b8-997b-95e1f353f23b</RequestId>
           </ResponseMetadata>
         </ListAttachedUserPoliciesResponse>
-  recorded_at: 2023-12-07 00:00:07 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
     uri: https://iam.amazonaws.com/
     body:
       encoding: ''
-      string: Action=ListGroupsForUser&UserName=testUser2&Version=2010-05-08
+      string: Action=ListGroupsForUser&UserName=userbnwaqdif&Version=2010-05-08
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
-      Content-Length: '62'
-      X-Amz-Date: 20231207T000007Z
+      Content-Length: '65'
+      X-Amz-Date: 20240321T173612Z
       Authorization: redacted
   response:
     status:
@@ -508,10 +597,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 31a670b9-d038-465b-82fa-29ce1d6b33a6
+      date: Thu, 21 Mar 2024 17:36:12 GMT
+      x-amzn-requestid: 5a00ebbd-47b2-49bd-adaa-e9c3d39e6e65
       content-type: text/xml
       content-length: '322'
-      date: Thu, 07 Dec 2023 00:00:06 GMT
     body:
       encoding: ''
       file: no
@@ -522,8 +611,8 @@ http_interactions:
             <Groups/>
           </ListGroupsForUserResult>
           <ResponseMetadata>
-            <RequestId>31a670b9-d038-465b-82fa-29ce1d6b33a6</RequestId>
+            <RequestId>5a00ebbd-47b2-49bd-adaa-e9c3d39e6e65</RequestId>
           </ResponseMetadata>
         </ListGroupsForUserResponse>
-  recorded_at: 2023-12-07 00:00:07 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0

@@ -10,11 +10,25 @@ aws_policies(refresh = FALSE, ...)
 \item{refresh}{(logical) refresh results? default: \code{FALSE}. to invalidate
 cache and refresh policy data, set \code{refresh=TRUE}}
 
-\item{...}{parameters passed on to
+\item{...}{named arguments passed on to
 \href{https://www.paws-r-sdk.com/docs/iam_list_policies/}{list_policies}}
 }
 \value{
-A tibble with information about policies
+A tibble with information about policies. Each row is a policy.
+Columns:
+\itemize{
+\item PolicyName
+\item PolicyId
+\item Path
+\item Arn
+\item CreateDate
+\item UpdateDate
+\item AttachmentCount
+\item PermissionsBoundaryUsageCount
+\item IsAttachable
+\item Description
+\item Tags
+}
 }
 \description{
 List policies
@@ -35,8 +49,12 @@ Other policies:
 \code{\link{as_policy_arn}()},
 \code{\link{aws_policy_attach}()},
 \code{\link{aws_policy_create}()},
+\code{\link{aws_policy_delete_version}()},
+\code{\link{aws_policy_delete}()},
 \code{\link{aws_policy_detach}()},
 \code{\link{aws_policy_exists}()},
+\code{\link{aws_policy_list_entities}()},
+\code{\link{aws_policy_list_versions}()},
 \code{\link{aws_policy}()}
 }
 \concept{policies}

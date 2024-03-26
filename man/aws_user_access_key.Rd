@@ -2,9 +2,15 @@
 % Please edit documentation in R/users.R
 \name{aws_user_access_key}
 \alias{aws_user_access_key}
-\title{Get the current user's AWS Access Key}
+\title{Get AWS Access Key for a user}
 \usage{
-aws_user_access_key()
+aws_user_access_key(username = NULL, ...)
+}
+\arguments{
+\item{username}{(character) A user name. required}
+
+\item{...}{further named args passed on to
+\href{https://www.paws-r-sdk.com/docs/iam_list_access_keys/}{list_access_keys}}
 }
 \value{
 a tibble with key details
@@ -17,13 +23,9 @@ and user creation
 See \url{https://www.paws-r-sdk.com/docs/iam_list_access_keys/}
 docs for more details
 }
-\examples{
-\dontrun{
-# aws_user_access_key()
-}
-}
 \seealso{
 Other users: 
+\code{\link{aws_user_access_key_delete}()},
 \code{\link{aws_user_add_to_group}()},
 \code{\link{aws_user_create}()},
 \code{\link{aws_user_current}()},

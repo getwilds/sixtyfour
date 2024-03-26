@@ -40,6 +40,7 @@ aws_user_add_to_group(username = "testBlueBird3", groupname = "testgroup3")
 }
 \seealso{
 Other users: 
+\code{\link{aws_user_access_key_delete}()},
 \code{\link{aws_user_access_key}()},
 \code{\link{aws_user_create}()},
 \code{\link{aws_user_current}()},

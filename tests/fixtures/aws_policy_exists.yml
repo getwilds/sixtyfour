@@ -6,11 +6,11 @@ http_interactions:
       encoding: ''
       string: Action=GetPolicy&PolicyArn=arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FReadOnlyAccess&Version=2010-05-08
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '96'
-      X-Amz-Date: 20231206T212912Z
+      X-Amz-Date: 20240321T055013Z
       Authorization: redacted
   response:
     status:
@@ -19,10 +19,10 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: 57611667-747b-4a33-94eb-df7025d994d0
+      date: Thu, 21 Mar 2024 05:50:13 GMT
+      x-amzn-requestid: b89ba902-88ca-4256-9ef0-de9178ca3b2d
       content-type: text/xml
       content-length: '848'
-      date: Wed, 06 Dec 2023 21:29:11 GMT
     body:
       encoding: ''
       file: no
@@ -32,21 +32,59 @@ http_interactions:
             <Policy>
               <PermissionsBoundaryUsageCount>0</PermissionsBoundaryUsageCount>
               <Path>/</Path>
-              <UpdateDate>2023-12-01T17:23:47Z</UpdateDate>
-              <DefaultVersionId>v108</DefaultVersionId>
+              <UpdateDate>2024-02-05T15:00:23Z</UpdateDate>
+              <DefaultVersionId>v111</DefaultVersionId>
               <PolicyId>ANPAILL3HVNFSB6DCOWYQ</PolicyId>
               <IsAttachable>true</IsAttachable>
               <PolicyName>ReadOnlyAccess</PolicyName>
               <Description>Provides read-only access to AWS services and resources.</Description>
               <AttachmentCount>0</AttachmentCount>
               <Arn>arn:aws:iam::aws:policy/ReadOnlyAccess</Arn>
-              <CreateDate>2015-02-06T18:39:48Z</CreateDate>
               <Tags/>
+              <CreateDate>2015-02-06T18:39:48Z</CreateDate>
             </Policy>
           </GetPolicyResult>
           <ResponseMetadata>
-            <RequestId>57611667-747b-4a33-94eb-df7025d994d0</RequestId>
+            <RequestId>b89ba902-88ca-4256-9ef0-de9178ca3b2d</RequestId>
           </ResponseMetadata>
         </GetPolicyResponse>
-  recorded_at: 2023-12-06 21:29:12 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+  recorded_at: 2024-03-21 05:50:13 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=GetPolicy&PolicyArn=arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2FFlurrrrb&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '90'
+      X-Amz-Date: 20240321T055013Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 404
+      category: Client error
+      reason: Not Found
+      message: 'Client error: (404) Not Found'
+    headers:
+      date: Thu, 21 Mar 2024 05:50:13 GMT
+      x-amzn-requestid: ed0f1353-08d0-47b8-9836-6f13c9efdfe0
+      content-type: text/xml
+      content-length: '298'
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ErrorResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <Error>
+            <Type>Sender</Type>
+            <Code>NoSuchEntity</Code>
+            <Message>Policy arn:aws:iam::aws:policy/Flurrrrb was not found.</Message>
+          </Error>
+          <RequestId>ed0f1353-08d0-47b8-9836-6f13c9efdfe0</RequestId>
+        </ErrorResponse>
+  recorded_at: 2024-03-21 05:50:13 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
