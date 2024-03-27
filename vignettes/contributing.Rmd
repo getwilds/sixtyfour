@@ -1,0 +1,79 @@
+---
+title: "Contributing"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Contributing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+## General guidelines
+
+This article outlines how to propose a change to `sixtyfour`. For more information about contributing to this, and other WILDS projects, please see the [**WILDS Contributing Guide**](https://getwilds.org/guide/).
+
+### Fixing typos/docs changes
+
+You can fix typos, spelling mistakes, or grammatical errors in the documentation directly using the GitHub web interface, as long as the changes are made in the _source_ file.
+
+### Bigger changes
+
+If you want to make a bigger change, it's a good idea to first file an issue and make sure someone from the team agrees that it’s needed.
+
+If you’ve found a bug, please file an issue that illustrates the bug with a minimal
+reproducible example using [reprex](https://www.tidyverse.org/help/#reprex).
+
+#### Pull request process
+
+* Fork the package and clone onto your computer
+* Create a Git branch for your pull request (PR)
+* Make your changes, commit to git, and then create a pull request.
+  * The title of your PR should briefly describe the change.
+  * The body of your PR should contain `Fixes #issue-number`.
+* For user-facing changes, add a bullet to the `NEWS.md` file.
+
+#### Code style
+
+* New code should follow the [WILDS style guide](https://getwilds.org/guide/style.html).
+
+## Testing
+
+We strive to have all tests that do HTTP requests do so against resources that are not actual AWS accounts given the drawbacks with using real accounts, e.g., setting them up can be difficult at some organizations; forgotten resources can be expensive; accidentally making unwated changes to an account, etc.
+
+We use two tools to replace real AWS accounts: Minio, Localstack.
+
+### Minio
+
+We use [Minio][] for testing functions in this package (functions that start with `aws_bucket` and `aws_file`) for interacting with S3.
+
+#### Local
+
+If you want to run tests while contributing to `sixtyfour`, the tests that use Minio will just be skipped if you don't have Minio running.
+
+To use Minio, first install it for your platform: [MacOS](https://min.io/docs/minio/macos/index.html), [Windows](https://min.io/docs/minio/windows/index.html), [Linux](https://min.io/docs/minio/linux/index.html).
+
+Next, start Minio. Within this package is a make target `minio_start` for starting Minio locally. That make target should only work on Linux and MacOS platforms. To start Minio on the command line see the docs links above for each platform.
+
+Upon starting Minio it will display URLs for both the Minio API and WebUI - and your username/password to login to the WebUI. You can open up the WebUI as a nice visual dashboard of what's going on.
+
+#### GitHub Actions
+
+The `R-CMD-check` workflow in `.github/workflows/` includes spinning up Minio for running unit tests - but only on Linux; tests that require Minio are skipped on MacOS and WIndows platforms on GitHub Actions.
+
+### Localstack
+
+[Localstack][ls]
+
+(fill in text here - lorem ipsum for now)
+
+Contain paper notice police into let. Matter decision camera art let. Region happen treat mean boy middle prevent. Ball page right cut method together alone. Identify office participant more. Turn manager newspaper hair personal total language. Whatever skin population always have admit consider upon. Tell treat development science heart. Cost left energy rock have soon door.
+
+
+## Code of Conduct
+
+Please note that this project is released with a
+[Contributor Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this
+project you agree to abide by its terms.
+
+[Minio]: https://min.io/
+[ls]: https://www.localstack.cloud/
