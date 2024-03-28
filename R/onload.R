@@ -6,7 +6,8 @@ env64 <- new.env()
   env64$s3 <- set_s3_interface("aws")
 
   # iam and costexplorer services
-  env64$iam <- paws::iam()
+  # env64$iam <- set_iam_client(identical(Sys.getenv("TESTTHAT"), "true"))
+  # env64$iam <- set_iam_client(TRUE)
   env64$costexplorer <- paws::costexplorer()
   env64$secretsmanager <- paws::secretsmanager()
 }

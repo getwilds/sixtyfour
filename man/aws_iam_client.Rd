@@ -4,7 +4,11 @@
 \alias{aws_iam_client}
 \title{Get the \code{paws} Identity and Access Management (IAM) client}
 \usage{
-aws_iam_client()
+aws_iam_client(testing = Sys.getenv("AWS_PROFILE", "default"))
+}
+\arguments{
+\item{testing}{(logical) whether to set iam client for testing
+default: \code{FALSE}}
 }
 \value{
 a list with methods for interfacing with IAM;
