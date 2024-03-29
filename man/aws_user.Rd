@@ -53,6 +53,8 @@ Other users:
 \code{\link{aws_user_current}()},
 \code{\link{aws_user_delete}()},
 \code{\link{aws_user_exists}()},
-\code{\link{aws_users}()}
+\code{\link{aws_users}()},
+\code{\link{six_user_create}()},
+\code{\link{six_user_delete}()}
 }
 \concept{users}

@@ -27,8 +27,8 @@ docs for more details
 }
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-aws_user_access_key_delete(access_key_id="adfasdfadfadfasdf")
-aws_user_access_key_delete(access_key_id="adfasdf", username="jane")
+aws_user_access_key_delete(access_key_id = "adfasdfadfadfasdf")
+aws_user_access_key_delete(access_key_id = "adfasdf", username = "jane")
 \dontshow{\}) # examplesIf}
 }
 \seealso{
@@ -40,6 +40,8 @@ Other users:
 \code{\link{aws_user_delete}()},
 \code{\link{aws_user_exists}()},
 \code{\link{aws_users}()},
-\code{\link{aws_user}()}
+\code{\link{aws_user}()},
+\code{\link{six_user_create}()},
+\code{\link{six_user_delete}()}
 }
 \concept{users}

@@ -115,11 +115,10 @@ test_that("aws_policy_detach", {
 
 test_that("aws_policy_document_create", {
   doc1 <- aws_policy_document_create(
-    region = "us-east-2",
-    account_id = "1234567890",
-    resource_id = "*",
-    user = "*",
-    action = "rds-db:connect"
+    aws_policy_statement(
+      action = "rds-db:connect",
+      resource = resource_rds("*", "*")
+    )
   )
   doc1lst <- jsonlite::fromJSON(doc1, FALSE)
 
@@ -133,11 +132,10 @@ test_that("aws_policy_document_create", {
 
 test_that("aws_policy_create", {
   my_doc <- aws_policy_document_create(
-    region = "us-east-2",
-    account_id = "1234567890",
-    resource_id = "db-ABCDEFGHIJKL01234",
-    user = c("jane_doe", "mary_roe"),
-    action = "s3:ListAllMyBuckets"
+    aws_policy_statement(
+      action = c("s3:ListAllMyBuckets", "s3-object-lambda:*"),
+      resource = "*"
+    )
   )
 
   policy_name <- "MyTestPolicy"

@@ -26,7 +26,8 @@ s3_actions_full <- function() {
 #' Create a policy document for an S3 bucket
 #' @export
 #' @param bucket (character) bucket name. required
-#' @inheritParams aws_policy_document_create
+#' @param sid (character) a statement id. optional
+#' @inheritParams aws_policy_statement
 #' @details
 #' There's this separate function for creating policy docs for S3 because
 #' buckets are globally unique, so AWS figures out the region and account
@@ -313,6 +314,7 @@ AWS_REGION={Sys.getenv('AWS_REGION')}
 #' @export
 #' @importFrom cli cli_alert_success cli_alert_info
 #' @importFrom dplyr case_match
+#' @importFrom clipr write_clip
 #' @param username (character) A user name. required
 #' @param copy_to_cp (logical) Copy to clipboard. Default: `FALSE`. See
 #' section "Clipboard" below for more details.
@@ -364,7 +366,6 @@ aws_user_creds <- function(username, copy_to_cp = FALSE) {
   }
 
   if (copy_to_cp) {
-    rlang::check_installed("clipr")
     cli_alert_info("Email template copied to your clipboard")
     glue(creds_template)
     clipr::write_clip(glue(creds_template))
