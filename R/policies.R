@@ -283,94 +283,142 @@ aws_policy_list_versions <- function(name, ...) {
     tidy_generator(vars)(.)
 }
 
+#' Create a policy statement
+#'
+#' @export
+#' @param action (character) an action. required. see Actions below.
+#' @param resource (character) the object or objects the statement covers;
+#' see link below for more information
+#' @param effect (character) valid values: "Allow" (default), "Deny". length==1
+#' @param ... Additional named arguments. See link in Details for options,
+#' and examples below
+#' @details
+#' <https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html> #nolint
+#' @return a named list
+#' @examples
+#' aws_policy_statement("iam:GetUser", "*")
+#' aws_policy_statement("iam:GetUser", "*", Sid = "MyStatementId")
+#' aws_policy_statement("iam:GetUser", "*",
+#'   Condition = list(
+#'     StringEqualsIgnoreCase = list("aws:username" = "johndoe")
+#'   )
+#' )
+#' aws_policy_statement("iam:GetUser", "*",
+#'   Principal = list(Service = "s3.amazonaws.com")
+#' )
+aws_policy_statement <- function(action, resource, effect = "Allow", ...) {
+  list(
+    Effect = effect,
+    Action = action,
+    Resource = resource,
+    ...
+  )
+}
+
+#' Create a resource string for a policy statement for RDS
+#'
+#' @export
+#' @param user (character) a user name that has an IAM account. length>=1.
+#' required
+#' @param resource_id (character) the identifier for the DB instance.
+#' length==1. required
+#' @param region (character) the AWS Region for the DB instance. length==1
+#' @param account (character) the AWS account number for the DB instance.
+#' length==1. The user must be in the same account as the account for the
+#' DB instance. by default calls [account_id()]
+#' @return a resource ARN (character)
+resource_rds <- function(
+    user,
+    resource_id,
+    region = Sys.getenv("AWS_REGION"),
+    account = account_id()) {
+  glue(
+    "arn:aws:rds-db:{region}:{account}:dbuser:{resource_id}/{user}"
+  )
+}
+
 #' Create a policy document
 #'
 #' @export
-#' @param region (character) the AWS Region for the DB instance. length==1
-#' @param account_id (character) the AWS account number for the DB instance.
-#' length==1. The user must be in the same account as the account for the
-#' DB instance
-#' @param resource_id (character) the identifier for the DB instance. length==1
-#' @param user (character) a user name that has an IAM account. length>=1
-#' @param action (character) an action. required. see Actions below.
-#' @param effect (character) valid values: "Allow" (default), "Deny". length==1
-#' @param sid (character) statement ID as an optional identifier for the policy
-#' statement. optional. see
-#' <https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_sid.html> # nolint
-#' @param ... named args passed to [jsonlite::toJSON()]
+#' @param ...,.list policy statements as created by [aws_policy_statement()]
+#' or created manually. Pass in 1 or more statements via `...` like
+#' `statement1, statement2` or pass in as a list like
+#' `.list = list(statement1, statement2)`. Each element must be a named list.
 #' @references
 #' <https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html> # nolint
 #' @return a json class string. use [as.character()] to coerce to a regular
 #' string
-#' @note a few document items are hard-coded:
+#' @note a document item is hard-coded:
 #' - `Version` is set to 2012-10-17"
-#' - `Action` is set to "rds-db:connect"
 #' @section Actions:
 #' Actions documentation appears to be all over the web. Here's a start:
 #' - S3: <https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazons3.html> # nolint
 #' - EC2: <https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Operations.html> # nolint
 #' - IAM: <https://docs.aws.amazon.com/IAM/latest/APIReference/API_Operations.html> # nolint
-#' @examplesIf interactive()
+#' @examples
+#' st8ment1 <- aws_policy_statement("iam:GetUser", "*")
+#' st8ment2 <- aws_policy_statement("s3:ListAllMyBuckets", "*")
+#' st8ment3 <- aws_policy_statement("s3-object-lambda:List*", "*")
+#' aws_policy_document_create(st8ment1, st8ment2)
+#' aws_policy_document_create(.list = list(st8ment1, st8ment2))
+#' aws_policy_document_create(st8ment3, .list = list(st8ment1, st8ment2))
+#'
+#' # Policy document to give a user access to RDS
+#' resource <- "arn:aws:rds-db:us-east-2:1234567890:dbuser:db-ABCDE1212/jane"
+#' st8ment_rds <- aws_policy_statement(
+#'   action = "rds-db:connect",
+#'   resource = resource
+#' )
+#' aws_policy_document_create(st8ment_rds)
+#'
 #' ### DB account = user in a database that has access to it
 #' # all DB instances & DB accounts for a AWS account and AWS Region
 #' aws_policy_document_create(
-#'   region = "us-east-2",
-#'   account_id = "1234567890",
-#'   resource_id = "*",
-#'   user = "*",
-#'   action = "rds-db:connect"
+#'   aws_policy_statement(
+#'     action = "rds-db:connect",
+#'     resource = resource_rds("*", "*")
+#'   )
 #' )
 #' # all DB instances for a AWS account and AWS Region, single DB account
 #' aws_policy_document_create(
-#'   region = "us-east-2",
-#'   account_id = "1234567890",
-#'   resource_id = "*",
-#'   user = "jane_doe",
-#'   action = "rds-db:connect"
+#'   aws_policy_statement(
+#'     action = "rds-db:connect",
+#'     resource = resource_rds("jane_doe", "*")
+#'   )
 #' )
 #' # single DB instasnce, single DB account
 #' aws_policy_document_create(
-#'   region = "us-east-2",
-#'   account_id = "1234567890",
-#'   resource_id = "db-ABCDEFGHIJKL01234",
-#'   user = "jane_doe",
-#'   action = "rds-db:connect"
+#'   aws_policy_statement(
+#'     action = "rds-db:connect",
+#'     resource = resource_rds("jane_doe", "db-ABCDEFGHIJKL01234")
+#'   )
 #' )
 #' # single DB instance, many users
 #' aws_policy_document_create(
-#'   region = "us-east-2",
-#'   account_id = "1234567890",
-#'   resource_id = "db-ABCDEFGHIJKL01234",
-#'   user = c("jane_doe", "mary_roe"),
-#'   action = "rds-db:connect"
+#'   aws_policy_statement(
+#'     action = "rds-db:connect",
+#'     resource = resource_rds(c("jane_doe", "mary_roe"), "db-ABCDEFGHIJKL01234")
+#'   )
 #' )
-#' # specify a sid
-#' aws_policy_document_create(
-#'   region = "us-east-2",
-#'   account_id = "1234567890",
-#'   resource_id = "*",
-#'   user = "jane_doe",
-#'   action = "rds-db:connect",
-#'   sid = "AllDBsForJane"
-#' )
-aws_policy_document_create <- function(
-    region, account_id, resource_id, user,
-    action, effect = "Allow", sid = NULL, ...) {
-  resource <- glue(
-    "arn:aws:rds-db:{region}:{account_id}:dbuser:{resource_id}/{user}"
+aws_policy_document_create <- function(..., .list = NULL) {
+  stop_if_not(
+    rlang::is_list(.list) || is.null(.list),
+    "`.list` must be a list"
+  )
+  statements <- c(list(...), .list)
+  stop_if_not(
+    all(map_lgl(statements, rlang::is_list)),
+    "all elements passed to `...` and `.list` must be lists"
+  )
+  stop_if_not(
+    all(map_lgl(statements, rlang::is_named)),
+    "all elements passed to `...` and `.list` must be named lists"
   )
   doc <- list(
     Version = "2012-10-17",
-    Statement = list(
-      list(
-        Effect = effect,
-        Action = action,
-        Resource = resource
-      )
-    )
+    Statement = statements
   )
-  if (!is.null(sid)) doc$Statement[[1]]$Sid <- sid
-  jsonlite::toJSON(doc, auto_unbox = TRUE, ...)
+  jsonlite::toJSON(doc, auto_unbox = TRUE)
 }
 
 #' Convert a policy name to a policy ARN
@@ -404,7 +452,7 @@ aws_policy_document_create <- function(
 #' as_policy_arn("MyTestPolicy", local = TRUE)
 #' # returns an arn - and if given an arn returns self
 #' as_policy_arn("MyTestPolicy", local = TRUE) %>%
-#'    as_policy_arn("MyTestPolicy")
+#'   as_policy_arn("MyTestPolicy")
 #' }
 as_policy_arn <- function(name, local = FALSE) {
   stopifnot(is.character(name))
@@ -512,4 +560,15 @@ policies_attached <- function(which, name) {
   method <- glue::glue("list_attached_{which}_policies")
   res <- env64$iam[[method]](name)
   res$AttachedPolicies %>% bind_rows()
+}
+
+has_policy <- function(.x, policy) {
+  stop_if_not(rlang::is_list(.x), "`.x` must be a list")
+  if (rlang::is_empty(.x$attached_policies)) {
+    return(FALSE)
+  }
+  if (!inherits(.x$attached_policies, "tbl")) {
+    return(FALSE)
+  }
+  policy %in% .x$attached_policies$PolicyName
 }

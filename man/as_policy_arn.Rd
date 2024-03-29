@@ -40,7 +40,7 @@ as_policy_arn("AmazonRDSDataFullAccess")
 as_policy_arn("MyTestPolicy", local = TRUE)
 # returns an arn - and if given an arn returns self
 as_policy_arn("MyTestPolicy", local = TRUE) \%>\%
-   as_policy_arn("MyTestPolicy")
+  as_policy_arn("MyTestPolicy")
 }
 }
 \seealso{

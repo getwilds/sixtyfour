@@ -4,13 +4,13 @@ http_interactions:
     uri: https://iam.amazonaws.com/
     body:
       encoding: ''
-      string: Action=CreatePolicy&PolicyDocument=%7B%22Version%22%3A%222012-10-17%22%2C%22Statement%22%3A%5B%7B%22Effect%22%3A%22Allow%22%2C%22Action%22%3A%22s3%3AListAllMyBuckets%22%2C%22Resource%22%3A%5B%22arn%3Aaws%3Ards-db%3Aus-east-2%3A1234567890%3Adbuser%3Adb-ABCDEFGHIJKL01234%2Fjane_doe%22%2C%22arn%3Aaws%3Ards-db%3Aus-east-2%3A1234567890%3Adbuser%3Adb-ABCDEFGHIJKL01234%2Fmary_roe%22%5D%7D%5D%7D&PolicyName=MyTestPolicy&Version=2010-05-08
+      string: Action=CreatePolicy&PolicyDocument=%7B%22Version%22%3A%222012-10-17%22%2C%22Statement%22%3A%5B%7B%22Effect%22%3A%22Allow%22%2C%22Action%22%3A%5B%22s3%3AListAllMyBuckets%22%2C%22s3-object-lambda%3A%2A%22%5D%2C%22Resource%22%3A%22%2A%22%7D%5D%7D&PolicyName=MyTestPolicy&Version=2010-05-08
     headers:
       User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
-      Content-Length: '433'
-      X-Amz-Date: 20240321T162300Z
+      Content-Length: '286'
+      X-Amz-Date: 20240328T213333Z
       Authorization: redacted
   response:
     status:
@@ -19,8 +19,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 21 Mar 2024 16:23:00 GMT
-      x-amzn-requestid: d571225b-e362-4dda-a59f-15c31ba37b5b
+      date: Thu, 28 Mar 2024 21:33:32 GMT
+      x-amzn-requestid: 2db3983c-3c93-4d74-b295-efb2a58d3fe4
       content-type: text/xml
       content-length: '759'
     body:
@@ -32,19 +32,19 @@ http_interactions:
             <Policy>
               <PermissionsBoundaryUsageCount>0</PermissionsBoundaryUsageCount>
               <Path>/</Path>
-              <UpdateDate>2024-03-21T16:23:00Z</UpdateDate>
+              <UpdateDate>2024-03-28T21:33:33Z</UpdateDate>
               <DefaultVersionId>v1</DefaultVersionId>
-              <PolicyId>ANPA22PL7JXXWNPBVWUAM</PolicyId>
+              <PolicyId>ANPA22PL7JXX5ZD7SKDYJ</PolicyId>
               <IsAttachable>true</IsAttachable>
               <PolicyName>MyTestPolicy</PolicyName>
               <AttachmentCount>0</AttachmentCount>
               <Arn>arn:aws:iam::744061095407:policy/MyTestPolicy</Arn>
-              <CreateDate>2024-03-21T16:23:00Z</CreateDate>
+              <CreateDate>2024-03-28T21:33:33Z</CreateDate>
             </Policy>
           </CreatePolicyResult>
           <ResponseMetadata>
-            <RequestId>d571225b-e362-4dda-a59f-15c31ba37b5b</RequestId>
+            <RequestId>2db3983c-3c93-4d74-b295-efb2a58d3fe4</RequestId>
           </ResponseMetadata>
         </CreatePolicyResponse>
-  recorded_at: 2024-03-21 16:23:00 GMT
+  recorded_at: 2024-03-28 21:33:33 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0
