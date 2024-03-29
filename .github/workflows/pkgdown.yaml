@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+    branches: [main, s3-iam]
   release:
     types: [published]
   workflow_dispatch:
@@ -11,6 +11,18 @@ on:
 name: pkgdown
 
 jobs:
+  delete-bot-comments:
+    runs-on: ubuntu-latest
+    steps:
+      - name: pr-deleter
+        uses: maheshrayas/action-pr-comment-delete@v3.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          org: ${{ github.repository_owner }}
+          repo: ${{ github.event.repository.name }}
+          user: 'github-actions[bot]'
+          issue: ${{ github.event.number }}
+
   pkgdown:
     runs-on: ubuntu-latest
     # Only restrict concurrency for non-PR jobs
@@ -20,8 +32,9 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     permissions:
       contents: write
+      pull-requests: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -45,3 +58,22 @@ jobs:
           clean: false
           branch: gh-pages
           folder: docs
+
+      - name: Deploy Pkgdown Preview to Netlify
+        if: github.event_name == 'pull_request'
+        id: netlify-deploy
+        uses: nwtgck/actions-netlify@v2
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: 0bd96a31-c99c-4493-9efe-a7aaf1deaab9
+        with:
+          publish-dir: './docs'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: |
+            Deploy from GHA: ${{ github.event.pull_request.title || github.event.head_commit.message }} (${{ github.sha }})
+          alias: deploy-preview-${{ github.event.pull_request.number || github.event.issue.number }}
+          enable-pull-request-comment: true
+          enable-commit-comment: false
+          enable-commit-status: true
+          overwrites-pull-request-comment: false
+        timeout-minutes: 1
