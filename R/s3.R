@@ -298,7 +298,8 @@ creds_template <- "Hi,
 Here's your AWS credentials for your username {username}.
 
 Make sure to save these in a place where you won't lose them.
-For example, save them in your .Renviron file like:
+For example, save them in your .Renviron file (run
+`usethis::edit_r_environ()` to open your .Renviron file):
 
 AWS_ACCESS_KEY_ID={creds$AccessKey$AccessKeyId}
 AWS_SECRET_ACCESS_KEY={creds$AccessKey$SecretAccessKey}
@@ -334,12 +335,7 @@ AWS_REGION={Sys.getenv('AWS_REGION')}
 #' @section Known error behaviors:
 #' - `LimitExceeded (HTTP 409). Cannot exceed quota for AccessKeysPerUser: 2`
 #' - `NoSuchEntity (HTTP 404). The user with name xxx cannot be found.`
-#' @return list with slots:
-#' - UserName (character)
-#' - AccessKeyId (character)
-#' - Status (character)
-#' - SecretAccessKey (character)
-#' - CreateDate (POSIXct)
+#' @return NULL invisibly
 #' @seealso [aws_user_access_key()], [aws_user_access_key_delete()]
 #' @examplesIf interactive()
 #' if (!aws_user_exists("jane")) aws_user_create("jane")
@@ -375,7 +371,7 @@ aws_user_creds <- function(username, copy_to_cp = FALSE) {
     clipr::write_clip(glue(creds_template))
   }
 
-  creds$AccessKey
+  invisible()
 }
 
 #' @autoglobal
