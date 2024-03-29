@@ -72,13 +72,18 @@ add_user_now_has <- c(
 #' @importFrom snakecase to_upper_camel_case
 #' @keywords internal
 bucket_to_policy_name <- function(bucket, permissions) {
-  perm <- switch(permissions, read = "ReadOnlyAccess", write = "FullAccess")
+  perm <- switch(permissions,
+    read = "ReadOnlyAccess",
+    write = "FullAccess"
+  )
   glue("S3{perm}{to_upper_camel_case(bucket)}")
 }
 
 create_policy_if_missing <- function(bucket, permissions) {
   policy_name <- bucket_to_policy_name(bucket, permissions)
-  if (aws_policy_exists(policy_name)) return(invisible())
+  if (aws_policy_exists(policy_name)) {
+    return(invisible())
+  }
   mydoc <- aws_s3_policy_doc_create(
     bucket = bucket,
     action = switch(permissions,
@@ -157,18 +162,26 @@ aws_bucket_add_user <- function(bucket, username, permissions) {
 #'
 #' # user doesn't have any permissions for the bucket
 #' # - use aws_bucket_add_user to add permissions
-#' aws_bucket_change_user(bucket="s64-test-22",
-#'   username="jane", permissions = "read")
-#' aws_bucket_add_user(bucket="s64-test-22", username="jane",
-#'   permissions = "read")
+#' aws_bucket_change_user(
+#'   bucket = "s64-test-22",
+#'   username = "jane", permissions = "read"
+#' )
+#' aws_bucket_add_user(
+#'   bucket = "s64-test-22", username = "jane",
+#'   permissions = "read"
+#' )
 #'
 #' # want to change to read to write, makes the change
-#' aws_bucket_change_user(bucket="s64-test-22", username="jane",
-#'   permissions = "write")
+#' aws_bucket_change_user(
+#'   bucket = "s64-test-22", username = "jane",
+#'   permissions = "write"
+#' )
 #'
 #' # want to change to write - but already has read
-#' aws_bucket_change_user(bucket="s64-test-22", username="jane",
-#'   permissions = "read")
+#' aws_bucket_change_user(
+#'   bucket = "s64-test-22", username = "jane",
+#'   permissions = "read"
+#' )
 aws_bucket_change_user <- function(bucket, username, permissions) {
   stopifnot(
     "permissions must be one of read or write" =

@@ -397,7 +397,7 @@ resource_rds <- function(
 #' aws_policy_document_create(
 #'   aws_policy_statement(
 #'     action = "rds-db:connect",
-#'     resource = resource_rds(c("jane_doe", "mary_roe"), "db-ABCDEFGHIJKL01234")
+#'     resource = resource_rds(c("jane_doe", "mary_roe"), "db-ABCDEFGHIJKL01")
 #'   )
 #' )
 aws_policy_document_create <- function(..., .list = NULL) {

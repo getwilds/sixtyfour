@@ -152,7 +152,7 @@ aws_user_create <- function(
 six_user_create <- function(
     username, path = NULL, permission_boundary = NULL,
     tags = NULL) {
-  user <- aws_user_create(
+  aws_user_create(
     path = path,
     username = username,
     permission_boundary = permission_boundary,
