@@ -349,7 +349,12 @@ AWS_REGION={Sys.getenv('AWS_REGION')}
 #' @section Known error behaviors:
 #' - `LimitExceeded (HTTP 409). Cannot exceed quota for AccessKeysPerUser: 2`
 #' - `NoSuchEntity (HTTP 404). The user with name xxx cannot be found.`
-#' @return NULL invisibly
+#' @return invisibly returns named list with slots:
+#' - UserName (character)
+#' - AccessKeyId (character)
+#' - Status (character)
+#' - SecretAccessKey (character)
+#' - CreateDate (POSIXct)
 #' @seealso [aws_user_access_key()], [aws_user_access_key_delete()]
 #' @examplesIf interactive()
 #' if (!aws_user_exists("jane")) aws_user_create("jane")
@@ -384,7 +389,7 @@ aws_user_creds <- function(username, copy_to_cp = FALSE) {
     clipr::write_clip(glue(creds_template))
   }
 
-  invisible()
+  invisible(creds$AccessKey)
 }
 
 #' @autoglobal
