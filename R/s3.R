@@ -384,7 +384,7 @@ aws_user_creds <- function(username, copy_to_cp = FALSE) {
   }
 
   cli_alert_success("Key pair created for {.strong {username}}")
-  creds$AccessKey$AwsRegion <- Sys.getenv('AWS_REGION')
+  creds$AccessKey$AwsRegion <- Sys.getenv("AWS_REGION")
   for (i in seq_along(creds$AccessKey)) {
     cli_alert_info("{names(creds$AccessKey)[i]}: {creds$AccessKey[[i]]}")
   }
