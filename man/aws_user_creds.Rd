@@ -34,6 +34,11 @@ but instead adds an additional set of keys.
 
 See \url{https://rstats.wtf/r-startup.html} for help on bringing in secrets
 to an R session.
+
+Note that although we return the AWS Region in the output of this
+function IAM does not have regional resources. You can however use IAM
+to manage regions an account has access to, etc. See
+\url{https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-regions.html} #nolint
 }
 \section{Important}{
 

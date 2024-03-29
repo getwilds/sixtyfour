@@ -338,6 +338,11 @@ AWS_REGION={Sys.getenv('AWS_REGION')}
 #'
 #' See <https://rstats.wtf/r-startup.html> for help on bringing in secrets
 #' to an R session.
+#'
+#' Note that although we return the AWS Region in the output of this
+#' function IAM does not have regional resources. You can however use IAM
+#' to manage regions an account has access to, etc. See
+#' <https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-regions.html> #nolint
 #' @section Important:
 #' Save the secret key after running this function as it can not be
 #' viewed again.
@@ -379,6 +384,7 @@ aws_user_creds <- function(username, copy_to_cp = FALSE) {
   }
 
   cli_alert_success("Key pair created for {.strong {username}}")
+  creds$AccessKey$AwsRegion <- Sys.getenv('AWS_REGION')
   for (i in seq_along(creds$AccessKey)) {
     cli_alert_info("{names(creds$AccessKey)[i]}: {creds$AccessKey[[i]]}")
   }
