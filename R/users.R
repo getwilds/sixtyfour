@@ -131,11 +131,56 @@ aws_user_create <- function(
     user_list_tidy()
 }
 
+#' Create a user
+#'
+#' @export
+#' @inheritParams aws_user_create
+#' @return A tibble with information about the user created
+#' @details See [aws_user_create()] for more details.
+#' This function creates a user, adds policies so the
+#' user can access their own account, and grants them an access
+#' key. Add more policies using `aws_polic*` functions
+#' @section What is magical:
+#' - Adds a `GetUser` policy to your account if doesn't exist yet
+#' - Attaches `GetUser` policy to the user created
+#' - Grants an access key
+#' @family users
+#' @family magicians
+#' @examplesIf interactive()
+#' name <- random_user()
+#' six_user_create(name)
+six_user_create <- function(
+    username, path = NULL, permission_boundary = NULL,
+    tags = NULL) {
+  user <- aws_user_create(
+    path = path,
+    username = username,
+    permission_boundary = permission_boundary,
+    tags = tags
+  )
+  policy_name <- "UserInfo"
+  if (!aws_policy_exists(policy_name)) {
+    policy_doc <- aws_policy_document_create(
+      aws_policy_statement(c("iam:GetUser", "iam:ListUserPolicies"), "*")
+    )
+    aws_policy_create(policy_name, policy_doc)
+    cli_alert_info("Added policy {.strong {policy_name}} to your account")
+  }
+  user_obj <- aws_user(username)
+  if (!has_policy(user_obj, policy_name)) {
+    aws_policy_attach(user_obj, policy_name)
+    cli_alert_info(
+      "Added policy {.strong {policy_name}} to {.strong {username}}"
+    )
+  }
+  aws_user_creds(username, copy_to_cp = TRUE)
+}
+
 #' Delete a user
 #'
 #' @export
 #' @inheritParams aws_user_create
-#' @return an empty list
+#' @return NULL invisibly
 #' @details See <https://www.paws-r-sdk.com/docs/iam_delete_user/>
 #' docs for more details
 #' @family users
@@ -144,6 +189,43 @@ aws_user_create <- function(
 #' }
 aws_user_delete <- function(username) {
   env64$iam$delete_user(username)
+  invisible()
+}
+
+#' Delete a user
+#'
+#' @export
+#' @inheritParams aws_user_create
+#' @return an empty list
+#' @details See <https://www.paws-r-sdk.com/docs/iam_delete_user/>
+#' docs for more details
+#' @section What is magical:
+#' - Detaches any attached policies
+#' - Deletes any access keys
+#' - Then deletes the user
+#' @family users
+#' @family magicians
+#' @examplesIf interactive()
+#' name <- random_user()
+#' six_user_create(name)
+#' six_user_delete(name)
+six_user_delete <- function(username) {
+  user_obj <- aws_user(username)
+
+  attpols <- user_obj$attached_policies
+  if (!rlang::is_empty(attpols)) {
+    policies <- attpols$PolicyName
+    map(policies, \(policy) aws_policy_detach(user_obj, policy))
+    cli_alert_info("Polic{?y/ies} {.strong {policies}} detached")
+  }
+
+  keys <- aws_user_access_key(username)
+  if (!is.null(keys)) {
+    map(keys$AccessKeyId, aws_user_access_key_delete, username = username)
+  }
+
+  aws_user_delete(username)
+  cli_alert_info("{.strong {username}} deleted")
 }
 
 #' Get AWS Access Key for a user
@@ -165,8 +247,7 @@ aws_user_access_key <- function(username = NULL, ...) {
     cli::cli_alert_warning("No access keys found for {.strong {username}}")
     return(invisible())
   }
-  out$AccessKeyMetadata[[1]] %>%
-    as_tibble()
+  bind_rows(out$AccessKeyMetadata)
 }
 
 #' Delete current user's AWS Access Key
@@ -184,11 +265,11 @@ aws_user_access_key <- function(username = NULL, ...) {
 #' docs for more details
 #' @family users
 #' @examplesIf interactive()
-#' aws_user_access_key_delete(access_key_id="adfasdfadfadfasdf")
-#' aws_user_access_key_delete(access_key_id="adfasdf", username="jane")
+#' aws_user_access_key_delete(access_key_id = "adfasdfadfadfasdf")
+#' aws_user_access_key_delete(access_key_id = "adfasdf", username = "jane")
 aws_user_access_key_delete <- function(access_key_id, username = NULL) {
   env64$iam$delete_access_key(UserName = username, AccessKeyId = access_key_id)
-  cli::cli_alert_success("Access Key ID {.strong access_key_id} deleted")
+  cli::cli_alert_success("Access Key ID {.strong {access_key_id}} deleted")
   invisible()
 }
 

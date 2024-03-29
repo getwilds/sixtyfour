@@ -7,6 +7,12 @@ reference:
       High level overview of package
     contents:
       - sixtyfour
+  - title: High level "magical" methods
+    desc: >
+      Higher level functions to make your life easier
+    contents:
+      - six_user_create
+      - six_user_delete
   - title: Billing
     contents:
       - starts_with("aws_billing")
@@ -43,6 +49,7 @@ reference:
     contents:
       - starts_with("aws_polic")
       - as_policy_arn
+      - resource_rds
   - title: IAM
     contents:
       - starts_with("aws_iam")
