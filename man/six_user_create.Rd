@@ -19,7 +19,7 @@ that is used to set the permissions boundary for the user. optional}
 optional}
 }
 \value{
-A tibble with information about the user created
+NULL invisibly. A draft email is copied to your clipboard
 }
 \description{
 Create a user

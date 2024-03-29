@@ -135,7 +135,6 @@ aws_user_create <- function(
 #'
 #' @export
 #' @inheritParams aws_user_create
-#' @return A tibble with information about the user created
 #' @details See [aws_user_create()] for more details.
 #' This function creates a user, adds policies so the
 #' user can access their own account, and grants them an access
@@ -146,6 +145,7 @@ aws_user_create <- function(
 #' - Grants an access key
 #' @family users
 #' @family magicians
+#' @return NULL invisibly. A draft email is copied to your clipboard
 #' @examplesIf interactive()
 #' name <- random_user()
 #' six_user_create(name)

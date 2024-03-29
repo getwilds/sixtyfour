@@ -36,7 +36,8 @@ Imports:
     jsonlite,
     curl,
     snakecase,
-    tidyr
+    tidyr,
+    clipr
 Suggests: 
     knitr,
     rmarkdown,
@@ -47,8 +48,7 @@ Suggests:
     testthat (>= 3.0.0),
     vcr (>= 0.6.0),
     withr,
-    ggplot2,
-    clipr
+    ggplot2
 Config/roxyglobals/filename: globals.R
 Config/roxyglobals/unique: FALSE
 Config/testthat/edition: 3

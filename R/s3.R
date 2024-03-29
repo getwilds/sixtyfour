@@ -314,6 +314,7 @@ AWS_REGION={Sys.getenv('AWS_REGION')}
 #' @export
 #' @importFrom cli cli_alert_success cli_alert_info
 #' @importFrom dplyr case_match
+#' @importFrom clipr write_clip
 #' @param username (character) A user name. required
 #' @param copy_to_cp (logical) Copy to clipboard. Default: `FALSE`. See
 #' section "Clipboard" below for more details.
@@ -365,7 +366,6 @@ aws_user_creds <- function(username, copy_to_cp = FALSE) {
   }
 
   if (copy_to_cp) {
-    rlang::check_installed("clipr")
     cli_alert_info("Email template copied to your clipboard")
     glue(creds_template)
     clipr::write_clip(glue(creds_template))
