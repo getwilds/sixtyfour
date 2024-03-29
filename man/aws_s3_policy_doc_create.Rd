@@ -13,11 +13,10 @@ aws_s3_policy_doc_create(bucket, action, effect = "Allow", sid = NULL, ...)
 
 \item{effect}{(character) valid values: "Allow" (default), "Deny". length==1}
 
-\item{sid}{(character) statement ID as an optional identifier for the policy
-statement. optional. see
-\url{https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_sid.html} # nolint}
+\item{sid}{(character) a statement id. optional}
 
-\item{...}{named args passed to \code{\link[jsonlite:fromJSON]{jsonlite::toJSON()}}}
+\item{...}{Additional named arguments. See link in Details for options,
+and examples below}
 }
 \value{
 a policy document as JSON (of class \code{json})

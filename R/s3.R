@@ -26,7 +26,8 @@ s3_actions_full <- function() {
 #' Create a policy document for an S3 bucket
 #' @export
 #' @param bucket (character) bucket name. required
-#' @inheritParams aws_policy_document_create
+#' @param sid (character) a statement id. optional
+#' @inheritParams aws_policy_statement
 #' @details
 #' There's this separate function for creating policy docs for S3 because
 #' buckets are globally unique, so AWS figures out the region and account
