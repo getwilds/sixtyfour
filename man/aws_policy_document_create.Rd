@@ -36,6 +36,7 @@ Actions documentation appears to be all over the web. Here's a start:
 }
 
 \examples{
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 st8ment1 <- aws_policy_statement("iam:GetUser", "*")
 st8ment2 <- aws_policy_statement("s3:ListAllMyBuckets", "*")
 st8ment3 <- aws_policy_statement("s3-object-lambda:List*", "*")
@@ -80,6 +81,7 @@ aws_policy_document_create(
     resource = resource_rds(c("jane_doe", "mary_roe"), "db-ABCDEFGHIJKL01")
   )
 )
+\dontshow{\}) # examplesIf}
 }
 \references{
 \url{https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html} # nolint

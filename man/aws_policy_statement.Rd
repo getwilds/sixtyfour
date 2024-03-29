@@ -27,6 +27,7 @@ Create a policy statement
 \url{https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html} #nolint
 }
 \examples{
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 aws_policy_statement("iam:GetUser", "*")
 aws_policy_statement("iam:GetUser", "*", Sid = "MyStatementId")
 aws_policy_statement("iam:GetUser", "*",
@@ -37,4 +38,5 @@ aws_policy_statement("iam:GetUser", "*",
 aws_policy_statement("iam:GetUser", "*",
   Principal = list(Service = "s3.amazonaws.com")
 )
+\dontshow{\}) # examplesIf}
 }

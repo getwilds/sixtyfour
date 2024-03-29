@@ -295,7 +295,7 @@ aws_policy_list_versions <- function(name, ...) {
 #' @details
 #' <https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html> #nolint
 #' @return a named list
-#' @examples
+#' @examplesIf interactive()
 #' aws_policy_statement("iam:GetUser", "*")
 #' aws_policy_statement("iam:GetUser", "*", Sid = "MyStatementId")
 #' aws_policy_statement("iam:GetUser", "*",
@@ -355,7 +355,7 @@ resource_rds <- function(
 #' - S3: <https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazons3.html> # nolint
 #' - EC2: <https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Operations.html> # nolint
 #' - IAM: <https://docs.aws.amazon.com/IAM/latest/APIReference/API_Operations.html> # nolint
-#' @examples
+#' @examplesIf interactive()
 #' st8ment1 <- aws_policy_statement("iam:GetUser", "*")
 #' st8ment2 <- aws_policy_statement("s3:ListAllMyBuckets", "*")
 #' st8ment3 <- aws_policy_statement("s3-object-lambda:List*", "*")
