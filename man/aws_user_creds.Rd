@@ -13,14 +13,7 @@ aws_user_creds(username, copy_to_cp = FALSE)
 section "Clipboard" below for more details.}
 }
 \value{
-list with slots:
-\itemize{
-\item UserName (character)
-\item AccessKeyId (character)
-\item Status (character)
-\item SecretAccessKey (character)
-\item CreateDate (POSIXct)
-}
+NULL invisibly
 }
 \description{
 Creates a new Amazon Web Services secret access key and
