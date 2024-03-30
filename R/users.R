@@ -6,7 +6,9 @@
 #' @autoglobal
 #' @keywords internal
 user_list_tidy <- function(x) {
-  if (length(x) == 0) return(tibble())
+  if (rlang::is_empty(x)) {
+    return(tibble())
+  }
   vars <- c(
     "UserName", "UserId", "Path", "Arn", "CreateDate",
     "PasswordLastUsed"
@@ -72,8 +74,13 @@ aws_user <- function(username = NULL) {
     user = x,
     policies = policies("user", username),
     attached_policies = policies_attached("user", username),
-    groups = env64$iam$list_groups_for_user(username)
+    groups = groups_for_user(username)
   )
+}
+
+groups_for_user <- function(username) {
+  groups <- env64$iam$list_groups_for_user(username)
+  group_list_tidy(groups$Groups)
 }
 
 check_aws_user <- purrr::safely(aws_user, otherwise = FALSE)
@@ -161,8 +168,12 @@ six_user_create <- function(
   )
   policy_name <- "UserInfo"
   if (!aws_policy_exists(policy_name)) {
+    actions <- c(
+      "iam:GetUser", "iam:ListUserPolicies",
+      "iam:ListAttachedUserPolicies", "iam:ListGroupsForUser"
+    )
     policy_doc <- aws_policy_document_create(
-      aws_policy_statement(c("iam:GetUser", "iam:ListUserPolicies"), "*")
+      aws_policy_statement(actions, "*")
     )
     aws_policy_create(policy_name, policy_doc)
     cli_alert_info("Added policy {.strong {policy_name}} to your account")
@@ -274,13 +285,14 @@ aws_user_access_key_delete <- function(access_key_id, username = NULL) {
   invisible()
 }
 
-#' Add a user to a group
+#' Add or remove a user to/from a group
 #'
 #' @export
 #' @inheritParams aws_user_create
 #' @param groupname (character) a group name. required
 #' @inherit aws_user return
 #' @details See <https://www.paws-r-sdk.com/docs/iam_add_user_to_group/>
+#' <https://www.paws-r-sdk.com/docs/iam_remove_user_from_group/>
 #' docs for more details
 #' @family users
 #' @examples \dontrun{
@@ -290,9 +302,17 @@ aws_user_access_key_delete <- function(access_key_id, username = NULL) {
 #' if (!aws_user_exists("testBlueBird3")) {
 #'   aws_user_create("testBlueBird3")
 #' }
-#' aws_user_add_to_group(username = "testBlueBird3", groupname = "testgroup3")
+#' aws_user_add_to_group("testBlueBird3", "testgroup3")
+#' aws_user_remove_from_group("testBlueBird3", "testgroup3")
 #' }
 aws_user_add_to_group <- function(username, groupname) {
   env64$iam$add_user_to_group(groupname, username)
+  aws_user(username)
+}
+
+#' @export
+#' @rdname aws_user_add_to_group
+aws_user_remove_from_group <- function(username, groupname) {
+  env64$iam$remove_user_from_group(groupname, username)
   aws_user(username)
 }

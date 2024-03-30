@@ -59,6 +59,7 @@ Other users:
 \code{\link{six_user_delete}()}
 
 Other magicians: 
+\code{\link{six_admin_setup}()},
 \code{\link{six_user_delete}()}
 }
 \concept{magicians}
