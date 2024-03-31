@@ -422,11 +422,11 @@ permissions_user_bucket <- function(bucket) {
 permissions_groups <- function() {
   aws_user_mem <- memoise::memoise(aws_user)
   aws_users()$UserName %>%
-    keep(\(user) length(aws_user_mem(user)$groups$Groups) > 0) %>%
+    keep(\(user) !rlang::is_empty(aws_user_mem(user)$groups)) %>%
     map(\(user) {
       tibble(
         user = user,
-        group = map_chr(aws_user_mem(user)$groups$Groups, "GroupName")
+        group = aws_user_mem(user)$groups$GroupName
       )
     }) %>%
     list_rbind() %>%
