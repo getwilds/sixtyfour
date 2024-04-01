@@ -34,7 +34,7 @@ user_list_tidy <- function(x) {
 #' aws_users()
 #' }
 aws_users <- function(...) {
-  paginate_aws_marker(env64$iam$list_users, "Users") %>%
+  paginate_aws_marker(env64$iam$list_users, "Users", ...) %>%
     user_list_tidy()
 }
 
@@ -224,6 +224,7 @@ aws_user_delete <- function(username) {
 six_user_delete <- function(username) {
   user_obj <- aws_user(username)
 
+  # remove policies
   attpols <- user_obj$attached_policies
   if (!rlang::is_empty(attpols)) {
     policies <- attpols$PolicyName
@@ -231,9 +232,17 @@ six_user_delete <- function(username) {
     cli_alert_info("Polic{?y/ies} {.strong {policies}} detached")
   }
 
+  # remove access keys
   keys <- aws_user_access_key(username)
   if (!is.null(keys)) {
     map(keys$AccessKeyId, aws_user_access_key_delete, username = username)
+  }
+
+  # remove groups
+  if (!rlang::is_empty(user_obj$groups)) {
+    groups <- user_obj$groups
+    map(groups$GroupName, \(g) aws_user_remove_from_group(username, g))
+    cli_alert_info("Group{?s} {.strong {groups$GroupName}} detached")
   }
 
   aws_user_delete(username)
