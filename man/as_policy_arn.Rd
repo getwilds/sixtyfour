@@ -4,13 +4,16 @@
 \alias{as_policy_arn}
 \title{Convert a policy name to a policy ARN}
 \usage{
-as_policy_arn(name, local = FALSE)
+as_policy_arn(name, local = FALSE, path = NULL)
 }
 \arguments{
 \item{name}{(character) a policy name or arn}
 
 \item{local}{(logical) if \code{TRUE} use your AWS account for your own
 managed policies. If \code{FALSE}, AWS managed policies}
+
+\item{path}{(character) if not \code{NULL}, we add the path into the ARN
+before the \code{name} value}
 }
 \value{
 a policy ARN (character)
@@ -19,15 +22,6 @@ a policy ARN (character)
 This function simply constructs a string, then checks that the
 ARN is valid using
 \href{https://www.paws-r-sdk.com/docs/iam_get_policy/}{get_policy}
-}
-\details{
-If an arn is supplied we check that a policy exists
-with that arn, and return itself.
-
-If a policy name is supplied we construct an arn with \code{local} param
-as an input, and then check that a policy exists with that arn
-
-In both cases we stop with an informative message if there's an error
 }
 \examples{
 \dontrun{
@@ -40,7 +34,12 @@ as_policy_arn("AmazonRDSDataFullAccess")
 as_policy_arn("MyTestPolicy", local = TRUE)
 # returns an arn - and if given an arn returns self
 as_policy_arn("MyTestPolicy", local = TRUE) \%>\%
-  as_policy_arn("MyTestPolicy")
+  as_policy_arn()
+# path = Job function
+as_policy_arn("Billing", path = "job-function")
+# path = Service role
+as_policy_arn("AWSCostAndUsageReportAutomationPolicy",
+  path = "service-role")
 }
 }
 \seealso{

@@ -10,7 +10,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '55'
-      X-Amz-Date: 20240321T173610Z
+      X-Amz-Date: 20240401T201116Z
       Authorization: redacted
   response:
     status:
@@ -19,8 +19,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 21 Mar 2024 17:36:10 GMT
-      x-amzn-requestid: 2468cc3f-2d09-4728-967f-2ab2329acaae
+      date: Mon, 01 Apr 2024 20:11:16 GMT
+      x-amzn-requestid: c47bdc61-00d2-452f-b87d-072d9e9a4c05
       content-type: text/xml
       content-length: '473'
     body:
@@ -33,15 +33,15 @@ http_interactions:
               <Path>/</Path>
               <UserName>userbnwaqdif</UserName>
               <Arn>arn:aws:iam::744061095407:user/userbnwaqdif</Arn>
-              <UserId>AIDA22PL7JXXSCS2UFXMU</UserId>
-              <CreateDate>2024-03-21T17:36:08Z</CreateDate>
+              <UserId>AIDA22PL7JXX4ZNZJQ5LH</UserId>
+              <CreateDate>2024-04-01T20:11:14Z</CreateDate>
             </User>
           </GetUserResult>
           <ResponseMetadata>
-            <RequestId>2468cc3f-2d09-4728-967f-2ab2329acaae</RequestId>
+            <RequestId>c47bdc61-00d2-452f-b87d-072d9e9a4c05</RequestId>
           </ResponseMetadata>
         </GetUserResponse>
-  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_at: 2024-04-01 20:11:18 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
@@ -54,7 +54,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '64'
-      X-Amz-Date: 20240321T173610Z
+      X-Amz-Date: 20240401T201116Z
       Authorization: redacted
   response:
     status:
@@ -63,8 +63,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 21 Mar 2024 17:36:10 GMT
-      x-amzn-requestid: 66f5cb19-ee2e-47da-ae69-ee340b1772ab
+      date: Mon, 01 Apr 2024 20:11:15 GMT
+      x-amzn-requestid: 794b36dc-69e0-4474-be4f-0a8367c2acc7
       content-type: text/xml
       content-length: '323'
     body:
@@ -77,10 +77,10 @@ http_interactions:
             <PolicyNames/>
           </ListUserPoliciesResult>
           <ResponseMetadata>
-            <RequestId>66f5cb19-ee2e-47da-ae69-ee340b1772ab</RequestId>
+            <RequestId>794b36dc-69e0-4474-be4f-0a8367c2acc7</RequestId>
           </ResponseMetadata>
         </ListUserPoliciesResponse>
-  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_at: 2024-04-01 20:11:18 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
@@ -93,7 +93,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '72'
-      X-Amz-Date: 20240321T173610Z
+      X-Amz-Date: 20240401T201116Z
       Authorization: redacted
   response:
     status:
@@ -102,8 +102,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 21 Mar 2024 17:36:10 GMT
-      x-amzn-requestid: 5d224619-dbe7-487a-a265-f2e6ebf5f830
+      date: Mon, 01 Apr 2024 20:11:16 GMT
+      x-amzn-requestid: ee9cf164-d49a-4af7-b8af-415cd1a3175c
       content-type: text/xml
       content-length: '548'
     body:
@@ -121,10 +121,10 @@ http_interactions:
             </AttachedPolicies>
           </ListAttachedUserPoliciesResult>
           <ResponseMetadata>
-            <RequestId>5d224619-dbe7-487a-a265-f2e6ebf5f830</RequestId>
+            <RequestId>ee9cf164-d49a-4af7-b8af-415cd1a3175c</RequestId>
           </ResponseMetadata>
         </ListAttachedUserPoliciesResponse>
-  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_at: 2024-04-01 20:11:18 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
@@ -137,7 +137,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '65'
-      X-Amz-Date: 20240321T173610Z
+      X-Amz-Date: 20240401T201116Z
       Authorization: redacted
   response:
     status:
@@ -146,8 +146,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 21 Mar 2024 17:36:10 GMT
-      x-amzn-requestid: 06a91fb6-f297-41fa-a234-8064cb775086
+      date: Mon, 01 Apr 2024 20:11:16 GMT
+      x-amzn-requestid: d421af40-4a2a-4fad-bb44-9534efcf82de
       content-type: text/xml
       content-length: '322'
     body:
@@ -160,10 +160,10 @@ http_interactions:
             <Groups/>
           </ListGroupsForUserResult>
           <ResponseMetadata>
-            <RequestId>06a91fb6-f297-41fa-a234-8064cb775086</RequestId>
+            <RequestId>d421af40-4a2a-4fad-bb44-9534efcf82de</RequestId>
           </ResponseMetadata>
         </ListGroupsForUserResponse>
-  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_at: 2024-04-01 20:11:18 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
@@ -176,7 +176,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '55'
-      X-Amz-Date: 20240321T173611Z
+      X-Amz-Date: 20240401T201116Z
       Authorization: redacted
   response:
     status:
@@ -185,8 +185,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 21 Mar 2024 17:36:10 GMT
-      x-amzn-requestid: aee5c9be-3cd9-4d08-8202-57a99d6524c6
+      date: Mon, 01 Apr 2024 20:11:16 GMT
+      x-amzn-requestid: 54bdefb9-9f47-4424-a055-79dc5cbe1409
       content-type: text/xml
       content-length: '473'
     body:
@@ -199,15 +199,15 @@ http_interactions:
               <Path>/</Path>
               <UserName>userbnwaqdif</UserName>
               <Arn>arn:aws:iam::744061095407:user/userbnwaqdif</Arn>
-              <UserId>AIDA22PL7JXXSCS2UFXMU</UserId>
-              <CreateDate>2024-03-21T17:36:08Z</CreateDate>
+              <UserId>AIDA22PL7JXX4ZNZJQ5LH</UserId>
+              <CreateDate>2024-04-01T20:11:14Z</CreateDate>
             </User>
           </GetUserResult>
           <ResponseMetadata>
-            <RequestId>aee5c9be-3cd9-4d08-8202-57a99d6524c6</RequestId>
+            <RequestId>54bdefb9-9f47-4424-a055-79dc5cbe1409</RequestId>
           </ResponseMetadata>
         </GetUserResponse>
-  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_at: 2024-04-01 20:11:18 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
@@ -220,7 +220,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '64'
-      X-Amz-Date: 20240321T173611Z
+      X-Amz-Date: 20240401T201117Z
       Authorization: redacted
   response:
     status:
@@ -229,8 +229,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 21 Mar 2024 17:36:10 GMT
-      x-amzn-requestid: 147d577c-4b06-4691-bf63-71b750254eda
+      date: Mon, 01 Apr 2024 20:11:16 GMT
+      x-amzn-requestid: b7fbfa80-9c33-46b3-9fd7-51c684c06338
       content-type: text/xml
       content-length: '323'
     body:
@@ -243,10 +243,10 @@ http_interactions:
             <PolicyNames/>
           </ListUserPoliciesResult>
           <ResponseMetadata>
-            <RequestId>147d577c-4b06-4691-bf63-71b750254eda</RequestId>
+            <RequestId>b7fbfa80-9c33-46b3-9fd7-51c684c06338</RequestId>
           </ResponseMetadata>
         </ListUserPoliciesResponse>
-  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_at: 2024-04-01 20:11:18 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
@@ -259,7 +259,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '72'
-      X-Amz-Date: 20240321T173611Z
+      X-Amz-Date: 20240401T201117Z
       Authorization: redacted
   response:
     status:
@@ -268,8 +268,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 21 Mar 2024 17:36:10 GMT
-      x-amzn-requestid: 079a2d20-b790-466b-bc0c-eee723700b99
+      date: Mon, 01 Apr 2024 20:11:17 GMT
+      x-amzn-requestid: 1b8015df-1922-42c2-b991-bbd4d10c89a7
       content-type: text/xml
       content-length: '548'
     body:
@@ -287,10 +287,10 @@ http_interactions:
             </AttachedPolicies>
           </ListAttachedUserPoliciesResult>
           <ResponseMetadata>
-            <RequestId>079a2d20-b790-466b-bc0c-eee723700b99</RequestId>
+            <RequestId>1b8015df-1922-42c2-b991-bbd4d10c89a7</RequestId>
           </ResponseMetadata>
         </ListAttachedUserPoliciesResponse>
-  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_at: 2024-04-01 20:11:18 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
@@ -303,7 +303,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '65'
-      X-Amz-Date: 20240321T173611Z
+      X-Amz-Date: 20240401T201117Z
       Authorization: redacted
   response:
     status:
@@ -312,8 +312,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 21 Mar 2024 17:36:11 GMT
-      x-amzn-requestid: 72821f4e-90bf-4c80-8c90-e2287640ef19
+      date: Mon, 01 Apr 2024 20:11:17 GMT
+      x-amzn-requestid: b8cbb732-c7f6-4a96-b9a9-924252b61d20
       content-type: text/xml
       content-length: '322'
     body:
@@ -326,10 +326,10 @@ http_interactions:
             <Groups/>
           </ListGroupsForUserResult>
           <ResponseMetadata>
-            <RequestId>72821f4e-90bf-4c80-8c90-e2287640ef19</RequestId>
+            <RequestId>b8cbb732-c7f6-4a96-b9a9-924252b61d20</RequestId>
           </ResponseMetadata>
         </ListGroupsForUserResponse>
-  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_at: 2024-04-01 20:11:18 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
@@ -342,7 +342,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '113'
-      X-Amz-Date: 20240321T173611Z
+      X-Amz-Date: 20240401T201117Z
       Authorization: redacted
   response:
     status:
@@ -351,8 +351,8 @@ http_interactions:
       reason: Not Found
       message: 'Client error: (404) Not Found'
     headers:
-      date: Thu, 21 Mar 2024 17:36:11 GMT
-      x-amzn-requestid: 3b579ba2-3b9e-4e2c-9804-2a2e2c921b97
+      date: Mon, 01 Apr 2024 20:11:16 GMT
+      x-amzn-requestid: 8f40c4aa-d68a-4631-82f8-ef8909f3ba2f
       content-type: text/xml
       content-length: '321'
     body:
@@ -365,9 +365,9 @@ http_interactions:
             <Code>NoSuchEntity</Code>
             <Message>Policy arn:aws:iam::744061095407:policy/AmazonS3ReadOnlyAccess was not found.</Message>
           </Error>
-          <RequestId>3b579ba2-3b9e-4e2c-9804-2a2e2c921b97</RequestId>
+          <RequestId>8f40c4aa-d68a-4631-82f8-ef8909f3ba2f</RequestId>
         </ErrorResponse>
-  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_at: 2024-04-01 20:11:18 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
@@ -380,7 +380,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '104'
-      X-Amz-Date: 20240321T173611Z
+      X-Amz-Date: 20240401T201117Z
       Authorization: redacted
   response:
     status:
@@ -389,8 +389,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 21 Mar 2024 17:36:11 GMT
-      x-amzn-requestid: ec87b70f-193f-4ae6-8a22-21db5dd889b3
+      date: Mon, 01 Apr 2024 20:11:16 GMT
+      x-amzn-requestid: 28166095-54ac-4415-ab44-0e3c443ebea0
       content-type: text/xml
       content-length: '878'
     body:
@@ -408,17 +408,93 @@ http_interactions:
               <IsAttachable>true</IsAttachable>
               <PolicyName>AmazonS3ReadOnlyAccess</PolicyName>
               <Description>Provides read only access to all buckets via the AWS Management Console.</Description>
-              <AttachmentCount>1</AttachmentCount>
+              <AttachmentCount>4</AttachmentCount>
               <Arn>arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess</Arn>
               <Tags/>
               <CreateDate>2015-02-06T18:40:59Z</CreateDate>
             </Policy>
           </GetPolicyResult>
           <ResponseMetadata>
-            <RequestId>ec87b70f-193f-4ae6-8a22-21db5dd889b3</RequestId>
+            <RequestId>28166095-54ac-4415-ab44-0e3c443ebea0</RequestId>
           </ResponseMetadata>
         </GetPolicyResponse>
-  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_at: 2024-04-01 20:11:18 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=GetPolicy&PolicyArn=arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2Fjob-function%2FAmazonS3ReadOnlyAccess&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '119'
+      X-Amz-Date: 20240401T201117Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 404
+      category: Client error
+      reason: Not Found
+      message: 'Client error: (404) Not Found'
+    headers:
+      date: Mon, 01 Apr 2024 20:11:17 GMT
+      x-amzn-requestid: d0148a71-82e1-403f-a5c9-506e34dcd3e8
+      content-type: text/xml
+      content-length: '325'
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ErrorResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <Error>
+            <Type>Sender</Type>
+            <Code>NoSuchEntity</Code>
+            <Message>Policy arn:aws:iam::aws:policy/job-function/AmazonS3ReadOnlyAccess was not found.</Message>
+          </Error>
+          <RequestId>d0148a71-82e1-403f-a5c9-506e34dcd3e8</RequestId>
+        </ErrorResponse>
+  recorded_at: 2024-04-01 20:11:18 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=GetPolicy&PolicyArn=arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2Fservice-role%2FAmazonS3ReadOnlyAccess&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '119'
+      X-Amz-Date: 20240401T201117Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 404
+      category: Client error
+      reason: Not Found
+      message: 'Client error: (404) Not Found'
+    headers:
+      date: Mon, 01 Apr 2024 20:11:17 GMT
+      x-amzn-requestid: a8ed11ce-1907-4a18-8cbf-0bf434697016
+      content-type: text/xml
+      content-length: '325'
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ErrorResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <Error>
+            <Type>Sender</Type>
+            <Code>NoSuchEntity</Code>
+            <Message>Policy arn:aws:iam::aws:policy/service-role/AmazonS3ReadOnlyAccess was not found.</Message>
+          </Error>
+          <RequestId>a8ed11ce-1907-4a18-8cbf-0bf434697016</RequestId>
+        </ErrorResponse>
+  recorded_at: 2024-04-01 20:11:18 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
@@ -431,7 +507,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '133'
-      X-Amz-Date: 20240321T173611Z
+      X-Amz-Date: 20240401T201117Z
       Authorization: redacted
   response:
     status:
@@ -440,8 +516,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 21 Mar 2024 17:36:11 GMT
-      x-amzn-requestid: aaff1d8e-2669-4c2d-a6f9-dc0ed4e9f46d
+      date: Mon, 01 Apr 2024 20:11:17 GMT
+      x-amzn-requestid: d2cf2d82-705a-4d1d-92e6-f7cb387162b4
       content-type: text/xml
       content-length: '212'
     body:
@@ -450,10 +526,10 @@ http_interactions:
       string: |
         <DetachUserPolicyResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
           <ResponseMetadata>
-            <RequestId>aaff1d8e-2669-4c2d-a6f9-dc0ed4e9f46d</RequestId>
+            <RequestId>d2cf2d82-705a-4d1d-92e6-f7cb387162b4</RequestId>
           </ResponseMetadata>
         </DetachUserPolicyResponse>
-  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_at: 2024-04-01 20:11:18 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
@@ -466,7 +542,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '55'
-      X-Amz-Date: 20240321T173612Z
+      X-Amz-Date: 20240401T201118Z
       Authorization: redacted
   response:
     status:
@@ -475,8 +551,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 21 Mar 2024 17:36:11 GMT
-      x-amzn-requestid: ec3a3c34-3968-4b7c-8381-5d5ce5bb0e2b
+      date: Mon, 01 Apr 2024 20:11:17 GMT
+      x-amzn-requestid: 1c9a2717-8671-4e99-8ece-d8939930c221
       content-type: text/xml
       content-length: '473'
     body:
@@ -489,15 +565,15 @@ http_interactions:
               <Path>/</Path>
               <UserName>userbnwaqdif</UserName>
               <Arn>arn:aws:iam::744061095407:user/userbnwaqdif</Arn>
-              <UserId>AIDA22PL7JXXSCS2UFXMU</UserId>
-              <CreateDate>2024-03-21T17:36:08Z</CreateDate>
+              <UserId>AIDA22PL7JXX4ZNZJQ5LH</UserId>
+              <CreateDate>2024-04-01T20:11:14Z</CreateDate>
             </User>
           </GetUserResult>
           <ResponseMetadata>
-            <RequestId>ec3a3c34-3968-4b7c-8381-5d5ce5bb0e2b</RequestId>
+            <RequestId>1c9a2717-8671-4e99-8ece-d8939930c221</RequestId>
           </ResponseMetadata>
         </GetUserResponse>
-  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_at: 2024-04-01 20:11:18 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
@@ -510,7 +586,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '64'
-      X-Amz-Date: 20240321T173612Z
+      X-Amz-Date: 20240401T201118Z
       Authorization: redacted
   response:
     status:
@@ -519,8 +595,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 21 Mar 2024 17:36:11 GMT
-      x-amzn-requestid: 16bb651a-cc8c-4378-b50e-1c9553b81a7c
+      date: Mon, 01 Apr 2024 20:11:17 GMT
+      x-amzn-requestid: 425ae833-e843-46b5-861e-129cbbfbd164
       content-type: text/xml
       content-length: '323'
     body:
@@ -533,10 +609,10 @@ http_interactions:
             <PolicyNames/>
           </ListUserPoliciesResult>
           <ResponseMetadata>
-            <RequestId>16bb651a-cc8c-4378-b50e-1c9553b81a7c</RequestId>
+            <RequestId>425ae833-e843-46b5-861e-129cbbfbd164</RequestId>
           </ResponseMetadata>
         </ListUserPoliciesResponse>
-  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_at: 2024-04-01 20:11:18 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
@@ -549,7 +625,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '72'
-      X-Amz-Date: 20240321T173612Z
+      X-Amz-Date: 20240401T201118Z
       Authorization: redacted
   response:
     status:
@@ -558,8 +634,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 21 Mar 2024 17:36:11 GMT
-      x-amzn-requestid: d9316810-622e-41b8-997b-95e1f353f23b
+      date: Mon, 01 Apr 2024 20:11:17 GMT
+      x-amzn-requestid: 234a3886-a92e-4041-909f-8dea57e3de3f
       content-type: text/xml
       content-length: '360'
     body:
@@ -572,10 +648,10 @@ http_interactions:
             <AttachedPolicies/>
           </ListAttachedUserPoliciesResult>
           <ResponseMetadata>
-            <RequestId>d9316810-622e-41b8-997b-95e1f353f23b</RequestId>
+            <RequestId>234a3886-a92e-4041-909f-8dea57e3de3f</RequestId>
           </ResponseMetadata>
         </ListAttachedUserPoliciesResponse>
-  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_at: 2024-04-01 20:11:18 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
@@ -588,7 +664,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '65'
-      X-Amz-Date: 20240321T173612Z
+      X-Amz-Date: 20240401T201118Z
       Authorization: redacted
   response:
     status:
@@ -597,8 +673,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 21 Mar 2024 17:36:12 GMT
-      x-amzn-requestid: 5a00ebbd-47b2-49bd-adaa-e9c3d39e6e65
+      date: Mon, 01 Apr 2024 20:11:17 GMT
+      x-amzn-requestid: c6b12ed9-5f56-4678-8686-8e087fc6d0e2
       content-type: text/xml
       content-length: '322'
     body:
@@ -611,8 +687,8 @@ http_interactions:
             <Groups/>
           </ListGroupsForUserResult>
           <ResponseMetadata>
-            <RequestId>5a00ebbd-47b2-49bd-adaa-e9c3d39e6e65</RequestId>
+            <RequestId>c6b12ed9-5f56-4678-8686-8e087fc6d0e2</RequestId>
           </ResponseMetadata>
         </ListGroupsForUserResponse>
-  recorded_at: 2024-03-21 17:36:12 GMT
+  recorded_at: 2024-04-01 20:11:18 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0

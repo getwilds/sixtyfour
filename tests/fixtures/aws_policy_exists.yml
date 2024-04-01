@@ -10,7 +10,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '96'
-      X-Amz-Date: 20240321T055013Z
+      X-Amz-Date: 20240401T201024Z
       Authorization: redacted
   response:
     status:
@@ -19,8 +19,8 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      date: Thu, 21 Mar 2024 05:50:13 GMT
-      x-amzn-requestid: b89ba902-88ca-4256-9ef0-de9178ca3b2d
+      date: Mon, 01 Apr 2024 20:10:24 GMT
+      x-amzn-requestid: d8a75740-e764-459a-9ae9-ac4e3929c3f0
       content-type: text/xml
       content-length: '848'
     body:
@@ -33,8 +33,8 @@ http_interactions:
               <PermissionsBoundaryUsageCount>0</PermissionsBoundaryUsageCount>
               <Path>/</Path>
               <UpdateDate>2024-02-05T15:00:23Z</UpdateDate>
-              <DefaultVersionId>v111</DefaultVersionId>
               <PolicyId>ANPAILL3HVNFSB6DCOWYQ</PolicyId>
+              <DefaultVersionId>v111</DefaultVersionId>
               <IsAttachable>true</IsAttachable>
               <PolicyName>ReadOnlyAccess</PolicyName>
               <Description>Provides read-only access to AWS services and resources.</Description>
@@ -45,10 +45,10 @@ http_interactions:
             </Policy>
           </GetPolicyResult>
           <ResponseMetadata>
-            <RequestId>b89ba902-88ca-4256-9ef0-de9178ca3b2d</RequestId>
+            <RequestId>d8a75740-e764-459a-9ae9-ac4e3929c3f0</RequestId>
           </ResponseMetadata>
         </GetPolicyResponse>
-  recorded_at: 2024-03-21 05:50:13 GMT
+  recorded_at: 2024-04-01 20:10:25 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0
 - request:
     method: post
@@ -61,7 +61,7 @@ http_interactions:
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '90'
-      X-Amz-Date: 20240321T055013Z
+      X-Amz-Date: 20240401T201024Z
       Authorization: redacted
   response:
     status:
@@ -70,8 +70,8 @@ http_interactions:
       reason: Not Found
       message: 'Client error: (404) Not Found'
     headers:
-      date: Thu, 21 Mar 2024 05:50:13 GMT
-      x-amzn-requestid: ed0f1353-08d0-47b8-9836-6f13c9efdfe0
+      date: Mon, 01 Apr 2024 20:10:24 GMT
+      x-amzn-requestid: 7d3400e9-2cf3-455a-af9e-68fcf7a4b0da
       content-type: text/xml
       content-length: '298'
     body:
@@ -84,7 +84,121 @@ http_interactions:
             <Code>NoSuchEntity</Code>
             <Message>Policy arn:aws:iam::aws:policy/Flurrrrb was not found.</Message>
           </Error>
-          <RequestId>ed0f1353-08d0-47b8-9836-6f13c9efdfe0</RequestId>
+          <RequestId>7d3400e9-2cf3-455a-af9e-68fcf7a4b0da</RequestId>
         </ErrorResponse>
-  recorded_at: 2024-03-21 05:50:13 GMT
+  recorded_at: 2024-04-01 20:10:25 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=GetPolicy&PolicyArn=arn%3Aaws%3Aiam%3A%3A744061095407%3Apolicy%2FFlurrrrb&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '99'
+      X-Amz-Date: 20240401T201025Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 404
+      category: Client error
+      reason: Not Found
+      message: 'Client error: (404) Not Found'
+    headers:
+      date: Mon, 01 Apr 2024 20:10:24 GMT
+      x-amzn-requestid: 230a7d30-b93f-4a62-80fd-3ac3df6dd6b1
+      content-type: text/xml
+      content-length: '307'
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ErrorResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <Error>
+            <Type>Sender</Type>
+            <Code>NoSuchEntity</Code>
+            <Message>Policy arn:aws:iam::744061095407:policy/Flurrrrb was not found.</Message>
+          </Error>
+          <RequestId>230a7d30-b93f-4a62-80fd-3ac3df6dd6b1</RequestId>
+        </ErrorResponse>
+  recorded_at: 2024-04-01 20:10:25 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=GetPolicy&PolicyArn=arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2Fjob-function%2FFlurrrrb&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '105'
+      X-Amz-Date: 20240401T201025Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 404
+      category: Client error
+      reason: Not Found
+      message: 'Client error: (404) Not Found'
+    headers:
+      date: Mon, 01 Apr 2024 20:10:25 GMT
+      x-amzn-requestid: de985de1-a8d6-41cd-9fd3-042ad5f2c5ec
+      content-type: text/xml
+      content-length: '311'
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ErrorResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <Error>
+            <Type>Sender</Type>
+            <Code>NoSuchEntity</Code>
+            <Message>Policy arn:aws:iam::aws:policy/job-function/Flurrrrb was not found.</Message>
+          </Error>
+          <RequestId>de985de1-a8d6-41cd-9fd3-042ad5f2c5ec</RequestId>
+        </ErrorResponse>
+  recorded_at: 2024-04-01 20:10:25 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0
+- request:
+    method: post
+    uri: https://iam.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=GetPolicy&PolicyArn=arn%3Aaws%3Aiam%3A%3Aaws%3Apolicy%2Fservice-role%2FFlurrrrb&Version=2010-05-08
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '105'
+      X-Amz-Date: 20240401T201025Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 404
+      category: Client error
+      reason: Not Found
+      message: 'Client error: (404) Not Found'
+    headers:
+      date: Mon, 01 Apr 2024 20:10:24 GMT
+      x-amzn-requestid: 68462380-4f80-4b09-acf3-c8fe21e4941b
+      content-type: text/xml
+      content-length: '311'
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <ErrorResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">
+          <Error>
+            <Type>Sender</Type>
+            <Code>NoSuchEntity</Code>
+            <Message>Policy arn:aws:iam::aws:policy/service-role/Flurrrrb was not found.</Message>
+          </Error>
+          <RequestId>68462380-4f80-4b09-acf3-c8fe21e4941b</RequestId>
+        </ErrorResponse>
+  recorded_at: 2024-04-01 20:10:25 GMT
   recorded_with: vcr/1.2.2.91, webmockr/0.9.0

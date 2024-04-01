@@ -67,8 +67,8 @@ aws_policies <- function(refresh = FALSE, ...) {
 #' aws_policy("ReadOnlyAccess")
 #' aws_policy("arn:aws:iam::aws:policy/ReadOnlyAccess")
 #' }
-aws_policy <- function(name, local = FALSE) {
-  env64$iam$get_policy(as_policy_arn(name, local))$Policy %>%
+aws_policy <- function(name, local = FALSE, path = NULL) {
+  env64$iam$get_policy(as_policy_arn(name, local, path))$Policy %>%
     list(.) %>%
     policy_list_tidy()
 }
@@ -84,11 +84,19 @@ aws_policy_safe <- purrr::safely(aws_policy)
 #' @return single logical, `TRUE` or `FALSE`
 #' @family policies
 #' @examplesIf interactive()
+#' # just the policy name
 #' aws_policy_exists("ReadOnlyAccess")
+#' # as an ARN
 #' aws_policy_exists("arn:aws:iam::aws:policy/ReadOnlyAccess")
+#' # includes job-function in path
+#' aws_policy_exists("Billing")
+#' # includes service-role in path
+#' aws_policy_exists("AWSCostAndUsageReportAutomationPolicy")
 aws_policy_exists <- function(name) {
   !is.null(aws_policy_safe(name)$result) ||
-    !is.null(aws_policy_safe(name, local = TRUE)$result)
+  !is.null(aws_policy_safe(name, local = TRUE)$result) ||
+  !is.null(aws_policy_safe(name, path = "job-function")$result) ||
+  !is.null(aws_policy_safe(name, path = "service-role")$result)
 }
 
 #' Create a policy
@@ -181,10 +189,15 @@ aws_policy_delete <- function(name) {
 #' figure_out_policy_arn("DoesNotExist")
 #' # aws managed
 #' figure_out_policy_arn("AmazonS3ReadOnlyAccess")
+#' # aws managed, job function
+#' figure_out_policy_arn("Billing")
+#' figure_out_policy_arn("DataScientist")
 figure_out_policy_arn <- function(name) {
   compact(c(
     aws_policy_safe(name, local = TRUE)$result$Arn,
-    aws_policy_safe(name, local = FALSE)$result$Arn
+    aws_policy_safe(name, local = FALSE)$result$Arn,
+    aws_policy_safe(name, path = "job-function")$result$Arn,
+    aws_policy_safe(name, path = "service-role")$result$Arn
   ))
 }
 
@@ -432,13 +445,8 @@ aws_policy_document_create <- function(..., .list = NULL) {
 #' @param name (character) a policy name or arn
 #' @param local (logical) if `TRUE` use your AWS account for your own
 #' managed policies. If `FALSE`, AWS managed policies
-#' @details If an arn is supplied we check that a policy exists
-#' with that arn, and return itself.
-#'
-#' If a policy name is supplied we construct an arn with `local` param
-#' as an input, and then check that a policy exists with that arn
-#'
-#' In both cases we stop with an informative message if there's an error
+#' @param path (character) if not `NULL`, we add the path into the ARN
+#' before the `name` value
 #' @return a policy ARN (character)
 #' @autoglobal
 #' @family policies
@@ -452,16 +460,28 @@ aws_policy_document_create <- function(..., .list = NULL) {
 #' as_policy_arn("MyTestPolicy", local = TRUE)
 #' # returns an arn - and if given an arn returns self
 #' as_policy_arn("MyTestPolicy", local = TRUE) %>%
-#'   as_policy_arn("MyTestPolicy")
+#'   as_policy_arn()
+#' # path = Job function
+#' as_policy_arn("Billing", path = "job-function")
+#' # path = Service role
+#' as_policy_arn("AWSCostAndUsageReportAutomationPolicy",
+#'   path = "service-role")
 #' }
-as_policy_arn <- function(name, local = FALSE) {
+as_policy_arn <- function(name, local = FALSE, path = NULL) {
   stopifnot(is.character(name))
+  stopifnot(is.logical(local))
+  stopifnot(is.character(path) || is.null(path))
+  if (!is.null(path)) stopifnot(length(path) == 1)
   stopifnot(length(name) == 1)
   if (grepl("^arn:", name)) {
     return(name)
   }
   account <- if (local) account_id() else "aws"
-  glue("arn:aws:iam::{account}:policy/{name}")
+  template <- "arn:aws:iam::{account}:policy/{name}"
+  if (!is.null(path)) {
+    template <- "arn:aws:iam::{account}:policy/{path}/{name}"
+  }
+  glue(template)
 }
 
 call_x_method <- function(x) {

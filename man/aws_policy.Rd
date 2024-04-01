@@ -4,13 +4,16 @@
 \alias{aws_policy}
 \title{Get a policy}
 \usage{
-aws_policy(name, local = FALSE)
+aws_policy(name, local = FALSE, path = NULL)
 }
 \arguments{
 \item{name}{(character) a policy name or arn}
 
 \item{local}{(logical) if \code{TRUE} use your AWS account for your own
 managed policies. If \code{FALSE}, AWS managed policies}
+
+\item{path}{(character) if not \code{NULL}, we add the path into the ARN
+before the \code{name} value}
 }
 \value{
 a tibble with policy details
