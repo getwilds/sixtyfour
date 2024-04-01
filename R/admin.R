@@ -16,7 +16,7 @@ group_policies <- list(
 )
 
 aws_whoami <- function() {
-  user <- aws_user() #nolint
+  user <- aws_user() # nolint
   cli_info("whoami: {user$user$UserName} (account: {account_id()})")
 }
 
@@ -147,7 +147,8 @@ check_simulated_user <- function(group) {
 
   all_checks <- callr::r(function(creds) {
     withr::with_envvar(
-      creds, {
+      creds,
+      {
         check_iam <- sixtyfour::has_access(sixtyfour::aws_user)
         check_rds <- sixtyfour::has_access(sixtyfour::aws_db_instance_details)
         check_rs <- sixtyfour::has_access(sixtyfour::aws_db_cluster_details)
@@ -180,5 +181,5 @@ check_simulated_user <- function(group) {
   cli_info("  Cleaning up simulated user")
   aws_user_remove_from_group(randuser, group)
   suppm(six_user_delete(randuser))
-  cli_alert_info("") #nolint
+  cli_alert_info("") # nolint
 }

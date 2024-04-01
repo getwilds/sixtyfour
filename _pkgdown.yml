@@ -14,6 +14,11 @@ reference:
       - six_user_create
       - six_user_delete
       - six_admin_setup
+      - six_bucket_add_user
+      - six_bucket_change_user
+      - six_bucket_remove_user
+      - six_bucket_permissions
+      - six_user_creds
   - title: Billing
     contents:
       - starts_with("aws_billing")
@@ -29,14 +34,9 @@ reference:
     contents:
       - starts_with("aws_bucket")
       - aws_s3_policy_doc_create
-      - aws_bucket_add_user
-      - aws_bucket_change_user
-      - aws_bucket_remove_user
-      - aws_bucket_permissions
   - title: Users
     contents:
       - starts_with("aws_user")
-      - random_user
   - title: Database
     contents:
       - starts_with("aws_db")
@@ -73,3 +73,5 @@ reference:
   - title: Utilities
     contents:
       - has_access
+      - random_user
+      - random_string

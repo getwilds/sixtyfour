@@ -39,7 +39,8 @@ as_policy_arn("MyTestPolicy", local = TRUE) \%>\%
 as_policy_arn("Billing", path = "job-function")
 # path = Service role
 as_policy_arn("AWSCostAndUsageReportAutomationPolicy",
-  path = "service-role")
+  path = "service-role"
+)
 }
 }
 \seealso{

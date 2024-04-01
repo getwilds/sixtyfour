@@ -94,9 +94,9 @@ aws_policy_safe <- purrr::safely(aws_policy)
 #' aws_policy_exists("AWSCostAndUsageReportAutomationPolicy")
 aws_policy_exists <- function(name) {
   !is.null(aws_policy_safe(name)$result) ||
-  !is.null(aws_policy_safe(name, local = TRUE)$result) ||
-  !is.null(aws_policy_safe(name, path = "job-function")$result) ||
-  !is.null(aws_policy_safe(name, path = "service-role")$result)
+    !is.null(aws_policy_safe(name, local = TRUE)$result) ||
+    !is.null(aws_policy_safe(name, path = "job-function")$result) ||
+    !is.null(aws_policy_safe(name, path = "service-role")$result)
 }
 
 #' Create a policy
@@ -465,7 +465,8 @@ aws_policy_document_create <- function(..., .list = NULL) {
 #' as_policy_arn("Billing", path = "job-function")
 #' # path = Service role
 #' as_policy_arn("AWSCostAndUsageReportAutomationPolicy",
-#'   path = "service-role")
+#'   path = "service-role"
+#' )
 #' }
 as_policy_arn <- function(name, local = FALSE, path = NULL) {
   stopifnot(is.character(name))

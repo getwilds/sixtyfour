@@ -19,9 +19,9 @@ test_that("aws_s3_policy_doc_create", {
 })
 
 
-test_that("aws_bucket_add_user - failure behavior", {
+test_that("six_bucket_add_user - failure behavior", {
   expect_error(
-    aws_bucket_add_user(
+    six_bucket_add_user(
       bucket = "mybucket",
       username = "sam",
       permissions = "notavalidpermission"
@@ -30,7 +30,7 @@ test_that("aws_bucket_add_user - failure behavior", {
   )
 
   expect_error(
-    aws_bucket_add_user(
+    six_bucket_add_user(
       bucket = "mybucket",
       username = "sam",
       permissions = c("read", "write")
@@ -40,27 +40,27 @@ test_that("aws_bucket_add_user - failure behavior", {
 })
 
 
-test_that("aws_bucket_add_user", {
+test_that("six_bucket_add_user", {
   # setup (freeze user and bucket names to match test fixtures)
   ## create user
   # user_name <- random_string("user") #nolint
   user_name <- "userbuqoexlg"
-  vcr::use_cassette("aws_bucket_add_user_setup_user", {
+  vcr::use_cassette("six_bucket_add_user_setup_user", {
     the_user <- aws_user_create(user_name)
   })
   ## create bucket
   # bucket_name <- random_string("bucket") #nolint
   bucket_name <- "buckethixsfyzj"
-  vcr::use_cassette("aws_bucket_add_user_setup_bucket", {
+  vcr::use_cassette("six_bucket_add_user_setup_bucket", {
     aws_bucket_create(bucket_name)
   })
 
   # the tests
-  vcr::use_cassette("aws_bucket_add_user", {
+  vcr::use_cassette("six_bucket_add_user", {
     withr::with_options(
       list(cli.default_handler = function(...) { }),
       {
-        user_added <- aws_bucket_add_user(
+        user_added <- six_bucket_add_user(
           bucket = bucket_name,
           username = user_name,
           permissions = "read"
@@ -87,26 +87,26 @@ test_that("aws_bucket_add_user", {
 })
 
 
-test_that("aws_bucket_permissions", {
-  expect_error(aws_bucket_permissions("asdf"), "does not exist")
+test_that("six_bucket_permissions", {
+  expect_error(six_bucket_permissions("asdf"), "does not exist")
 
   # setup
   # user_name <- random_string("user") #nolint
   user1 <- "userioubcghd"
   user2 <- "userbqaczysg"
-  vcr::use_cassette("aws_bucket_permissions_setup_users", {
+  vcr::use_cassette("six_bucket_permissions_setup_users", {
     aws_user_create(user1)
     aws_user_create(user2)
   })
   # bucket_name <- random_string("bucket") #nolint
   bucket_name <- "bucketihvmjysp"
-  vcr::use_cassette("aws_bucket_permissions_setup_bucket", {
+  vcr::use_cassette("six_bucket_permissions_setup_bucket", {
     aws_bucket_create(bucket_name)
   })
 
   # the function
-  vcr::use_cassette("aws_bucket_permissions", {
-    res <- aws_bucket_permissions(bucket_name)
+  vcr::use_cassette("six_bucket_permissions", {
+    res <- six_bucket_permissions(bucket_name)
   })
 
   expect_s3_class(res, "tbl")
@@ -124,27 +124,27 @@ test_that("aws_bucket_permissions", {
 })
 
 
-test_that("aws_bucket_remove_user", {
+test_that("six_bucket_remove_user", {
   # setup (freeze user and bucket names to match test fixtures)
   ## create user
   # user_name <- random_string("user") #nolint
   user_name <- "userauzdiwhk"
-  vcr::use_cassette("aws_bucket_remove_user_setup_user", {
+  vcr::use_cassette("six_bucket_remove_user_setup_user", {
     the_user <- aws_user_create(user_name)
   })
   ## create bucket
   # bucket_name <- random_string("bucket") #nolint
   bucket_name <- "bucketvanoxfrh"
-  vcr::use_cassette("aws_bucket_remove_user_setup_bucket", {
+  vcr::use_cassette("six_bucket_remove_user_setup_bucket", {
     aws_bucket_create(bucket_name)
   })
 
   # the tests
-  vcr::use_cassette("aws_bucket_remove_user_setup_add_user", {
+  vcr::use_cassette("six_bucket_remove_user_setup_add_user", {
     withr::with_options(
       list(cli.default_handler = function(...) { }),
       {
-        aws_bucket_add_user(
+        six_bucket_add_user(
           bucket = bucket_name,
           username = user_name,
           permissions = "read"
@@ -153,11 +153,11 @@ test_that("aws_bucket_remove_user", {
     )
   })
 
-  vcr::use_cassette("aws_bucket_remove_user", {
+  vcr::use_cassette("six_bucket_remove_user", {
     withr::with_options(
       list(cli.default_handler = function(...) { }),
       {
-        user_removed <- aws_bucket_remove_user(
+        user_removed <- six_bucket_remove_user(
           bucket = bucket_name,
           username = user_name
         )

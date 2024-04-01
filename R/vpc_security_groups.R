@@ -44,7 +44,8 @@ security_group_handler <- function(ids, engine) {
     sgsdf,
     map_lgl(
       IpPermissions,
-      ~ ifelse(rlang::is_empty(.), FALSE, .$ToPort == port))
+      ~ ifelse(rlang::is_empty(.), FALSE, .$ToPort == port)
+    )
   )
   if (!NROW(port_df)) {
     cli::cli_alert_danger(c(

@@ -185,7 +185,7 @@ six_user_create <- function(
       "Added policy {.strong {policy_name}} to {.strong {username}}"
     )
   }
-  aws_user_creds(username, copy_to_cp = TRUE)
+  six_user_creds(username, copy_to_cp = TRUE)
 }
 
 #' Delete a user
