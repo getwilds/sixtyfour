@@ -4,7 +4,12 @@
 \alias{six_admin_setup}
 \title{AWS account setup for administrators}
 \usage{
-six_admin_setup()
+six_admin_setup(users_group = "users", admin_group = "admin")
+}
+\arguments{
+\item{users_group}{(character) name for the users group. default: "users"}
+
+\item{admin_group}{(character) name for the admin group. default: "admin"}
 }
 \value{
 NULL invisibly
@@ -19,8 +24,8 @@ AWS account setup for administrators
 \item Add policies to the users group
 \item Setup an admin IAM group: users that require admin permissions
 \item Add policies to the admin group
-\item (NOT WORKING YET) Check that a user can be added to a group and has
-access as expected
+\item (NOT WORKING YET) Check that a user can be added to a group and has access
+as expected (requires additional package \pkg{callr})
 }
 }
 

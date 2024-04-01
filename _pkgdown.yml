@@ -13,6 +13,7 @@ reference:
     contents:
       - six_user_create
       - six_user_delete
+      - six_admin_setup
   - title: Billing
     contents:
       - starts_with("aws_billing")
@@ -69,3 +70,6 @@ reference:
   - title: EC2
     contents:
       - aws_ec2_client
+  - title: Utilities
+    contents:
+      - has_access
