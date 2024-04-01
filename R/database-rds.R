@@ -176,12 +176,14 @@ aws_db_rds_client <- function() {
 }
 
 #' Get information for all RDS instances
-#' @return a list of instance details
-#' @keywords internal
-instance_details <- function() {
+#' @export
+#' @return a list of RDS instance details, see link below for format, with slots:
+#' - Marker (for pagination)
+#' - DBInstances (each instance; empty list if no instances)
+#' @references <https://www.paws-r-sdk.com/docs/describe_db_instances/>
+aws_db_instance_details <- function() {
   aws_db_rds_client()
-  instances <- env64$rds$describe_db_instances()
-  return(instances)
+  env64$rds$describe_db_instances()
 }
 
 split_grep <- function(column, split, pattern) {
@@ -198,7 +200,7 @@ split_grep <- function(column, split, pattern) {
 #' @examplesIf interactive()
 #' aws_db_rds_list()
 aws_db_rds_list <- function() {
-  lst <- instance_details()
+  lst <- aws_db_instance_details()
   dbs <- lst$DBInstances
   map(dbs, \(x) {
     as_tibble(x[c(
@@ -225,7 +227,7 @@ aws_db_rds_list <- function() {
 #' @return a list of cluster details
 #' @keywords internal
 instance_con_info <- function(id) {
-  deets <- instance_details()$DBInstances
+  deets <- aws_db_instance_details()$DBInstances
   z <- keep(deets, \(x) x$DBInstanceIdentifier == id)
   if (!length(z)) rlang::abort(glue("Instance identifier {id} not found"))
   z <- z[[1]]
@@ -249,7 +251,7 @@ instance_con_info <- function(id) {
 #' aws_db_instance_status(id = "thedbinstance")
 #' }
 aws_db_instance_status <- function(id) {
-  deets <- instance_details()$DBInstances
+  deets <- aws_db_instance_details()$DBInstances
   instance <- Filter(function(x) x$DBInstanceIdentifier == id, deets)
   if (!length(instance)) {
     warning(glue::glue("instance id '{id}' not found"))

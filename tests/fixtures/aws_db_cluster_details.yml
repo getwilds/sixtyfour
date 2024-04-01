@@ -1,0 +1,39 @@
+http_interactions:
+- request:
+    method: post
+    uri: https://redshift.<<aws_region>>.amazonaws.com/
+    body:
+      encoding: ''
+      string: Action=DescribeClusters&Version=2012-12-01
+    headers:
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
+      Accept: application/xml
+      Content-Type: application/x-www-form-urlencoded; charset=utf-8
+      Content-Length: '42'
+      X-Amz-Date: 20240401T195603Z
+      Authorization: redacted
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      x-amzn-requestid: cee99336-2bdf-4bf3-9db4-609a0b9dea89
+      content-type: text/xml
+      content-length: '287'
+      date: Mon, 01 Apr 2024 19:56:02 GMT
+    body:
+      encoding: ''
+      file: no
+      string: |
+        <DescribeClustersResponse xmlns="http://redshift.amazonaws.com/doc/2012-12-01/">
+          <DescribeClustersResult>
+            <Clusters/>
+          </DescribeClustersResult>
+          <ResponseMetadata>
+            <RequestId>cee99336-2bdf-4bf3-9db4-609a0b9dea89</RequestId>
+          </ResponseMetadata>
+        </DescribeClustersResponse>
+  recorded_at: 2024-04-01 19:56:03 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0

@@ -22,10 +22,10 @@ test_that("aws_db_redshift_client", {
   expect_equal(lnames[length(lnames)], ".internal")
 })
 
-test_that("cluster_details", {
+test_that("aws_db_cluster_details", {
   # Recorded with no Redshift instances running
-  vcr::use_cassette("cluster_details", {
-    x <- cluster_details()
+  vcr::use_cassette("aws_db_cluster_details", {
+    x <- aws_db_cluster_details()
   })
 
   expect_type(x, "list")

@@ -128,12 +128,14 @@ aws_db_redshift_client <- function() {
 }
 
 #' Get information for all clusters
-#' @return a list of cluster details
-#' @keywords internal
-cluster_details <- function() {
+#' @export
+#' @return a list of cluster details, see link below for format, with slots:
+#' - Marker (for pagination)
+#' - Clusters (each cluster; empty list if no clusters)
+#' @references <https://www.paws-r-sdk.com/docs/redshift_describe_clusters/>
+aws_db_cluster_details <- function() {
   aws_db_redshift_client()
-  clusters <- env64$redshift$describe_clusters()
-  return(clusters)
+  env64$redshift$describe_clusters()
 }
 
 #' Get connection information for all clusters
@@ -141,7 +143,7 @@ cluster_details <- function() {
 #' @return a list of cluster details
 #' @keywords internal
 cluster_con_info <- function(id) {
-  deets <- cluster_details()$Clusters
+  deets <- aws_db_cluster_details()$Clusters
   z <- Filter(function(x) x$ClusterIdentifier == id, deets)[[1]]
   list(host = z$Endpoint$Address, port = z$Endpoint$Port, dbname = z$DBName)
 }
@@ -156,7 +158,7 @@ cluster_con_info <- function(id) {
 #' aws_db_cluster_status(id = "scotts-test-cluster-456")
 #' }
 aws_db_cluster_status <- function(id) {
-  deets <- cluster_details()$Clusters
+  deets <- aws_db_cluster_details()$Clusters
   cluster <- Filter(function(x) x$ClusterIdentifier == id, deets)
   if (!length(cluster)) {
     warning(glue::glue("cluster id '{id}' not found"))
