@@ -55,6 +55,13 @@ jobs:
           mkdir ~/minio
           minio server ~/minio --console-address :9001 &
 
+      - name: Start Localstack
+        if: runner.os == 'Linux'
+        uses: LocalStack/setup-localstack@main
+        with:
+          image-tag: 'latest'
+          install-awslocal: 'true'
+
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true

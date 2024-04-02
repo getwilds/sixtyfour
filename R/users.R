@@ -27,7 +27,7 @@ user_list_tidy <- function(x) {
 aws_users <- function(...) {
   # aws_iam_client()
   # users <- paginate_aws_marker(env64$iam$list_users, "Users") %>%
-  users <- paginate_aws_marker(get_iam()$list_users, "Users") %>%
+  users <- paginate_aws_marker(get_iam()$list_users, "Users", ...) %>%
     user_list_tidy()
   # purrr::map(users$UserName, env64$iam$get_user) %>%
   purrr::map(users$UserName, get_iam()$get_user) %>%
@@ -164,9 +164,13 @@ aws_user_delete <- function(username) {
 #' @examples \dontrun{
 #' # aws_user_access_key()
 #' }
-aws_user_access_key <- function() {
-  aws_iam_client()
-  get_iam()$list_access_keys()$AccessKeyMetadata[[1]] %>% as_tibble()
+aws_user_access_key <- function(username = NULL, ...) {
+  out <- get_iam()$list_access_keys(username, ...)
+  if (length(out$AccessKeyMetadata) == 0) {
+    cli::cli_alert_warning("No access keys found for {.strong {username}}")
+    return(invisible())
+  }
+  bind_rows(out$AccessKeyMetadata)
 }
 
 #' Add a user to a group
@@ -188,7 +192,7 @@ aws_user_access_key <- function() {
 #' aws_user_add_to_group(username = "testBlueBird3", groupname = "testgroup3")
 #' }
 aws_user_add_to_group <- function(username, groupname) {
-  aws_iam_client()
+  # aws_iam_client()
   get_iam()$add_user_to_group(groupname, username)
   aws_user(username)
 }

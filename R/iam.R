@@ -45,20 +45,13 @@ aws_iam_client <- function(testing = Sys.getenv("AWS_PROFILE", "default")) {
 get_iam <- function() {
   profile <- Sys.getenv("AWS_PROFILE")
   if (profile == "localstack") {
-    # paws::iam(
-    #   config = list(
-    #     credentials = list(
-    #       profile = "localstack"
-    #     )
-    #   )
-    # )
     Sys.unsetenv("AWS_ACCESS_KEY_ID")
     Sys.unsetenv("AWS_SECRET_ACCESS_KEY")
     paws::iam(
       credentials = list(
         creds = list(
           access_key_id = "NOTAREALKEY",
-          secret_access_key = "faketoken"
+          secret_access_key = "AREALLYFAKETOKEN"
         )
       ),
       endpoint = LOCALSTACK_ENDPOINT
