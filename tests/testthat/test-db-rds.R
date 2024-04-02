@@ -22,10 +22,10 @@ test_that("aws_db_rds_client", {
   expect_equal(lnames[length(lnames)], ".internal")
 })
 
-test_that("aws_db_instance_details", {
+test_that("instance_details", {
   # Recorded with no RDS instances running
-  vcr::use_cassette("aws_db_instance_details", {
-    x <- aws_db_instance_details()
+  vcr::use_cassette("instance_details", {
+    x <- instance_details()
   })
 
   expect_type(x, "list")

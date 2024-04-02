@@ -24,8 +24,6 @@ AWS account setup for administrators
 \item Add policies to the users group
 \item Setup an admin IAM group: users that require admin permissions
 \item Add policies to the admin group
-\item (NOT WORKING YET) Check that a user can be added to a group and has access
-as expected (requires additional package \pkg{callr})
 }
 }
 

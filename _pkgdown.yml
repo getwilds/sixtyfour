@@ -72,6 +72,5 @@ reference:
       - aws_ec2_client
   - title: Utilities
     contents:
-      - has_access
       - random_user
       - random_string
