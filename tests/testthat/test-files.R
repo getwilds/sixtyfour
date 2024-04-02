@@ -1,6 +1,6 @@
 skip_if_not(minio_available(), "Minio Not Available")
 
-invisible(env64$s3 <- set_s3_interface("minio"))
+env64$s3 <- set_s3_interface("minio")
 s3fs::s3_file_system(
   aws_access_key_id = "minioadmin",
   aws_secret_access_key = "minioadmin",
@@ -271,4 +271,5 @@ test_that("aws_file_copy", {
 
 # cleanup
 buckets_empty()
+s3fs::s3_file_system()
 invisible(env64$s3 <- set_s3_interface("aws"))
