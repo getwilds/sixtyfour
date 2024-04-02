@@ -19,6 +19,7 @@ reference:
       - six_bucket_remove_user
       - six_bucket_permissions
       - six_user_creds
+      - group_policies
   - title: Billing
     contents:
       - starts_with("aws_billing")
