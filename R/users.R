@@ -151,19 +151,19 @@ aws_user_delete <- function(username) {
   get_iam()$delete_user(username)
 }
 
-#' Get the current user's AWS Access Key
+#' Get AWS Access Key for a user
 #'
 #' IMPORTANT: the secret access key is only accessible during key
 #' and user creation
 #'
 #' @export
+#' @inheritParams aws_user_create
+#' @param ... further named args passed on to
+#' [list_access_keys](https://www.paws-r-sdk.com/docs/iam_list_access_keys/)
 #' @return a tibble with key details
 #' @details See <https://www.paws-r-sdk.com/docs/iam_list_access_keys/>
 #' docs for more details
 #' @family users
-#' @examples \dontrun{
-#' # aws_user_access_key()
-#' }
 aws_user_access_key <- function(username = NULL, ...) {
   out <- get_iam()$list_access_keys(username, ...)
   if (length(out$AccessKeyMetadata) == 0) {

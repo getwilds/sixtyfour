@@ -4,7 +4,7 @@
 \alias{aws_users}
 \title{List Users}
 \usage{
-aws_users(con = NULL, ...)
+aws_users(...)
 }
 \arguments{
 \item{...}{parameters passed on to the \code{paws}
