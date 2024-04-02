@@ -60,6 +60,35 @@ Upon starting Minio it will display URLs for both the Minio API and WebUI - and 
 
 The `R-CMD-check` workflow in `.github/workflows/` includes spinning up Minio for running unit tests - but only on Linux; tests that require Minio are skipped on MacOS and WIndows platforms on GitHub Actions.
 
+#### Minio Details
+
+The following (collapsed) bullets list information for those who want to know more about the minio setup, and that may want to tweak it or add minio setup to other tests.
+
+<details><summary>Expand for details</summary>
+
+- `tests/testthat/helper-minio.R` has helper functions for Minio. `bucket_delete` and `buckets_empty` make it easier to do cleanup in tests. The `minio_available` function is to be used inside `skip_if_not` to skip the tests in the file if Minio is not available, like: `skip_if_not(minio_available(), "Minio Not Available")`
+- At the top of any file that uses Minio, setup the interfaces to Minio like:
+
+```r
+env64$s3 <- set_s3_interface("minio")
+s3fs::s3_file_system(
+  aws_access_key_id = "minioadmin",
+  aws_secret_access_key = "minioadmin",
+  endpoint = "http://localhost:9000"
+)
+buckets_empty() # empty buckets so we're starting from an empty slate
+```
+
+- And unset at the bottom of the file to cleanup:
+
+```r
+buckets_empty() # empty buckets
+env64$s3 <- set_s3_interface("aws")
+s3fs::s3_file_system()
+```
+
+</details>
+
 ### Localstack
 
 [Localstack][ls]
