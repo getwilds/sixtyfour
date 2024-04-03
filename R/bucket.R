@@ -107,16 +107,19 @@ aws_bucket_delete <- function(bucket, force = FALSE, ...) {
 #' sure that you want to delete the bucket.
 #' @family buckets
 #' @examplesIf interactive()
-#' aws_bucket_create(bucket = "tmp-bucket-369")
+#' bucket <- random_string("bucket")
+#' aws_bucket_create(bucket = bucket)
 #' desc_file <- file.path(system.file(), "DESCRIPTION")
-#' aws_file_upload(bucket = "tmp-bucket-369", path = desc_file)
-#' aws_file_upload(bucket = "tmp-bucket-369", path = desc_file, key = "d_file")
-#' temp_dir <- file.path(tempdir(), "tmp-bucket-369")
-#' aws_bucket_download(bucket = "tmp-bucket-369", dest_path = temp_dir)
+#' aws_file_upload(desc_file, s3_path(bucket, "DESCRIPTION.txt"))
+#' aws_file_upload(desc_file, s3_path(bucket, "d_file.txt"))
+#' temp_dir <- file.path(tempdir(), bucket)
+#' aws_bucket_download(bucket = bucket, dest_path = temp_dir)
+#' fs::dir_ls(temp_dir)
 #'
 #' # cleanup
 #' aws_bucket_delete("tmp-bucket-369")
 aws_bucket_download <- function(bucket, dest_path, ...) {
+  s3fs_creds_refresh()
   s3fs::s3_dir_download(path = bucket, new_path = dest_path, ...)
 }
 
@@ -141,7 +144,7 @@ aws_bucket_download <- function(bucket, dest_path, ...) {
 #' tfiles <- replicate(n = 10, file_temp(tmp_dir = tdir, ext = ".txt"))
 #' invisible(lapply(tfiles, function(x) write.csv(mtcars, x)))
 #'
-#' bucket_name <- "a-new-bucket-345"
+#' bucket_name <- random_string("bucket")
 #' if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
 #' aws_bucket_upload(path = tdir, bucket = bucket_name)
 #' aws_bucket_list_objects(bucket_name)
@@ -149,6 +152,7 @@ aws_bucket_download <- function(bucket, dest_path, ...) {
 #' # cleanup
 #' objs <- aws_bucket_list_objects(bucket_name)
 #' aws_file_delete(objs$uri)
+#' aws_bucket_list_objects(bucket_name)
 #' aws_bucket_delete(bucket_name, force = TRUE)
 #' aws_bucket_exists(bucket_name)
 aws_bucket_upload <- function(
@@ -165,6 +169,7 @@ aws_bucket_upload <- function(
     }
     aws_bucket_create(bucket)
   }
+  s3fs_creds_refresh()
   s3fs::s3_dir_upload(
     path = path,
     new_path = bucket,
@@ -192,7 +197,7 @@ aws_bucket_upload <- function(
 #' * etag (character)
 #' * last_modified (dttm)
 #' @examplesIf interactive()
-#' bucket_name <- "s64-test-67"
+#' bucket_name <- random_string("bucket")
 #' if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
 #' links_file <- file.path(system.file(), "Meta/links.rds")
 #' aws_file_upload(
@@ -201,6 +206,7 @@ aws_bucket_upload <- function(
 #' )
 #' aws_bucket_list_objects(bucket = bucket_name)
 aws_bucket_list_objects <- function(bucket, ...) {
+  s3fs_creds_refresh()
   out <- s3fs::s3_dir_info(bucket, ...)
   if (is.data.frame(out) && NROW(out) > 0) {
     as_tibble(out)
@@ -222,6 +228,7 @@ aws_bucket_list_objects <- function(bucket, ...) {
 #' aws_buckets()
 #' }
 aws_buckets <- function(...) {
+  s3fs_creds_refresh()
   out <- s3fs::s3_dir_info(refresh = TRUE, ...)
   if (is.data.frame(out) && NROW(out) > 0) {
     as_tibble(out)
@@ -242,7 +249,7 @@ aws_buckets <- function(...) {
 #' @return character vector of objects/files within the bucket,
 #' printed as a tree
 #' @examplesIf interactive()
-#' bucket_name <- "s64-test-69"
+#' bucket_name <- random_string("bucket")
 #' if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
 #' links_file <- file.path(system.file(), "Meta/links.rds")
 #' pkgs_file <- file.path(system.file(), "Meta/package.rds")
@@ -266,5 +273,6 @@ aws_buckets <- function(...) {
 #' aws_bucket_delete(bucket_name, force = TRUE)
 #' aws_bucket_exists(bucket_name)
 aws_bucket_tree <- function(bucket, recurse = TRUE, ...) {
+  s3fs_creds_refresh()
   s3fs::s3_dir_tree(s3_path(bucket), recurse = recurse, ...)
 }
