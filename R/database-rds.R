@@ -194,12 +194,14 @@ split_grep <- function(column, split, pattern) {
 #' @family database
 #' @return a tibble of instance details;
 #' see <https://www.paws-r-sdk.com/docs/describe_db_instances/>
+#' an empty tibble if no instances found
 #' @autoglobal
 #' @examplesIf interactive()
 #' aws_db_rds_list()
 aws_db_rds_list <- function() {
   lst <- instance_details()
   dbs <- lst$DBInstances
+  if (rlang::is_empty(dbs)) return(tibble())
   map(dbs, \(x) {
     as_tibble(x[c(
       "DBInstanceIdentifier",
