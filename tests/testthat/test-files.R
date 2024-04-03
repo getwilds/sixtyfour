@@ -139,7 +139,7 @@ test_that("aws_file_delete", {
 
   expect_true(aws_file_exists(remote_path))
   res <- aws_file_delete(remote_path)
-  expect_type(res, "list")
+  expect_null(res)
   expect_false(aws_file_exists(remote_path))
 
   bucket_delete("b-bucket", force = TRUE)
