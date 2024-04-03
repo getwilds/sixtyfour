@@ -150,7 +150,7 @@ paginate_aws_marker <- function(fun, target, ...) {
   all_results <- list(res)
   more_results <- TRUE
   while (more_results) {
-    res <- fun(Marker = res$Marker)
+    res <- fun(Marker = res$Marker, ...)
     all_results <- c(all_results, list(res))
     if (!res$IsTruncated) more_results <- FALSE
   }

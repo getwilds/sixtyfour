@@ -16,8 +16,8 @@ a single boolean
 Check if a user exists
 }
 \details{
-uses \code{aws_group} internally. see docs
-\url{https://www.paws-r-sdk.com/docs/iam_get_group/}
+uses \code{\link[=aws_user]{aws_user()}} internally. see docs
+\url{https://www.paws-r-sdk.com/docs/iam_get_user/}
 }
 \examples{
 \dontrun{
