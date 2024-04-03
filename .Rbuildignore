@@ -10,3 +10,4 @@
 ^data-raw$
 vignettes/figure
 start/
+minio.deb
