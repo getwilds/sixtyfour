@@ -1,4 +1,4 @@
-LOCALSTACK_ENDPOINT <- "http://localhost.localstack.cloud:4566"
+LOCALSTACK_ENDPOINT <- "http://localhost.localstack.cloud:4566" #nolint
 
 #' Get the `paws` Identity and Access Management (IAM) client
 #' @return a list with methods for interfacing with IAM;

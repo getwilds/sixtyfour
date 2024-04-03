@@ -1,5 +1,6 @@
 skip_if_not(localstack_available(), "LocalStack Not Available")
 
+# nolint start
 ## FIXME: something wrong with aws_users when using localstack
 ## perhaps having to do with using purrr?
 ## perhaps b/c with_envvar only goes down one level of the stack?
@@ -15,6 +16,7 @@ skip_if_not(localstack_available(), "LocalStack Not Available")
 #   expect_type(res$UserName, "character")
 #   expect_true(inherits(res$CreateDate, "POSIXct"))
 # })
+# nolint end
 
 # create user first
 the_user <- random_user()

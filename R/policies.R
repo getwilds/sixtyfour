@@ -241,7 +241,7 @@ aws_policy_delete_version <- function(name, version_id) {
 #' }
 #' aws_policy_list_entities("S3ReadOnlyAccessS64Test22")
 aws_policy_list_entities <- function(name, ...) {
-  con_iam()$list_entities_for_policy(
+  result <- con_iam()$list_entities_for_policy(
     PolicyArn = figure_out_policy_arn(name),
     ...
   )
@@ -549,7 +549,6 @@ entity_value <- function(x) {
 policies <- function(which, name) {
   method <- glue::glue("list_{which}_policies")
   con_iam()[[method]](name)$PolicyNames
-  # env64$iam[[method]](name)$PolicyNames
 }
 #' @importFrom dplyr bind_rows
 #' @param which (character) one of role, user, or group
@@ -559,7 +558,6 @@ policies <- function(which, name) {
 #' @keywords internal
 policies_attached <- function(which, name) {
   method <- glue::glue("list_attached_{which}_policies")
-  # res <- env64$iam[[method]](name)
   res <- con_iam()[[method]](name)
   res$AttachedPolicies %>% bind_rows()
 }

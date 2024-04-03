@@ -9,7 +9,6 @@ utils::globalVariables(c(
   "DBInstanceArn", # <aws_db_rds_list>
   ".", # <aws_group>
   ".", # <aws_policy>
-  "result", # <aws_policy_list_entities>
   "type", # <aws_policy_list_entities>
   ".", # <aws_role>
   "user", # <aws_bucket_remove_user>
