@@ -133,6 +133,7 @@ aws_bucket_download <- function(bucket, dest_path, ...) {
 #' sure that you want to delete the bucket.
 #' @family buckets
 #' @details To upload individual files see [aws_file_upload()]
+#' @return the s3 format path of the bucket uploaded to
 #' @examplesIf interactive()
 #' library(fs)
 #' tdir <- path(tempdir(), "apples")
@@ -170,6 +171,7 @@ aws_bucket_upload <- function(
     max_batch = max_batch,
     ...
   )
+  s3_path(bucket)
 }
 
 #' List objects in an S3 bucket
