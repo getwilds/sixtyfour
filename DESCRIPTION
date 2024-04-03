@@ -7,7 +7,8 @@ Authors@R: c(
         email = "sachamber@fredhutch.org",
         comment = c(ORCID = "0000-0003-1444-9135"))
   )
-Description: Humane Interface to AWS. And more text. Even more text.
+Description: An opionated interface to AWS, with methods for interacting
+    with IAM, S3, RDS, Redshift, and Billing.
 URL: https://github.com/getwilds/sixtyfour
 BugReports: https://github.com/getwilds/sixtyfour/issues
 License: MIT + file LICENSE
