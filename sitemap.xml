@@ -7,6 +7,9 @@
     <loc>/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
+    <loc>/CONTRIBUTING.html</loc>
+  </url>
+  <url>
     <loc>/LICENSE-text.html</loc>
   </url>
   <url>
@@ -14,6 +17,9 @@
   </url>
   <url>
     <loc>/articles/billing.html</loc>
+  </url>
+  <url>
+    <loc>/articles/contributing.html</loc>
   </url>
   <url>
     <loc>/articles/databases.html</loc>
@@ -133,9 +139,6 @@
     <loc>/reference/aws_groups.html</loc>
   </url>
   <url>
-    <loc>/reference/aws_iam_client.html</loc>
-  </url>
-  <url>
     <loc>/reference/aws_policies.html</loc>
   </url>
   <url>
@@ -248,6 +251,9 @@
   </url>
   <url>
     <loc>/reference/cluster_details.html</loc>
+  </url>
+  <url>
+    <loc>/reference/con_iam.html</loc>
   </url>
   <url>
     <loc>/reference/construct_db_secret.html</loc>
