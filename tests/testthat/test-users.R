@@ -96,7 +96,7 @@ test_that("aws_user_delete", {
     }
   )
 
-  expect_type(res_del, "list")
+  expect_null(res_del)
   expect_length(res_del, 0)
 
   # now user does not exist
