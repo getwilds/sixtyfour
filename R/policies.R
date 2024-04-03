@@ -293,7 +293,7 @@ entity_value <- function(x) {
 #' @keywords internal
 policies <- function(which, name) {
   method <- glue::glue("list_{which}_policies")
-  get_iam()[[method]](name)$PolicyNames
+  con_iam()[[method]](name)$PolicyNames
   # env64$iam[[method]](name)$PolicyNames
 }
 #' @importFrom dplyr bind_rows
@@ -305,6 +305,6 @@ policies <- function(which, name) {
 policies_attached <- function(which, name) {
   method <- glue::glue("list_attached_{which}_policies")
   # res <- env64$iam[[method]](name)
-  res <- get_iam()[[method]](name)
+  res <- con_iam()[[method]](name)
   res$AttachedPolicies %>% bind_rows()
 }
