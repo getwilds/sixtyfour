@@ -31,7 +31,10 @@ user_list_tidy <- function(x) {
 #' aws_users()
 #' }
 aws_users <- function(...) {
-  paginate_aws_marker(env64$iam$list_users, "Users") %>%
+  users <- paginate_aws_marker(con_iam()$list_users, "Users", ...) %>%
+    user_list_tidy()
+  purrr::map(users$UserName, con_iam()$get_user) %>%
+    purrr::map(purrr::pluck, "User") %>%
     user_list_tidy()
 }
 
@@ -63,7 +66,7 @@ aws_users <- function(...) {
 #' aws_user_delete("testBlueBird") # cleanup user
 #' }
 aws_user <- function(username = NULL) {
-  x <- env64$iam$get_user(username)$User %>%
+  x <- con_iam()$get_user(username)$User %>%
     list(.) %>%
     user_list_tidy()
   if (is.null(username)) username <- x$UserName
@@ -71,7 +74,7 @@ aws_user <- function(username = NULL) {
     user = x,
     policies = policies("user", username),
     attached_policies = policies_attached("user", username),
-    groups = env64$iam$list_groups_for_user(username)
+    groups = con_iam()$list_groups_for_user(username)
   )
 }
 
@@ -82,8 +85,8 @@ check_aws_user <- purrr::safely(aws_user, otherwise = FALSE)
 #' @export
 #' @param username (character) the user name
 #' @return a single boolean
-#' @details uses `aws_group` internally. see docs
-#' <https://www.paws-r-sdk.com/docs/iam_get_group/>
+#' @details uses [aws_user()] internally. see docs
+#' <https://www.paws-r-sdk.com/docs/iam_get_user/>
 #' @family users
 #' @examples \dontrun{
 #' aws_user_exists(aws_user_current())
@@ -122,7 +125,7 @@ aws_user_current <- function() {
 aws_user_create <- function(
     username, path = NULL, permission_boundary = NULL,
     tags = NULL) {
-  env64$iam$create_user(
+  con_iam()$create_user(
     Path = path,
     UserName = username,
     PermissionsBoundary = permission_boundary,
@@ -188,7 +191,7 @@ six_user_create <- function(
 #' aws_user_delete(username = "testBlueBird")
 #' }
 aws_user_delete <- function(username) {
-  env64$iam$delete_user(username)
+  con_iam()$delete_user(username)
   invisible()
 }
 
@@ -242,7 +245,7 @@ six_user_delete <- function(username) {
 #' docs for more details
 #' @family users
 aws_user_access_key <- function(username = NULL, ...) {
-  out <- env64$iam$list_access_keys(username, ...)
+  out <- con_iam()$list_access_keys(username, ...)
   if (length(out$AccessKeyMetadata) == 0) {
     cli::cli_alert_warning("No access keys found for {.strong {username}}")
     return(invisible())
@@ -292,6 +295,6 @@ aws_user_access_key_delete <- function(access_key_id, username = NULL) {
 #' aws_user_add_to_group(username = "testBlueBird3", groupname = "testgroup3")
 #' }
 aws_user_add_to_group <- function(username, groupname) {
-  env64$iam$add_user_to_group(groupname, username)
+  con_iam()$add_user_to_group(groupname, username)
   aws_user(username)
 }

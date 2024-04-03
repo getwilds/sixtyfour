@@ -115,7 +115,7 @@ aws_file_download <- function(remote_path, path, ...) {
 #' @param remote_path (character) one or more remote S3 paths. required
 #' @param ... named parameters passed on to [s3fs::s3_file_delete()]
 #' @family files
-#' @return (character) a vector of remote file paths
+#' @return `NULL` invisibly
 #' @examples \dontrun{
 #' # create a file
 #' tfile <- tempfile()
@@ -139,6 +139,7 @@ aws_file_delete <- function(remote_path, ...) {
     path_parsed[[1]]$file
   }
   env64$s3$delete_object(path_parsed[[1]]$bucket, key)
+  invisible()
 }
 
 #' File attributes

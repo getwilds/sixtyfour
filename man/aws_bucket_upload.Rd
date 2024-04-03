@@ -26,6 +26,9 @@ non-interactive use.}
 
 \item{...}{named parameters passed on to \code{\link[s3fs:upload]{s3fs::s3_dir_upload()}}}
 }
+\value{
+the s3 format path of the bucket uploaded to
+}
 \description{
 Upload a folder of files to create an S3 bucket
 }
