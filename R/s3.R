@@ -368,7 +368,7 @@ AWS_REGION={Sys.getenv('AWS_REGION')}
 #' aws_user_creds("jane", copy_to_cp = TRUE)
 aws_user_creds <- function(username, copy_to_cp = FALSE) {
   creds <- tryCatch(
-    env64$iam$create_access_key(UserName = username),
+    con_iam()$create_access_key(UserName = username),
     error = function(e) e
   )
 
@@ -435,13 +435,13 @@ permissions_groups <- function() {
 }
 
 latest_policy_version_id <- memoise::memoise(function(arn) {
-  vers <- env64$iam$list_policy_versions(arn)$Versions
+  vers <- con_iam()$list_policy_versions(arn)$Versions
   Filter(function(z) z$IsDefaultVersion, vers)[[1]]$VersionId
 })
 
 #' @importFrom curl curl_unescape
 latest_policy_doc <- memoise::memoise(function(arn) {
-  res <- env64$iam$get_policy_version(
+  res <- con_iam()$get_policy_version(
     arn,
     latest_policy_version_id(arn)
   )

@@ -70,6 +70,9 @@ is_testing <- function() {
 }
 
 #' Refresh creds for the s3fs package
+#'
+#' Refreshes only if not running tests
+#'
 #' @keywords internal
 #' @details utility function to update creds for use with any
 #' `s3fs` functions. We do load creds for `s3fs` on package load

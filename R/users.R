@@ -271,7 +271,7 @@ aws_user_access_key <- function(username = NULL, ...) {
 #' aws_user_access_key_delete(access_key_id = "adfasdfadfadfasdf")
 #' aws_user_access_key_delete(access_key_id = "adfasdf", username = "jane")
 aws_user_access_key_delete <- function(access_key_id, username = NULL) {
-  env64$iam$delete_access_key(UserName = username, AccessKeyId = access_key_id)
+  con_iam()$delete_access_key(UserName = username, AccessKeyId = access_key_id)
   cli::cli_alert_success("Access Key ID {.strong {access_key_id}} deleted")
   invisible()
 }

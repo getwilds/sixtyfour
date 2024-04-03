@@ -135,8 +135,8 @@ path_as_s3 <- function(paths) {
 #' @examples \dontrun{
 #' # FIXME: could remove target param and poach the name of the fun
 #' # e.g,. from list_roles we can get Roles
-#' paginate_aws_marker(fun = env64$iam$list_roles, target = "Roles")
-#' paginate_aws_marker(fun = env64$iam$list_policies, target = "Policies")
+#' # paginate_aws_marker(fun = env64$iam$list_roles, target = "Roles")
+#' # paginate_aws_marker(fun = env64$iam$list_policies, target = "Policies")
 #' }
 paginate_aws_marker <- function(fun, target, ...) {
   res <- fun(...)

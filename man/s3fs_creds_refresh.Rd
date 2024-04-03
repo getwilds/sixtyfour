@@ -10,7 +10,7 @@ s3fs_creds_refresh()
 nothing, updates creds with \code{\link[s3fs:s3_file_system]{s3fs::s3_file_system()}}
 }
 \description{
-Refresh creds for the s3fs package
+Refreshes only if not running tests
 }
 \details{
 utility function to update creds for use with any

@@ -23,10 +23,10 @@ group_list_tidy <- function(x) {
 #' }
 aws_groups <- function(username = NULL, ...) {
   if (is.null(username)) {
-    paginate_aws_marker(env64$iam$list_groups, "Groups", ...) %>%
+    paginate_aws_marker(con_iam()$list_groups, "Groups", ...) %>%
       group_list_tidy()
   } else {
-    paginate_aws_marker(env64$iam$list_groups_for_user, "Groups",
+    paginate_aws_marker(con_iam()$list_groups_for_user, "Groups",
       UserName = username, ...
     ) %>%
       group_list_tidy()
@@ -49,7 +49,7 @@ aws_groups <- function(username = NULL, ...) {
 #' aws_group(name = "users")
 #' }
 aws_group <- function(name) {
-  x <- env64$iam$get_group(name)
+  x <- con_iam()$get_group(name)
   list(
     group = x$Group %>% list(.) %>% group_list_tidy(),
     users = x$Users %>% user_list_tidy(),
@@ -89,7 +89,7 @@ aws_group_exists <- function(name) {
 #' aws_group_create("testgroup")
 #' }
 aws_group_create <- function(name, path = NULL) {
-  env64$iam$create_group(Path = path, GroupName = name) %>%
+  con_iam()$create_group(Path = path, GroupName = name) %>%
     group_list_tidy()
 }
 
@@ -105,5 +105,5 @@ aws_group_create <- function(name, path = NULL) {
 #' aws_group_delete(name = "testgroup")
 #' }
 aws_group_delete <- function(name) {
-  env64$iam$delete_group(name)
+  con_iam()$delete_group(name)
 }

@@ -18,7 +18,7 @@ all_policies <- memoise::memoise(function(...) {
   if (Sys.getenv("TESTING64", FALSE)) {
     return(policies_sample)
   }
-  paginate_aws_marker(env64$iam$list_policies, "Policies", ...) %>%
+  paginate_aws_marker(con_iam()$list_policies, "Policies", ...) %>%
     policy_list_tidy()
 })
 
@@ -68,7 +68,7 @@ aws_policies <- function(refresh = FALSE, ...) {
 #' aws_policy("arn:aws:iam::aws:policy/ReadOnlyAccess")
 #' }
 aws_policy <- function(name, local = FALSE) {
-  env64$iam$get_policy(as_policy_arn(name, local))$Policy %>%
+  con_iam()$get_policy(as_policy_arn(name, local))$Policy %>%
     list(.) %>%
     policy_list_tidy()
 }
@@ -121,7 +121,7 @@ aws_policy_exists <- function(name) {
 aws_policy_create <- function(
     name, document, path = NULL,
     description = NULL, tags = NULL) {
-  env64$iam$create_policy(
+  con_iam()$create_policy(
     PolicyName = name,
     PolicyDocument = document,
     Path = path,
@@ -168,7 +168,7 @@ aws_policy_create <- function(
 #' aws_policy_create("RdsAllow456", document = doc)
 #' aws_policy_delete("RdsAllow456")
 aws_policy_delete <- function(name) {
-  env64$iam$delete_policy(PolicyArn = figure_out_policy_arn(name))
+  con_iam()$delete_policy(PolicyArn = figure_out_policy_arn(name))
 }
 
 #' Figure out policy Arn from a name
@@ -211,7 +211,7 @@ figure_out_policy_arn <- function(name) {
 #' aws_policy_create("RdsAllow456", document = doc)
 #' aws_policy_delete_version("RdsAllow456", "v1")
 aws_policy_delete_version <- function(name, version_id) {
-  env64$iam$delete_policy_version(
+  con_iam()$delete_policy_version(
     PolicyArn = figure_out_policy_arn(name),
     VersionId = version_id
   )
@@ -241,7 +241,7 @@ aws_policy_delete_version <- function(name, version_id) {
 #' }
 #' aws_policy_list_entities("S3ReadOnlyAccessS64Test22")
 aws_policy_list_entities <- function(name, ...) {
-  result <- env64$iam$list_entities_for_policy(
+  con_iam()$list_entities_for_policy(
     PolicyArn = figure_out_policy_arn(name),
     ...
   )
@@ -277,7 +277,7 @@ aws_policy_list_versions <- function(name, ...) {
   vars <- c(
     "Document", "VersionId", "IsDefaultVersion", "CreateDate"
   )
-  env64$iam$list_policy_versions(
+  con_iam()$list_policy_versions(
     PolicyArn = figure_out_policy_arn(name), ...
   )$Versions %>%
     tidy_generator(vars)(.)

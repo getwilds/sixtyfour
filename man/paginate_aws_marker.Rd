@@ -20,8 +20,8 @@ Paginate over list_* methods with Marker/IsTruncated
 \dontrun{
 # FIXME: could remove target param and poach the name of the fun
 # e.g,. from list_roles we can get Roles
-paginate_aws_marker(fun = env64$iam$list_roles, target = "Roles")
-paginate_aws_marker(fun = env64$iam$list_policies, target = "Policies")
+# paginate_aws_marker(fun = env64$iam$list_roles, target = "Roles")
+# paginate_aws_marker(fun = env64$iam$list_policies, target = "Policies")
 }
 }
 \keyword{internal}
