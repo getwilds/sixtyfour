@@ -12,7 +12,7 @@ aws_file_delete(remote_path, ...)
 \item{...}{named parameters passed on to \code{\link[s3fs:delete]{s3fs::s3_file_delete()}}}
 }
 \value{
-(character) a vector of remote file paths
+\code{NULL} invisibly
 }
 \description{
 Delete a file
