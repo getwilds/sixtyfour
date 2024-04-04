@@ -7,7 +7,8 @@
 paginate_aws_token(fun, target, ...)
 }
 \arguments{
-\item{fun}{(function) a function to call}
+\item{fun}{(character) the name of a function to call - not the function
+itself}
 
 \item{target}{(character) a list element to get}
 

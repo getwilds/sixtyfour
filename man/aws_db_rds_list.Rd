@@ -9,6 +9,7 @@ aws_db_rds_list()
 \value{
 a tibble of instance details;
 see \url{https://www.paws-r-sdk.com/docs/describe_db_instances/}
+an empty tibble if no instances found
 }
 \description{
 Get information for all RDS instances

@@ -14,10 +14,10 @@ aws_secrets_list <- function(...) {
 #' Get all secret values
 #' @importFrom dplyr relocate last_col
 #' @export
-#' @return (list) list with secrets
+#' @return (tbl) with secrets
 #' @autoglobal
 #' @examples \dontrun{
-#' aws_secrets_list()
+#' aws_secrets_all()
 #' }
 aws_secrets_all <- function() {
   tmp <- paginate_aws_token(
@@ -37,8 +37,12 @@ aws_secrets_all <- function() {
       jsonlite::fromJSON(tmp[[i]]$SecretString)
     )
   }
-  Filter(function(x) length(x$host) > 0, new_secrets) %>%
-    bind_rows() %>%
+  # make all zero length elements character
+  new_secrets <- map(new_secrets, \(w) {
+    map(w, \(x) ifelse(length(x) == 0, character(), x))
+  })
+  # Filter(function(x) length(x$host) > 0, new_secrets) %>%
+  bind_rows(new_secrets) %>%
     relocate(arn, created_date, .after = last_col())
 }
 

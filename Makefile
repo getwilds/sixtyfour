@@ -71,3 +71,9 @@ minio_start:
 	MINIO_PWD=${MINIO_PWD} ;\
 	MINIO_ENDPOINT=${MINIO_ENDPOINT} ;\
 	minio server /tmp/minio --console-address :9090
+
+localstack_start:
+ifeq (, $(shell command -v localstack))
+	$(error "No localstack detected. See https://docs.localstack.cloud/getting-started/installation/")
+endif
+	localstack start

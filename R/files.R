@@ -58,6 +58,7 @@ aws_file_upload <- function(path, remote_path, force = FALSE, ...) {
   stopifnot(fs::file_exists(path))
   bucket <- path_s3_parse(remote_path)[[1]]$bucket
   bucket_create_if_not(bucket, force)
+  s3fs_creds_refresh()
   purrr::map2_vec(path, remote_path, s3fs::s3_file_copy, ...)
 }
 
@@ -94,6 +95,7 @@ aws_file_upload <- function(path, remote_path, force = FALSE, ...) {
 #' }
 aws_file_download <- function(remote_path, path, ...) {
   equal_lengths(remote_path, path)
+  s3fs_creds_refresh()
   res <- tryCatch(
     s3fs::s3_file_download(remote_path, path),
     error = function(e) e
@@ -115,7 +117,7 @@ aws_file_download <- function(remote_path, path, ...) {
 #' @param remote_path (character) one or more remote S3 paths. required
 #' @param ... named parameters passed on to [s3fs::s3_file_delete()]
 #' @family files
-#' @return (character) a vector of remote file paths
+#' @return `NULL` invisibly
 #' @examples \dontrun{
 #' # create a file
 #' tfile <- tempfile()
@@ -132,13 +134,19 @@ aws_file_delete <- function(remote_path, ...) {
   # FIXME: this s3fs fxn not working for some reason, not sure why yet
   # using paws for now
   # s3fs::s3_file_delete(remote_path, ...) #nolint
-  path_parsed <- path_s3_parse(remote_path)
+  map(remote_path, aws_file_delete_one, ...)
+  remote_path
+}
+
+aws_file_delete_one <- function(one_path, ...) {
+  path_parsed <- path_s3_parse(one_path)
   key <- if (nchar(path_parsed[[1]]$path)) {
     file.path(path_parsed[[1]]$path, path_parsed[[1]]$file)
   } else {
     path_parsed[[1]]$file
   }
   env64$s3$delete_object(path_parsed[[1]]$bucket, key)
+  invisible()
 }
 
 #' File attributes
@@ -160,6 +168,7 @@ aws_file_delete <- function(remote_path, ...) {
 aws_file_attr <- function(remote_path) {
   # TODO: error behavior isn't ideal b/c the error message doesn't indicate
   # which file does not exist
+  s3fs_creds_refresh()
   s3fs::s3_file_info(remote_path) %>% as_tibble()
 }
 
@@ -176,6 +185,7 @@ aws_file_attr <- function(remote_path) {
 #' aws_file_exists(s3_path("s64-test-2", c("DESCRIPTION", "doesntexist")))
 #' }
 aws_file_exists <- function(remote_path) {
+  s3fs_creds_refresh()
   s3fs::s3_file_exists(remote_path)
 }
 
@@ -205,6 +215,7 @@ aws_file_exists <- function(remote_path) {
 #' }
 aws_file_rename <- function(remote_path, new_remote_path, ...) {
   equal_lengths(remote_path, new_remote_path)
+  s3fs_creds_refresh()
   s3fs::s3_file_move(remote_path, new_remote_path, ...)
 }
 
@@ -247,5 +258,6 @@ aws_file_copy <- function(remote_path, bucket, force = FALSE, ...) {
   })
   new_paths <- path_s3_build(parsed)
   equal_lengths(remote_path, new_paths)
+  s3fs_creds_refresh()
   s3fs::s3_file_copy(remote_path, new_paths, ...)
 }

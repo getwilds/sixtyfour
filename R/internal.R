@@ -1,10 +1,15 @@
 #' Get account ID of current user
 #' @keywords internal
+#' @details If env var `AWS_PROFILE` == "localstack",
+#' return `"000000000000"`
 #' @return list with 3 elements:
 #' - UserId: the ID for the user
 #' - Account: account ID the user is in
 #' - Arn: arn for the user
 account_id <- memoise::memoise(function() {
+  if (Sys.getenv("AWS_PROFILE") == "localstack") {
+    return("000000000000")
+  }
   paws::sts()$get_caller_identity()$Account
 })
 

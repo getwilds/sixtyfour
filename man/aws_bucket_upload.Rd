@@ -26,6 +26,9 @@ non-interactive use.}
 
 \item{...}{named parameters passed on to \code{\link[s3fs:upload]{s3fs::s3_dir_upload()}}}
 }
+\value{
+the s3 format path of the bucket uploaded to
+}
 \description{
 Upload a folder of files to create an S3 bucket
 }
@@ -44,7 +47,7 @@ dir.create(tdir)
 tfiles <- replicate(n = 10, file_temp(tmp_dir = tdir, ext = ".txt"))
 invisible(lapply(tfiles, function(x) write.csv(mtcars, x)))
 
-bucket_name <- "a-new-bucket-345"
+bucket_name <- random_string("bucket")
 if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
 aws_bucket_upload(path = tdir, bucket = bucket_name)
 aws_bucket_list_objects(bucket_name)
@@ -52,6 +55,7 @@ aws_bucket_list_objects(bucket_name)
 # cleanup
 objs <- aws_bucket_list_objects(bucket_name)
 aws_file_delete(objs$uri)
+aws_bucket_list_objects(bucket_name)
 aws_bucket_delete(bucket_name, force = TRUE)
 aws_bucket_exists(bucket_name)
 \dontshow{\}) # examplesIf}

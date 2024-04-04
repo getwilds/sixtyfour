@@ -18,7 +18,7 @@ all_policies <- memoise::memoise(function(...) {
   if (Sys.getenv("TESTING64", FALSE)) {
     return(policies_sample)
   }
-  paginate_aws_marker(env64$iam$list_policies, "Policies", ...) %>%
+  paginate_aws_marker(con_iam()$list_policies, "Policies", ...) %>%
     policy_list_tidy()
 })
 
@@ -68,7 +68,7 @@ aws_policies <- function(refresh = FALSE, ...) {
 #' aws_policy("arn:aws:iam::aws:policy/ReadOnlyAccess")
 #' }
 aws_policy <- function(name, local = FALSE, path = NULL) {
-  env64$iam$get_policy(as_policy_arn(name, local, path))$Policy %>%
+  con_iam()$get_policy(as_policy_arn(name, local, path))$Policy %>%
     list(.) %>%
     policy_list_tidy()
 }
@@ -129,7 +129,7 @@ aws_policy_exists <- function(name) {
 aws_policy_create <- function(
     name, document, path = NULL,
     description = NULL, tags = NULL) {
-  env64$iam$create_policy(
+  con_iam()$create_policy(
     PolicyName = name,
     PolicyDocument = document,
     Path = path,
@@ -176,7 +176,7 @@ aws_policy_create <- function(
 #' aws_policy_create("RdsAllow456", document = doc)
 #' aws_policy_delete("RdsAllow456")
 aws_policy_delete <- function(name) {
-  env64$iam$delete_policy(PolicyArn = figure_out_policy_arn(name))
+  con_iam()$delete_policy(PolicyArn = figure_out_policy_arn(name))
 }
 
 #' Figure out policy Arn from a name
@@ -224,7 +224,7 @@ figure_out_policy_arn <- function(name) {
 #' aws_policy_create("RdsAllow456", document = doc)
 #' aws_policy_delete_version("RdsAllow456", "v1")
 aws_policy_delete_version <- function(name, version_id) {
-  env64$iam$delete_policy_version(
+  con_iam()$delete_policy_version(
     PolicyArn = figure_out_policy_arn(name),
     VersionId = version_id
   )
@@ -254,7 +254,7 @@ aws_policy_delete_version <- function(name, version_id) {
 #' }
 #' aws_policy_list_entities("S3ReadOnlyAccessS64Test22")
 aws_policy_list_entities <- function(name, ...) {
-  result <- env64$iam$list_entities_for_policy(
+  result <- con_iam()$list_entities_for_policy(
     PolicyArn = figure_out_policy_arn(name),
     ...
   )
@@ -290,7 +290,7 @@ aws_policy_list_versions <- function(name, ...) {
   vars <- c(
     "Document", "VersionId", "IsDefaultVersion", "CreateDate"
   )
-  env64$iam$list_policy_versions(
+  con_iam()$list_policy_versions(
     PolicyArn = figure_out_policy_arn(name), ...
   )$Versions %>%
     tidy_generator(vars)(.)
@@ -512,7 +512,7 @@ call_x_method <- function(x) {
 #' }
 aws_policy_attach <- function(.x, policy) {
   method <- glue::glue("attach_{entity_type(.x)}_policy")
-  env64$iam[[method]](entity_value(.x), figure_out_policy_arn(policy))
+  con_iam()[[method]](entity_value(.x), figure_out_policy_arn(policy))
   call_x_method(.x)
 }
 
@@ -532,7 +532,7 @@ aws_policy_attach <- function(.x, policy) {
 #' }
 aws_policy_detach <- function(.x, policy) {
   method <- glue::glue("detach_{entity_type(.x)}_policy")
-  env64$iam[[method]](entity_value(.x), figure_out_policy_arn(policy))
+  con_iam()[[method]](entity_value(.x), figure_out_policy_arn(policy))
   call_x_method(.x)
 }
 
@@ -569,7 +569,7 @@ entity_value <- function(x) {
 #' @keywords internal
 policies <- function(which, name) {
   method <- glue::glue("list_{which}_policies")
-  env64$iam[[method]](name)$PolicyNames
+  con_iam()[[method]](name)$PolicyNames
 }
 #' @importFrom dplyr bind_rows
 #' @param which (character) one of role, user, or group
@@ -579,7 +579,7 @@ policies <- function(which, name) {
 #' @keywords internal
 policies_attached <- function(which, name) {
   method <- glue::glue("list_attached_{which}_policies")
-  res <- env64$iam[[method]](name)
+  res <- con_iam()[[method]](name)
   res$AttachedPolicies %>% bind_rows()
 }
 

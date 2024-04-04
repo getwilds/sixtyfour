@@ -34,7 +34,10 @@ user_list_tidy <- function(x) {
 #' aws_users()
 #' }
 aws_users <- function(...) {
-  paginate_aws_marker(env64$iam$list_users, "Users", ...) %>%
+  users <- paginate_aws_marker("list_users", "Users", ...) %>%
+    user_list_tidy()
+  purrr::map(users$UserName, \(x) con_iam()$get_user(x)) %>%
+    purrr::map(purrr::pluck, "User") %>%
     user_list_tidy()
 }
 
@@ -66,7 +69,7 @@ aws_users <- function(...) {
 #' aws_user_delete("testBlueBird") # cleanup user
 #' }
 aws_user <- function(username = NULL) {
-  x <- env64$iam$get_user(username)$User %>%
+  x <- con_iam()$get_user(username)$User %>%
     list(.) %>%
     user_list_tidy()
   if (is.null(username)) username <- x$UserName
@@ -79,7 +82,7 @@ aws_user <- function(username = NULL) {
 }
 
 groups_for_user <- function(username) {
-  groups <- env64$iam$list_groups_for_user(username)
+  groups <- con_iam()$list_groups_for_user(username)
   group_list_tidy(groups$Groups)
 }
 
@@ -90,8 +93,8 @@ check_aws_user <- purrr::safely(aws_user, otherwise = FALSE)
 #' @export
 #' @param username (character) the user name
 #' @return a single boolean
-#' @details uses `aws_group` internally. see docs
-#' <https://www.paws-r-sdk.com/docs/iam_get_group/>
+#' @details uses [aws_user()] internally. see docs
+#' <https://www.paws-r-sdk.com/docs/iam_get_user/>
 #' @family users
 #' @examples \dontrun{
 #' aws_user_exists(aws_user_current())
@@ -130,7 +133,7 @@ aws_user_current <- function() {
 aws_user_create <- function(
     username, path = NULL, permission_boundary = NULL,
     tags = NULL) {
-  env64$iam$create_user(
+  con_iam()$create_user(
     Path = path,
     UserName = username,
     PermissionsBoundary = permission_boundary,
@@ -200,7 +203,7 @@ six_user_create <- function(
 #' aws_user_delete(username = "testBlueBird")
 #' }
 aws_user_delete <- function(username) {
-  env64$iam$delete_user(username)
+  con_iam()$delete_user(username)
   invisible()
 }
 
@@ -263,7 +266,7 @@ six_user_delete <- function(username) {
 #' docs for more details
 #' @family users
 aws_user_access_key <- function(username = NULL, ...) {
-  out <- env64$iam$list_access_keys(username, ...)
+  out <- con_iam()$list_access_keys(username, ...)
   if (length(out$AccessKeyMetadata) == 0) {
     cli::cli_alert_warning("No access keys found for {.strong {username}}")
     return(invisible())
@@ -280,7 +283,7 @@ aws_user_access_key <- function(username = NULL, ...) {
 #' not supply a username, `paws` will likely use the current user, and so
 #' may not be the user the access key id is associated - and then you'll get
 #' an error like `NoSuchEntity (HTTP 404). The Access Key with id
-#' AKIA22PL7JXX6X6O62OT cannot be found`
+#' xx cannot be found`
 #' @return NULL, invisibly
 #' @details See <https://www.paws-r-sdk.com/docs/iam_delete_access_key/>
 #' docs for more details
@@ -289,7 +292,7 @@ aws_user_access_key <- function(username = NULL, ...) {
 #' aws_user_access_key_delete(access_key_id = "adfasdfadfadfasdf")
 #' aws_user_access_key_delete(access_key_id = "adfasdf", username = "jane")
 aws_user_access_key_delete <- function(access_key_id, username = NULL) {
-  env64$iam$delete_access_key(UserName = username, AccessKeyId = access_key_id)
+  con_iam()$delete_access_key(UserName = username, AccessKeyId = access_key_id)
   cli::cli_alert_success("Access Key ID {.strong {access_key_id}} deleted")
   invisible()
 }
@@ -315,7 +318,7 @@ aws_user_access_key_delete <- function(access_key_id, username = NULL) {
 #' aws_user_remove_from_group("testBlueBird3", "testgroup3")
 #' }
 aws_user_add_to_group <- function(username, groupname) {
-  env64$iam$add_user_to_group(groupname, username)
+  con_iam()$add_user_to_group(groupname, username)
   aws_user(username)
 }
 
