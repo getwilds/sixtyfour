@@ -7,6 +7,9 @@
 #' @note leaves out: PermissionsBoundary, Tags, RoleLastUsed,
 #' MaxSessionDuration
 role_list_tidy <- function(x) {
+  if (rlang::is_empty(x)) {
+    return(tibble())
+  }
   vars <- c(
     "RoleName", "RoleId", "Path", "Arn", "CreateDate",
     "Description", "AssumeRolePolicyDocument"
@@ -25,7 +28,7 @@ role_list_tidy <- function(x) {
 #' aws_roles()
 #' }
 aws_roles <- function(...) {
-  paginate_aws_marker(con_iam()$list_roles, "Roles") %>% role_list_tidy()
+  paginate_aws_marker("list_roles", "Roles") %>% role_list_tidy()
 }
 
 #' Get a role
@@ -60,6 +63,18 @@ aws_role <- function(name) {
     policies = policies("role", name),
     attached_policies = policies_attached("role", name)
   )
+}
+
+check_aws_role <- purrr::safely(aws_role, otherwise = FALSE)
+
+#' Check if a role exists
+#'
+#' @export
+#' @inheritParms aws_role
+#' @return a single boolean
+#' @family roles
+aws_role_exists <- function(name) {
+  is.null(check_aws_role(name)$error)
 }
 
 #' Create a role

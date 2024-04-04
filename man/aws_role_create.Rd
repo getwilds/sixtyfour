@@ -74,6 +74,7 @@ z \%>\% aws_policy_attach("AWSLambdaBasicExecutionRole")
 \seealso{
 Other roles: 
 \code{\link{aws_role_delete}()},
+\code{\link{aws_role_exists}()},
 \code{\link{aws_roles}()},
 \code{\link{aws_role}()}
 }

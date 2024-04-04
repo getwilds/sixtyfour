@@ -2,7 +2,7 @@
 #'
 #' @export
 #' @param interface the s3 compatible interface to use.
-#' options: "aws" (default), "minio"
+#' options: "aws" (default), "minio", or "localstack"
 #' @return a `paws` s3 client object of class `list`
 #' @keywords internal
 #' @details
@@ -21,7 +21,7 @@
 #' For [s3fs::s3_file_system()] we set `refresh=TRUE` so that
 #' you can change the s3 interface within an R session.
 set_s3_interface <- function(interface = "aws") {
-  interfaces <- c("aws", "minio")
+  interfaces <- c("aws", "minio", "localstack")
   if (!interface %in% interfaces) {
     msg <- "'interface' must be one of"
     stop(glue::glue("{msg} {paste(interfaces, collapse=', ')}"))
@@ -30,6 +30,16 @@ set_s3_interface <- function(interface = "aws") {
   # package paws
   if (interface == "aws") {
     s3con <- paws::s3()
+  } else if (interface == "localstack") {
+    s3con <- paws::s3(
+      credentials = list(
+        creds = list(
+          access_key_id = "NOTAREALKEY",
+          secret_access_key = "AREALLYFAKETOKEN"
+        )
+      ),
+      endpoint = LOCALSTACK_ENDPOINT
+    )
   } else {
     s3con <- paws::s3(config = list(
       credentials = list(
@@ -48,6 +58,13 @@ set_s3_interface <- function(interface = "aws") {
       aws_access_key_id = Sys.getenv("AWS_ACCESS_KEY_ID"),
       aws_secret_access_key = Sys.getenv("AWS_SECRET_ACCESS_KEY"),
       region_name = Sys.getenv("AWS_REGION"),
+      refresh = TRUE
+    )
+  } else if (interface == "localstack") {
+    s3fs::s3_file_system(
+      aws_access_key_id = "NOTAREALKEY",
+      aws_secret_access_key = "AREALLYFAKETOKEN",
+      endpoint = LOCALSTACK_ENDPOINT,
       refresh = TRUE
     )
   } else {

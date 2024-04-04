@@ -281,8 +281,9 @@ aws_bucket_permissions <- function(bucket) {
   if (!aws_bucket_exists(bucket)) {
     cli::cli_abort("{.strong {bucket}} does not exist")
   }
+  perms <- permissions_user_bucket(bucket)
   user_perms <-
-    permissions_user_bucket(bucket) %>%
+    perms %>%
     mutate(
       permissions = case_when(
         grepl("read", tolower(PolicyName)) ~ "read",
@@ -398,10 +399,19 @@ aws_user_creds <- function(username, copy_to_cp = FALSE) {
   invisible(creds$AccessKey)
 }
 
+empty_tibble <- function() {
+  tibble(
+    user = character(),
+    permissions = character(),
+    policy_read = character(),
+    policy_admin = character()
+  )
+}
+
 #' @autoglobal
 permissions_user_bucket <- function(bucket) {
   aws_user_mem <- memoise::memoise(aws_user)
-  aws_users()$UserName %>%
+  tmp <- aws_users()$UserName %>%
     keep(\(user) NROW(aws_user_mem(user)$attached_policies) > 0) %>%
     map(\(user) {
       aws_user_mem(user)$attached_policies %>%
@@ -414,14 +424,16 @@ permissions_user_bucket <- function(bucket) {
         ) %>%
         ungroup()
     }) %>%
-    list_rbind() %>%
+    list_rbind()
+  if (rlang::is_empty(tmp)) return(empty_tibble())
+  tmp %>%
     filter(map_lgl(resource_arn, \(w) any(grepl(bucket, unlist(w)))))
 }
 
 #' @autoglobal
 permissions_groups <- function() {
   aws_user_mem <- memoise::memoise(aws_user)
-  aws_users()$UserName %>%
+  tmp <- aws_users()$UserName %>%
     keep(\(user) length(aws_user_mem(user)$groups$Groups) > 0) %>%
     map(\(user) {
       tibble(
@@ -429,7 +441,9 @@ permissions_groups <- function() {
         group = map_chr(aws_user_mem(user)$groups$Groups, "GroupName")
       )
     }) %>%
-    list_rbind() %>%
+    list_rbind()
+  if (rlang::is_empty(tmp)) return(select(empty_tibble(), user, permissions))
+  tmp %>%
     filter(group == "admin") %>%
     rename(permissions = group)
 }

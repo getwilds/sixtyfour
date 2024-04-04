@@ -17,4 +17,8 @@ list with 3 elements:
 \description{
 Get account ID of current user
 }
+\details{
+If env var \code{AWS_PROFILE} == "localstack",
+return \code{"000000000000"}
+}
 \keyword{internal}

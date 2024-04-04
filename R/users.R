@@ -6,6 +6,9 @@
 #' @autoglobal
 #' @keywords internal
 user_list_tidy <- function(x) {
+  if (rlang::is_empty(x)) {
+    return(tibble())
+  }
   vars <- c(
     "UserName", "UserId", "Path", "Arn", "CreateDate",
     "PasswordLastUsed"
@@ -31,9 +34,9 @@ user_list_tidy <- function(x) {
 #' aws_users()
 #' }
 aws_users <- function(...) {
-  users <- paginate_aws_marker(con_iam()$list_users, "Users", ...) %>%
+  users <- paginate_aws_marker("list_users", "Users", ...) %>%
     user_list_tidy()
-  purrr::map(users$UserName, con_iam()$get_user) %>%
+  purrr::map(users$UserName, \(x) con_iam()$get_user(x)) %>%
     purrr::map(purrr::pluck, "User") %>%
     user_list_tidy()
 }

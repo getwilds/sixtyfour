@@ -206,7 +206,7 @@ aws_bucket_upload <- function(
 #' )
 #' aws_bucket_list_objects(bucket = bucket_name)
 aws_bucket_list_objects <- function(bucket, ...) {
-  s3fs_creds_refresh()
+  # s3fs_creds_refresh()
   out <- s3fs::s3_dir_info(bucket, ...)
   if (is.data.frame(out) && NROW(out) > 0) {
     as_tibble(out)

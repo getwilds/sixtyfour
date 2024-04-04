@@ -5,6 +5,9 @@
 #' [list_users](https://www.paws-r-sdk.com/docs/iam_list_gtroups/)
 #' @keywords internal
 group_list_tidy <- function(x) {
+  if (rlang::is_empty(x)) {
+    return(tibble())
+  }
   vars <- c("GroupName", "GroupId", "Path", "Arn", "CreateDate")
   tidy_generator(vars)(x)
 }
@@ -23,10 +26,10 @@ group_list_tidy <- function(x) {
 #' }
 aws_groups <- function(username = NULL, ...) {
   if (is.null(username)) {
-    paginate_aws_marker(con_iam()$list_groups, "Groups", ...) %>%
+    paginate_aws_marker("list_groups", "Groups", ...) %>%
       group_list_tidy()
   } else {
-    paginate_aws_marker(con_iam()$list_groups_for_user, "Groups",
+    paginate_aws_marker("list_groups_for_user", "Groups",
       UserName = username, ...
     ) %>%
       group_list_tidy()
