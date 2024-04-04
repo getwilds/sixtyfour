@@ -265,7 +265,7 @@ aws_user_access_key <- function(username = NULL, ...) {
 #' not supply a username, `paws` will likely use the current user, and so
 #' may not be the user the access key id is associated - and then you'll get
 #' an error like `NoSuchEntity (HTTP 404). The Access Key with id
-#' AKIA22PL7JXX6X6O62OT cannot be found`
+#' xx cannot be found`
 #' @return NULL, invisibly
 #' @details See <https://www.paws-r-sdk.com/docs/iam_delete_access_key/>
 #' docs for more details

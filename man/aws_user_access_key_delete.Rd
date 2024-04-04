@@ -13,7 +13,7 @@ and secret access key you want to delete. required.}
 \item{username}{(character) A user name. optional. however, if you do
 not supply a username, \code{paws} will likely use the current user, and so
 may not be the user the access key id is associated - and then you'll get
-an error like \verb{NoSuchEntity (HTTP 404). The Access Key with id AKIA22PL7JXX6X6O62OT cannot be found}}
+an error like \verb{NoSuchEntity (HTTP 404). The Access Key with id xx cannot be found}}
 }
 \value{
 NULL, invisibly

@@ -70,7 +70,7 @@ check_aws_role <- purrr::safely(aws_role, otherwise = FALSE)
 #' Check if a role exists
 #'
 #' @export
-#' @inheritParms aws_role
+#' @inheritParams aws_role
 #' @return a single boolean
 #' @family roles
 aws_role_exists <- function(name) {

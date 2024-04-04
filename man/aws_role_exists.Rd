@@ -6,6 +6,9 @@
 \usage{
 aws_role_exists(name)
 }
+\arguments{
+\item{name}{(character) the role name}
+}
 \value{
 a single boolean
 }
