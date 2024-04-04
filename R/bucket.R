@@ -155,7 +155,7 @@ six_bucket_delete <- function(bucket, force = FALSE, ...) {
 
     # check for empty folders & delete thoes too
     empties <- list_obs(bucket)
-    if (!rlang::is_empty(empties)) {
+    if (!rlang::is_empty(empties$result)) {
       purrr::map(empties$result$uri, \(x) aws_file_delete(x))
     }
   }
