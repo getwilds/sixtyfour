@@ -1,3 +1,8 @@
+bucket_checks <- function(bucket) {
+  stop_if_not(rlang::is_character(bucket), "bucket must be character")
+  stop_if_not(length(bucket) == 1, "length(bucket) != 1")
+}
+
 #' Check if an S3 bucket exists
 #'
 #' @export
@@ -13,8 +18,7 @@
 #' aws_bucket_exists(bucket = "no-bucket")
 #' }
 aws_bucket_exists <- function(bucket) {
-  stop_if_not(rlang::is_character(bucket), "bucket must be character")
-  stop_if_not(length(bucket) == 1, "length(bucket) != 1")
+  bucket_checks(bucket)
   res <- tryCatch(
     {
       env64$s3$head_bucket(Bucket = bucket)
@@ -37,8 +41,7 @@ aws_bucket_exists <- function(bucket) {
 #' aws_bucket_create(bucket = "s64-test-2")
 #' }
 aws_bucket_create <- function(bucket, ...) {
-  stop_if_not(rlang::is_character(bucket), "bucket must be character")
-  stop_if_not(length(bucket) == 1, "length(bucket) != 1")
+  bucket_checks(bucket)
   env64$s3$create_bucket(
     Bucket = bucket,
     CreateBucketConfiguration =
@@ -85,9 +88,7 @@ bucket_create_if_not <- function(bucket, force = FALSE) {
 #'   aws_buckets()
 #' }
 aws_bucket_delete <- function(bucket, force = FALSE, ...) {
-  stop_if_not(rlang::is_character(bucket), "bucket must be character")
-  stop_if_not(length(bucket) == 1, "length(bucket) != 1")
-  # TODO: add a package level option to override the prompt for adv. users
+  bucket_checks(bucket)
   if (!force) {
     if (yesno("Are you sure you want to delete {.strong {bucket}}?")) {
       return(invisible())
@@ -95,6 +96,72 @@ aws_bucket_delete <- function(bucket, force = FALSE, ...) {
   }
   env64$s3$delete_bucket(Bucket = bucket, ...)
   return(invisible())
+}
+
+#' Delete an S3 bucket
+#'
+#' Takes care of deleting bucket objects, so that the bucket itself
+#' can be deleted cleanly
+#'
+#' @export
+#' @importFrom purrr safely
+#' @inherit aws_bucket_delete
+#' @section What is magical:
+#' - Exits early if bucket does not exist
+#' - Checks for any objects in the bucket and deletes any present
+#' - Deletes bucket after deleting objects
+#' @family magicians
+#' @examplesIf interactive()
+#' # bucket does not exist
+#' six_bucket_delete("notabucket")
+#'
+#' # bucket exists w/o objects
+#' bucket <- random_string("bucket")
+#' aws_bucket_create(bucket)
+#' six_bucket_delete(bucket)
+#'
+#' # bucket exists w/ objects (files and directories with files)
+#' bucket <- random_string("bucket")
+#' aws_bucket_create(bucket)
+#' demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
+#' links_file <- file.path(system.file(), "Meta/links.rds")
+#' aws_file_upload(
+#'   c(demo_rds_file, links_file),
+#'   s3_path(bucket, c(basename(demo_rds_file), basename(links_file)))
+#' )
+#' aws_file_upload(
+#'   c(demo_rds_file, links_file),
+#'   s3_path(bucket, "newfolder",
+#'    c(basename(demo_rds_file), basename(links_file)))
+#' )
+#'
+#' six_bucket_delete(bucket)
+six_bucket_delete <- function(bucket, force = FALSE, ...) {
+  bucket_checks(bucket)
+  if (!aws_bucket_exists(bucket)) {
+    cli_warning("bucket {.strong {bucket}} does not exist; exiting")
+    return(invisible())
+  }
+  list_obs <- safely(aws_bucket_list_objects)
+  objects <- list_obs(bucket)
+  if (rlang::is_empty(objects$result)) {
+    cli_info("bucket {.strong {bucket}} has no objects")
+  } else {
+    cli_info(c(
+      "bucket {.strong {bucket}} has {length(objects$result$uri)} objects - ",
+      "deleting them now"
+    ))
+    purrr::map(objects$result$uri, \(x) aws_file_delete(x))
+
+    # check for empty folders & delete thoes too
+    empties <- list_obs(bucket)
+    if (!rlang::is_empty(empties)) {
+      purrr::map(empties$result$uri, \(x) aws_file_delete(x))
+    }
+  }
+  cli_info("deleting bucket {.strong {bucket}}")
+  aws_bucket_delete(bucket, force, ...)
+  invisible()
 }
 
 #' Download an S3 bucket
@@ -182,9 +249,10 @@ aws_bucket_upload <- function(
 #' List objects in an S3 bucket
 #'
 #' @export
-#' @importFrom s3fs s3_dir_info
+#' @autoglobal
 #' @param bucket (character) bucket name. required
-#' @param ... named parameters passed on to [s3fs::s3_dir_info()]
+#' @param ... named parameters passed on to
+#' [list_objects](https://www.paws-r-sdk.com/docs/s3_list_objects/)
 #' @family buckets
 #' @return if no objects found, an empty tibble. if tibble has rows each
 #' is an S3 bucket, with 8 columns:
@@ -206,13 +274,25 @@ aws_bucket_upload <- function(
 #' )
 #' aws_bucket_list_objects(bucket = bucket_name)
 aws_bucket_list_objects <- function(bucket, ...) {
-  # s3fs_creds_refresh()
-  out <- s3fs::s3_dir_info(bucket, ...)
-  if (is.data.frame(out) && NROW(out) > 0) {
-    as_tibble(out)
-  } else {
-    tibble()
-  }
+  out <- env64$s3$list_objects(bucket, ...)
+  if (rlang::is_empty(out$Contents)) return(tibble())
+  as_tibble(jsonlite::fromJSON(
+      jsonlite::toJSON(out$Contents, auto_unbox = TRUE),
+      flatten = TRUE
+    )) %>%
+    mutate(
+      bucket = bucket,
+      uri = glue("s3://{bucket}/{Key}"),
+      Size = fs::as_fs_bytes(Size),
+      LastModified = as_datetime(LastModified)
+    ) %>%
+    rowwise() %>%
+    mutate(
+      type = if (endsWith(Key, "/")) "directory" else "file"
+    ) %>%
+    ungroup() %>%
+    rename_with(tolower) %>%
+    select(bucket, key, uri, size, type, etag, lastmodified, storageclass)
 }
 
 #' List S3 buckets

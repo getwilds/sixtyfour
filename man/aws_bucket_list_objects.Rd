@@ -9,7 +9,8 @@ aws_bucket_list_objects(bucket, ...)
 \arguments{
 \item{bucket}{(character) bucket name. required}
 
-\item{...}{named parameters passed on to \code{\link[s3fs:info]{s3fs::s3_dir_info()}}}
+\item{...}{named parameters passed on to
+\href{https://www.paws-r-sdk.com/docs/s3_list_objects/}{list_objects}}
 }
 \value{
 if no objects found, an empty tibble. if tibble has rows each

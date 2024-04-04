@@ -6,6 +6,16 @@ utils::globalVariables(c(
   "service_map", # <billing_factory>
   "acronym", # <billing_factory>
   "Service", # <billing_factory>
+  "Size", # <aws_bucket_list_objects>
+  "LastModified", # <aws_bucket_list_objects>
+  "Key", # <aws_bucket_list_objects>
+  "key", # <aws_bucket_list_objects>
+  "uri", # <aws_bucket_list_objects>
+  "size", # <aws_bucket_list_objects>
+  "type", # <aws_bucket_list_objects>
+  "etag", # <aws_bucket_list_objects>
+  "lastmodified", # <aws_bucket_list_objects>
+  "storageclass", # <aws_bucket_list_objects>
   "DBInstanceArn", # <aws_db_rds_list>
   ".", # <aws_group>
   ".", # <aws_policy>

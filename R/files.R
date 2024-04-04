@@ -140,12 +140,16 @@ aws_file_delete <- function(remote_path, ...) {
 
 aws_file_delete_one <- function(one_path, ...) {
   path_parsed <- path_s3_parse(one_path)
-  key <- if (nchar(path_parsed[[1]]$path)) {
+  trailing_slash <- grepl("/$", one_path)
+  key <- if (nzchar(path_parsed[[1]]$path)) {
     file.path(path_parsed[[1]]$path, path_parsed[[1]]$file)
   } else {
     path_parsed[[1]]$file
   }
-  env64$s3$delete_object(path_parsed[[1]]$bucket, key)
+  env64$s3$delete_object(
+    path_parsed[[1]]$bucket,
+    glue("{key}{ifelse(trailing_slash, '/', '')}")
+  )
   invisible()
 }
 
