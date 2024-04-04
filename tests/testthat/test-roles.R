@@ -65,7 +65,8 @@ test_that("aws_roles", {
 test_that("aws_role_create", {
   create_role_role <- random_string("role")
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
+    c("AWS_PROFILE" = "localstack"),
+    {
       if (aws_role_exists(create_role_role)) {
         aws_role_delete(create_role_role)
       }
@@ -98,7 +99,8 @@ test_that("aws_role_create", {
   expect_equal(NROW(created_role), 1)
 
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
+    c("AWS_PROFILE" = "localstack"),
+    {
       z <- aws_role_delete(create_role_role)
     }
   )

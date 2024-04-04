@@ -7,7 +7,9 @@
 #' - Account: account ID the user is in
 #' - Arn: arn for the user
 account_id <- memoise::memoise(function() {
-  if (Sys.getenv("AWS_PROFILE") == "localstack") return("000000000000")
+  if (Sys.getenv("AWS_PROFILE") == "localstack") {
+    return("000000000000")
+  }
   paws::sts()$get_caller_identity()$Account
 })
 

@@ -3,14 +3,16 @@ skip_if_not(localstack_available(), "LocalStack Not Available")
 
 # setup
 withr::with_envvar(
-  c("AWS_PROFILE" = "localstack"), {
-  st8ment1 <- aws_policy_statement("iam:GetUser", "*")
-  st8ment2 <- aws_policy_statement("s3:ListAllMyBuckets", "*")
-  doc <- aws_policy_document_create(st8ment1, st8ment2)
-  test_policy_name <- random_string("policy")
-  if (aws_policy_exists(test_policy_name)) aws_policy_delete(test_policy_name)
-  aws_policy_create(test_policy_name, document = doc)
-})
+  c("AWS_PROFILE" = "localstack"),
+  {
+    st8ment1 <- aws_policy_statement("iam:GetUser", "*")
+    st8ment2 <- aws_policy_statement("s3:ListAllMyBuckets", "*")
+    doc <- aws_policy_document_create(st8ment1, st8ment2)
+    test_policy_name <- random_string("policy")
+    if (aws_policy_exists(test_policy_name)) aws_policy_delete(test_policy_name)
+    aws_policy_create(test_policy_name, document = doc)
+  }
+)
 
 test_that("aws_policy_list_entities", {
   withr::with_envvar(
@@ -22,11 +24,13 @@ test_that("aws_policy_list_entities", {
   expect_equal(NROW(polents_empty), 0)
 
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    user <- random_user()
-    aws_user_create(user)
-    aws_user(user) %>% aws_policy_attach(test_policy_name)
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      user <- random_user()
+      aws_user_create(user)
+      aws_user(user) %>% aws_policy_attach(test_policy_name)
+    }
+  )
 
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
@@ -39,21 +43,25 @@ test_that("aws_policy_list_entities", {
 
   # cleanup
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    withr::with_options(
-      list(cli.default_handler = function(...) { }),
-      six_user_delete(user)
-    )
-    aws_policy_delete(test_policy_name)
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      withr::with_options(
+        list(cli.default_handler = function(...) { }),
+        six_user_delete(user)
+      )
+      aws_policy_delete(test_policy_name)
+    }
+  )
 })
 
 test_that("aws_policy", {
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    res_name <- aws_policy("ReadOnlyAccess")
-    res_arn <- aws_policy("arn:aws:iam::aws:policy/ReadOnlyAccess")
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      res_name <- aws_policy("ReadOnlyAccess")
+      res_arn <- aws_policy("arn:aws:iam::aws:policy/ReadOnlyAccess")
+    }
+  )
 
   expect_s3_class(res_arn, "tbl")
   expect_true("PolicyName" %in% names(res_arn))
@@ -65,10 +73,12 @@ test_that("aws_policy", {
 
 test_that("aws_policy_exists", {
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    res_true <- aws_policy_exists("ReadOnlyAccess")
-    res_false <- aws_policy_exists("Flurrrrb")
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      res_true <- aws_policy_exists("ReadOnlyAccess")
+      res_false <- aws_policy_exists("Flurrrrb")
+    }
+  )
 
   expect_true(res_true)
   expect_false(res_false)
@@ -94,16 +104,20 @@ test_that("aws_policy_attach", {
   user1 <- "useratfwdqpi"
 
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    aws_user_create(user1)
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      aws_user_create(user1)
+    }
+  )
 
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    user_before <- aws_user(user1)
-    user_after <- aws_user(user1) %>%
-      aws_policy_attach(policy_name)
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      user_before <- aws_user(user1)
+      user_after <- aws_user(user1) %>%
+        aws_policy_attach(policy_name)
+    }
+  )
 
   expect_type(user_before, "list")
   expect_type(user_after, "list")
@@ -113,13 +127,15 @@ test_that("aws_policy_attach", {
 
   # cleanup
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    if (aws_user_exists(user1)) {
-      aws_user(user1) %>%
-        aws_policy_detach(policy_name)
-      aws_user_delete(user1)
+    c("AWS_PROFILE" = "localstack"),
+    {
+      if (aws_user_exists(user1)) {
+        aws_user(user1) %>%
+          aws_policy_detach(policy_name)
+        aws_user_delete(user1)
+      }
     }
-  })
+  )
 })
 
 test_that("aws_policy_detach", {
@@ -127,22 +143,28 @@ test_that("aws_policy_detach", {
   user <- "userbnwaqdif"
 
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    aws_user_create(user)
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      aws_user_create(user)
+    }
+  )
 
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    aws_user(user) %>%
-      aws_policy_attach(policy_name)
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      aws_user(user) %>%
+        aws_policy_attach(policy_name)
+    }
+  )
 
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    user_before <- aws_user(user)
-    user_after <- aws_user(user) %>%
-      aws_policy_detach(policy_name)
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      user_before <- aws_user(user)
+      user_after <- aws_user(user) %>%
+        aws_policy_detach(policy_name)
+    }
+  )
 
   expect_type(user_before, "list")
   expect_type(user_after, "list")
@@ -152,11 +174,13 @@ test_that("aws_policy_detach", {
 
   # cleanup
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    if (aws_user_exists(user)) {
-      aws_user_delete(user)
+    c("AWS_PROFILE" = "localstack"),
+    {
+      if (aws_user_exists(user)) {
+        aws_user_delete(user)
+      }
     }
-  })
+  )
 })
 
 test_that("aws_policy_document_create", {
@@ -187,9 +211,11 @@ test_that("aws_policy_create", {
   policy_name <- "MyTestPolicy"
 
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    polisee <- aws_policy_create(policy_name, document = my_doc)
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      polisee <- aws_policy_create(policy_name, document = my_doc)
+    }
+  )
 
   expect_type(polisee, "list")
   expect_named(polisee, "Policy")
@@ -197,9 +223,11 @@ test_that("aws_policy_create", {
 
   # cleanup
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    if (aws_policy_exists(policy_name)) {
-      aws_policy_delete(policy_name)
+    c("AWS_PROFILE" = "localstack"),
+    {
+      if (aws_policy_exists(policy_name)) {
+        aws_policy_delete(policy_name)
+      }
     }
-  })
+  )
 })

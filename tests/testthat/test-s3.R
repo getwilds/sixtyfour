@@ -58,38 +58,41 @@ test_that("aws_bucket_add_user", {
   )
 
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    withr::with_options(
-      list(cli.default_handler = function(...) { }),
-      {
-        user_added <- aws_bucket_add_user(
-          bucket = bucket_name,
-          username = user_name,
-          permissions = "read"
-        )
-      }
-    )
-
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      withr::with_options(
+        list(cli.default_handler = function(...) { }),
+        {
+          user_added <- aws_bucket_add_user(
+            bucket = bucket_name,
+            username = user_name,
+            permissions = "read"
+          )
+        }
+      )
+    }
+  )
 
   expect_null(user_added)
 
   # cleanup
   policy_name <- bucket_to_policy_name(bucket_name, "read")
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    if (aws_user_exists(user_name)) {
-      aws_user(user_name) %>%
-        aws_policy_detach(policy_name)
-      aws_user_delete(user_name)
+    c("AWS_PROFILE" = "localstack"),
+    {
+      if (aws_user_exists(user_name)) {
+        aws_user(user_name) %>%
+          aws_policy_detach(policy_name)
+        aws_user_delete(user_name)
+      }
+      if (aws_policy_exists(policy_name)) {
+        aws_policy_delete(policy_name)
+      }
+      if (aws_bucket_exists(bucket_name)) {
+        aws_bucket_delete(bucket_name, force = TRUE)
+      }
     }
-    if (aws_policy_exists(policy_name)) {
-      aws_policy_delete(policy_name)
-    }
-    if (aws_bucket_exists(bucket_name)) {
-      aws_bucket_delete(bucket_name, force = TRUE)
-    }
-  })
+  )
 })
 
 
@@ -99,10 +102,12 @@ test_that("aws_bucket_permissions", {
   user1 <- random_string("user")
   user2 <- random_string("user")
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    aws_user_create(user1)
-    aws_user_create(user2)
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      aws_user_create(user1)
+      aws_user_create(user2)
+    }
+  )
 
   bucket_name <- random_string("bucket")
   withr::with_envvar(
@@ -111,24 +116,25 @@ test_that("aws_bucket_permissions", {
   )
 
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    withr::with_options(
-      list(cli.default_handler = function(...) { }),
-      {
-        aws_bucket_add_user(
-          bucket = bucket_name,
-          username = user1,
-          permissions = "read"
-        )
-        aws_bucket_add_user(
-          bucket = bucket_name,
-          username = user2,
-          permissions = "read"
-        )
-      }
-    )
-
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      withr::with_options(
+        list(cli.default_handler = function(...) { }),
+        {
+          aws_bucket_add_user(
+            bucket = bucket_name,
+            username = user1,
+            permissions = "read"
+          )
+          aws_bucket_add_user(
+            bucket = bucket_name,
+            username = user2,
+            permissions = "read"
+          )
+        }
+      )
+    }
+  )
 
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
@@ -139,23 +145,25 @@ test_that("aws_bucket_permissions", {
 
   # cleanup
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    if (aws_user_exists(user1)) {
-      withr::with_options(
-        list(cli.default_handler = function(...) { }),
-        six_user_delete(user1)
-      )
+    c("AWS_PROFILE" = "localstack"),
+    {
+      if (aws_user_exists(user1)) {
+        withr::with_options(
+          list(cli.default_handler = function(...) { }),
+          six_user_delete(user1)
+        )
+      }
+      if (aws_user_exists(user2)) {
+        withr::with_options(
+          list(cli.default_handler = function(...) { }),
+          six_user_delete(user2)
+        )
+      }
+      if (aws_bucket_exists(bucket_name)) {
+        aws_bucket_delete(bucket_name, force = TRUE)
+      }
     }
-    if (aws_user_exists(user2)) {
-      withr::with_options(
-        list(cli.default_handler = function(...) { }),
-        six_user_delete(user2)
-      )
-    }
-    if (aws_bucket_exists(bucket_name)) {
-      aws_bucket_delete(bucket_name, force = TRUE)
-    }
-  })
+  )
 })
 
 
@@ -165,18 +173,22 @@ test_that("aws_bucket_remove_user", {
   #   the_user <- aws_user_create(user_name)
   # })
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    aws_user_create(user_name)
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      aws_user_create(user_name)
+    }
+  )
 
   bucket_name <- random_string("bucket")
   # vcr::use_cassette("aws_bucket_remove_user_setup_bucket", {
   #   aws_bucket_create(bucket_name)
   # })
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    aws_bucket_create(bucket_name)
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      aws_bucket_create(bucket_name)
+    }
+  )
 
   # vcr::use_cassette("aws_bucket_remove_user_setup_add_user", {
   #   withr::with_options(
@@ -191,18 +203,20 @@ test_that("aws_bucket_remove_user", {
   #   )
   # })
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    withr::with_options(
-      list(cli.default_handler = function(...) { }),
-      {
-        aws_bucket_add_user(
-          bucket = bucket_name,
-          username = user_name,
-          permissions = "read"
-        )
-      }
-    )
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      withr::with_options(
+        list(cli.default_handler = function(...) { }),
+        {
+          aws_bucket_add_user(
+            bucket = bucket_name,
+            username = user_name,
+            permissions = "read"
+          )
+        }
+      )
+    }
+  )
 
   # vcr::use_cassette("aws_bucket_remove_user", {
   #   withr::with_options(
@@ -216,37 +230,41 @@ test_that("aws_bucket_remove_user", {
   #   )
   # })
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    withr::with_options(
-      list(cli.default_handler = function(...) { }),
-      {
-        user_removed <- aws_bucket_remove_user(
-          bucket = bucket_name,
-          username = user_name
-        )
-      }
-    )
-  })
+    c("AWS_PROFILE" = "localstack"),
+    {
+      withr::with_options(
+        list(cli.default_handler = function(...) { }),
+        {
+          user_removed <- aws_bucket_remove_user(
+            bucket = bucket_name,
+            username = user_name
+          )
+        }
+      )
+    }
+  )
 
   expect_null(user_removed)
 
   # cleanup
   policy_name <- bucket_to_policy_name(bucket_name, "read")
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
-    if (aws_user_exists(user_name)) {
-      withr::with_options(
-        list(cli.default_handler = function(...) { }),
-        six_user_delete(user_name)
-      )
+    c("AWS_PROFILE" = "localstack"),
+    {
+      if (aws_user_exists(user_name)) {
+        withr::with_options(
+          list(cli.default_handler = function(...) { }),
+          six_user_delete(user_name)
+        )
+      }
+      if (aws_policy_exists(policy_name)) {
+        aws_policy_delete(policy_name)
+      }
+      if (aws_bucket_exists(bucket_name)) {
+        aws_bucket_delete(bucket_name, force = TRUE)
+      }
     }
-    if (aws_policy_exists(policy_name)) {
-      aws_policy_delete(policy_name)
-    }
-    if (aws_bucket_exists(bucket_name)) {
-      aws_bucket_delete(bucket_name, force = TRUE)
-    }
-  })
+  )
 })
 
 # cleanup

@@ -425,7 +425,9 @@ permissions_user_bucket <- function(bucket) {
         ungroup()
     }) %>%
     list_rbind()
-  if (rlang::is_empty(tmp)) return(empty_tibble())
+  if (rlang::is_empty(tmp)) {
+    return(empty_tibble())
+  }
   tmp %>%
     filter(map_lgl(resource_arn, \(w) any(grepl(bucket, unlist(w)))))
 }
@@ -442,7 +444,9 @@ permissions_groups <- function() {
       )
     }) %>%
     list_rbind()
-  if (rlang::is_empty(tmp)) return(select(empty_tibble(), user, permissions))
+  if (rlang::is_empty(tmp)) {
+    return(select(empty_tibble(), user, permissions))
+  }
   tmp %>%
     filter(group == "admin") %>%
     rename(permissions = group)

@@ -24,7 +24,8 @@ test_that("aws_group", {
 
 test_that("aws_group_exists", {
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
+    c("AWS_PROFILE" = "localstack"),
+    {
       extant <- aws_group_exists(the_group)
       extinct <- aws_group_exists("notathing")
     }
@@ -49,7 +50,8 @@ test_that("aws_groups", {
 test_that("aws_group_create_and_delete", {
   create_group_group <- random_string("group")
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
+    c("AWS_PROFILE" = "localstack"),
+    {
       if (aws_group_exists(create_group_group)) {
         aws_group_delete(create_group_group)
       }
@@ -63,7 +65,8 @@ test_that("aws_group_create_and_delete", {
   expect_equal(NROW(created_group), 1)
 
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
+    c("AWS_PROFILE" = "localstack"),
+    {
       z <- aws_group_delete(create_group_group)
     }
   )

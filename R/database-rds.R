@@ -201,7 +201,9 @@ split_grep <- function(column, split, pattern) {
 aws_db_rds_list <- function() {
   lst <- instance_details()
   dbs <- lst$DBInstances
-  if (rlang::is_empty(dbs)) return(tibble())
+  if (rlang::is_empty(dbs)) {
+    return(tibble())
+  }
   map(dbs, \(x) {
     as_tibble(x[c(
       "DBInstanceIdentifier",
