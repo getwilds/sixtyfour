@@ -52,24 +52,3 @@ set_s3_interface <- function(interface = "aws") {
     paws::s3()
   }
 }
-
-#' Copy of `testthat::is_testing`
-#' @noRd
-#' @return single boolean
-is_testing <- function() {
-  identical(Sys.getenv("TESTTHAT"), "true")
-}
-
-#' Refresh creds for the s3fs package
-#'
-#' Refreshes only if not running tests
-#'
-#' @keywords internal
-#' @details utility function to update creds for use with any
-#' `s3fs` functions. We do load creds for `s3fs` on package load
-#' but if creds are changed mid-R session, then we would still be
-#' using the creds used at package load time
-#' @return nothing, updates creds with [s3fs::s3_file_system()]
-s3fs_creds_refresh <- function() {
-  if (!is_testing()) s3fs::s3_file_system(refresh = TRUE)
-}

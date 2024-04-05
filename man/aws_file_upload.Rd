@@ -51,7 +51,8 @@ aws_file_upload(demo_rds_file, "s3://not-a-bucket/eee.rds")
 # path doesn't exist
 aws_file_upload(
   "file_doesnt_exist.txt",
-  s3_path("s64-test-2", "file_doesnt_exist.txt"))
+  s3_path("s64-test-2", "file_doesnt_exist.txt")
+)
 \dontshow{\}) # examplesIf}
 }
 \seealso{

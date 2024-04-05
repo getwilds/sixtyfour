@@ -143,9 +143,8 @@ six_file_upload <- function(path, bucket, force = FALSE, ...) {
 #' }
 aws_file_download <- function(remote_path, path, ...) {
   equal_lengths(remote_path, path)
-  s3fs_creds_refresh()
   res <- tryCatch(
-    s3fs::s3_file_download(remote_path, path),
+    con_s3fs()$file_download(remote_path, path),
     error = function(e) e
   )
   if (rlang::is_error(res)) {
@@ -220,8 +219,7 @@ aws_file_delete_one <- function(one_path, ...) {
 aws_file_attr <- function(remote_path) {
   # TODO: error behavior isn't ideal b/c the error message doesn't indicate
   # which file does not exist
-  s3fs_creds_refresh()
-  s3fs::s3_file_info(remote_path) %>% as_tibble()
+  con_s3fs()$file_info(remote_path) %>% as_tibble()
 }
 
 #' Check if a file exists
@@ -237,8 +235,7 @@ aws_file_attr <- function(remote_path) {
 #' aws_file_exists(s3_path("s64-test-2", c("DESCRIPTION", "doesntexist")))
 #' }
 aws_file_exists <- function(remote_path) {
-  s3fs_creds_refresh()
-  s3fs::s3_file_exists(remote_path)
+  con_s3fs()$file_exists(remote_path)
 }
 
 #' Rename a remote file
@@ -267,8 +264,7 @@ aws_file_exists <- function(remote_path) {
 #' }
 aws_file_rename <- function(remote_path, new_remote_path, ...) {
   equal_lengths(remote_path, new_remote_path)
-  s3fs_creds_refresh()
-  s3fs::s3_file_move(remote_path, new_remote_path, ...)
+  con_s3fs()$file_move(remote_path, new_remote_path, ...)
 }
 
 #' Copy files between buckets
@@ -310,6 +306,5 @@ aws_file_copy <- function(remote_path, bucket, force = FALSE, ...) {
   })
   new_paths <- path_s3_build(parsed)
   equal_lengths(remote_path, new_paths)
-  s3fs_creds_refresh()
-  s3fs::s3_file_copy(remote_path, new_paths, ...)
+  con_s3fs()$file_copy(remote_path, new_paths, ...)
 }

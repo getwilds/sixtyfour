@@ -190,8 +190,7 @@ six_bucket_delete <- function(bucket, force = FALSE, ...) {
 #' # cleanup
 #' aws_bucket_delete("tmp-bucket-369")
 aws_bucket_download <- function(bucket, dest_path, ...) {
-  s3fs_creds_refresh()
-  s3fs::s3_dir_download(path = bucket, new_path = dest_path, ...)
+  con_s3fs()$dir_download(path = bucket, new_path = dest_path, ...)
 }
 
 #' Upload a folder of files to create an S3 bucket
@@ -240,8 +239,7 @@ aws_bucket_upload <- function(
     }
     aws_bucket_create(bucket)
   }
-  s3fs_creds_refresh()
-  s3fs::s3_dir_upload(
+  con_s3fs()$dir_upload(
     path = path,
     new_path = bucket,
     max_batch = max_batch,
@@ -358,6 +356,5 @@ aws_buckets <- function(...) {
 #' aws_bucket_delete(bucket_name, force = TRUE)
 #' aws_bucket_exists(bucket_name)
 aws_bucket_tree <- function(bucket, recurse = TRUE, ...) {
-  s3fs_creds_refresh()
-  s3fs::s3_dir_tree(s3_path(bucket), recurse = recurse, ...)
+  con_s3fs()$dir_tree(s3_path(bucket), recurse = recurse, ...)
 }
