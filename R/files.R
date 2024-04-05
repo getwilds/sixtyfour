@@ -64,18 +64,18 @@ aws_file_upload <- function(path, remote_path, ...) {
 #'
 #' @export
 #' @param path (character) one or more file paths to add to
-#' the `bucket`. required
+#' the `bucket`. required. cannot include directories
 #' @inheritParams aws_file_copy
 #' @param ... named params passed on to
 #' [put_object](https://www.paws-r-sdk.com/docs/s3_put_object/)
 #' @section What is magical:
 #' - Exits early if files do not exist
+#' - Exits early if any `path` values are directories
 #' - Creates the bucket if it does not exist
 #' - Adds files to the bucket, figuring out the key to use from
 #' the supplied path
 #' - Function is vectoried for the `path` argument; you can
 #' pass in many file paths
-#' - xx
 #' @family files
 #' @family magicians
 #' @return (character) a vector of remote s3 paths where your
@@ -92,13 +92,20 @@ aws_file_upload <- function(path, remote_path, ...) {
 #' # set expiration, expire 1 minute from now
 #' six_file_upload(demo_rds_file, bucket, Expires = Sys.time() + 60)
 #'
-#' # bucket doesn't exist
+#' # bucket doesn't exist, ask if you want to create it
 #' six_file_upload(demo_rds_file, "not-a-buckets")
 #'
 #' # path doesn't exist
 #' # six_file_upload("file_doesnt_exist.txt", random_string("bucket"))
+#'
+#' # directories not supported
+#' mydir <- tempdir()
+#' # six_file_upload(mydir, random_string("bucket"))
 six_file_upload <- function(path, bucket, force = FALSE, ...) {
-  stopifnot(fs::file_exists(path))
+  stop_if_not(all(fs::file_exists(path)),
+    "one or more of {.strong path} don't exist")
+  stop_if(any(fs::is_dir(path)),
+    "one or more of {.strong path} is a directory; file paths only")
   bucket_create_if_not(bucket, force)
   if (!aws_bucket_exists(bucket)) {
     cli_warning("bucket {.strong {bucket}} not created; exiting")

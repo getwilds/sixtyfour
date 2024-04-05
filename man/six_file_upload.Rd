@@ -8,7 +8,7 @@ six_file_upload(path, bucket, force = FALSE, ...)
 }
 \arguments{
 \item{path}{(character) one or more file paths to add to
-the \code{bucket}. required}
+the \code{bucket}. required. cannot include directories}
 
 \item{bucket}{(character) bucket to copy files to. required.
 if the bucket does not exist we prompt you asking if you'd like
@@ -32,12 +32,12 @@ Magically upload a file
 
 \itemize{
 \item Exits early if files do not exist
+\item Exits early if any \code{path} values are directories
 \item Creates the bucket if it does not exist
 \item Adds files to the bucket, figuring out the key to use from
 the supplied path
 \item Function is vectoried for the \code{path} argument; you can
 pass in many file paths
-\item xx
 }
 }
 
@@ -54,11 +54,15 @@ six_file_upload(c(demo_rds_file, links_file), bucket)
 # set expiration, expire 1 minute from now
 six_file_upload(demo_rds_file, bucket, Expires = Sys.time() + 60)
 
-# bucket doesn't exist
+# bucket doesn't exist, ask if you want to create it
 six_file_upload(demo_rds_file, "not-a-buckets")
 
 # path doesn't exist
 # six_file_upload("file_doesnt_exist.txt", random_string("bucket"))
+
+# directories not supported
+mydir <- tempdir()
+# six_file_upload(mydir, random_string("bucket"))
 \dontshow{\}) # examplesIf}
 }
 \seealso{
