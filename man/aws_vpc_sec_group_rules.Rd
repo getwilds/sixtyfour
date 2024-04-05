@@ -18,7 +18,7 @@ Modify security group rules
 }
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-aws_vpc_security_group_modify_rules(
+aws_vpc_sec_group_rules(
   id = "someid",
   rules = list(
     SecurityGroupRuleId = "sgr-07de36a0521f39c8b",
@@ -35,11 +35,11 @@ aws_vpc_security_group_modify_rules(
 }
 \seealso{
 Other security groups: 
-\code{\link{aws_ec2_client}()},
 \code{\link{aws_vpc_security_group_create}()},
 \code{\link{aws_vpc_security_group_ingress}()},
 \code{\link{aws_vpc_security_groups}()},
 \code{\link{aws_vpc_security_group}()},
-\code{\link{aws_vpc_sg_with_ingresss}()}
+\code{\link{aws_vpc_sg_with_ingresss}()},
+\code{\link{con_ec2}()}
 }
 \concept{security groups}

@@ -4,5 +4,4 @@ env64 <- new.env()
 .onLoad <- function(libname, pkgname) {
   env64$iam <- paws::iam()
   env64$costexplorer <- paws::costexplorer()
-  env64$secretsmanager <- paws::secretsmanager()
 }

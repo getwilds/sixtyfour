@@ -7,8 +7,7 @@
 #' aws_vpcs()
 #' aws_vpcs(MaxResults = 6)
 aws_vpcs <- function(...) {
-  aws_ec2_client()
-  env64$ec2$describe_vpcs(...)
+  con_ec2()$describe_vpcs(...)
 }
 
 #' Get a VPC by id
@@ -31,6 +30,5 @@ aws_vpcs <- function(...) {
 #' - IsDefault
 #' - Tags
 aws_vpc <- function(id, ...) {
-  aws_ec2_client()
   aws_vpcs(VpcIds = id, ...)
 }

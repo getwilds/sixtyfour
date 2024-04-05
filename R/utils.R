@@ -173,7 +173,8 @@ paginate_aws_marker <- function(fun, target, ...) {
 #' )
 #' }
 paginate_aws_token <- function(fun, target, ...) {
-  res <- fun(...)
+  con <- con_sm()
+  res <- con[[fun]](...)
   if (!rlang::has_name(res, "NextToken")) {
     return(res[[target]])
   }
@@ -184,7 +185,7 @@ paginate_aws_token <- function(fun, target, ...) {
   all_results <- list(res)
   more_results <- TRUE
   while (more_results) {
-    res <- fun(NextToken = res$NextToken)
+    res <- con[[fun]](NextToken = res$NextToken)
     all_results <- c(all_results, list(res))
     if (rlang::is_empty(res$NextToken)) more_results <- FALSE
   }
