@@ -48,13 +48,15 @@ equal_lengths <- function(x, y) {
 #' # path doesn't exist
 #' aws_file_upload(
 #'   "file_doesnt_exist.txt",
-#'   s3_path("s64-test-2", "file_doesnt_exist.txt"))
+#'   s3_path("s64-test-2", "file_doesnt_exist.txt")
+#' )
 aws_file_upload <- function(path, remote_path, ...) {
   stopifnot(fs::file_exists(path))
   bucket <- path_s3_parse(remote_path)[[1]]$bucket
-  stop_if_not(aws_bucket_exists(bucket),
-    "bucket {.strong {bucket}} doesn't exist")
-  # s3fs_creds_refresh()
+  stop_if_not(
+    aws_bucket_exists(bucket),
+    "bucket {.strong {bucket}} doesn't exist"
+  )
   map2_vec(path, remote_path, con_s3fs()$file_copy, ...)
 }
 

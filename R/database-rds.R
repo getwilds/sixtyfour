@@ -177,7 +177,8 @@ aws_db_rds_client <- function() {
 
 #' Get information for all RDS instances
 #' @export
-#' @return a list of RDS instance details, see link below for format, with slots:
+#' @return a list of RDS instance details, see link below for format,
+#' with slots:
 #' - Marker (for pagination)
 #' - DBInstances (each instance; empty list if no instances)
 #' @references <https://www.paws-r-sdk.com/docs/describe_db_instances/>

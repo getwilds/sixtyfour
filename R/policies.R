@@ -477,7 +477,7 @@ as_policy_arn <- function(name, local = FALSE, path = NULL) {
   if (grepl("^arn:", name)) {
     return(name)
   }
-  account <- if (local) account_id() else "aws"
+  account <- if (local) account_id() else "aws" #nolint
   template <- "arn:aws:iam::{account}:policy/{name}"
   if (!is.null(path)) {
     template <- "arn:aws:iam::{account}:policy/{path}/{name}"

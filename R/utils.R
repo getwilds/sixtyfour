@@ -161,25 +161,6 @@ paginate_aws_marker <- function(fun, target, ...) {
   purrr::map(all_results, \(x) x[[target]]) %>% purrr::flatten()
 }
 
-# paginate_aws_marker2 <- function(fun, target, ...) {
-#   res <- fun(...)
-#   if (!rlang::has_name(res, "IsTruncated")) {
-#     return(res[[target]])
-#   }
-#   if (!res$IsTruncated) {
-#     return(res[[target]])
-#   }
-
-#   all_results <- list(res)
-#   more_results <- TRUE
-#   while (more_results) {
-#     res <- fun(Marker = res$Marker, ...)
-#     all_results <- c(all_results, list(res))
-#     if (!res$IsTruncated) more_results <- FALSE
-#   }
-#   purrr::map(all_results, \(x) x[[target]]) %>% purrr::flatten()
-# }
-
 #' Paginate over list_* methods with NextToken
 #'
 #' @importFrom rlang is_empty

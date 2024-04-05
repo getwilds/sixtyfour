@@ -51,32 +51,6 @@ set_s3_interface <- function(interface = "aws") {
   } else {
     paws::s3()
   }
-
-  # # package s3fs
-  # if (interface == "aws") {
-  #   s3fs::s3_file_system(
-  #     aws_access_key_id = Sys.getenv("AWS_ACCESS_KEY_ID"),
-  #     aws_secret_access_key = Sys.getenv("AWS_SECRET_ACCESS_KEY"),
-  #     region_name = Sys.getenv("AWS_REGION"),
-  #     refresh = TRUE
-  #   )
-  # } else if (interface == "localstack") {
-  #   s3fs::s3_file_system(
-  #     aws_access_key_id = "NOTAREALKEY",
-  #     aws_secret_access_key = "AREALLYFAKETOKEN",
-  #     endpoint = LOCALSTACK_ENDPOINT,
-  #     refresh = TRUE
-  #   )
-  # } else {
-  #   s3fs::s3_file_system(
-  #     aws_access_key_id = Sys.getenv("MINIO_USER"),
-  #     aws_secret_access_key = Sys.getenv("MINIO_PWD"),
-  #     endpoint = Sys.getenv("MINIO_ENDPOINT"),
-  #     refresh = TRUE
-  #   )
-  # }
-
-  # return(s3con)
 }
 
 #' Copy of `testthat::is_testing`
