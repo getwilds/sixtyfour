@@ -15,3 +15,4 @@ con <- con_s3fs()
 file_copy <- con_s3fs()$file_copy
 \dontshow{\}) # examplesIf}
 }
+\keyword{internal}

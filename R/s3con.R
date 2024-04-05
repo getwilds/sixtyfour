@@ -9,6 +9,7 @@ con_s3 <- function() {
 }
 
 #' s3fs connection
+#' @keywords internal
 #' @examplesIf interactive()
 #' con <- con_s3fs()
 #' file_copy <- con_s3fs()$file_copy
