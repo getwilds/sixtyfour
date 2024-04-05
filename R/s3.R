@@ -34,11 +34,13 @@ s3_actions_full <- function() {
 #' ID for you.
 #' @return a policy document as JSON (of class `json`)
 #' @examplesIf interactive()
+#' bucket <- random_string("bucket")
 #' aws_s3_policy_doc_create(
-#'   bucket = "s64-test-22",
-#'   action = s3_actions_read()
+#'   bucket = bucket,
+#'   action = s3_actions_read(),
+#'   resource = c(bucket_arn(bucket), bucket_arn(bucket, objects = "*"))
 #' )
-aws_s3_policy_doc_create <- function(bucket, action, effect = "Allow",
+aws_s3_policy_doc_create <- function(bucket, action, resource, effect = "Allow",
                                      sid = NULL, ...) {
   # FIXME: one can put more than 1 statement in the Statement slot -
   # the below line about adding a `sid` assumes there's only 1 - which
@@ -50,7 +52,7 @@ aws_s3_policy_doc_create <- function(bucket, action, effect = "Allow",
       list(
         Effect = effect,
         Action = action,
-        Resource = bucket_arn(bucket)
+        Resource = resource
       )
     )
   )
@@ -89,6 +91,10 @@ create_policy_if_missing <- function(bucket, permissions) {
     action = switch(permissions,
       read = s3_actions_read(),
       write = s3_actions_full()
+    ),
+    resource = c(
+      bucket_arn(bucket),
+      bucket_arn(bucket, objects = "*")
     )
   )
   aws_policy_create(policy_name, document = mydoc)

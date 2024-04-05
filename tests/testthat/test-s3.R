@@ -4,9 +4,11 @@ Sys.setenv(AWS_PROFILE = "localstack")
 buckets_empty()
 
 test_that("aws_s3_policy_doc_create", {
+  bucket <- random_string("bucket")
   doc <- aws_s3_policy_doc_create(
-    bucket = "s64-test-22",
-    action = s3_actions_read()
+    bucket = bucket,
+    action = s3_actions_read(),
+    resource = bucket_arn(bucket)
   )
 
   expect_s3_class(doc, "json")
