@@ -70,12 +70,7 @@ The following (collapsed) bullets list information for those who want to know mo
 - At the top of any file that uses Minio, setup the interfaces to Minio like:
 
 ```r
-env64$s3 <- set_s3_interface("minio")
-s3fs::s3_file_system(
-  aws_access_key_id = "minioadmin",
-  aws_secret_access_key = "minioadmin",
-  endpoint = "http://localhost:9000"
-)
+Sys.setenv(AWS_PROFILE = "minio")
 buckets_empty() # empty buckets so we're starting from an empty slate
 ```
 
@@ -83,19 +78,53 @@ buckets_empty() # empty buckets so we're starting from an empty slate
 
 ```r
 buckets_empty() # empty buckets
-env64$s3 <- set_s3_interface("aws")
-s3fs::s3_file_system()
+Sys.unsetenv("AWS_PROFILE")
 ```
+
+Internally we grab client objects for `paws` and `s3fs` as needed and use `AWS_PROFILE` env var to toggle on/off using Minio.
 
 </details>
 
 ### Localstack
 
-[Localstack][ls]
+We use [Localstack][ls] for testing some functions in this package.
 
-(fill in text here - lorem ipsum for now)
+#### Local
 
-Contain paper notice police into let. Matter decision camera art let. Region happen treat mean boy middle prevent. Ball page right cut method together alone. Identify office participant more. Turn manager newspaper hair personal total language. Whatever skin population always have admit consider upon. Tell treat development science heart. Cost left energy rock have soon door.
+If you want to run tests while contributing to `sixtyfour`, the tests that use Localstack will just be skipped if you don't have Minio running.
+
+To use Localstack, first install it for your platform <https://docs.localstack.cloud/getting-started/installation/>.
+
+Next, start Localstack. Within this package is a make target `localstack_start` for starting Localstack locally. That make target should only work on Linux and MacOS platforms. To start Localstack on the command line see the docs links above for each platform. You'll need Docker installed and running to run Localstack. There are probably non-Docker ways to run Localstack.
+
+For a GUI interface to the locally running localstack you can install the Desktop client - which isn't very good - at <https://docs.localstack.cloud/getting-started/installation/#localstack-desktop>. Better yet, login to the cloud Localstack site and you can interface with your locally running Localstack in the better interface there. Login at <https://app.localstack.cloud/>.
+
+#### GitHub Actions
+
+The `R-CMD-check` workflow in `.github/workflows/` includes spinning up Localstack for running unit tests - but only on Linux; tests that require Localstack are skipped on MacOS and WIndows platforms on GitHub Actions.
+
+#### Localstack Details
+
+The following (collapsed) bullets list information for those who want to know more about the Localstack setup, and that may want to tweak it or add Localstack setup to other tests.
+
+<details><summary>Expand for details</summary>
+
+- `tests/testthat/helper-localstack.R` has helper functions for Localstack. The `localstack_available` function is to be used inside `skip_if_not` to skip the tests in the file if Localstack is not available, like: `skip_if_not(localstack_available(), "Localstack Not Available")`
+- At the top of any file that uses Localstack, setup the interfaces to Localstack like:
+
+```r
+Sys.setenv(AWS_PROFILE = "localstack")
+```
+
+- And unset at the bottom of the file to cleanup:
+
+```r
+Sys.unsetenv("AWS_PROFILE")
+```
+
+Internally we grab client objects for `paws` and `s3fs` as needed and use `AWS_PROFILE` env var to toggle on/off using Localstack.
+
+</details>
 
 
 ## Code of Conduct
