@@ -23,10 +23,6 @@ non-interactive use.}
 Takes care of deleting bucket objects, so that the bucket itself
 can be deleted cleanly
 }
-\note{
-Requires the env var \code{AWS_REGION}. This function prompts you to make
-sure that you want to delete the bucket.
-}
 \section{What is magical}{
 
 \itemize{
@@ -57,8 +53,10 @@ aws_file_upload(
 )
 aws_file_upload(
   c(demo_rds_file, links_file),
-  s3_path(bucket, "newfolder",
-   c(basename(demo_rds_file), basename(links_file)))
+  s3_path(
+    bucket, "newfolder",
+    c(basename(demo_rds_file), basename(links_file))
+  )
 )
 
 six_bucket_delete(bucket)
@@ -67,10 +65,19 @@ six_bucket_delete(bucket)
 \seealso{
 Other buckets: 
 \code{\link{aws_bucket_create}()},
+\code{\link{aws_bucket_delete}()},
 \code{\link{aws_bucket_download}()},
 \code{\link{aws_bucket_exists}()},
 \code{\link{aws_bucket_list_objects}()},
 \code{\link{aws_bucket_tree}()},
 \code{\link{aws_bucket_upload}()},
 \code{\link{aws_buckets}()}
+
+Other magicians: 
+\code{\link{six_admin_setup}()},
+\code{\link{six_file_upload}()},
+\code{\link{six_user_create}()},
+\code{\link{six_user_delete}()}
 }
+\concept{buckets}
+\concept{magicians}

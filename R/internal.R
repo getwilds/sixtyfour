@@ -18,7 +18,7 @@ account_id <- memoise::memoise(function() {
 #' @return character string of bucket region; NULL if bucket not found
 bucket_region <- function(bucket) {
   res <- tryCatch(
-    env64$s3$get_bucket_location(bucket),
+    con_s3()$get_bucket_location(bucket),
     error = function(e) e
   )
   if (rlang::is_error(res)) NULL else res$LocationConstraint

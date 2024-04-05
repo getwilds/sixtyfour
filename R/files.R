@@ -13,23 +13,21 @@ equal_lengths <- function(x, y) {
 #' @export
 #' @importFrom fs file_exists
 #' @importFrom s3fs s3_file_copy
-#' @inheritParams aws_file_copy
+#' @importFrom purrr map2_vec
 #' @param path (character) a file path to read from. required
 #' @param remote_path (character) a remote path where the file
 #' should go. required
 #' @param ... named parameters passed on to [s3fs::s3_file_copy()]
 #' @return (character) a vector of remote s3 paths
-#' @details
-#' - For upload: if it does exist it will be created
-#' - For download: if it does not exist, function will return an error
-#'
-#' To upload a folder of files see [aws_bucket_upload()]
+#' @details to upload a folder of files see [aws_bucket_upload()]
 #' @family files
-#' @examples \dontrun{
+#' @examplesIf interactive()
+#' bucket <- random_string("bucket")
+#' aws_bucket_create(bucket)
 #' demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 #' aws_file_upload(
 #'   demo_rds_file,
-#'   s3_path("s64-test-2", basename(demo_rds_file))
+#'   s3_path(bucket, basename(demo_rds_file))
 #' )
 #'
 #' ## many files at once
@@ -46,20 +44,68 @@ equal_lengths <- function(x, y) {
 #'
 #' # bucket doesn't exist
 #' aws_file_upload(demo_rds_file, "s3://not-a-bucket/eee.rds")
-#' }
 #'
-#' @examplesIf interactive()
 #' # path doesn't exist
 #' aws_file_upload(
 #'   "file_doesnt_exist.txt",
-#'   s3_path("s64-test-2", "file_doesnt_exist.txt")
-#' )
-aws_file_upload <- function(path, remote_path, force = FALSE, ...) {
+#'   s3_path("s64-test-2", "file_doesnt_exist.txt"))
+aws_file_upload <- function(path, remote_path, ...) {
   stopifnot(fs::file_exists(path))
   bucket <- path_s3_parse(remote_path)[[1]]$bucket
+  stop_if_not(aws_bucket_exists(bucket),
+    "bucket {.strong {bucket}} doesn't exist")
+  # s3fs_creds_refresh()
+  map2_vec(path, remote_path, con_s3fs()$file_copy, ...)
+}
+
+#' Magically upload a file
+#'
+#' @export
+#' @param path (character) one or more file paths to add to
+#' the `bucket`. required
+#' @inheritParams aws_file_copy
+#' @param ... named params passed on to
+#' [put_object](https://www.paws-r-sdk.com/docs/s3_put_object/)
+#' @section What is magical:
+#' - Exits early if files do not exist
+#' - Creates the bucket if it does not exist
+#' - Adds files to the bucket, figuring out the key to use from
+#' the supplied path
+#' - Function is vectoried for the `path` argument; you can
+#' pass in many file paths
+#' - xx
+#' @family files
+#' @family magicians
+#' @return (character) a vector of remote s3 paths where your
+#' files are located
+#' @examplesIf interactive()
+#' bucket <- random_string("bucket")
+#' demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
+#' six_file_upload(demo_rds_file, bucket)
+#'
+#' ## many files at once
+#' links_file <- file.path(system.file(), "Meta/links.rds")
+#' six_file_upload(c(demo_rds_file, links_file), bucket)
+#'
+#' # set expiration, expire 1 minute from now
+#' six_file_upload(demo_rds_file, bucket, Expires = Sys.time() + 60)
+#'
+#' # bucket doesn't exist
+#' six_file_upload(demo_rds_file, "not-a-buckets")
+#'
+#' # path doesn't exist
+#' # six_file_upload("file_doesnt_exist.txt", random_string("bucket"))
+six_file_upload <- function(path, bucket, force = FALSE, ...) {
+  stopifnot(fs::file_exists(path))
   bucket_create_if_not(bucket, force)
-  s3fs_creds_refresh()
-  purrr::map2_vec(path, remote_path, s3fs::s3_file_copy, ...)
+  if (!aws_bucket_exists(bucket)) {
+    cli_warning("bucket {.strong {bucket}} not created; exiting")
+    return(invisible())
+  }
+  map(path, \(p) {
+    con_s3()$put_object(Bucket = bucket, Key = basename(p), Body = p, ...)
+  })
+  s3_path(bucket, basename(path))
 }
 
 #' Download a file
@@ -146,7 +192,7 @@ aws_file_delete_one <- function(one_path, ...) {
   } else {
     path_parsed[[1]]$file
   }
-  env64$s3$delete_object(
+  con_s3()$delete_object(
     path_parsed[[1]]$bucket,
     glue("{key}{ifelse(trailing_slash, '/', '')}")
   )

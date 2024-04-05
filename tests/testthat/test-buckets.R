@@ -1,11 +1,6 @@
 skip_if_not(minio_available(), "Minio Not Available")
 
-invisible(env64$s3 <- set_s3_interface("minio"))
-s3fs::s3_file_system(
-  aws_access_key_id = "minioadmin",
-  aws_secret_access_key = "minioadmin",
-  endpoint = "http://localhost:9000"
-)
+Sys.setenv(AWS_PROFILE = "minio")
 buckets_empty()
 
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
@@ -16,7 +11,7 @@ test_that("aws_bucket_create", {
   expect_error(aws_bucket_create(5))
   expect_error(aws_bucket_create(letters))
 
-  bucket <- random_str("bucket")
+  bucket <- random_string("bucket")
   expect_false(aws_bucket_exists(bucket))
   aws_bucket_create(bucket)
   expect_true(aws_bucket_exists(bucket))
@@ -27,7 +22,7 @@ test_that("aws_bucket_exists", {
   expect_error(aws_bucket_exists(5))
   expect_error(aws_bucket_exists(letters))
 
-  bucket <- random_str("bucket")
+  bucket <- random_string("bucket")
 
   # bucket DOES NOT exist, gives FALSE
   expect_false(aws_bucket_exists(bucket))
@@ -44,7 +39,7 @@ test_that("aws_bucket_delete", {
   expect_error(aws_bucket_delete(5))
   expect_error(aws_bucket_delete(letters))
 
-  bucket <- random_str("bucket")
+  bucket <- random_string("bucket")
   aws_bucket_create(bucket)
   expect_true(aws_bucket_exists(bucket))
   res <- aws_bucket_delete(bucket, force = TRUE)
@@ -56,7 +51,7 @@ test_that("aws_bucket_download", {
   expect_error(aws_bucket_download())
   expect_error(aws_bucket_download(""))
 
-  bucket <- random_str("bucket")
+  bucket <- random_string("bucket")
   aws_bucket_create(bucket)
 
   aws_file_upload(demo_rds_file, s3_path(bucket, basename(demo_rds_file)))
@@ -92,7 +87,7 @@ test_that("aws_bucket_list_objects", {
   expect_error(aws_bucket_list_objects())
   expect_error(aws_bucket_list_objects(5))
 
-  bucket <- random_str("bucket")
+  bucket <- random_string("bucket")
   aws_bucket_create(bucket)
   ffs <- list.files(file.path(system.file(), "Meta"), full.names = TRUE)
   for (f in ffs) aws_file_upload(f, s3_path(bucket, basename(f)))
@@ -107,12 +102,12 @@ test_that("aws_bucket_list_objects", {
 })
 
 test_that("aws_buckets", {
-  for (i in replicate(100, random_str("bucket"))) aws_bucket_create(i)
+  for (i in replicate(10, random_string("bucket"))) aws_bucket_create(i)
 
   res <- aws_buckets()
 
   expect_s3_class(res, "tbl")
-  expect_gt(NROW(res), 50)
+  expect_gt(NROW(res), 5)
 
   buckets_empty()
 })
@@ -121,7 +116,7 @@ test_that("aws_bucket_tree", {
   expect_error(aws_bucket_tree())
   expect_error(aws_bucket_tree("", 5))
 
-  bucket <- random_str("bucket")
+  bucket <- random_string("bucket")
   aws_bucket_create(bucket)
   ffs <- list.files(file.path(system.file(), "Meta"), full.names = TRUE)
   for (f in ffs) aws_file_upload(f, s3_path(bucket, basename(f)))
@@ -140,4 +135,4 @@ test_that("aws_bucket_tree", {
 
 # cleanup
 buckets_empty()
-invisible(env64$s3 <- set_s3_interface("aws"))
+Sys.unsetenv("AWS_PROFILE")

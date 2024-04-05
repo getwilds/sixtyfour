@@ -29,6 +29,8 @@ AWS account setup for administrators
 
 \seealso{
 Other magicians: 
+\code{\link{six_bucket_delete}()},
+\code{\link{six_file_upload}()},
 \code{\link{six_user_create}()},
 \code{\link{six_user_delete}()}
 }

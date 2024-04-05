@@ -21,7 +21,7 @@ aws_bucket_exists <- function(bucket) {
   bucket_checks(bucket)
   res <- tryCatch(
     {
-      env64$s3$head_bucket(Bucket = bucket)
+      con_s3()$head_bucket(Bucket = bucket)
     },
     error = function(e) e
   )
@@ -42,7 +42,7 @@ aws_bucket_exists <- function(bucket) {
 #' }
 aws_bucket_create <- function(bucket, ...) {
   bucket_checks(bucket)
-  env64$s3$create_bucket(
+  con_s3()$create_bucket(
     Bucket = bucket,
     CreateBucketConfiguration =
       list(LocationConstraint = env_var("AWS_REGION")), ...
@@ -94,7 +94,7 @@ aws_bucket_delete <- function(bucket, force = FALSE, ...) {
       return(invisible())
     }
   }
-  env64$s3$delete_bucket(Bucket = bucket, ...)
+  con_s3()$delete_bucket(Bucket = bucket, ...)
   return(invisible())
 }
 
@@ -105,12 +105,14 @@ aws_bucket_delete <- function(bucket, force = FALSE, ...) {
 #'
 #' @export
 #' @importFrom purrr safely
-#' @inherit aws_bucket_delete
+#' @inheritParams aws_bucket_delete
 #' @section What is magical:
 #' - Exits early if bucket does not exist
 #' - Checks for any objects in the bucket and deletes any present
 #' - Deletes bucket after deleting objects
+#' @family buckets
 #' @family magicians
+#' @return `NULL`, invisibly
 #' @examplesIf interactive()
 #' # bucket does not exist
 #' six_bucket_delete("notabucket")
@@ -131,8 +133,10 @@ aws_bucket_delete <- function(bucket, force = FALSE, ...) {
 #' )
 #' aws_file_upload(
 #'   c(demo_rds_file, links_file),
-#'   s3_path(bucket, "newfolder",
-#'    c(basename(demo_rds_file), basename(links_file)))
+#'   s3_path(
+#'     bucket, "newfolder",
+#'     c(basename(demo_rds_file), basename(links_file))
+#'   )
 #' )
 #'
 #' six_bucket_delete(bucket)
@@ -274,12 +278,14 @@ aws_bucket_upload <- function(
 #' )
 #' aws_bucket_list_objects(bucket = bucket_name)
 aws_bucket_list_objects <- function(bucket, ...) {
-  out <- env64$s3$list_objects(bucket, ...)
-  if (rlang::is_empty(out$Contents)) return(tibble())
+  out <- con_s3()$list_objects(bucket, ...)
+  if (rlang::is_empty(out$Contents)) {
+    return(tibble())
+  }
   as_tibble(jsonlite::fromJSON(
-      jsonlite::toJSON(out$Contents, auto_unbox = TRUE),
-      flatten = TRUE
-    )) %>%
+    jsonlite::toJSON(out$Contents, auto_unbox = TRUE),
+    flatten = TRUE
+  )) %>%
     mutate(
       bucket = bucket,
       uri = glue("s3://{bucket}/{Key}"),
@@ -308,8 +314,7 @@ aws_bucket_list_objects <- function(bucket, ...) {
 #' aws_buckets()
 #' }
 aws_buckets <- function(...) {
-  s3fs_creds_refresh()
-  out <- s3fs::s3_dir_info(refresh = TRUE, ...)
+  out <- con_s3fs()$dir_info(refresh = TRUE, ...)
   if (is.data.frame(out) && NROW(out) > 0) {
     as_tibble(out)
   } else {

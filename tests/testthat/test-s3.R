@@ -1,7 +1,6 @@
-skip_on_ci()
 skip_if_not(localstack_available(), "LocalStack Not Available")
 
-invisible(env64$s3 <- set_s3_interface("localstack"))
+Sys.setenv(AWS_PROFILE = "localstack")
 buckets_empty()
 
 test_that("aws_s3_policy_doc_create", {
@@ -238,4 +237,4 @@ test_that("six_bucket_remove_user", {
 
 # cleanup
 buckets_empty()
-invisible(env64$s3 <- set_s3_interface("aws"))
+Sys.unsetenv("AWS_PROFILE")

@@ -37,8 +37,10 @@ group_policies_data <- list(
 #' group_policies("users")
 group_policies <- function(group) {
   stop_if_not(is.character(group), "group must be character")
-  stop_if_not(group %in% names(group_policies_data),
-    "group must be one of {names(group_policies_data)}")
+  stop_if_not(
+    group %in% names(group_policies_data),
+    "group must be one of {names(group_policies_data)}"
+  )
   group_policies_data[[group]]
 }
 

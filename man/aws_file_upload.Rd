@@ -4,17 +4,13 @@
 \alias{aws_file_upload}
 \title{Upload a file}
 \usage{
-aws_file_upload(path, remote_path, force = FALSE, ...)
+aws_file_upload(path, remote_path, ...)
 }
 \arguments{
 \item{path}{(character) a file path to read from. required}
 
 \item{remote_path}{(character) a remote path where the file
 should go. required}
-
-\item{force}{(logical) force bucket creation without going through
-the prompt. default: \code{FALSE}. Should only be set to \code{TRUE} when
-required for non-interactive use.}
 
 \item{...}{named parameters passed on to \code{\link[s3fs:copy]{s3fs::s3_file_copy()}}}
 }
@@ -25,19 +21,16 @@ required for non-interactive use.}
 Upload a file
 }
 \details{
-\itemize{
-\item For upload: if it does exist it will be created
-\item For download: if it does not exist, function will return an error
-}
-
-To upload a folder of files see \code{\link[=aws_bucket_upload]{aws_bucket_upload()}}
+to upload a folder of files see \code{\link[=aws_bucket_upload]{aws_bucket_upload()}}
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+bucket <- random_string("bucket")
+aws_bucket_create(bucket)
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 aws_file_upload(
   demo_rds_file,
-  s3_path("s64-test-2", basename(demo_rds_file))
+  s3_path(bucket, basename(demo_rds_file))
 )
 
 ## many files at once
@@ -54,14 +47,11 @@ aws_file_upload(demo_rds_file, s3_path("s64-test-2", "ddd.rds"),
 
 # bucket doesn't exist
 aws_file_upload(demo_rds_file, "s3://not-a-bucket/eee.rds")
-}
 
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # path doesn't exist
 aws_file_upload(
   "file_doesnt_exist.txt",
-  s3_path("s64-test-2", "file_doesnt_exist.txt")
-)
+  s3_path("s64-test-2", "file_doesnt_exist.txt"))
 \dontshow{\}) # examplesIf}
 }
 \seealso{
@@ -71,6 +61,7 @@ Other files:
 \code{\link{aws_file_delete}()},
 \code{\link{aws_file_download}()},
 \code{\link{aws_file_exists}()},
-\code{\link{aws_file_rename}()}
+\code{\link{aws_file_rename}()},
+\code{\link{six_file_upload}()}
 }
 \concept{files}

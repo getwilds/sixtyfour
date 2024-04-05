@@ -149,7 +149,7 @@ aws_db_rds_create <-
       if (verbose) cli::cli_alert_info("Uploading user/pwd to secrets manager")
       x <- instance_con_info(id)
       aws_secrets_create(
-        name = paste0(id, random_str()),
+        name = paste0(id, random_db_id_str()),
         secret = construct_db_secret(
           engine = x$engine,
           host = x$host,

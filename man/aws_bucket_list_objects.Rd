@@ -49,6 +49,7 @@ Other buckets:
 \code{\link{aws_bucket_exists}()},
 \code{\link{aws_bucket_tree}()},
 \code{\link{aws_bucket_upload}()},
-\code{\link{aws_buckets}()}
+\code{\link{aws_buckets}()},
+\code{\link{six_bucket_delete}()}
 }
 \concept{buckets}
