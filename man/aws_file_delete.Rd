@@ -9,7 +9,8 @@ aws_file_delete(remote_path, ...)
 \arguments{
 \item{remote_path}{(character) one or more remote S3 paths. required}
 
-\item{...}{named parameters passed on to \code{\link[s3fs:delete]{s3fs::s3_file_delete()}}}
+\item{...}{named parameters passed on to
+\href{https://www.paws-r-sdk.com/docs/s3_delete_object/}{delete_object}}
 }
 \value{
 \code{NULL} invisibly

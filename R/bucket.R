@@ -315,9 +315,8 @@ aws_bucket_list_objects <- function(bucket, ...) {
 #' List S3 buckets
 #'
 #' @export
-#' @importFrom s3fs s3_dir_info
 #' @inherit aws_bucket_list_objects
-#' @details internally uses [s3fs::s3_dir_info()]
+#' @details internally uses `s3fs::s3_dir_info()`
 #' @note we set `refresh=TRUE` internally to make sure we return up to date
 #' information about your buckets rather than what's cached locally
 #' @family buckets
@@ -336,11 +335,10 @@ aws_buckets <- function(...) {
 #' Print a tree of the objects in a bucket
 #'
 #' @export
-#' @importFrom s3fs s3_dir_tree
 #' @inheritParams aws_bucket_exists
 #' @param recurse (logical) returns all AWS S3 objects in lower sub
 #' directories, default: `TRUE`
-#' @param ... Additional arguments passed to [s3fs::s3_dir_tree()]
+#' @param ... Additional arguments passed to `s3fs::s3_dir_tree()`
 #' @family buckets
 #' @return character vector of objects/files within the bucket,
 #' printed as a tree

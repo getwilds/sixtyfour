@@ -17,7 +17,7 @@ the bucket to be created}
 the prompt. default: \code{FALSE}. Should only be set to \code{TRUE} when
 required for non-interactive use.}
 
-\item{...}{named parameters passed on to \code{\link[s3fs:copy]{s3fs::s3_file_copy()}}}
+\item{...}{named parameters passed on to \code{s3fs::s3_file_copy()}}
 }
 \value{
 vector of paths, length matches \code{length(remote_path)}

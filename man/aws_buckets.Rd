@@ -28,7 +28,7 @@ is an S3 bucket, with 8 columns:
 List S3 buckets
 }
 \details{
-internally uses \code{\link[s3fs:info]{s3fs::s3_dir_info()}}
+internally uses \code{s3fs::s3_dir_info()}
 }
 \note{
 we set \code{refresh=TRUE} internally to make sure we return up to date

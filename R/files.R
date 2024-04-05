@@ -12,12 +12,11 @@ equal_lengths <- function(x, y) {
 #'
 #' @export
 #' @importFrom fs file_exists
-#' @importFrom s3fs s3_file_copy
 #' @importFrom purrr map2_vec
 #' @param path (character) a file path to read from. required
 #' @param remote_path (character) a remote path where the file
 #' should go. required
-#' @param ... named parameters passed on to [s3fs::s3_file_copy()]
+#' @param ... named parameters passed on to `s3fs::s3_file_copy()`
 #' @return (character) a vector of remote s3 paths
 #' @details to upload a folder of files see [aws_bucket_upload()]
 #' @family files
@@ -50,6 +49,22 @@ equal_lengths <- function(x, y) {
 #'   "file_doesnt_exist.txt",
 #'   s3_path("s64-test-2", "file_doesnt_exist.txt")
 #' )
+#'
+#' # Path's without file extensions behave a little weird
+#' ## With extension
+#' ## Both of these lines do the same exact thing: make a file in the
+#' ## same path in a bucket
+#' aws_file_upload("LICENSE.md", s3_path(bucket, "LICENSE.md"))
+#' aws_file_upload("LICENSE.md", s3_path(bucket))
+#'
+#' ## Without extension
+#' ## However, it's different for a file without an extension
+#' ## This makes a file in the bucket at path DESCRIPTION
+#' aws_file_upload("DESCRIPTION", s3_path(bucket))
+#'
+#' ## Whereas this creates a directory called DESCRIPTION with
+#' ## a file DESCRIPTION within it
+#' aws_file_upload("DESCRIPTION", s3_path(bucket, "DESCRIPTION"))
 aws_file_upload <- function(path, remote_path, ...) {
   stopifnot(fs::file_exists(path))
   bucket <- path_s3_parse(remote_path)[[1]]$bucket
@@ -167,9 +182,9 @@ aws_file_download <- function(remote_path, path, ...) {
 #' Delete a file
 #'
 #' @export
-#' @importFrom s3fs s3_file_delete
 #' @param remote_path (character) one or more remote S3 paths. required
-#' @param ... named parameters passed on to [s3fs::s3_file_delete()]
+#' @param ... named parameters passed on to
+#' [delete_object](https://www.paws-r-sdk.com/docs/s3_delete_object/)
 #' @family files
 #' @return `NULL` invisibly
 #' @examples \dontrun{
@@ -185,9 +200,6 @@ aws_file_download <- function(remote_path, path, ...) {
 #' aws_file_delete(s3_path("s64-test-2", "TESTING123"))
 #' }
 aws_file_delete <- function(remote_path, ...) {
-  # FIXME: this s3fs fxn not working for some reason, not sure why yet
-  # using paws for now
-  # s3fs::s3_file_delete(remote_path, ...) #nolint
   map(remote_path, aws_file_delete_one, ...)
   remote_path
 }
@@ -284,7 +296,7 @@ aws_file_rename <- function(remote_path, new_remote_path, ...) {
 #' @param force (logical) force bucket creation without going through
 #' the prompt. default: `FALSE`. Should only be set to `TRUE` when
 #' required for non-interactive use.
-#' @param ... named parameters passed on to [s3fs::s3_file_copy()]
+#' @param ... named parameters passed on to `s3fs::s3_file_copy()`
 #' @return vector of paths, length matches `length(remote_path)`
 #' @family files
 #' @examples \dontrun{

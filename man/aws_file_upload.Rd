@@ -12,7 +12,7 @@ aws_file_upload(path, remote_path, ...)
 \item{remote_path}{(character) a remote path where the file
 should go. required}
 
-\item{...}{named parameters passed on to \code{\link[s3fs:copy]{s3fs::s3_file_copy()}}}
+\item{...}{named parameters passed on to \code{s3fs::s3_file_copy()}}
 }
 \value{
 (character) a vector of remote s3 paths
@@ -53,6 +53,22 @@ aws_file_upload(
   "file_doesnt_exist.txt",
   s3_path("s64-test-2", "file_doesnt_exist.txt")
 )
+
+# Path's without file extensions behave a little weird
+## With extension
+## Both of these lines do the same exact thing: make a file in the
+## same path in a bucket
+aws_file_upload("LICENSE.md", s3_path(bucket, "LICENSE.md"))
+aws_file_upload("LICENSE.md", s3_path(bucket))
+
+## Without extension
+## However, it's different for a file without an extension
+## This makes a file in the bucket at path DESCRIPTION
+aws_file_upload("DESCRIPTION", s3_path(bucket))
+
+## Whereas this creates a directory called DESCRIPTION with
+## a file DESCRIPTION within it
+aws_file_upload("DESCRIPTION", s3_path(bucket, "DESCRIPTION"))
 \dontshow{\}) # examplesIf}
 }
 \seealso{
