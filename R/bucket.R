@@ -138,9 +138,16 @@ aws_bucket_delete <- function(bucket, force = FALSE, ...) {
 #'     c(basename(demo_rds_file), basename(links_file))
 #'   )
 #' )
-#'
+#' aws_bucket_list_objects(bucket)
 #' six_bucket_delete(bucket)
 six_bucket_delete <- function(bucket, force = FALSE, ...) {
+  msg_no_objects <- c(
+    "Are you sure you want to delete {.strong {bucket}}?"
+  )
+  msg_with_objects <- c(
+    "Are you sure you want to delete {.strong {bucket}} ",
+    "and its {.strong {length(objects$result$uri)}} objects?"
+  )
   bucket_checks(bucket)
   if (!aws_bucket_exists(bucket)) {
     cli_warning("bucket {.strong {bucket}} does not exist; exiting")
@@ -148,23 +155,29 @@ six_bucket_delete <- function(bucket, force = FALSE, ...) {
   }
   list_obs <- safely(aws_bucket_list_objects)
   objects <- list_obs(bucket)
-  if (rlang::is_empty(objects$result)) {
+  if (is_empty(objects$result)) {
     cli_info("bucket {.strong {bucket}} has no objects")
+    if (!force) {
+      if (yesno(msg_no_objects)) {
+        return(invisible())
+      }
+    }
   } else {
-    cli_info(c(
-      "bucket {.strong {bucket}} has {length(objects$result$uri)} objects - ",
-      "deleting them now"
-    ))
-    purrr::map(objects$result$uri, \(x) aws_file_delete(x))
+    if (!force) {
+      if (yesno(msg_with_objects)) {
+        return(invisible())
+      }
+    }
+    map(objects$result$uri, \(x) aws_file_delete(x))
 
     # check for empty folders & delete thoes too
     empties <- list_obs(bucket)
-    if (!rlang::is_empty(empties$result)) {
-      purrr::map(empties$result$uri, \(x) aws_file_delete(x))
+    if (!is_empty(empties$result)) {
+      map(empties$result$uri, \(x) aws_file_delete(x))
     }
   }
   cli_info("deleting bucket {.strong {bucket}}")
-  aws_bucket_delete(bucket, force, ...)
+  aws_bucket_delete(bucket, force = TRUE, ...)
   invisible()
 }
 

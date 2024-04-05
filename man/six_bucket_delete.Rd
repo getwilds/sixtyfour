@@ -58,7 +58,7 @@ aws_file_upload(
     c(basename(demo_rds_file), basename(links_file))
   )
 )
-
+aws_bucket_list_objects(bucket)
 six_bucket_delete(bucket)
 \dontshow{\}) # examplesIf}
 }
