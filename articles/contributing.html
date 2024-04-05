@@ -189,34 +189,83 @@ file if Minio is not available, like:
 Minio like:</li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">env64</span><span class="op">$</span><span class="va">s3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_s3_interface.html">set_s3_interface</a></span><span class="op">(</span><span class="st">"minio"</span><span class="op">)</span></span>
-<span><span class="fu">s3fs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/s3fs/man/s3_file_system.html" class="external-link">s3_file_system</a></span><span class="op">(</span></span>
-<span>  aws_access_key_id <span class="op">=</span> <span class="st">"minioadmin"</span>,</span>
-<span>  aws_secret_access_key <span class="op">=</span> <span class="st">"minioadmin"</span>,</span>
-<span>  endpoint <span class="op">=</span> <span class="st">"http://localhost:9000"</span></span>
-<span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>AWS_PROFILE <span class="op">=</span> <span class="st">"minio"</span><span class="op">)</span></span>
 <span><span class="fu">buckets_empty</span><span class="op">(</span><span class="op">)</span> <span class="co"># empty buckets so we're starting from an empty slate</span></span></code></pre></div>
 <ul>
 <li>And unset at the bottom of the file to cleanup:</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">buckets_empty</span><span class="op">(</span><span class="op">)</span> <span class="co"># empty buckets</span></span>
-<span><span class="va">env64</span><span class="op">$</span><span class="va">s3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/set_s3_interface.html">set_s3_interface</a></span><span class="op">(</span><span class="st">"aws"</span><span class="op">)</span></span>
-<span><span class="fu">s3fs</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/s3fs/man/s3_file_system.html" class="external-link">s3_file_system</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.unsetenv</a></span><span class="op">(</span><span class="st">"AWS_PROFILE"</span><span class="op">)</span></span></code></pre></div>
+<p>Internally we grab client objects for <code>paws</code> and
+<code>s3fs</code> as needed and use <code>AWS_PROFILE</code> env var to
+toggle on/off using Minio.</p>
 </details>
 </div>
 </div>
 <div class="section level3">
 <h3 id="localstack">Localstack<a class="anchor" aria-label="anchor" href="#localstack"></a>
 </h3>
-<p><a href="https://www.localstack.cloud/" class="external-link">Localstack</a></p>
-<p>(fill in text here - lorem ipsum for now)</p>
-<p>Contain paper notice police into let. Matter decision camera art let.
-Region happen treat mean boy middle prevent. Ball page right cut method
-together alone. Identify office participant more. Turn manager newspaper
-hair personal total language. Whatever skin population always have admit
-consider upon. Tell treat development science heart. Cost left energy
-rock have soon door.</p>
+<p>We use <a href="https://www.localstack.cloud/" class="external-link">Localstack</a> for
+testing some functions in this package.</p>
+<div class="section level4">
+<h4 id="local-1">Local<a class="anchor" aria-label="anchor" href="#local-1"></a>
+</h4>
+<p>If you want to run tests while contributing to
+<code>sixtyfour</code>, the tests that use Localstack will just be
+skipped if you don’t have Minio running.</p>
+<p>To use Localstack, first install it for your platform <a href="https://docs.localstack.cloud/getting-started/installation/" class="external-link uri">https://docs.localstack.cloud/getting-started/installation/</a>.</p>
+<p>Next, start Localstack. Within this package is a make target
+<code>localstack_start</code> for starting Localstack locally. That make
+target should only work on Linux and MacOS platforms. To start
+Localstack on the command line see the docs links above for each
+platform. You’ll need Docker installed and running to run Localstack.
+There are probably non-Docker ways to run Localstack.</p>
+<p>For a GUI interface to the locally running localstack you can install
+the Desktop client - which isn’t very good - at <a href="https://docs.localstack.cloud/getting-started/installation/#localstack-desktop" class="external-link uri">https://docs.localstack.cloud/getting-started/installation/#localstack-desktop</a>.
+Better yet, login to the cloud Localstack site and you can interface
+with your locally running Localstack in the better interface there.
+Login at <a href="https://app.localstack.cloud/" class="external-link uri">https://app.localstack.cloud/</a>.</p>
+</div>
+<div class="section level4">
+<h4 id="github-actions-1">GitHub Actions<a class="anchor" aria-label="anchor" href="#github-actions-1"></a>
+</h4>
+<p>The <code>R-CMD-check</code> workflow in
+<code>.github/workflows/</code> includes spinning up Localstack for
+running unit tests - but only on Linux; tests that require Localstack
+are skipped on MacOS and WIndows platforms on GitHub Actions.</p>
+</div>
+<div class="section level4">
+<h4 id="localstack-details">Localstack Details<a class="anchor" aria-label="anchor" href="#localstack-details"></a>
+</h4>
+<p>The following (collapsed) bullets list information for those who want
+to know more about the Localstack setup, and that may want to tweak it
+or add Localstack setup to other tests.</p>
+<details><summary>
+Expand for details
+</summary><ul>
+<li>
+<code>tests/testthat/helper-localstack.R</code> has helper functions
+for Localstack. The <code>localstack_available</code> function is to be
+used inside <code>skip_if_not</code> to skip the tests in the file if
+Localstack is not available, like:
+<code>skip_if_not(localstack_available(), "Localstack Not Available")</code>
+</li>
+<li>At the top of any file that uses Localstack, setup the interfaces to
+Localstack like:</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>AWS_PROFILE <span class="op">=</span> <span class="st">"localstack"</span><span class="op">)</span></span></code></pre></div>
+<ul>
+<li>And unset at the bottom of the file to cleanup:</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.unsetenv</a></span><span class="op">(</span><span class="st">"AWS_PROFILE"</span><span class="op">)</span></span></code></pre></div>
+<p>Internally we grab client objects for <code>paws</code> and
+<code>s3fs</code> as needed and use <code>AWS_PROFILE</code> env var to
+toggle on/off using Localstack.</p>
+</details>
+</div>
 </div>
 </div>
 <div class="section level2">
