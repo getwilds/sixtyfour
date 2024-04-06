@@ -226,9 +226,9 @@ is_class <- function(x, class) {
   }
 }
 
-stop_if_not <- function(cond, msg) {
-  if (!cond) cli::cli_abort(msg)
+stop_if_not <- function(cond, msg, .envir = parent.frame()) {
+  if (!cond) cli::cli_abort(msg, .envir = .envir)
 }
-stop_if <- function(cond, msg) {
-  if (cond) cli::cli_abort(msg)
+stop_if <- function(cond, msg, .envir = parent.frame()) {
+  if (cond) cli::cli_abort(msg, .envir = .envir)
 }
