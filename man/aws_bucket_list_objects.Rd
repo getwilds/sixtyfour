@@ -9,7 +9,8 @@ aws_bucket_list_objects(bucket, ...)
 \arguments{
 \item{bucket}{(character) bucket name. required}
 
-\item{...}{named parameters passed on to \code{\link[s3fs:info]{s3fs::s3_dir_info()}}}
+\item{...}{named parameters passed on to
+\href{https://www.paws-r-sdk.com/docs/s3_list_objects/}{list_objects}}
 }
 \value{
 if no objects found, an empty tibble. if tibble has rows each
@@ -30,7 +31,7 @@ List objects in an S3 bucket
 }
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-bucket_name <- "s64-test-67"
+bucket_name <- random_string("bucket")
 if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
 links_file <- file.path(system.file(), "Meta/links.rds")
 aws_file_upload(
@@ -48,6 +49,7 @@ Other buckets:
 \code{\link{aws_bucket_exists}()},
 \code{\link{aws_bucket_tree}()},
 \code{\link{aws_bucket_upload}()},
-\code{\link{aws_buckets}()}
+\code{\link{aws_buckets}()},
+\code{\link{six_bucket_delete}()}
 }
 \concept{buckets}

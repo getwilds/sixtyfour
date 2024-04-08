@@ -8,7 +8,7 @@ set_s3_interface(interface = "aws")
 }
 \arguments{
 \item{interface}{the s3 compatible interface to use.
-options: "aws" (default), "minio"}
+options: "aws" (default), "minio", or "localstack"}
 }
 \value{
 a \code{paws} s3 client object of class \code{list}

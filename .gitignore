@@ -12,6 +12,7 @@ tests/fixtures/aws_db_redshift_create.yml
 tests/fixtures/aws_secret*.yml
 tests/fixtures/aws_db_rds_create.yml
 tests/fixtures/aws_bucket*.yml
+tests/fixtures/six_bucket*.yml
 tests/fixtures/aws_policy_attach*.yml
 tests/fixtures/aws_policy_detach*.yml
 tests/fixtures/aws_policy_list_entities*.yml

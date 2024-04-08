@@ -1,5 +1,6 @@
 skip_if_not(localstack_available(), "LocalStack Not Available")
 
+# nolint start
 ## FIXME: something wrong with aws_users when using localstack
 ## perhaps having to do with using purrr?
 ## perhaps b/c with_envvar only goes down one level of the stack?
@@ -15,6 +16,7 @@ skip_if_not(localstack_available(), "LocalStack Not Available")
 #   expect_type(res$UserName, "character")
 #   expect_true(inherits(res$CreateDate, "POSIXct"))
 # })
+# nolint end
 
 # create user first
 the_user <- random_user()
@@ -55,7 +57,8 @@ test_that("aws_user_exists", {
 
 test_that("aws_user_create", {
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
+    c("AWS_PROFILE" = "localstack"),
+    {
       a_user <- random_user()
       res <- aws_user_create(a_user)
     }
@@ -74,7 +77,8 @@ test_that("aws_user_create", {
 test_that("aws_user_delete", {
   # create first
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
+    c("AWS_PROFILE" = "localstack"),
+    {
       delete_user <- random_user()
       res <- aws_user_create(delete_user)
     }
@@ -91,12 +95,13 @@ test_that("aws_user_delete", {
 
   # then delete
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
+    c("AWS_PROFILE" = "localstack"),
+    {
       res_del <- aws_user_delete(delete_user)
     }
   )
 
-  expect_type(res_del, "list")
+  expect_null(res_del)
   expect_length(res_del, 0)
 
   # now user does not exist
@@ -109,7 +114,8 @@ test_that("aws_user_delete", {
 test_that("aws_user_access_key", {
   # create user
   withr::with_envvar(
-    c("AWS_PROFILE" = "localstack"), {
+    c("AWS_PROFILE" = "localstack"),
+    {
       key_user <- random_user()
       aws_user_create(key_user)
     }

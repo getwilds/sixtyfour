@@ -99,10 +99,8 @@ yourself in the AWS dashboard.
 Other database: 
 \code{\link{aws_db_cluster_status}()},
 \code{\link{aws_db_instance_status}()},
-\code{\link{aws_db_rds_client}()},
 \code{\link{aws_db_rds_con}()},
 \code{\link{aws_db_rds_list}()},
-\code{\link{aws_db_redshift_client}()},
 \code{\link{aws_db_redshift_con}()},
 \code{\link{aws_db_redshift_create}()}
 }

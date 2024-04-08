@@ -35,7 +35,10 @@ Imports:
     memoise,
     uuid,
     jsonlite,
-    curl
+    curl,
+    snakecase,
+    tidyr,
+    clipr
 Suggests: 
     knitr,
     rmarkdown,

@@ -27,6 +27,7 @@ aws_role_delete(name = "MyRole")
 \seealso{
 Other roles: 
 \code{\link{aws_role_create}()},
+\code{\link{aws_role_exists}()},
 \code{\link{aws_roles}()},
 \code{\link{aws_role}()}
 }

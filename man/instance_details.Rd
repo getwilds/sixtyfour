@@ -7,9 +7,17 @@
 instance_details()
 }
 \value{
-a list of instance details
+a list of RDS instance details, see link below for format,
+with slots:
+\itemize{
+\item Marker (for pagination)
+\item DBInstances (each instance; empty list if no instances)
+}
 }
 \description{
 Get information for all RDS instances
+}
+\references{
+\url{https://www.paws-r-sdk.com/docs/describe_db_instances/}
 }
 \keyword{internal}

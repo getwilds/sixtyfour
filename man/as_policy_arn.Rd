@@ -4,20 +4,24 @@
 \alias{as_policy_arn}
 \title{Convert a policy name to a policy ARN}
 \usage{
-as_policy_arn(name)
+as_policy_arn(name, local = FALSE, path = NULL)
 }
 \arguments{
 \item{name}{(character) a policy name or arn}
+
+\item{local}{(logical) if \code{TRUE} use your AWS account for your own
+managed policies. If \code{FALSE}, AWS managed policies}
+
+\item{path}{(character) if not \code{NULL}, we add the path into the ARN
+before the \code{name} value}
 }
 \value{
-a policy ARN
+a policy ARN (character)
 }
 \description{
-Convert a policy name to a policy ARN
-}
-\note{
-uses exact matching; fails with error if there's no match;
-beware as there is no validation is done of a user input policy arn
+This function simply constructs a string, then checks that the
+ARN is valid using
+\href{https://www.paws-r-sdk.com/docs/iam_get_policy/}{get_policy}
 }
 \examples{
 \dontrun{
@@ -27,6 +31,16 @@ as_policy_arn("AmazonRDSDataFullAccess")
 # as_policy_arn("Blarp")
 # as_policy_arn(letters)
 # as_policy_arn(5)
+as_policy_arn("MyTestPolicy", local = TRUE)
+# returns an arn - and if given an arn returns self
+as_policy_arn("MyTestPolicy", local = TRUE) \%>\%
+  as_policy_arn()
+# path = Job function
+as_policy_arn("Billing", path = "job-function")
+# path = Service role
+as_policy_arn("AWSCostAndUsageReportAutomationPolicy",
+  path = "service-role"
+)
 }
 }
 \seealso{
@@ -34,8 +48,12 @@ Other policies:
 \code{\link{aws_policies}()},
 \code{\link{aws_policy_attach}()},
 \code{\link{aws_policy_create}()},
+\code{\link{aws_policy_delete_version}()},
+\code{\link{aws_policy_delete}()},
 \code{\link{aws_policy_detach}()},
 \code{\link{aws_policy_exists}()},
+\code{\link{aws_policy_list_entities}()},
+\code{\link{aws_policy_list_versions}()},
 \code{\link{aws_policy}()}
 }
 \concept{policies}

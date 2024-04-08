@@ -42,7 +42,10 @@ security_group_handler <- function(ids, engine) {
 
   port_df <- dplyr::filter(
     sgsdf,
-    map_lgl(IpPermissions, ~ .$ToPort == port)
+    map_lgl(
+      IpPermissions,
+      ~ ifelse(rlang::is_empty(.), FALSE, .$ToPort == port)
+    )
   )
   if (!NROW(port_df)) {
     cli::cli_alert_danger(c(
@@ -175,8 +178,7 @@ security_group_handler <- function(ids, engine) {
 #' aws_vpc_security_groups()
 #' aws_vpc_security_groups(MaxResults = 6)
 aws_vpc_security_groups <- function(...) {
-  aws_ec2_client()
-  env64$ec2$describe_security_groups(...)
+  con_ec2()$describe_security_groups(...)
 }
 
 #' Get a security group by ID
@@ -196,7 +198,6 @@ aws_vpc_security_groups <- function(...) {
 #'   - VpcId
 #' - NextToken (character) token for paginating
 aws_vpc_security_group <- function(id, ...) {
-  aws_ec2_client()
   aws_vpc_security_groups(GroupIds = id, ...)
 }
 
@@ -209,8 +210,8 @@ aws_vpc_security_group <- function(id, ...) {
 #' @param vpc_id (character) a VPC id. optional. if not supplied your default
 #' VPC is used. To get your VPCs, see [aws_vpcs()]
 #' @param tags (character) The tags to assign to the security group. optional
-#' @param ... named parameters passed on to [create_secret](
-#' https://www.paws-r-sdk.com/docs/secretsmanager_create_secret/)
+#' @param ... named parameters passed on to [create_security_group](
+#' https://www.paws-r-sdk.com/docs/ec2_create_security_group/)
 #' @return (list) with fields:
 #' - GroupId (character)
 #' - Tags (list)
@@ -221,6 +222,22 @@ aws_vpc_security_group <- function(id, ...) {
 #'   name = "testing1",
 #'   description = "Testing security group creation"
 #' )
+#' aws_vpc_security_group_create(name = "testing2")
+#' aws_vpc_security_group_create(
+#'   name = "testing4",
+#'   tags = list(
+#'     list(
+#'       ResourceType = "security-group",
+#'       Tags = list(
+#'         list(
+#'           Key = "sky",
+#'           Value = "blue"
+#'         )
+#'       )
+#'     )
+#'   )
+#' )
+#'
 #' # add ingress
 #' aws_vpc_security_group_ingress(
 #'   id = x$GroupId,
@@ -228,13 +245,12 @@ aws_vpc_security_group <- function(id, ...) {
 #' )
 #' }
 aws_vpc_security_group_create <- function(
-    name, engine, description = NULL,
+    name, engine = "mariadb", description = NULL,
     vpc_id = NULL, tags = NULL, ...) {
-  aws_ec2_client()
   if (is.null(description)) {
     description <- glue("Access to {engine}")
   }
-  env64$ec2$create_security_group(
+  con_ec2()$create_security_group(
     Description = description,
     GroupName = name,
     VpcId = vpc_id,
@@ -291,7 +307,7 @@ ip_address <- function() {
 
 #' Authorize Security Group Ingress
 #' @export
-#' @param id (character) security group id
+#' @param id (character) security group id. required
 #' @param ip_permissions (list) list of persmissions. see link to `paws`
 #' docs below or use [ip_permissions_generator()] to generate the
 #' list for this parameter
@@ -315,11 +331,8 @@ ip_address <- function() {
 #'   - ReferencedGroupInfo
 #'   - Description
 #'   - Tags
-aws_vpc_security_group_ingress <- function(
-    id = NULL,
-    ip_permissions = NULL, ...) {
-  aws_ec2_client()
-  env64$ec2$authorize_security_group_ingress(
+aws_vpc_security_group_ingress <- function(id, ip_permissions = NULL, ...) {
+  con_ec2()$authorize_security_group_ingress(
     GroupId = id,
     IpPermissions = list(ip_permissions),
     ...
@@ -334,7 +347,7 @@ aws_vpc_security_group_ingress <- function(
 #' https://www.paws-r-sdk.com/docs/ec2_modify_security_group_rules/)
 #' @family security groups
 #' @examplesIf interactive()
-#' aws_vpc_security_group_modify_rules(
+#' aws_vpc_sec_group_rules(
 #'   id = "someid",
 #'   rules = list(
 #'     SecurityGroupRuleId = "sgr-07de36a0521f39c8b",
@@ -348,8 +361,7 @@ aws_vpc_security_group_ingress <- function(
 #'   )
 #' )
 aws_vpc_sec_group_rules <- function(id, rules, ...) {
-  aws_ec2_client()
-  env64$ec2$modify_security_group_rules(
+  con_ec2()$modify_security_group_rules(
     GroupId = id,
     SecurityGroupRules = list(rules),
     ...

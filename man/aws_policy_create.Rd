@@ -32,19 +32,30 @@ Create a policy
 see docs \url{https://www.paws-r-sdk.com/docs/iam_create_policy/}
 }
 \examples{
-\dontrun{
-aws_db_rds_list()
-aws_policy_document_create()
-aws_policy_create("RdsAllow", document = doc)
-}
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+doc <- aws_policy_document_create(
+  region = "us-east-2",
+  account_id = "1234567890",
+  resource_id = "*",
+  user = "jane_doe",
+  action = "rds-db:connect"
+)
+aws_policy_create("RdsAllow123", document = doc)
+# cleanup
+aws_policy_delete("RdsAllow123")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other policies: 
 \code{\link{as_policy_arn}()},
 \code{\link{aws_policies}()},
 \code{\link{aws_policy_attach}()},
+\code{\link{aws_policy_delete_version}()},
+\code{\link{aws_policy_delete}()},
 \code{\link{aws_policy_detach}()},
 \code{\link{aws_policy_exists}()},
+\code{\link{aws_policy_list_entities}()},
+\code{\link{aws_policy_list_versions}()},
 \code{\link{aws_policy}()}
 }
 \concept{policies}

@@ -4,10 +4,10 @@
 \alias{aws_vpc_security_group_ingress}
 \title{Authorize Security Group Ingress}
 \usage{
-aws_vpc_security_group_ingress(id = NULL, ip_permissions = NULL, ...)
+aws_vpc_security_group_ingress(id, ip_permissions = NULL, ...)
 }
 \arguments{
-\item{id}{(character) security group id}
+\item{id}{(character) security group id. required}
 
 \item{ip_permissions}{(list) list of persmissions. see link to \code{paws}
 docs below or use \code{\link[=ip_permissions_generator]{ip_permissions_generator()}} to generate the
@@ -43,7 +43,6 @@ Authorize Security Group Ingress
 }
 \seealso{
 Other security groups: 
-\code{\link{aws_ec2_client}()},
 \code{\link{aws_vpc_sec_group_rules}()},
 \code{\link{aws_vpc_security_group_create}()},
 \code{\link{aws_vpc_security_groups}()},

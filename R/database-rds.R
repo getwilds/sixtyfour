@@ -118,7 +118,6 @@ aws_db_rds_create <-
            storage_encrypted = TRUE, security_group_ids = NULL,
            wait = TRUE, verbose = TRUE, aws_secrets = TRUE,
            iam_database_auth = FALSE, ...) {
-    aws_db_rds_client()
     if (is.null(user)) {
       user <- random_user()
       if (verbose) {
@@ -132,7 +131,7 @@ aws_db_rds_create <-
       }
     }
     security_group_ids <- security_group_handler(security_group_ids, engine)
-    env64$rds$create_db_instance(
+    con_rds()$create_db_instance(
       DBName = dbname, DBInstanceIdentifier = id,
       Engine = engine, DBInstanceClass = class,
       AllocatedStorage = storage,
@@ -149,7 +148,7 @@ aws_db_rds_create <-
       if (verbose) cli::cli_alert_info("Uploading user/pwd to secrets manager")
       x <- instance_con_info(id)
       aws_secrets_create(
-        name = paste0(id, random_str()),
+        name = paste0(id, random_db_id_str()),
         secret = construct_db_secret(
           engine = x$engine,
           host = x$host,
@@ -164,24 +163,16 @@ aws_db_rds_create <-
     invisible()
   }
 
-#' Get the `paws` RDS client
-#' @export
-#' @note returns existing client if found; a new client otherwise
-#' @family database
-#' @return a list with methods for interfacing with RDS;
-#' see <https://www.paws-r-sdk.com/docs/rds/>
-aws_db_rds_client <- function() {
-  if (is.null(env64$rds)) env64$rds <- paws::rds()
-  return(env64$rds)
-}
-
 #' Get information for all RDS instances
-#' @return a list of instance details
+#' @export
+#' @return a list of RDS instance details, see link below for format,
+#' with slots:
+#' - Marker (for pagination)
+#' - DBInstances (each instance; empty list if no instances)
+#' @references <https://www.paws-r-sdk.com/docs/describe_db_instances/>
 #' @keywords internal
 instance_details <- function() {
-  aws_db_rds_client()
-  instances <- env64$rds$describe_db_instances()
-  return(instances)
+  con_rds()$describe_db_instances()
 }
 
 split_grep <- function(column, split, pattern) {
@@ -194,12 +185,16 @@ split_grep <- function(column, split, pattern) {
 #' @family database
 #' @return a tibble of instance details;
 #' see <https://www.paws-r-sdk.com/docs/describe_db_instances/>
+#' an empty tibble if no instances found
 #' @autoglobal
 #' @examplesIf interactive()
 #' aws_db_rds_list()
 aws_db_rds_list <- function() {
   lst <- instance_details()
   dbs <- lst$DBInstances
+  if (rlang::is_empty(dbs)) {
+    return(tibble())
+  }
   map(dbs, \(x) {
     as_tibble(x[c(
       "DBInstanceIdentifier",

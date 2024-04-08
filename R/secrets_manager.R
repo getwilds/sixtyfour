@@ -8,24 +8,23 @@
 #' aws_secrets_list()
 #' }
 aws_secrets_list <- function(...) {
-  env64$secretsmanager$list_secrets(...)
+  con_sm()$list_secrets(...)
 }
 
 #' Get all secret values
 #' @importFrom dplyr relocate last_col
 #' @export
-#' @return (list) list with secrets
+#' @return (tbl) with secrets
 #' @autoglobal
 #' @examples \dontrun{
-#' aws_secrets_list()
+#' aws_secrets_all()
 #' }
 aws_secrets_all <- function() {
-  tmp <- paginate_aws_token(
-    env64$secretsmanager$list_secrets,
-    "SecretList"
-  ) %>%
+  tmp <- paginate_aws_token("list_secrets", "SecretList") %>%
     purrr::map(function(x) aws_secrets_get(x$Name))
-
+  if (is_empty(tmp)) {
+    return(tibble())
+  }
   new_secrets <- list()
   for (i in seq_along(tmp)) {
     new_secrets[[i]] <- c(
@@ -37,8 +36,11 @@ aws_secrets_all <- function() {
       jsonlite::fromJSON(tmp[[i]]$SecretString)
     )
   }
-  Filter(function(x) length(x$host) > 0, new_secrets) %>%
-    bind_rows() %>%
+  # make all zero length elements class character
+  new_secrets <- map(new_secrets, \(w) {
+    map(w, \(x) ifelse(length(x) == 0, character(), x))
+  })
+  bind_rows(new_secrets) %>%
     relocate(arn, created_date, .after = last_col())
 }
 
@@ -58,7 +60,7 @@ check_secret <- function(secret) {
 #' aws_secrets_pwd(ExcludeNumbers = TRUE)
 #' }
 aws_secrets_pwd <- function(...) {
-  env64$secretsmanager$get_random_password(
+  con_sm()$get_random_password(
     PasswordLength = 40L,
     ExcludePunctuation = TRUE,
     ...
@@ -112,7 +114,7 @@ aws_secrets_create <- function(name, secret, description = NULL, ...) {
   secret_str <- secret_raw <- NULL
   if (rlang::is_raw(secret)) secret_raw <- secret
   if (rlang::is_character(secret)) secret_str <- secret
-  env64$secretsmanager$create_secret(
+  con_sm()$create_secret(
     Name = name,
     ClientRequestToken = uuid::UUIDgenerate(),
     Description = description,
@@ -158,7 +160,7 @@ aws_secrets_update <- function(id, secret, ...) {
   secret_str <- secret_raw <- NULL
   if (rlang::is_raw(secret)) secret_raw <- secret
   if (rlang::is_character(secret)) secret_str <- secret
-  env64$secretsmanager$put_secret_value(
+  con_sm()$put_secret_value(
     SecretId = id,
     ClientRequestToken = uuid::UUIDgenerate(),
     SecretBinary = secret_raw,
@@ -189,7 +191,7 @@ aws_secrets_update <- function(id, secret, ...) {
 #' #>   can't find the specified secret.
 #' }
 aws_secrets_get <- function(id, ...) {
-  env64$secretsmanager$get_secret_value(SecretId = id, ...)
+  con_sm()$get_secret_value(SecretId = id, ...)
 }
 
 #' Delete a secret
@@ -211,7 +213,7 @@ aws_secrets_get <- function(id, ...) {
 #' #>   can't find the specified secret.
 #' }
 aws_secrets_delete <- function(id, ...) {
-  env64$secretsmanager$delete_secret(SecretId = id, ...)
+  con_sm()$delete_secret(SecretId = id, ...)
 }
 
 #' Rotate a secret
@@ -239,7 +241,7 @@ aws_secrets_delete <- function(id, ...) {
 aws_secrets_rotate <- function(
     id, lambda_arn = NULL, rules = NULL,
     immediately = TRUE) {
-  env64$secretsmanager$rotate_secret(
+  con_sm()$rotate_secret(
     SecretId = id,
     ClientRequestToken = uuid::UUIDgenerate(),
     RotationLambdaARN = secret_raw,

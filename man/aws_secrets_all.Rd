@@ -7,13 +7,13 @@
 aws_secrets_all()
 }
 \value{
-(list) list with secrets
+(tbl) with secrets
 }
 \description{
 Get all secret values
 }
 \examples{
 \dontrun{
-aws_secrets_list()
+aws_secrets_all()
 }
 }

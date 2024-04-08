@@ -7,6 +7,24 @@ reference:
       High level overview of package
     contents:
       - sixtyfour
+  - title: High level "magical" methods
+    desc: >
+      Higher level functions to make your life easier
+    contents:
+      - six_user_create
+      - six_user_delete
+      - six_admin_setup
+      - six_bucket_add_user
+      - six_bucket_change_user
+      - six_bucket_remove_user
+      - six_bucket_permissions
+      - six_bucket_delete
+      - six_file_upload
+      - six_user_creds
+      - group_policies
+  - title: paws and s3fs clients
+    contents:
+      - starts_with("con_")
   - title: Billing
     contents:
       - starts_with("aws_billing")
@@ -21,10 +39,11 @@ reference:
       All bucket functions are NOT vectorized.
     contents:
       - starts_with("aws_bucket")
+      - aws_s3_policy_doc_create
+      - bucket_arn
   - title: Users
     contents:
       - starts_with("aws_user")
-      - random_user
   - title: Database
     contents:
       - starts_with("aws_db")
@@ -38,6 +57,7 @@ reference:
     contents:
       - starts_with("aws_polic")
       - as_policy_arn
+      - resource_rds
   - title: IAM
     contents:
       - starts_with("aws_iam")
@@ -54,6 +74,7 @@ reference:
       - aws_vpc_sec_group_rules
       - ip_permissions_generator
       - aws_vpc_sg_with_ingresss
-  - title: EC2
+  - title: Utilities
     contents:
-      - aws_ec2_client
+      - random_user
+      - random_string

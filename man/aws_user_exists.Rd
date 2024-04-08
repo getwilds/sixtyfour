@@ -27,12 +27,15 @@ aws_user_exists("blueberry")
 }
 \seealso{
 Other users: 
+\code{\link{aws_user_access_key_delete}()},
 \code{\link{aws_user_access_key}()},
 \code{\link{aws_user_add_to_group}()},
 \code{\link{aws_user_create}()},
 \code{\link{aws_user_current}()},
 \code{\link{aws_user_delete}()},
 \code{\link{aws_users}()},
-\code{\link{aws_user}()}
+\code{\link{aws_user}()},
+\code{\link{six_user_create}()},
+\code{\link{six_user_delete}()}
 }
 \concept{users}

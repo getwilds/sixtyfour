@@ -66,6 +66,6 @@ jobs:
         with:
           upload-snapshots: true
         env:
-          AWS_REGION: a
+          AWS_REGION: us-west-2
           AWS_ACCESS_KEY_ID: b
           AWS_SECRET_ACCESS_KEY: c

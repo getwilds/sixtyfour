@@ -15,7 +15,8 @@ test_that("aws_db_redshift_create", {
 })
 
 test_that("aws_db_redshift_client", {
-  x <- aws_db_redshift_client()
+  x <- con_redshift()
+  expect_s3_class(x, "sixtyfour_client")
   expect_type(x, "list")
   expect_type(x[[1]], "closure")
   lnames <- names(x)

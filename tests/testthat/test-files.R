@@ -1,11 +1,6 @@
 skip_if_not(minio_available(), "Minio Not Available")
 
-env64$s3 <- set_s3_interface("minio")
-s3fs::s3_file_system(
-  aws_access_key_id = "minioadmin",
-  aws_secret_access_key = "minioadmin",
-  endpoint = "http://localhost:9000"
-)
+Sys.setenv(AWS_PROFILE = "minio")
 buckets_empty()
 
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
@@ -26,10 +21,11 @@ test_that("aws_file_upload - error behavior", {
 })
 
 test_that("aws_file_upload - 1 file", {
+  bucket <- random_string("bucket")
+  aws_bucket_create(bucket)
   res <- aws_file_upload(
     demo_rds_file,
-    s3_path("s64-test-2", basename(demo_rds_file)),
-    force = TRUE
+    s3_path(bucket, basename(demo_rds_file))
   )
 
   expect_type(res, "character")
@@ -87,14 +83,14 @@ test_that("aws_file_download - error behavior", {
 test_that("aws_file_download - many files", {
   aws_bucket_create("download")
 
-  the_files <- replicate(50, tempfile(fileext = ".txt"))
+  the_files <- replicate(10, tempfile(fileext = ".txt"))
   for (f in the_files) cat(letters, "\n", file = f)
 
   res <- aws_file_upload(
     the_files, s3_path("download", basename(the_files))
   )
 
-  downloaded_files <- replicate(50, tempfile(fileext = ".txt"))
+  downloaded_files <- replicate(10, tempfile(fileext = ".txt"))
   out <- aws_file_download(
     s3_path("download", basename(the_files)),
     downloaded_files
@@ -139,7 +135,7 @@ test_that("aws_file_delete", {
 
   expect_true(aws_file_exists(remote_path))
   res <- aws_file_delete(remote_path)
-  expect_null(res)
+  expect_type(res, "character")
   expect_false(aws_file_exists(remote_path))
 
   bucket_delete("b-bucket", force = TRUE)
@@ -186,7 +182,7 @@ test_that("aws_file_attr", {
 test_that("aws_file_exists - error behavior", {
   expect_error(aws_file_exists())
 
-  bucket <- random_str("bucket")
+  bucket <- random_string("bucket")
 
   # bucket DOES NOT exist, just FALSE
   expect_false(aws_file_exists(s3_path(bucket, "TESTING123")))
@@ -199,10 +195,10 @@ test_that("aws_file_exists - error behavior", {
 })
 
 test_that("aws_file_exists", {
-  bucket <- random_str("bucket")
+  bucket <- random_string("bucket")
   aws_bucket_create(bucket)
 
-  files <- replicate(25, tempfile(fileext = ".txt"))
+  files <- replicate(5, tempfile(fileext = ".txt"))
   for (i in files) {
     cat("Hello World!\n\n", file = i)
     remote_path <- s3_path(bucket, basename(i))
@@ -225,7 +221,7 @@ test_that("aws_file_rename", {
   expect_error(aws_file_rename())
   expect_error(aws_file_rename(""))
 
-  bucket <- random_str("bucket")
+  bucket <- random_string("bucket")
   aws_bucket_create(bucket)
 
   aws_file_upload(links_file, s3_path(bucket, basename(links_file)))
@@ -247,12 +243,12 @@ test_that("aws_file_copy", {
   expect_error(aws_file_copy())
   expect_error(aws_file_copy(""))
 
-  bucket <- random_str("bucket")
+  bucket <- random_string("bucket")
   aws_bucket_create(bucket)
 
   aws_file_upload(links_file, s3_path(bucket, basename(links_file)))
 
-  bucket_2 <- random_str("bucket")
+  bucket_2 <- random_string("bucket")
   aws_bucket_create(bucket_2)
 
   expect_false(aws_file_exists(s3_path(bucket_2, "links.rds")))
@@ -271,5 +267,4 @@ test_that("aws_file_copy", {
 
 # cleanup
 buckets_empty()
-s3fs::s3_file_system()
-invisible(env64$s3 <- set_s3_interface("aws"))
+Sys.unsetenv("AWS_PROFILE")

@@ -7,21 +7,14 @@
 paginate_aws_marker(fun, target, ...)
 }
 \arguments{
-\item{fun}{(function) a function to call}
+\item{fun}{(character) the name of a function to call - not the function
+itself}
 
 \item{target}{(character) a list element to get}
 
 \item{...}{named args passed on to \code{fun}}
 }
 \description{
-Paginate over list_* methods with Marker/IsTruncated
-}
-\examples{
-\dontrun{
-# FIXME: could remove target param and poach the name of the fun
-# e.g,. from list_roles we can get Roles
-paginate_aws_marker(fun = env64$iam$list_roles, target = "Roles")
-paginate_aws_marker(fun = env64$iam$list_policies, target = "Policies")
-}
+Currently works for IAM only - i.e., IAM is hard-coded internally
 }
 \keyword{internal}

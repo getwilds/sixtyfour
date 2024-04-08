@@ -12,7 +12,7 @@ aws_bucket_tree(bucket, recurse = TRUE, ...)
 \item{recurse}{(logical) returns all AWS S3 objects in lower sub
 directories, default: \code{TRUE}}
 
-\item{...}{Additional arguments passed to \code{\link[s3fs:s3_dir_tree]{s3fs::s3_dir_tree()}}}
+\item{...}{Additional arguments passed to \code{s3fs::s3_dir_tree()}}
 }
 \value{
 character vector of objects/files within the bucket,
@@ -23,7 +23,7 @@ Print a tree of the objects in a bucket
 }
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-bucket_name <- "s64-test-69"
+bucket_name <- random_string("bucket")
 if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
 links_file <- file.path(system.file(), "Meta/links.rds")
 pkgs_file <- file.path(system.file(), "Meta/package.rds")
@@ -56,6 +56,7 @@ Other buckets:
 \code{\link{aws_bucket_exists}()},
 \code{\link{aws_bucket_list_objects}()},
 \code{\link{aws_bucket_upload}()},
-\code{\link{aws_buckets}()}
+\code{\link{aws_buckets}()},
+\code{\link{six_bucket_delete}()}
 }
 \concept{buckets}

@@ -35,6 +35,6 @@ which_driver <- function(engine) {
   )
 }
 
-random_str <- function(prefix = "-") {
+random_db_id_str <- function(prefix = "-") {
   paste0(prefix, sub("-.+", "", uuid::UUIDgenerate()))
 }

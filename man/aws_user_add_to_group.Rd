@@ -2,9 +2,12 @@
 % Please edit documentation in R/users.R
 \name{aws_user_add_to_group}
 \alias{aws_user_add_to_group}
-\title{Add a user to a group}
+\alias{aws_user_remove_from_group}
+\title{Add or remove a user to/from a group}
 \usage{
 aws_user_add_to_group(username, groupname)
+
+aws_user_remove_from_group(username, groupname)
 }
 \arguments{
 \item{username}{(character) A user name. required}
@@ -21,10 +24,11 @@ a named list with slots for:
 }
 }
 \description{
-Add a user to a group
+Add or remove a user to/from a group
 }
 \details{
 See \url{https://www.paws-r-sdk.com/docs/iam_add_user_to_group/}
+\url{https://www.paws-r-sdk.com/docs/iam_remove_user_from_group/}
 docs for more details
 }
 \examples{
@@ -35,17 +39,21 @@ if (!aws_group_exists("testgroup3")) {
 if (!aws_user_exists("testBlueBird3")) {
   aws_user_create("testBlueBird3")
 }
-aws_user_add_to_group(username = "testBlueBird3", groupname = "testgroup3")
+aws_user_add_to_group("testBlueBird3", "testgroup3")
+aws_user_remove_from_group("testBlueBird3", "testgroup3")
 }
 }
 \seealso{
 Other users: 
+\code{\link{aws_user_access_key_delete}()},
 \code{\link{aws_user_access_key}()},
 \code{\link{aws_user_create}()},
 \code{\link{aws_user_current}()},
 \code{\link{aws_user_delete}()},
 \code{\link{aws_user_exists}()},
 \code{\link{aws_users}()},
-\code{\link{aws_user}()}
+\code{\link{aws_user}()},
+\code{\link{six_user_create}()},
+\code{\link{six_user_delete}()}
 }
 \concept{users}

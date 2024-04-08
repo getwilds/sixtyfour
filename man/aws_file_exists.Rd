@@ -30,6 +30,7 @@ Other files:
 \code{\link{aws_file_delete}()},
 \code{\link{aws_file_download}()},
 \code{\link{aws_file_rename}()},
-\code{\link{aws_file_upload}()}
+\code{\link{aws_file_upload}()},
+\code{\link{six_file_upload}()}
 }
 \concept{files}

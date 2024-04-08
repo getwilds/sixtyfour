@@ -7,7 +7,8 @@
 aws_buckets(...)
 }
 \arguments{
-\item{...}{named parameters passed on to \code{\link[s3fs:info]{s3fs::s3_dir_info()}}}
+\item{...}{named parameters passed on to
+\href{https://www.paws-r-sdk.com/docs/s3_list_objects/}{list_objects}}
 }
 \value{
 if no objects found, an empty tibble. if tibble has rows each
@@ -27,7 +28,7 @@ is an S3 bucket, with 8 columns:
 List S3 buckets
 }
 \details{
-internally uses \code{\link[s3fs:info]{s3fs::s3_dir_info()}}
+internally uses \code{s3fs::s3_dir_info()}
 }
 \note{
 we set \code{refresh=TRUE} internally to make sure we return up to date
@@ -46,6 +47,7 @@ Other buckets:
 \code{\link{aws_bucket_exists}()},
 \code{\link{aws_bucket_list_objects}()},
 \code{\link{aws_bucket_tree}()},
-\code{\link{aws_bucket_upload}()}
+\code{\link{aws_bucket_upload}()},
+\code{\link{six_bucket_delete}()}
 }
 \concept{buckets}

@@ -6,9 +6,12 @@
 #' @autoglobal
 #' @keywords internal
 user_list_tidy <- function(x) {
+  if (rlang::is_empty(x)) {
+    return(tibble())
+  }
   vars <- c(
     "UserName", "UserId", "Path", "Arn", "CreateDate",
-    "PasswordLastUsed", "Tags"
+    "PasswordLastUsed"
   )
   tidy_generator(vars)(x) %>%
     mutate(PasswordLastUsed = as_datetime(PasswordLastUsed))
@@ -20,16 +23,20 @@ user_list_tidy <- function(x) {
 #' @param ... parameters passed on to the `paws`
 #' [list_users](https://www.paws-r-sdk.com/docs/iam_list_users/) method
 #' @family users
-#' @returns A tibble with information about user accounts
+#' @returns A tibble with information about user accounts, with columns:
+#' - UserName
+#' - UserId
+#' - Path
+#' - Arn
+#' - CreateDate
+#' - PasswordLastUsed
 #' @examples \dontrun{
 #' aws_users()
 #' }
 aws_users <- function(...) {
-  # users <- paginate_aws_marker(env64$iam$list_users, "Users") %>%
-  users <- paginate_aws_marker(con_iam()$list_users, "Users", ...) %>%
+  users <- paginate_aws_marker("list_users", "Users", ...) %>%
     user_list_tidy()
-  # purrr::map(users$UserName, env64$iam$get_user) %>%
-  purrr::map(users$UserName, con_iam()$get_user) %>%
+  purrr::map(users$UserName, \(x) con_iam()$get_user(x)) %>%
     purrr::map(purrr::pluck, "User") %>%
     user_list_tidy()
 }
@@ -70,8 +77,13 @@ aws_user <- function(username = NULL) {
     user = x,
     policies = policies("user", username),
     attached_policies = policies_attached("user", username),
-    groups = con_iam()$list_groups_for_user(username)
+    groups = groups_for_user(username)
   )
+}
+
+groups_for_user <- function(username) {
+  groups <- con_iam()$list_groups_for_user(username)
+  group_list_tidy(groups$Groups)
 }
 
 check_aws_user <- purrr::safely(aws_user, otherwise = FALSE)
@@ -130,11 +142,60 @@ aws_user_create <- function(
     user_list_tidy()
 }
 
+#' Create a user
+#'
+#' @export
+#' @inheritParams aws_user_create
+#' @details See [aws_user_create()] for more details.
+#' This function creates a user, adds policies so the
+#' user can access their own account, and grants them an access
+#' key. Add more policies using `aws_polic*` functions
+#' @section What is magical:
+#' - Adds a `GetUser` policy to your account if doesn't exist yet
+#' - Attaches `GetUser` policy to the user created
+#' - Grants an access key
+#' @family users
+#' @family magicians
+#' @return NULL invisibly. A draft email is copied to your clipboard
+#' @examplesIf interactive()
+#' name <- random_user()
+#' six_user_create(name)
+six_user_create <- function(
+    username, path = NULL, permission_boundary = NULL,
+    tags = NULL) {
+  aws_user_create(
+    path = path,
+    username = username,
+    permission_boundary = permission_boundary,
+    tags = tags
+  )
+  policy_name <- "UserInfo"
+  if (!aws_policy_exists(policy_name)) {
+    actions <- c(
+      "iam:GetUser", "iam:ListUserPolicies",
+      "iam:ListAttachedUserPolicies", "iam:ListGroupsForUser"
+    )
+    policy_doc <- aws_policy_document_create(
+      aws_policy_statement(actions, "*")
+    )
+    aws_policy_create(policy_name, policy_doc)
+    cli_alert_info("Added policy {.strong {policy_name}} to your account")
+  }
+  user_obj <- aws_user(username)
+  if (!has_policy(user_obj, policy_name)) {
+    aws_policy_attach(user_obj, policy_name)
+    cli_alert_info(
+      "Added policy {.strong {policy_name}} to {.strong {username}}"
+    )
+  }
+  six_user_creds(username, copy_to_cp = TRUE)
+}
+
 #' Delete a user
 #'
 #' @export
 #' @inheritParams aws_user_create
-#' @return an empty list
+#' @return NULL invisibly
 #' @details See <https://www.paws-r-sdk.com/docs/iam_delete_user/>
 #' docs for more details
 #' @family users
@@ -143,6 +204,52 @@ aws_user_create <- function(
 #' }
 aws_user_delete <- function(username) {
   con_iam()$delete_user(username)
+  invisible()
+}
+
+#' Delete a user
+#'
+#' @export
+#' @inheritParams aws_user_create
+#' @return an empty list
+#' @details See <https://www.paws-r-sdk.com/docs/iam_delete_user/>
+#' docs for more details
+#' @section What is magical:
+#' - Detaches any attached policies
+#' - Deletes any access keys
+#' - Then deletes the user
+#' @family users
+#' @family magicians
+#' @examplesIf interactive()
+#' name <- random_user()
+#' six_user_create(name)
+#' six_user_delete(name)
+six_user_delete <- function(username) {
+  user_obj <- aws_user(username)
+
+  # remove policies
+  attpols <- user_obj$attached_policies
+  if (!rlang::is_empty(attpols)) {
+    policies <- attpols$PolicyName
+    map(policies, \(policy) aws_policy_detach(user_obj, policy))
+    cli_alert_info("Polic{?y/ies} {.strong {policies}} detached")
+  }
+
+  # remove access keys
+  keys <- aws_user_access_key(username)
+  if (!is.null(keys)) {
+    map(keys$AccessKeyId, aws_user_access_key_delete, username = username)
+  }
+
+  # remove groups
+  if (!rlang::is_empty(user_obj$groups)) {
+    groups <- user_obj$groups
+    map(groups$GroupName, \(g) aws_user_remove_from_group(username, g))
+    cli_alert_info("Group{?s} {.strong {groups$GroupName}} detached")
+  }
+
+  aws_user_delete(username)
+  cli_alert_info("{.strong {username}} deleted")
 }
 
 #' Get AWS Access Key for a user
@@ -167,13 +274,37 @@ aws_user_access_key <- function(username = NULL, ...) {
   bind_rows(out$AccessKeyMetadata)
 }
 
-#' Add a user to a group
+#' Delete current user's AWS Access Key
+#'
+#' @export
+#' @param access_key_id (character) The access key ID for the access key ID
+#' and secret access key you want to delete. required.
+#' @param username (character) A user name. optional. however, if you do
+#' not supply a username, `paws` will likely use the current user, and so
+#' may not be the user the access key id is associated - and then you'll get
+#' an error like `NoSuchEntity (HTTP 404). The Access Key with id
+#' xx cannot be found`
+#' @return NULL, invisibly
+#' @details See <https://www.paws-r-sdk.com/docs/iam_delete_access_key/>
+#' docs for more details
+#' @family users
+#' @examplesIf interactive()
+#' aws_user_access_key_delete(access_key_id = "adfasdfadfadfasdf")
+#' aws_user_access_key_delete(access_key_id = "adfasdf", username = "jane")
+aws_user_access_key_delete <- function(access_key_id, username = NULL) {
+  con_iam()$delete_access_key(UserName = username, AccessKeyId = access_key_id)
+  cli::cli_alert_success("Access Key ID {.strong {access_key_id}} deleted")
+  invisible()
+}
+
+#' Add or remove a user to/from a group
 #'
 #' @export
 #' @inheritParams aws_user_create
 #' @param groupname (character) a group name. required
 #' @inherit aws_user return
 #' @details See <https://www.paws-r-sdk.com/docs/iam_add_user_to_group/>
+#' <https://www.paws-r-sdk.com/docs/iam_remove_user_from_group/>
 #' docs for more details
 #' @family users
 #' @examples \dontrun{
@@ -183,9 +314,17 @@ aws_user_access_key <- function(username = NULL, ...) {
 #' if (!aws_user_exists("testBlueBird3")) {
 #'   aws_user_create("testBlueBird3")
 #' }
-#' aws_user_add_to_group(username = "testBlueBird3", groupname = "testgroup3")
+#' aws_user_add_to_group("testBlueBird3", "testgroup3")
+#' aws_user_remove_from_group("testBlueBird3", "testgroup3")
 #' }
 aws_user_add_to_group <- function(username, groupname) {
   con_iam()$add_user_to_group(groupname, username)
+  aws_user(username)
+}
+
+#' @export
+#' @rdname aws_user_add_to_group
+aws_user_remove_from_group <- function(username, groupname) {
+  con_iam()$remove_user_from_group(groupname, username)
   aws_user(username)
 }

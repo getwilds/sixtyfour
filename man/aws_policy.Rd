@@ -4,10 +4,16 @@
 \alias{aws_policy}
 \title{Get a policy}
 \usage{
-aws_policy(name)
+aws_policy(name, local = FALSE, path = NULL)
 }
 \arguments{
-\item{name}{(character) a policy name or ARN}
+\item{name}{(character) a policy name or arn}
+
+\item{local}{(logical) if \code{TRUE} use your AWS account for your own
+managed policies. If \code{FALSE}, AWS managed policies}
+
+\item{path}{(character) if not \code{NULL}, we add the path into the ARN
+before the \code{name} value}
 }
 \value{
 a tibble with policy details
@@ -30,7 +36,11 @@ Other policies:
 \code{\link{aws_policies}()},
 \code{\link{aws_policy_attach}()},
 \code{\link{aws_policy_create}()},
+\code{\link{aws_policy_delete_version}()},
+\code{\link{aws_policy_delete}()},
 \code{\link{aws_policy_detach}()},
-\code{\link{aws_policy_exists}()}
+\code{\link{aws_policy_exists}()},
+\code{\link{aws_policy_list_entities}()},
+\code{\link{aws_policy_list_versions}()}
 }
 \concept{policies}

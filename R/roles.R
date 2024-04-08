@@ -7,6 +7,9 @@
 #' @note leaves out: PermissionsBoundary, Tags, RoleLastUsed,
 #' MaxSessionDuration
 role_list_tidy <- function(x) {
+  if (rlang::is_empty(x)) {
+    return(tibble())
+  }
   vars <- c(
     "RoleName", "RoleId", "Path", "Arn", "CreateDate",
     "Description", "AssumeRolePolicyDocument"
@@ -25,7 +28,7 @@ role_list_tidy <- function(x) {
 #' aws_roles()
 #' }
 aws_roles <- function(...) {
-  paginate_aws_marker(env64$iam$list_roles, "Roles") %>% role_list_tidy()
+  paginate_aws_marker("list_roles", "Roles") %>% role_list_tidy()
 }
 
 #' Get a role
@@ -52,7 +55,7 @@ aws_roles <- function(...) {
 #' aws_role("AWSServiceRoleForRedshift")
 #' }
 aws_role <- function(name) {
-  df <- env64$iam$get_role(name)$Role %>%
+  df <- con_iam()$get_role(name)$Role %>%
     list(.) %>%
     role_list_tidy()
   list(
@@ -60,6 +63,18 @@ aws_role <- function(name) {
     policies = policies("role", name),
     attached_policies = policies_attached("role", name)
   )
+}
+
+check_aws_role <- purrr::safely(aws_role, otherwise = FALSE)
+
+#' Check if a role exists
+#'
+#' @export
+#' @inheritParams aws_role
+#' @return a single boolean
+#' @family roles
+aws_role_exists <- function(name) {
+  is.null(check_aws_role(name)$error)
 }
 
 #' Create a role
@@ -110,7 +125,7 @@ aws_role_create <- function(
     name, assume_role_policy_document, path = NULL,
     description = NULL, max_session_duration = NULL, permission_boundary = NULL,
     tags = NULL) {
-  env64$iam$create_role(
+  con_iam()$create_role(
     Path = path,
     RoleName = name,
     AssumeRolePolicyDocument = assume_role_policy_document,
@@ -134,5 +149,5 @@ aws_role_create <- function(
 #' aws_role_delete(name = "MyRole")
 #' }
 aws_role_delete <- function(name) {
-  env64$iam$delete_role(name)
+  con_iam()$delete_role(name)
 }

@@ -9,6 +9,7 @@ aws_db_rds_list()
 \value{
 a tibble of instance details;
 see \url{https://www.paws-r-sdk.com/docs/describe_db_instances/}
+an empty tibble if no instances found
 }
 \description{
 Get information for all RDS instances
@@ -22,10 +23,8 @@ aws_db_rds_list()
 Other database: 
 \code{\link{aws_db_cluster_status}()},
 \code{\link{aws_db_instance_status}()},
-\code{\link{aws_db_rds_client}()},
 \code{\link{aws_db_rds_con}()},
 \code{\link{aws_db_rds_create}()},
-\code{\link{aws_db_redshift_client}()},
 \code{\link{aws_db_redshift_con}()},
 \code{\link{aws_db_redshift_create}()}
 }

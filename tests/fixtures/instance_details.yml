@@ -6,11 +6,11 @@ http_interactions:
       encoding: ''
       string: Action=DescribeDBInstances&Version=2014-10-31
     headers:
-      User-Agent: paws/0.6.1 (R4.3.2; darwin20; aarch64)
+      User-Agent: paws/0.6.1 (R4.3.3; darwin20; aarch64)
       Accept: application/xml
       Content-Type: application/x-www-form-urlencoded; charset=utf-8
       Content-Length: '45'
-      X-Amz-Date: 20231211T200106Z
+      X-Amz-Date: 20240402T165827Z
       Authorization: redacted
   response:
     status:
@@ -19,14 +19,15 @@ http_interactions:
       reason: OK
       message: 'Success: (200) OK'
     headers:
-      x-amzn-requestid: ab39037f-cae7-41ae-af8a-fc528f61f2aa
+      x-amzn-requestid: 22c6ae08-79b4-4912-829c-692a044bee7e
+      content-encoding: deflate
       strict-transport-security: max-age=31536000
       content-type: text/xml
-      content-length: '273'
-      date: Mon, 11 Dec 2023 20:01:06 GMT
+      content-length: '161'
+      date: Tue, 02 Apr 2024 16:58:27 GMT
     body:
       encoding: ''
       file: no
-      string: <DescribeDBInstancesResponse xmlns="http://rds.amazonaws.com/doc/2014-10-31/"><DescribeDBInstancesResult><DBInstances/></DescribeDBInstancesResult><ResponseMetadata><RequestId>ab39037f-cae7-41ae-af8a-fc528f61f2aa</RequestId></ResponseMetadata></DescribeDBInstancesResponse>
-  recorded_at: 2023-12-11 20:01:06 GMT
-  recorded_with: vcr/1.2.2, webmockr/0.9.0
+      string: <DescribeDBInstancesResponse xmlns="http://rds.amazonaws.com/doc/2014-10-31/"><DescribeDBInstancesResult><DBInstances/></DescribeDBInstancesResult><ResponseMetadata><RequestId>22c6ae08-79b4-4912-829c-692a044bee7e</RequestId></ResponseMetadata></DescribeDBInstancesResponse>
+  recorded_at: 2024-04-02 16:58:27 GMT
+  recorded_with: vcr/1.2.2.91, webmockr/0.9.0

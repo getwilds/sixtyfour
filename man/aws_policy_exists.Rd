@@ -2,26 +2,30 @@
 % Please edit documentation in R/policies.R
 \name{aws_policy_exists}
 \alias{aws_policy_exists}
-\title{Get a policy}
+\title{Check if a policy exists}
 \usage{
 aws_policy_exists(name)
 }
 \arguments{
-\item{name}{(character) a policy name}
+\item{name}{(character) a policy name or arn}
 }
 \value{
-a tibble with policy details
+single logical, \code{TRUE} or \code{FALSE}
 }
 \description{
-Get a policy
-}
-\details{
-see docs \url{https://www.paws-r-sdk.com/docs/iam_get_policy/}
+Checks for both customer managed and AWS managed policies
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# just the policy name
 aws_policy_exists("ReadOnlyAccess")
-}
+# as an ARN
+aws_policy_exists("arn:aws:iam::aws:policy/ReadOnlyAccess")
+# includes job-function in path
+aws_policy_exists("Billing")
+# includes service-role in path
+aws_policy_exists("AWSCostAndUsageReportAutomationPolicy")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other policies: 
@@ -29,7 +33,11 @@ Other policies:
 \code{\link{aws_policies}()},
 \code{\link{aws_policy_attach}()},
 \code{\link{aws_policy_create}()},
+\code{\link{aws_policy_delete_version}()},
+\code{\link{aws_policy_delete}()},
 \code{\link{aws_policy_detach}()},
+\code{\link{aws_policy_list_entities}()},
+\code{\link{aws_policy_list_versions}()},
 \code{\link{aws_policy}()}
 }
 \concept{policies}
