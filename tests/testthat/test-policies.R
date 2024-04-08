@@ -140,7 +140,7 @@ test_that("aws_policy_attach", {
 
 test_that("aws_policy_detach", {
   policy_name <- "AmazonS3ReadOnlyAccess"
-  user <- "userbnwaqdif"
+  user <- random_user()
 
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),

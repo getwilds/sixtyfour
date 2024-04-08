@@ -98,10 +98,12 @@ test_that("aws_vpc_security_group_create - with tags", {
 })
 
 test_that("aws_vpc_security_group_ingress", {
+  # nolint start
   # ipperms <- ip_permissions_generator("mariadb")
   # ipperms$IpRanges[[1]]$CidrIp <- "123.156.222.198/32"
   # ipperms$IpRanges[[1]]$Description <- "Access for someuser from sixtyfour"
   # save(ipperms, file = "tests/testthat/ipperms.rda", version = 2)
+  # nolint end
   load("ipperms.rda")
 
   expect_error(aws_vpc_security_group_ingress())
@@ -110,7 +112,8 @@ test_that("aws_vpc_security_group_ingress", {
   group <- aws_vpc_security_group_create(name = "testing423")
   out <- aws_vpc_security_group_ingress(
     id = group$GroupId,
-    ip_permissions = ipperms)
+    ip_permissions = ipperms
+  )
 
   expect_type(out, "list")
   expect_named(out, c("Return", "SecurityGroupRules"))
