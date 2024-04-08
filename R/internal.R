@@ -38,6 +38,8 @@ bucket_region <- function(bucket) {
 bucket_arn <- function(bucket, objects = "") {
   stop_if_not(rlang::is_character(bucket), "bucket must be character")
   stop_if_not(rlang::is_character(objects), "objects must be character")
-  glue("arn:aws:s3:::{bucket}",
-    "{ifelse(nzchar(objects), paste0('/', objects), '')}")
+  glue(
+    "arn:aws:s3:::{bucket}",
+    "{ifelse(nzchar(objects), paste0('/', objects), '')}"
+  )
 }

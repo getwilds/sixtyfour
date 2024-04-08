@@ -230,8 +230,8 @@ aws_vpc_security_group <- function(id, ...) {
 #'       ResourceType = "security-group",
 #'       Tags = list(
 #'         list(
-#'            Key = "sky",
-#'            Value = "blue"
+#'           Key = "sky",
+#'           Value = "blue"
 #'         )
 #'       )
 #'     )
