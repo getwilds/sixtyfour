@@ -43,17 +43,22 @@ We strive to have all tests that do HTTP requests do so against resources that a
 
 We use two tools to replace real AWS accounts: Minio, Localstack.
 
+###
+
 ### Minio
 
-We use [Minio][] for testing functions in this package (functions that start with `aws_bucket` and `aws_file`) for interacting with S3.
+We use [Minio][] for testing two sets of functions in this package for interacting with S3:
+
+- tests in `test-buckets.R`
+- tests in `test-files.R`
 
 #### Local
 
-If you want to run tests while contributing to `sixtyfour`, the tests that use Minio will just be skipped if you don't have Minio running.
+`sixtyfour` tests that use Minio will just be skipped if you don't have Minio running.
 
 To use Minio, first install it for your platform: [MacOS](https://min.io/docs/minio/macos/index.html), [Windows](https://min.io/docs/minio/windows/index.html), [Linux](https://min.io/docs/minio/linux/index.html).
 
-Next, start Minio. Within this package is a make target `minio_start` for starting Minio locally. That make target should only work on Linux and MacOS platforms. To start Minio on the command line see the docs links above for each platform.
+Next, start Minio. Within this package is a make target `minio_start` for starting Minio locally; it should only work on Linux and MacOS platforms.
 
 Upon starting Minio it will display URLs for both the Minio API and WebUI - and your username/password to login to the WebUI. You can open up the WebUI as a nice visual dashboard of what's going on.
 
@@ -63,7 +68,7 @@ The `R-CMD-check` workflow in `.github/workflows/` includes spinning up Minio fo
 
 #### Minio Details
 
-The following (collapsed) bullets list information for those who want to know more about the minio setup, and that may want to tweak it or add minio setup to other tests.
+The following information (collapsed) is for those who want to know more about the minio setup, and may want to tweak it or add minio setup to other tests.
 
 <details><summary>Expand for details</summary>
 
@@ -72,31 +77,45 @@ The following (collapsed) bullets list information for those who want to know mo
 
 ```r
 Sys.setenv(AWS_PROFILE = "minio")
-buckets_empty() # empty buckets so we're starting from an empty slate
 ```
 
 - And unset at the bottom of the file to cleanup:
 
 ```r
-buckets_empty() # empty buckets
 Sys.unsetenv("AWS_PROFILE")
 ```
 
 Internally we grab client objects for `paws` and `s3fs` as needed and use `AWS_PROFILE` env var to toggle on/off using Minio.
 
+For Minio we use the default credentials:
+
+- Access key id: `minioadmin` (override with env var `MINIO_USER`)
+- Secret access key: `minioadmin` (override with env var `MINIO_PWD`)
+- Endpoint: `http://127.0.0.1:9000` (override with env var `MINIO_ENDPOINT`)
+
+You can override these defaults by setting the env vars above to your own values.
+
 </details>
 
 ### Localstack
 
-We use [Localstack][ls] for testing some functions in this package.
+We use [Localstack][ls] for testing some functions in this package:
+
+- tests in `test-groups.R`
+- tests in `test-policies.R`
+- tests in `test-roles.R`
+- tests in `test-s3.R`
+- tests in `test-secrets_manager.R`
+- tests in `test-users.R`
+- tests in `test-vpc.R`
 
 #### Local
 
-If you want to run tests while contributing to `sixtyfour`, the tests that use Localstack will just be skipped if you don't have Minio running.
+`sixtyfour` tests that use Localstack will just be skipped if you don't have Localstack running.
 
 To use Localstack, first install it for your platform <https://docs.localstack.cloud/getting-started/installation/>.
 
-Next, start Localstack. Within this package is a make target `localstack_start` for starting Localstack locally. That make target should only work on Linux and MacOS platforms. To start Localstack on the command line see the docs links above for each platform. You'll need Docker installed and running to run Localstack. There are probably non-Docker ways to run Localstack.
+Next, start Localstack. Within this package is a make target `localstack_start` for starting Localstack locally. That make target should only work on Linux and MacOS platforms.
 
 For a GUI interface to the locally running localstack you can install the Desktop client - which isn't very good - at <https://docs.localstack.cloud/getting-started/installation/#localstack-desktop>. Better yet, login to the cloud Localstack site and you can interface with your locally running Localstack in the better interface there. Login at <https://app.localstack.cloud/>.
 
@@ -124,6 +143,14 @@ Sys.unsetenv("AWS_PROFILE")
 ```
 
 Internally we grab client objects for `paws` and `s3fs` as needed and use `AWS_PROFILE` env var to toggle on/off using Localstack.
+
+For Localstack we use the default credentials:
+
+- Access key id: `NOTAREALKEY` (override with env var `LOCALSTACK_KEY`)
+- Secret access key: `AREALLYFAKETOKEN` (override with env var `LOCALSTACK_SECRET`)
+- Endpoint: `http://localhost.localstack.cloud:4566` (override with env var `LOCALSTACK_ENDPOINT`)
+
+You can override these defaults by setting the env vars above to your own values.
 
 </details>
 
