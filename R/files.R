@@ -117,10 +117,14 @@ aws_file_upload <- function(path, remote_path, ...) {
 #' mydir <- tempdir()
 #' # six_file_upload(mydir, random_string("bucket"))
 six_file_upload <- function(path, bucket, force = FALSE, ...) {
-  stop_if_not(all(fs::file_exists(path)),
-    "one or more of {.strong path} don't exist")
-  stop_if(any(fs::is_dir(path)),
-    "one or more of {.strong path} is a directory; file paths only")
+  stop_if_not(
+    all(fs::file_exists(path)),
+    "one or more of {.strong path} don't exist"
+  )
+  stop_if(
+    any(fs::is_dir(path)),
+    "one or more of {.strong path} is a directory; file paths only"
+  )
   bucket_create_if_not(bucket, force)
   if (!aws_bucket_exists(bucket)) {
     cli_warning("bucket {.strong {bucket}} not created; exiting")
