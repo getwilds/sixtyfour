@@ -59,13 +59,23 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">aws_policy</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">aws_policy</span><span class="op">(</span><span class="va">name</span>, local <span class="op">=</span> <span class="cn">FALSE</span>, path <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>name</dt>
-<dd><p>(character) a policy name or ARN</p></dd>
+<dd><p>(character) a policy name or arn</p></dd>
+
+
+<dt>local</dt>
+<dd><p>(logical) if <code>TRUE</code> use your AWS account for your own
+managed policies. If <code>FALSE</code>, AWS managed policies</p></dd>
+
+
+<dt>path</dt>
+<dd><p>(character) if not <code>NULL</code>, we add the path into the ARN
+before the <code>name</code> value</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -85,8 +95,12 @@
 <code><a href="aws_policies.html">aws_policies</a>()</code>,
 <code><a href="aws_policy_attach.html">aws_policy_attach</a>()</code>,
 <code><a href="aws_policy_create.html">aws_policy_create</a>()</code>,
+<code><a href="aws_policy_delete_version.html">aws_policy_delete_version</a>()</code>,
+<code><a href="aws_policy_delete.html">aws_policy_delete</a>()</code>,
 <code><a href="aws_policy_detach.html">aws_policy_detach</a>()</code>,
-<code><a href="aws_policy_exists.html">aws_policy_exists</a>()</code></p></div>
+<code><a href="aws_policy_exists.html">aws_policy_exists</a>()</code>,
+<code><a href="aws_policy_list_entities.html">aws_policy_list_entities</a>()</code>,
+<code><a href="aws_policy_list_versions.html">aws_policy_list_versions</a>()</code></p></div>
     </div>
 
     <div class="section level2">

@@ -70,7 +70,7 @@ cache and refresh policy data, set <code>refresh=TRUE</code></p></dd>
 
 
 <dt>...</dt>
-<dd><p>parameters passed on to
+<dd><p>named arguments passed on to
 <a href="https://www.paws-r-sdk.com/docs/iam_list_policies/" class="external-link">list_policies</a></p></dd>
 
 </dl></div>
@@ -78,8 +78,19 @@ cache and refresh policy data, set <code>refresh=TRUE</code></p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A tibble with information about policies</p>
-    </div>
+<p>A tibble with information about policies. Each row is a policy.
+Columns:</p><ul><li><p>PolicyName</p></li>
+<li><p>PolicyId</p></li>
+<li><p>Path</p></li>
+<li><p>Arn</p></li>
+<li><p>CreateDate</p></li>
+<li><p>UpdateDate</p></li>
+<li><p>AttachmentCount</p></li>
+<li><p>PermissionsBoundaryUsageCount</p></li>
+<li><p>IsAttachable</p></li>
+<li><p>Description</p></li>
+<li><p>Tags</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>uses <code>memoise</code> internally to cache results to speed up all
@@ -91,8 +102,12 @@ subsequent calls to the function</p>
 <code><a href="as_policy_arn.html">as_policy_arn</a>()</code>,
 <code><a href="aws_policy_attach.html">aws_policy_attach</a>()</code>,
 <code><a href="aws_policy_create.html">aws_policy_create</a>()</code>,
+<code><a href="aws_policy_delete_version.html">aws_policy_delete_version</a>()</code>,
+<code><a href="aws_policy_delete.html">aws_policy_delete</a>()</code>,
 <code><a href="aws_policy_detach.html">aws_policy_detach</a>()</code>,
 <code><a href="aws_policy_exists.html">aws_policy_exists</a>()</code>,
+<code><a href="aws_policy_list_entities.html">aws_policy_list_entities</a>()</code>,
+<code><a href="aws_policy_list_versions.html">aws_policy_list_versions</a>()</code>,
 <code><a href="aws_policy.html">aws_policy</a>()</code></p></div>
     </div>
 

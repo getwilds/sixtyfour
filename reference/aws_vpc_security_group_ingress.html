@@ -59,13 +59,13 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">aws_vpc_security_group_ingress</span><span class="op">(</span>id <span class="op">=</span> <span class="cn">NULL</span>, ip_permissions <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">aws_vpc_security_group_ingress</span><span class="op">(</span><span class="va">id</span>, ip_permissions <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>id</dt>
-<dd><p>(character) security group id</p></dd>
+<dd><p>(character) security group id. required</p></dd>
 
 
 <dt>ip_permissions</dt>
@@ -102,7 +102,6 @@ list for this parameter</p></dd>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other security groups: 
-<code><a href="aws_ec2_client.html">aws_ec2_client</a>()</code>,
 <code><a href="aws_vpc_sec_group_rules.html">aws_vpc_sec_group_rules</a>()</code>,
 <code><a href="aws_vpc_security_group_create.html">aws_vpc_security_group_create</a>()</code>,
 <code><a href="aws_vpc_security_groups.html">aws_vpc_security_groups</a>()</code>,

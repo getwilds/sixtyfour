@@ -117,7 +117,8 @@ sure that you want to delete the bucket.</p>
 <code><a href="aws_bucket_exists.html">aws_bucket_exists</a>()</code>,
 <code><a href="aws_bucket_list_objects.html">aws_bucket_list_objects</a>()</code>,
 <code><a href="aws_bucket_tree.html">aws_bucket_tree</a>()</code>,
-<code><a href="aws_buckets.html">aws_buckets</a>()</code></p></div>
+<code><a href="aws_buckets.html">aws_buckets</a>()</code>,
+<code><a href="six_bucket_delete.html">six_bucket_delete</a>()</code></p></div>
     </div>
 
     <div class="section level2">
@@ -129,7 +130,7 @@ sure that you want to delete the bucket.</p>
 <span class="r-in"><span><span class="va">tfiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, <span class="fu"><a href="https://fs.r-lib.org/reference/file_temp.html" class="external-link">file_temp</a></span><span class="op">(</span>tmp_dir <span class="op">=</span> <span class="va">tdir</span>, ext <span class="op">=</span> <span class="st">".txt"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">tfiles</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">bucket_name</span> <span class="op">&lt;-</span> <span class="st">"a-new-bucket-345"</span></span></span>
+<span class="r-in"><span><span class="va">bucket_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="random_string.html">random_string</a></span><span class="op">(</span><span class="st">"bucket"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="aws_bucket_exists.html">aws_bucket_exists</a></span><span class="op">(</span><span class="va">bucket_name</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="aws_bucket_create.html">aws_bucket_create</a></span><span class="op">(</span><span class="va">bucket_name</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">aws_bucket_upload</span><span class="op">(</span>path <span class="op">=</span> <span class="va">tdir</span>, bucket <span class="op">=</span> <span class="va">bucket_name</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="aws_bucket_list_objects.html">aws_bucket_list_objects</a></span><span class="op">(</span><span class="va">bucket_name</span><span class="op">)</span></span></span>
@@ -137,6 +138,7 @@ sure that you want to delete the bucket.</p>
 <span class="r-in"><span><span class="co"># cleanup</span></span></span>
 <span class="r-in"><span><span class="va">objs</span> <span class="op">&lt;-</span> <span class="fu"><a href="aws_bucket_list_objects.html">aws_bucket_list_objects</a></span><span class="op">(</span><span class="va">bucket_name</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="aws_file_delete.html">aws_file_delete</a></span><span class="op">(</span><span class="va">objs</span><span class="op">$</span><span class="va">uri</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="aws_bucket_list_objects.html">aws_bucket_list_objects</a></span><span class="op">(</span><span class="va">bucket_name</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="aws_bucket_delete.html">aws_bucket_delete</a></span><span class="op">(</span><span class="va">bucket_name</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="aws_bucket_exists.html">aws_bucket_exists</a></span><span class="op">(</span><span class="va">bucket_name</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>

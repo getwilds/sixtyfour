@@ -68,6 +68,93 @@
         </dt>
         <dd>sixtyfour: Humane Interface to AWS</dd>
       </dl></div><div class="section level2">
+      <h2 id="high-level-magical-methods">High level “magical” methods<a class="anchor" aria-label="anchor" href="#high-level-magical-methods"></a></h2>
+      
+      <p class="section-desc"></p><p>Higher level functions to make your life easier</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="six_user_create.html">six_user_create()</a></code> 
+        </dt>
+        <dd>Create a user</dd>
+      </dl><dl><dt>
+          
+          <code><a href="six_user_delete.html">six_user_delete()</a></code> 
+        </dt>
+        <dd>Delete a user</dd>
+      </dl><dl><dt>
+          
+          <code><a href="six_admin_setup.html">six_admin_setup()</a></code> 
+        </dt>
+        <dd>AWS account setup for administrators</dd>
+      </dl><dl><dt>
+          
+          <code><a href="six_bucket_add_user.html">six_bucket_add_user()</a></code> 
+        </dt>
+        <dd>Add a user to a bucket</dd>
+      </dl><dl><dt>
+          
+          <code><a href="six_bucket_change_user.html">six_bucket_change_user()</a></code> 
+        </dt>
+        <dd>Change user permissions for a bucket</dd>
+      </dl><dl><dt>
+          
+          <code><a href="six_bucket_remove_user.html">six_bucket_remove_user()</a></code> 
+        </dt>
+        <dd>Remove a user from a bucket</dd>
+      </dl><dl><dt>
+          
+          <code><a href="six_bucket_permissions.html">six_bucket_permissions()</a></code> 
+        </dt>
+        <dd>Get permissions for a bucket</dd>
+      </dl><dl><dt>
+          
+          <code><a href="six_bucket_delete.html">six_bucket_delete()</a></code> 
+        </dt>
+        <dd>Delete an S3 bucket</dd>
+      </dl><dl><dt>
+          
+          <code><a href="six_file_upload.html">six_file_upload()</a></code> 
+        </dt>
+        <dd>Magically upload a file</dd>
+      </dl><dl><dt>
+          
+          <code><a href="six_user_creds.html">six_user_creds()</a></code> 
+        </dt>
+        <dd>Create access keys for a user</dd>
+      </dl><dl><dt>
+          
+          <code><a href="group_policies.html">group_policies()</a></code> 
+        </dt>
+        <dd>Preset group policies</dd>
+      </dl></div><div class="section level2">
+      <h2 id="paws-and-s-fs-clients">paws and s3fs clients<a class="anchor" aria-label="anchor" href="#paws-and-s-fs-clients"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="con_iam.html">con_iam()</a></code> <code><a href="con_iam.html">con_s3()</a></code> <code><a href="con_iam.html">con_sm()</a></code> <code><a href="con_iam.html">con_ec2()</a></code> <code><a href="con_iam.html">con_rds()</a></code> <code><a href="con_iam.html">con_redshift()</a></code> <code><a href="con_iam.html">con_ce()</a></code> 
+        </dt>
+        <dd>Get a <code>paws</code> client for a service</dd>
+      </dl><dl><dt>
+          
+          <code><a href="con_s3fs.html">con_s3fs()</a></code> 
+        </dt>
+        <dd>s3fs connection</dd>
+      </dl></div><div class="section level2">
       <h2 id="billing">Billing<a class="anchor" aria-label="anchor" href="#billing"></a></h2>
       
       
@@ -190,6 +277,16 @@
           <code><a href="aws_buckets.html">aws_buckets()</a></code> 
         </dt>
         <dd>List S3 buckets</dd>
+      </dl><dl><dt>
+          
+          <code><a href="aws_s3_policy_doc_create.html">aws_s3_policy_doc_create()</a></code> 
+        </dt>
+        <dd>Create a policy document for an S3 bucket</dd>
+      </dl><dl><dt>
+          
+          <code><a href="bucket_arn.html">bucket_arn()</a></code> 
+        </dt>
+        <dd>Get bucket ARN</dd>
       </dl></div><div class="section level2">
       <h2 id="users">Users<a class="anchor" aria-label="anchor" href="#users"></a></h2>
       
@@ -213,9 +310,14 @@
         <dd>Get AWS Access Key for a user</dd>
       </dl><dl><dt>
           
-          <code><a href="aws_user_add_to_group.html">aws_user_add_to_group()</a></code> 
+          <code><a href="aws_user_access_key_delete.html">aws_user_access_key_delete()</a></code> 
         </dt>
-        <dd>Add a user to a group</dd>
+        <dd>Delete current user's AWS Access Key</dd>
+      </dl><dl><dt>
+          
+          <code><a href="aws_user_add_to_group.html">aws_user_add_to_group()</a></code> <code><a href="aws_user_add_to_group.html">aws_user_remove_from_group()</a></code> 
+        </dt>
+        <dd>Add or remove a user to/from a group</dd>
       </dl><dl><dt>
           
           <code><a href="aws_user_create.html">aws_user_create()</a></code> 
@@ -241,11 +343,6 @@
           <code><a href="aws_users.html">aws_users()</a></code> 
         </dt>
         <dd>List Users</dd>
-      </dl><dl><dt>
-          
-          <code><a href="random_user.html">random_user()</a></code> 
-        </dt>
-        <dd>Get a random user</dd>
       </dl></div><div class="section level2">
       <h2 id="database">Database<a class="anchor" aria-label="anchor" href="#database"></a></h2>
       
@@ -269,11 +366,6 @@
         <dd>Get instance status</dd>
       </dl><dl><dt>
           
-          <code><a href="aws_db_rds_client.html">aws_db_rds_client()</a></code> 
-        </dt>
-        <dd>Get the <code>paws</code> RDS client</dd>
-      </dl><dl><dt>
-          
           <code><a href="aws_db_rds_con.html">aws_db_rds_con()</a></code> 
         </dt>
         <dd>Get a database connection to Amazon RDS</dd>
@@ -287,11 +379,6 @@
           <code><a href="aws_db_rds_list.html">aws_db_rds_list()</a></code> 
         </dt>
         <dd>Get information for all RDS instances</dd>
-      </dl><dl><dt>
-          
-          <code><a href="aws_db_redshift_client.html">aws_db_redshift_client()</a></code> 
-        </dt>
-        <dd>Get the <code>paws</code> Redshift client</dd>
       </dl><dl><dt>
           
           <code><a href="aws_db_redshift_con.html">aws_db_redshift_con()</a></code> 
@@ -366,6 +453,11 @@
         <dd>Delete a role</dd>
       </dl><dl><dt>
           
+          <code><a href="aws_role_exists.html">aws_role_exists()</a></code> 
+        </dt>
+        <dd>Check if a role exists</dd>
+      </dl><dl><dt>
+          
           <code><a href="aws_roles.html">aws_roles()</a></code> 
         </dt>
         <dd>List roles</dd>
@@ -402,6 +494,16 @@
         <dd>Create a policy</dd>
       </dl><dl><dt>
           
+          <code><a href="aws_policy_delete.html">aws_policy_delete()</a></code> 
+        </dt>
+        <dd>Delete a user managed policy</dd>
+      </dl><dl><dt>
+          
+          <code><a href="aws_policy_delete_version.html">aws_policy_delete_version()</a></code> 
+        </dt>
+        <dd>Delete a policy version</dd>
+      </dl><dl><dt>
+          
           <code><a href="aws_policy_detach.html">aws_policy_detach()</a></code> 
         </dt>
         <dd>Detach a policy from a user, group, or role</dd>
@@ -414,12 +516,32 @@
           
           <code><a href="aws_policy_exists.html">aws_policy_exists()</a></code> 
         </dt>
-        <dd>Get a policy</dd>
+        <dd>Check if a policy exists</dd>
+      </dl><dl><dt>
+          
+          <code><a href="aws_policy_list_entities.html">aws_policy_list_entities()</a></code> 
+        </dt>
+        <dd>List policy entities</dd>
+      </dl><dl><dt>
+          
+          <code><a href="aws_policy_list_versions.html">aws_policy_list_versions()</a></code> 
+        </dt>
+        <dd>List policy versions</dd>
+      </dl><dl><dt>
+          
+          <code><a href="aws_policy_statement.html">aws_policy_statement()</a></code> 
+        </dt>
+        <dd>Create a policy statement</dd>
       </dl><dl><dt>
           
           <code><a href="as_policy_arn.html">as_policy_arn()</a></code> 
         </dt>
         <dd>Convert a policy name to a policy ARN</dd>
+      </dl><dl><dt>
+          
+          <code><a href="resource_rds.html">resource_rds()</a></code> 
+        </dt>
+        <dd>Create a resource string for a policy statement for RDS</dd>
       </dl></div><div class="section level2">
       <h2 id="iam">IAM<a class="anchor" aria-label="anchor" href="#iam"></a></h2>
       
@@ -551,7 +673,7 @@
         </dt>
         <dd>Get a security group with one ingress rule based on the engine</dd>
       </dl></div><div class="section level2">
-      <h2 id="ec-">EC2<a class="anchor" aria-label="anchor" href="#ec-"></a></h2>
+      <h2 id="utilities">Utilities<a class="anchor" aria-label="anchor" href="#utilities"></a></h2>
       
       
 
@@ -563,9 +685,14 @@
 
       <dl><dt>
           
-          <code><a href="aws_ec2_client.html">aws_ec2_client()</a></code> 
+          <code><a href="random_user.html">random_user()</a></code> 
         </dt>
-        <dd>Get the <code>paws</code> EC2 client - primarily for usage of VPC security groups</dd>
+        <dd>Get a random user</dd>
+      </dl><dl><dt>
+          
+          <code><a href="random_string.html">random_string()</a></code> 
+        </dt>
+        <dd>Get a random string with prefix</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

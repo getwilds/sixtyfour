@@ -59,7 +59,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">aws_file_upload</span><span class="op">(</span><span class="va">path</span>, <span class="va">remote_path</span>, force <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">aws_file_upload</span><span class="op">(</span><span class="va">path</span>, <span class="va">remote_path</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -71,12 +71,6 @@
 <dt>remote_path</dt>
 <dd><p>(character) a remote path where the file
 should go. required</p></dd>
-
-
-<dt>force</dt>
-<dd><p>(logical) force bucket creation without going through
-the prompt. default: <code>FALSE</code>. Should only be set to <code>TRUE</code> when
-required for non-interactive use.</p></dd>
 
 
 <dt>...</dt>
@@ -91,10 +85,7 @@ required for non-interactive use.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    
-<ul><li><p>For upload: if it does exist it will be created</p></li>
-<li><p>For download: if it does not exist, function will return an error</p></li>
-</ul><p>To upload a folder of files see <code><a href="aws_bucket_upload.html">aws_bucket_upload()</a></code></p>
+    <p>to upload a folder of files see <code><a href="aws_bucket_upload.html">aws_bucket_upload()</a></code></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -104,16 +95,19 @@ required for non-interactive use.</p></dd>
 <code><a href="aws_file_delete.html">aws_file_delete</a>()</code>,
 <code><a href="aws_file_download.html">aws_file_download</a>()</code>,
 <code><a href="aws_file_exists.html">aws_file_exists</a>()</code>,
-<code><a href="aws_file_rename.html">aws_file_rename</a>()</code></p></div>
+<code><a href="aws_file_rename.html">aws_file_rename</a>()</code>,
+<code><a href="six_file_upload.html">six_file_upload</a>()</code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive()</span></span></span>
+<span class="r-in"><span><span class="va">bucket</span> <span class="op">&lt;-</span> <span class="fu"><a href="random_string.html">random_string</a></span><span class="op">(</span><span class="st">"bucket"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="aws_bucket_create.html">aws_bucket_create</a></span><span class="op">(</span><span class="va">bucket</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">demo_rds_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"Meta/demo.rds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">aws_file_upload</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">demo_rds_file</span>,</span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/s3fs/man/path.html" class="external-link">s3_path</a></span><span class="op">(</span><span class="st">"s64-test-2"</span>, <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">basename</a></span><span class="op">(</span><span class="va">demo_rds_file</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/s3fs/man/path.html" class="external-link">s3_path</a></span><span class="op">(</span><span class="va">bucket</span>, <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">basename</a></span><span class="op">(</span><span class="va">demo_rds_file</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## many files at once</span></span></span>
@@ -130,14 +124,28 @@ required for non-interactive use.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># bucket doesn't exist</span></span></span>
 <span class="r-in"><span><span class="fu">aws_file_upload</span><span class="op">(</span><span class="va">demo_rds_file</span>, <span class="st">"s3://not-a-bucket/eee.rds"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive()</span></span></span>
 <span class="r-in"><span><span class="co"># path doesn't exist</span></span></span>
 <span class="r-in"><span><span class="fu">aws_file_upload</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="st">"file_doesnt_exist.txt"</span>,</span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/s3fs/man/path.html" class="external-link">s3_path</a></span><span class="op">(</span><span class="st">"s64-test-2"</span>, <span class="st">"file_doesnt_exist.txt"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Path's without file extensions behave a little weird</span></span></span>
+<span class="r-in"><span><span class="co">## With extension</span></span></span>
+<span class="r-in"><span><span class="co">## Both of these lines do the same exact thing: make a file in the</span></span></span>
+<span class="r-in"><span><span class="co">## same path in a bucket</span></span></span>
+<span class="r-in"><span><span class="fu">aws_file_upload</span><span class="op">(</span><span class="st">"LICENSE.md"</span>, <span class="fu"><a href="https://rdrr.io/pkg/s3fs/man/path.html" class="external-link">s3_path</a></span><span class="op">(</span><span class="va">bucket</span>, <span class="st">"LICENSE.md"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">aws_file_upload</span><span class="op">(</span><span class="st">"LICENSE.md"</span>, <span class="fu"><a href="https://rdrr.io/pkg/s3fs/man/path.html" class="external-link">s3_path</a></span><span class="op">(</span><span class="va">bucket</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Without extension</span></span></span>
+<span class="r-in"><span><span class="co">## However, it's different for a file without an extension</span></span></span>
+<span class="r-in"><span><span class="co">## This makes a file in the bucket at path DESCRIPTION</span></span></span>
+<span class="r-in"><span><span class="fu">aws_file_upload</span><span class="op">(</span><span class="st">"DESCRIPTION"</span>, <span class="fu"><a href="https://rdrr.io/pkg/s3fs/man/path.html" class="external-link">s3_path</a></span><span class="op">(</span><span class="va">bucket</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Whereas this creates a directory called DESCRIPTION with</span></span></span>
+<span class="r-in"><span><span class="co">## a file DESCRIPTION within it</span></span></span>
+<span class="r-in"><span><span class="fu">aws_file_upload</span><span class="op">(</span><span class="st">"DESCRIPTION"</span>, <span class="fu"><a href="https://rdrr.io/pkg/s3fs/man/path.html" class="external-link">s3_path</a></span><span class="op">(</span><span class="va">bucket</span>, <span class="st">"DESCRIPTION"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

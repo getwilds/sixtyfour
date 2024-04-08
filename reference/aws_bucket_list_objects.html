@@ -69,7 +69,8 @@
 
 
 <dt>...</dt>
-<dd><p>named parameters passed on to <code><a href="https://rdrr.io/pkg/s3fs/man/info.html" class="external-link">s3fs::s3_dir_info()</a></code></p></dd>
+<dd><p>named parameters passed on to
+<a href="https://www.paws-r-sdk.com/docs/s3_list_objects/" class="external-link">list_objects</a></p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -95,13 +96,14 @@ is an S3 bucket, with 8 columns:</p><ul><li><p>bucket_name (character)</p></li>
 <code><a href="aws_bucket_exists.html">aws_bucket_exists</a>()</code>,
 <code><a href="aws_bucket_tree.html">aws_bucket_tree</a>()</code>,
 <code><a href="aws_bucket_upload.html">aws_bucket_upload</a>()</code>,
-<code><a href="aws_buckets.html">aws_buckets</a>()</code></p></div>
+<code><a href="aws_buckets.html">aws_buckets</a>()</code>,
+<code><a href="six_bucket_delete.html">six_bucket_delete</a>()</code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive()</span></span></span>
-<span class="r-in"><span><span class="va">bucket_name</span> <span class="op">&lt;-</span> <span class="st">"s64-test-67"</span></span></span>
+<span class="r-in"><span><span class="va">bucket_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="random_string.html">random_string</a></span><span class="op">(</span><span class="st">"bucket"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="aws_bucket_exists.html">aws_bucket_exists</a></span><span class="op">(</span><span class="va">bucket_name</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="aws_bucket_create.html">aws_bucket_create</a></span><span class="op">(</span><span class="va">bucket_name</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">links_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"Meta/links.rds"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="aws_file_upload.html">aws_file_upload</a></span><span class="op">(</span></span></span>

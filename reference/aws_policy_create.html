@@ -105,17 +105,28 @@ value. optional</p></dd>
 <code><a href="as_policy_arn.html">as_policy_arn</a>()</code>,
 <code><a href="aws_policies.html">aws_policies</a>()</code>,
 <code><a href="aws_policy_attach.html">aws_policy_attach</a>()</code>,
+<code><a href="aws_policy_delete_version.html">aws_policy_delete_version</a>()</code>,
+<code><a href="aws_policy_delete.html">aws_policy_delete</a>()</code>,
 <code><a href="aws_policy_detach.html">aws_policy_detach</a>()</code>,
 <code><a href="aws_policy_exists.html">aws_policy_exists</a>()</code>,
+<code><a href="aws_policy_list_entities.html">aws_policy_list_entities</a>()</code>,
+<code><a href="aws_policy_list_versions.html">aws_policy_list_versions</a>()</code>,
 <code><a href="aws_policy.html">aws_policy</a>()</code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="aws_db_rds_list.html">aws_db_rds_list</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="aws_policy_document_create.html">aws_policy_document_create</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">aws_policy_create</span><span class="op">(</span><span class="st">"RdsAllow"</span>, document <span class="op">=</span> <span class="va">doc</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive()</span></span></span>
+<span class="r-in"><span><span class="va">doc</span> <span class="op">&lt;-</span> <span class="fu"><a href="aws_policy_document_create.html">aws_policy_document_create</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  region <span class="op">=</span> <span class="st">"us-east-2"</span>,</span></span>
+<span class="r-in"><span>  account_id <span class="op">=</span> <span class="st">"1234567890"</span>,</span></span>
+<span class="r-in"><span>  resource_id <span class="op">=</span> <span class="st">"*"</span>,</span></span>
+<span class="r-in"><span>  user <span class="op">=</span> <span class="st">"jane_doe"</span>,</span></span>
+<span class="r-in"><span>  action <span class="op">=</span> <span class="st">"rds-db:connect"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">aws_policy_create</span><span class="op">(</span><span class="st">"RdsAllow123"</span>, document <span class="op">=</span> <span class="va">doc</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># cleanup</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="aws_policy_delete.html">aws_policy_delete</a></span><span class="op">(</span><span class="st">"RdsAllow123"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
