@@ -118,7 +118,6 @@ aws_db_rds_create <-
            storage_encrypted = TRUE, security_group_ids = NULL,
            wait = TRUE, verbose = TRUE, aws_secrets = TRUE,
            iam_database_auth = FALSE, ...) {
-    aws_db_rds_client()
     if (is.null(user)) {
       user <- random_user()
       if (verbose) {
@@ -132,7 +131,7 @@ aws_db_rds_create <-
       }
     }
     security_group_ids <- security_group_handler(security_group_ids, engine)
-    env64$rds$create_db_instance(
+    con_rds()$create_db_instance(
       DBName = dbname, DBInstanceIdentifier = id,
       Engine = engine, DBInstanceClass = class,
       AllocatedStorage = storage,
@@ -164,17 +163,6 @@ aws_db_rds_create <-
     invisible()
   }
 
-#' Get the `paws` RDS client
-#' @export
-#' @note returns existing client if found; a new client otherwise
-#' @family database
-#' @return a list with methods for interfacing with RDS;
-#' see <https://www.paws-r-sdk.com/docs/rds/>
-aws_db_rds_client <- function() {
-  if (is.null(env64$rds)) env64$rds <- paws::rds()
-  return(env64$rds)
-}
-
 #' Get information for all RDS instances
 #' @export
 #' @return a list of RDS instance details, see link below for format,
@@ -184,8 +172,7 @@ aws_db_rds_client <- function() {
 #' @references <https://www.paws-r-sdk.com/docs/describe_db_instances/>
 #' @keywords internal
 instance_details <- function() {
-  aws_db_rds_client()
-  env64$rds$describe_db_instances()
+  con_rds()$describe_db_instances()
 }
 
 split_grep <- function(column, split, pattern) {

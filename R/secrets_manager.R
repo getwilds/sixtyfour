@@ -1,26 +1,3 @@
-#' Get the `paws` Secrets Manager client
-#' @return a list with methods for interfacing with Secrets Manager;
-#' see <https://www.paws-r-sdk.com/docs/secretsmanager/>
-#' @keywords internal
-con_sm <- function() {
-  profile <- Sys.getenv("AWS_PROFILE")
-  if (profile == "localstack") {
-    Sys.unsetenv("AWS_ACCESS_KEY_ID")
-    Sys.unsetenv("AWS_SECRET_ACCESS_KEY")
-    paws::secretsmanager(
-      credentials = list(
-        creds = list(
-          access_key_id = "NOTAREALKEY",
-          secret_access_key = "AREALLYFAKETOKEN"
-        )
-      ),
-      endpoint = LOCALSTACK_ENDPOINT
-    )
-  } else {
-    paws::secretsmanager()
-  }
-}
-
 #' List secrets
 #' @export
 #' @param ... parameters passed on to the `paws` method
@@ -45,7 +22,9 @@ aws_secrets_list <- function(...) {
 aws_secrets_all <- function() {
   tmp <- paginate_aws_token("list_secrets", "SecretList") %>%
     purrr::map(function(x) aws_secrets_get(x$Name))
-  if (is_empty(tmp)) return(tibble())
+  if (is_empty(tmp)) {
+    return(tibble())
+  }
   new_secrets <- list()
   for (i in seq_along(tmp)) {
     new_secrets[[i]] <- c(

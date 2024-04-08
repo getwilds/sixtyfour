@@ -47,7 +47,6 @@ Other security groups:
 \code{\link{aws_vpc_security_group_create}()},
 \code{\link{aws_vpc_security_groups}()},
 \code{\link{aws_vpc_security_group}()},
-\code{\link{aws_vpc_sg_with_ingresss}()},
-\code{\link{con_ec2}()}
+\code{\link{aws_vpc_sg_with_ingresss}()}
 }
 \concept{security groups}

@@ -135,12 +135,6 @@ path_as_s3 <- function(paths) {
 #' @param target (character) a list element to get
 #' @param ... named args passed on to `fun`
 #' @keywords internal
-#' @examples \dontrun{
-#' # FIXME: could remove target param and poach the name of the fun
-#' # e.g,. from list_roles we can get Roles
-#' # paginate_aws_marker(fun = env64$iam$list_roles, target = "Roles")
-#' # paginate_aws_marker(fun = env64$iam$list_policies, target = "Policies")
-#' }
 paginate_aws_marker <- function(fun, target, ...) {
   con <- con_iam()
   res <- con[[fun]](...)
@@ -168,7 +162,7 @@ paginate_aws_marker <- function(fun, target, ...) {
 #' @keywords internal
 #' @examples \dontrun{
 #' paginate_aws_token(
-#'   fun = env64$secretsmanager$list_secrets,
+#'   fun = con_sm()$list_secrets,
 #'   target = "SecretList"
 #' )
 #' }

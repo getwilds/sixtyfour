@@ -145,12 +145,15 @@ create_policy_if_missing <- function(bucket, permissions) {
 #' )
 #' }
 six_bucket_add_user <- function(bucket, username, permissions) {
-  stop_if_not(permissions %in% c("read", "write"),
+  stop_if_not(length(permissions) == 1, "permissions must be length 1")
+  stop_if_not(
+    permissions %in% c("read", "write"),
     "permissions must be one of read or write"
   )
-  stop_if_not(length(permissions) == 1,"permissions must be length 1")
-  stop_if_not(aws_bucket_exists(bucket),
-    "bucket {.strong {bucket}} does not exist")
+  stop_if_not(
+    aws_bucket_exists(bucket),
+    "bucket {.strong {bucket}} does not exist"
+  )
 
   policy_name <- bucket_to_policy_name(bucket, permissions)
   create_policy_if_missing(bucket, permissions)

@@ -101,8 +101,7 @@ aws_db_redshift_create <-
   function(id, user, pwd, dbname = "dev", cluster_type = "multi-node",
            node_type = "dc2.large", number_nodes = 2,
            security_group_ids = NULL, wait = TRUE, verbose = TRUE, ...) {
-    aws_db_redshift_client()
-    env64$redshift$create_cluster(
+    con_redshift()$create_cluster(
       DBName = dbname, ClusterIdentifier = id,
       ClusterType = cluster_type, NodeType = node_type,
       MasterUsername = user, MasterUserPassword = pwd,
@@ -117,16 +116,6 @@ aws_db_redshift_create <-
     invisible()
   }
 
-#' Get the `paws` Redshift client
-#' @export
-#' @family database
-#' @return a list with methods for interfacing with Redshift;
-#' see <https://www.paws-r-sdk.com/docs/redshift/>
-aws_db_redshift_client <- function() {
-  if (is.null(env64$redshift)) env64$redshift <- paws::redshift()
-  return(env64$redshift)
-}
-
 #' Get information for all clusters
 #' @export
 #' @return a list of cluster details, see link below for format, with slots:
@@ -135,8 +124,7 @@ aws_db_redshift_client <- function() {
 #' @references <https://www.paws-r-sdk.com/docs/redshift_describe_clusters/>
 #' @keywords internal
 cluster_details <- function() {
-  aws_db_redshift_client()
-  env64$redshift$describe_clusters()
+  con_redshift()$describe_clusters()
 }
 
 #' Get connection information for all clusters

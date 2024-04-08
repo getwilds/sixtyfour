@@ -325,6 +325,6 @@ aws_user_add_to_group <- function(username, groupname) {
 #' @export
 #' @rdname aws_user_add_to_group
 aws_user_remove_from_group <- function(username, groupname) {
-  env64$iam$remove_user_from_group(groupname, username)
+  con_iam()$remove_user_from_group(groupname, username)
   aws_user(username)
 }
