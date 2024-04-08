@@ -22,6 +22,9 @@ reference:
       - six_file_upload
       - six_user_creds
       - group_policies
+  - title: paws and s3fs clients
+    contents:
+      - starts_with("con_")
   - title: Billing
     contents:
       - starts_with("aws_billing")
@@ -70,9 +73,6 @@ reference:
       - aws_vpc_sec_group_rules
       - ip_permissions_generator
       - aws_vpc_sg_with_ingresss
-  - title: EC2
-    contents:
-      - aws_ec2_client
   - title: Utilities
     contents:
       - random_user
