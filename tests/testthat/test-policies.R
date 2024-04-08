@@ -1,4 +1,3 @@
-skip_on_ci()
 skip_if_not(localstack_available(), "LocalStack Not Available")
 
 # setup
@@ -101,7 +100,7 @@ test_that("as_policy_arn", {
 
 test_that("aws_policy_attach", {
   policy_name <- "AWSCloudHSMReadOnlyAccess"
-  user1 <- "useratfwdqpi"
+  user1 <- random_user()
 
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
