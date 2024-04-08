@@ -124,5 +124,34 @@ test_that("aws_vpc_security_group_ingress", {
   expect_match(out$SecurityGroupRules[[1]]$GroupId, "sg-")
 })
 
+test_that("aws_vpc_sg_with_ingress", {
+  expect_error(aws_vpc_sg_with_ingress())
+
+  res <- aws_vpc_sg_with_ingress("mariadb")
+  expect_type(res, "character")
+  expect_match(res, "sg-")
+
+  out <- aws_vpc_security_group(res)
+  expect_type(out, "list")
+  expect_length(out$SecurityGroups, 1)
+  expect_match(out$SecurityGroups[[1]]$GroupName, "mariadb-")
+
+  res_mysql <- aws_vpc_sg_with_ingress("mysql")
+  out_mysql <- aws_vpc_security_group(res_mysql)
+  expect_match(out_mysql$SecurityGroups[[1]]$GroupName, "mysql-")
+})
+
+test_that("security_group_handler", {
+  # missing `id` param
+  expect_error(security_group_handler())
+  # if `id` given and not `NULL`, returns itself
+  an_id <- 123
+  expect_equal(security_group_handler(an_id), an_id)
+  # if `id` given and IS `NULL`, errors b/c `engine` missing
+  expect_error(security_group_handler(NULL))
+  # if `id` given, engine value not supported
+  expect_error(security_group_handler(NULL, engine = "asdff"))
+})
+
 # cleanup
 Sys.unsetenv("AWS_PROFILE")

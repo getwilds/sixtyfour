@@ -8,7 +8,7 @@
 #' and [aws_vpc_security_group_ingress()]
 #' @family security groups
 #' @return (character) security group ID
-aws_vpc_sg_with_ingresss <- function(engine) {
+aws_vpc_sg_with_ingress <- function(engine) {
   sg <- aws_vpc_security_group_create(
     name = glue("{engine}-{paste0(sample(1:9, size = 4), collapse = '')}"),
     engine = engine
@@ -39,6 +39,7 @@ security_group_handler <- function(ids, engine) {
   sgsdf <- jsonlite::fromJSON(
     jsonlite::toJSON(sgs$SecurityGroups, auto_unbox = TRUE)
   )
+  if (is_empty(sgsdf)) sgsdf <- tibble(IpPermissions = list())
 
   port_df <- dplyr::filter(
     sgsdf,
@@ -56,7 +57,7 @@ security_group_handler <- function(ids, engine) {
       "Creating security group with access for ",
       "{.strong {engine}} and port {.strong {port}}"
     ))
-    trysg <- tryCatch(aws_vpc_sg_with_ingresss(engine),
+    trysg <- tryCatch(aws_vpc_sg_with_ingress(engine),
       error = function(e) e
     )
     if (rlang::is_error(trysg)) {
