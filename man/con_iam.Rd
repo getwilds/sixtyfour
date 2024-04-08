@@ -2,7 +2,7 @@
 % Please edit documentation in R/clients.R
 \name{con_iam}
 \alias{con_iam}
-\alias{connections}
+\alias{paws_clients}
 \alias{con_s3}
 \alias{con_sm}
 \alias{con_ec2}
@@ -96,4 +96,7 @@ withr::with_envvar(
   con_s3()
 )
 \dontshow{\}) # examplesIf}
+}
+\seealso{
+\code{\link[=con_s3fs]{con_s3fs()}}
 }

@@ -6,7 +6,7 @@
 #' You can toggle the interface set for one of minio, localstack, aws.
 #' See [connections] for more information.
 #' @return An S3 list with class 'sixtyfour_client'
-#' @seealso paws_clients
+#' @seealso [paws_clients]
 #' @examplesIf interactive()
 #' con <- con_s3fs()
 #' con
@@ -102,7 +102,7 @@ print.sixtyfour_client <- function(x, ...) {
 #'
 #' @export
 #' @aliases paws_clients
-#' @seealso con_s3fs
+#' @seealso [con_s3fs()]
 #' @details Toggles the credentials used based on the environment
 #' variable `AWS_PROFILE` for one of: minio, localstack, aws.
 #'

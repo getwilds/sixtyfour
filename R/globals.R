@@ -3,7 +3,6 @@
 utils::globalVariables(c(
   "UnblendedCost", # <aws_billing>
   "BlendedCost", # <aws_billing>
-  ":=", # <billing_factory>
   "service_map", # <billing_factory>
   "acronym", # <billing_factory>
   "Service", # <billing_factory>
@@ -20,7 +19,6 @@ utils::globalVariables(c(
   "DBInstanceArn", # <aws_db_rds_list>
   ".", # <aws_group>
   ".", # <aws_policy>
-  "as_tibble", # <aws_policy_list_entities>
   "type", # <aws_policy_list_entities>
   ".", # <aws_role>
   "user", # <six_bucket_remove_user>
@@ -39,7 +37,6 @@ utils::globalVariables(c(
   "secret_str", # <aws_secrets_rotate>
   "name", # <ui_fetch_secret>
   "PasswordLastUsed", # <user_list_tidy>
-  "as_tibble", # <tidy_generator>
   "CreateDate", # <tidy_generator>
   "IpPermissions", # <security_group_handler>
   NULL

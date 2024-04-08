@@ -27,5 +27,5 @@ con_s3fs()$file_copy
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-connections
+\link{paws_clients}
 }

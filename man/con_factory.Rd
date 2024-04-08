@@ -2,7 +2,7 @@
 % Please edit documentation in R/clients.R
 \name{con_factory}
 \alias{con_factory}
-\title{Connection factory}
+\title{\code{paws} connection factory}
 \usage{
 con_factory(service)
 }
@@ -14,6 +14,6 @@ a function for returning the client for the service in
 the \code{service} parameter
 }
 \description{
-Connection factory
+\code{paws} connection factory
 }
 \keyword{internal}
