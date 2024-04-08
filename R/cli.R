@@ -1,3 +1,4 @@
+# cli_alert* with wrap=TRUE
 cli_info <- function(text, .envir = parent.frame()) {
   cli_alert_info(text, wrap = TRUE, .envir = .envir)
 }
