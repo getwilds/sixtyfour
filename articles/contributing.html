@@ -143,22 +143,28 @@ organizations; forgotten resources can be expensive; accidentally making
 unwated changes to an account, etc.</p>
 <p>We use two tools to replace real AWS accounts: Minio, Localstack.</p>
 <div class="section level3">
+<h3 id="section"></h3>
+</div>
+<div class="section level3">
 <h3 id="minio">Minio<a class="anchor" aria-label="anchor" href="#minio"></a>
 </h3>
-<p>We use <a href="https://min.io/" class="external-link">Minio</a> for testing functions in
-this package (functions that start with <code>aws_bucket</code> and
-<code>aws_file</code>) for interacting with S3.</p>
+<p>We use <a href="https://min.io/" class="external-link">Minio</a> for testing two sets of
+functions in this package for interacting with S3:</p>
+<ul>
+<li>tests in <code>test-buckets.R</code>
+</li>
+<li>tests in <code>test-files.R</code>
+</li>
+</ul>
 <div class="section level4">
 <h4 id="local">Local<a class="anchor" aria-label="anchor" href="#local"></a>
 </h4>
-<p>If you want to run tests while contributing to
-<code>sixtyfour</code>, the tests that use Minio will just be skipped if
+<p><code>sixtyfour</code> tests that use Minio will just be skipped if
 you don’t have Minio running.</p>
 <p>To use Minio, first install it for your platform: <a href="https://min.io/docs/minio/macos/index.html" class="external-link">MacOS</a>, <a href="https://min.io/docs/minio/windows/index.html" class="external-link">Windows</a>, <a href="https://min.io/docs/minio/linux/index.html" class="external-link">Linux</a>.</p>
 <p>Next, start Minio. Within this package is a make target
-<code>minio_start</code> for starting Minio locally. That make target
-should only work on Linux and MacOS platforms. To start Minio on the
-command line see the docs links above for each platform.</p>
+<code>minio_start</code> for starting Minio locally; it should only work
+on Linux and MacOS platforms.</p>
 <p>Upon starting Minio it will display URLs for both the Minio API and
 WebUI - and your username/password to login to the WebUI. You can open
 up the WebUI as a nice visual dashboard of what’s going on.</p>
@@ -174,9 +180,9 @@ MacOS and WIndows platforms on GitHub Actions.</p>
 <div class="section level4">
 <h4 id="minio-details">Minio Details<a class="anchor" aria-label="anchor" href="#minio-details"></a>
 </h4>
-<p>The following (collapsed) bullets list information for those who want
-to know more about the minio setup, and that may want to tweak it or add
-minio setup to other tests.</p>
+<p>The following information (collapsed) is for those who want to know
+more about the minio setup, and may want to tweak it or add minio setup
+to other tests.</p>
 <details><summary>
 Expand for details
 </summary><ul>
@@ -192,17 +198,26 @@ file if Minio is not available, like:
 Minio like:</li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>AWS_PROFILE <span class="op">=</span> <span class="st">"minio"</span><span class="op">)</span></span>
-<span><span class="fu">buckets_empty</span><span class="op">(</span><span class="op">)</span> <span class="co"># empty buckets so we're starting from an empty slate</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>AWS_PROFILE <span class="op">=</span> <span class="st">"minio"</span><span class="op">)</span></span></code></pre></div>
 <ul>
 <li>And unset at the bottom of the file to cleanup:</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">buckets_empty</span><span class="op">(</span><span class="op">)</span> <span class="co"># empty buckets</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.unsetenv</a></span><span class="op">(</span><span class="st">"AWS_PROFILE"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.unsetenv</a></span><span class="op">(</span><span class="st">"AWS_PROFILE"</span><span class="op">)</span></span></code></pre></div>
 <p>Internally we grab client objects for <code>paws</code> and
 <code>s3fs</code> as needed and use <code>AWS_PROFILE</code> env var to
 toggle on/off using Minio.</p>
+<p>For Minio we use the default credentials:</p>
+<ul>
+<li>Access key id: <code>minioadmin</code> (override with env var
+<code>MINIO_USER</code>)</li>
+<li>Secret access key: <code>minioadmin</code> (override with env var
+<code>MINIO_PWD</code>)</li>
+<li>Endpoint: <code>http://127.0.0.1:9000</code> (override with env var
+<code>MINIO_ENDPOINT</code>)</li>
+</ul>
+<p>You can override these defaults by setting the env vars above to your
+own values.</p>
 </details>
 </div>
 </div>
@@ -210,20 +225,32 @@ toggle on/off using Minio.</p>
 <h3 id="localstack">Localstack<a class="anchor" aria-label="anchor" href="#localstack"></a>
 </h3>
 <p>We use <a href="https://www.localstack.cloud/" class="external-link">Localstack</a> for
-testing some functions in this package.</p>
+testing some functions in this package:</p>
+<ul>
+<li>tests in <code>test-groups.R</code>
+</li>
+<li>tests in <code>test-policies.R</code>
+</li>
+<li>tests in <code>test-roles.R</code>
+</li>
+<li>tests in <code>test-s3.R</code>
+</li>
+<li>tests in <code>test-secrets_manager.R</code>
+</li>
+<li>tests in <code>test-users.R</code>
+</li>
+<li>tests in <code>test-vpc.R</code>
+</li>
+</ul>
 <div class="section level4">
 <h4 id="local-1">Local<a class="anchor" aria-label="anchor" href="#local-1"></a>
 </h4>
-<p>If you want to run tests while contributing to
-<code>sixtyfour</code>, the tests that use Localstack will just be
-skipped if you don’t have Minio running.</p>
+<p><code>sixtyfour</code> tests that use Localstack will just be skipped
+if you don’t have Localstack running.</p>
 <p>To use Localstack, first install it for your platform <a href="https://docs.localstack.cloud/getting-started/installation/" class="external-link uri">https://docs.localstack.cloud/getting-started/installation/</a>.</p>
 <p>Next, start Localstack. Within this package is a make target
 <code>localstack_start</code> for starting Localstack locally. That make
-target should only work on Linux and MacOS platforms. To start
-Localstack on the command line see the docs links above for each
-platform. You’ll need Docker installed and running to run Localstack.
-There are probably non-Docker ways to run Localstack.</p>
+target should only work on Linux and MacOS platforms.</p>
 <p>For a GUI interface to the locally running localstack you can install
 the Desktop client - which isn’t very good - at <a href="https://docs.localstack.cloud/getting-started/installation/#localstack-desktop" class="external-link uri">https://docs.localstack.cloud/getting-started/installation/#localstack-desktop</a>.
 Better yet, login to the cloud Localstack site and you can interface
@@ -267,6 +294,17 @@ Localstack like:</li>
 <p>Internally we grab client objects for <code>paws</code> and
 <code>s3fs</code> as needed and use <code>AWS_PROFILE</code> env var to
 toggle on/off using Localstack.</p>
+<p>For Localstack we use the default credentials:</p>
+<ul>
+<li>Access key id: <code>NOTAREALKEY</code> (override with env var
+<code>LOCALSTACK_KEY</code>)</li>
+<li>Secret access key: <code>AREALLYFAKETOKEN</code> (override with env
+var <code>LOCALSTACK_SECRET</code>)</li>
+<li>Endpoint: <code>http://localhost.localstack.cloud:4566</code>
+(override with env var <code>LOCALSTACK_ENDPOINT</code>)</li>
+</ul>
+<p>You can override these defaults by setting the env vars above to your
+own values.</p>
 </details>
 </div>
 </div>
