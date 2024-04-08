@@ -7,7 +7,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
 ## General guidelines
 
 This article outlines how to propose a change to `sixtyfour`. For more information about contributing to this, and other WILDS projects, please see the [**WILDS Contributing Guide**](https://getwilds.org/guide/).
@@ -22,6 +21,8 @@ If you want to make a bigger change, it's a good idea to first file an issue and
 
 If you’ve found a bug, please file an issue that illustrates the bug with a minimal
 reproducible example using [reprex](https://www.tidyverse.org/help/#reprex).
+
+Note that this package has a `Makefile` in the root of the repository - see the targets in the `Makefile` for various package maintenance tasks.
 
 #### Pull request process
 

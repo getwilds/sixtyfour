@@ -28,11 +28,9 @@ This package leans primarily on the packages [paws][] and [s3fs][].
 
 Open an issue on our [issue tracker](https://github.com/getwilds/sixtyfour/issues/).
 
-## Developers
+## Contributors
 
-- See the targets in the Makefile for various package maintenance tasks.
-- For scanning for secrets see the make target `scan_secrets` in the Makefile.
-- We use [minio][] for testing functions in this package (start with `aws_bucket`, and `aws_file`) for interacting with S3. See the make target `minio_start` for starting minio locally. The `R-CMD-check` workflow in `.github/workflows/` includes spinning up minio for running unit tests - only on linux. If you run tests and minio is not available then tests that require it will be skipped.
+See the [Contributing article](http://getwilds.org/sixtyfour/articles/contributing.html)
 
 ## Code of Conduct
 
