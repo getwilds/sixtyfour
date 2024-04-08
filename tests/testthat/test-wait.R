@@ -10,7 +10,9 @@ test_that("wait", {
     "test initializing"
   )
 
-  expect_message((out <- wait_for_test()),
-    "Waiting for")
+  expect_message(
+    (out <- wait_for_test()),
+    "Waiting for"
+  )
   expect_null(out)
 })
