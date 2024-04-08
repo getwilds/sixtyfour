@@ -7,9 +7,16 @@
 cluster_details()
 }
 \value{
-a list of cluster details
+a list of cluster details, see link below for format, with slots:
+\itemize{
+\item Marker (for pagination)
+\item Clusters (each cluster; empty list if no clusters)
+}
 }
 \description{
 Get information for all clusters
+}
+\references{
+\url{https://www.paws-r-sdk.com/docs/redshift_describe_clusters/}
 }
 \keyword{internal}

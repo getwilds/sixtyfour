@@ -15,7 +15,8 @@ test_that("aws_db_rds_create", {
 })
 
 test_that("aws_db_rds_client", {
-  x <- aws_db_rds_client()
+  x <- con_rds()
+  expect_s3_class(x, "sixtyfour_client")
   expect_type(x, "list")
   expect_type(x[[1]], "closure")
   lnames <- names(x)

@@ -6,16 +6,26 @@ utils::globalVariables(c(
   "service_map", # <billing_factory>
   "acronym", # <billing_factory>
   "Service", # <billing_factory>
+  "Size", # <aws_bucket_list_objects>
+  "LastModified", # <aws_bucket_list_objects>
+  "Key", # <aws_bucket_list_objects>
+  "key", # <aws_bucket_list_objects>
+  "uri", # <aws_bucket_list_objects>
+  "size", # <aws_bucket_list_objects>
+  "type", # <aws_bucket_list_objects>
+  "etag", # <aws_bucket_list_objects>
+  "lastmodified", # <aws_bucket_list_objects>
+  "storageclass", # <aws_bucket_list_objects>
   "DBInstanceArn", # <aws_db_rds_list>
   ".", # <aws_group>
   ".", # <aws_policy>
   "type", # <aws_policy_list_entities>
   ".", # <aws_role>
-  "user", # <aws_bucket_remove_user>
-  "user", # <aws_bucket_permissions>
-  "permissions", # <aws_bucket_permissions>
-  "PolicyName", # <aws_bucket_permissions>
-  "permissions2", # <aws_bucket_permissions>
+  "user", # <six_bucket_remove_user>
+  "user", # <six_bucket_permissions>
+  "permissions", # <six_bucket_permissions>
+  "PolicyName", # <six_bucket_permissions>
+  "permissions2", # <six_bucket_permissions>
   "PolicyArn", # <permissions_user_bucket>
   "resource_arn", # <permissions_user_bucket>
   "user", # <permissions_groups>

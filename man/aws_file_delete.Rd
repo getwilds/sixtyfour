@@ -9,7 +9,8 @@ aws_file_delete(remote_path, ...)
 \arguments{
 \item{remote_path}{(character) one or more remote S3 paths. required}
 
-\item{...}{named parameters passed on to \code{\link[s3fs:delete]{s3fs::s3_file_delete()}}}
+\item{...}{named parameters passed on to
+\href{https://www.paws-r-sdk.com/docs/s3_delete_object/}{delete_object}}
 }
 \value{
 \code{NULL} invisibly
@@ -38,6 +39,7 @@ Other files:
 \code{\link{aws_file_download}()},
 \code{\link{aws_file_exists}()},
 \code{\link{aws_file_rename}()},
-\code{\link{aws_file_upload}()}
+\code{\link{aws_file_upload}()},
+\code{\link{six_file_upload}()}
 }
 \concept{files}

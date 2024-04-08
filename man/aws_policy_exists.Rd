@@ -17,8 +17,14 @@ Checks for both customer managed and AWS managed policies
 }
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# just the policy name
 aws_policy_exists("ReadOnlyAccess")
+# as an ARN
 aws_policy_exists("arn:aws:iam::aws:policy/ReadOnlyAccess")
+# includes job-function in path
+aws_policy_exists("Billing")
+# includes service-role in path
+aws_policy_exists("AWSCostAndUsageReportAutomationPolicy")
 \dontshow{\}) # examplesIf}
 }
 \seealso{

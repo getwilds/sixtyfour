@@ -77,8 +77,13 @@ aws_user <- function(username = NULL) {
     user = x,
     policies = policies("user", username),
     attached_policies = policies_attached("user", username),
-    groups = con_iam()$list_groups_for_user(username)
+    groups = groups_for_user(username)
   )
+}
+
+groups_for_user <- function(username) {
+  groups <- con_iam()$list_groups_for_user(username)
+  group_list_tidy(groups$Groups)
 }
 
 check_aws_user <- purrr::safely(aws_user, otherwise = FALSE)
@@ -166,8 +171,12 @@ six_user_create <- function(
   )
   policy_name <- "UserInfo"
   if (!aws_policy_exists(policy_name)) {
+    actions <- c(
+      "iam:GetUser", "iam:ListUserPolicies",
+      "iam:ListAttachedUserPolicies", "iam:ListGroupsForUser"
+    )
     policy_doc <- aws_policy_document_create(
-      aws_policy_statement(c("iam:GetUser", "iam:ListUserPolicies"), "*")
+      aws_policy_statement(actions, "*")
     )
     aws_policy_create(policy_name, policy_doc)
     cli_alert_info("Added policy {.strong {policy_name}} to your account")
@@ -179,7 +188,7 @@ six_user_create <- function(
       "Added policy {.strong {policy_name}} to {.strong {username}}"
     )
   }
-  aws_user_creds(username, copy_to_cp = TRUE)
+  six_user_creds(username, copy_to_cp = TRUE)
 }
 
 #' Delete a user
@@ -218,6 +227,7 @@ aws_user_delete <- function(username) {
 six_user_delete <- function(username) {
   user_obj <- aws_user(username)
 
+  # remove policies
   attpols <- user_obj$attached_policies
   if (!rlang::is_empty(attpols)) {
     policies <- attpols$PolicyName
@@ -225,9 +235,17 @@ six_user_delete <- function(username) {
     cli_alert_info("Polic{?y/ies} {.strong {policies}} detached")
   }
 
+  # remove access keys
   keys <- aws_user_access_key(username)
   if (!is.null(keys)) {
     map(keys$AccessKeyId, aws_user_access_key_delete, username = username)
+  }
+
+  # remove groups
+  if (!rlang::is_empty(user_obj$groups)) {
+    groups <- user_obj$groups
+    map(groups$GroupName, \(g) aws_user_remove_from_group(username, g))
+    cli_alert_info("Group{?s} {.strong {groups$GroupName}} detached")
   }
 
   aws_user_delete(username)
@@ -279,13 +297,14 @@ aws_user_access_key_delete <- function(access_key_id, username = NULL) {
   invisible()
 }
 
-#' Add a user to a group
+#' Add or remove a user to/from a group
 #'
 #' @export
 #' @inheritParams aws_user_create
 #' @param groupname (character) a group name. required
 #' @inherit aws_user return
 #' @details See <https://www.paws-r-sdk.com/docs/iam_add_user_to_group/>
+#' <https://www.paws-r-sdk.com/docs/iam_remove_user_from_group/>
 #' docs for more details
 #' @family users
 #' @examples \dontrun{
@@ -295,9 +314,17 @@ aws_user_access_key_delete <- function(access_key_id, username = NULL) {
 #' if (!aws_user_exists("testBlueBird3")) {
 #'   aws_user_create("testBlueBird3")
 #' }
-#' aws_user_add_to_group(username = "testBlueBird3", groupname = "testgroup3")
+#' aws_user_add_to_group("testBlueBird3", "testgroup3")
+#' aws_user_remove_from_group("testBlueBird3", "testgroup3")
 #' }
 aws_user_add_to_group <- function(username, groupname) {
   con_iam()$add_user_to_group(groupname, username)
+  aws_user(username)
+}
+
+#' @export
+#' @rdname aws_user_add_to_group
+aws_user_remove_from_group <- function(username, groupname) {
+  con_iam()$remove_user_from_group(groupname, username)
   aws_user(username)
 }

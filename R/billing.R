@@ -143,7 +143,7 @@ aws_billing_raw <- function(
     "`granularity` must be one of hourly/daily/monthly" =
       granularity %in% grans
   )
-  env64$costexplorer$get_cost_and_usage(
+  con_ce()$get_cost_and_usage(
     TimePeriod = list(Start = date_start, End = date_end),
     Granularity = toupper(granularity),
     Metrics = metrics,

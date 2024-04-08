@@ -18,15 +18,28 @@ account_id <- memoise::memoise(function() {
 #' @return character string of bucket region; NULL if bucket not found
 bucket_region <- function(bucket) {
   res <- tryCatch(
-    env64$s3$get_bucket_location(bucket),
+    con_s3()$get_bucket_location(bucket),
     error = function(e) e
   )
   if (rlang::is_error(res)) NULL else res$LocationConstraint
 }
 
 #' Get bucket ARN
-#' @keywords internal
+#' @export
+#' @param bucket (character) a bucket name. required.
+#' @param objects (character) path for object(s). default: `""`
 #' @return character string of bucket arn
-bucket_arn <- function(bucket) {
-  glue("arn:aws:s3:::{bucket}")
+#' @examples
+#' bucket_arn("somebucket")
+#' bucket_arn("somebucket", objects = "*")
+#' bucket_arn("somebucket", objects = "data.csv")
+#' bucket_arn("somebucket", objects = "myfolder/subset/data.csv")
+#' bucket_arn("somebucket", objects = "myfolder/subset/*")
+bucket_arn <- function(bucket, objects = "") {
+  stop_if_not(rlang::is_character(bucket), "bucket must be character")
+  stop_if_not(rlang::is_character(objects), "objects must be character")
+  glue(
+    "arn:aws:s3:::{bucket}",
+    "{ifelse(nzchar(objects), paste0('/', objects), '')}"
+  )
 }

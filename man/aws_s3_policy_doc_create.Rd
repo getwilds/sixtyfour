@@ -4,12 +4,22 @@
 \alias{aws_s3_policy_doc_create}
 \title{Create a policy document for an S3 bucket}
 \usage{
-aws_s3_policy_doc_create(bucket, action, effect = "Allow", sid = NULL, ...)
+aws_s3_policy_doc_create(
+  bucket,
+  action,
+  resource,
+  effect = "Allow",
+  sid = NULL,
+  ...
+)
 }
 \arguments{
 \item{bucket}{(character) bucket name. required}
 
 \item{action}{(character) an action. required. see Actions below.}
+
+\item{resource}{(character) the object or objects the statement covers;
+see link below for more information}
 
 \item{effect}{(character) valid values: "Allow" (default), "Deny". length==1}
 
@@ -31,9 +41,11 @@ ID for you.
 }
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+bucket <- random_string("bucket")
 aws_s3_policy_doc_create(
-  bucket = "s64-test-22",
-  action = s3_actions_read()
+  bucket = bucket,
+  action = s3_actions_read(),
+  resource = c(bucket_arn(bucket), bucket_arn(bucket, objects = "*"))
 )
 \dontshow{\}) # examplesIf}
 }

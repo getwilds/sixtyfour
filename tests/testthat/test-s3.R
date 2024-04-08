@@ -1,13 +1,14 @@
-skip_on_ci()
 skip_if_not(localstack_available(), "LocalStack Not Available")
 
-invisible(env64$s3 <- set_s3_interface("localstack"))
+Sys.setenv(AWS_PROFILE = "localstack")
 buckets_empty()
 
 test_that("aws_s3_policy_doc_create", {
+  bucket <- random_string("bucket")
   doc <- aws_s3_policy_doc_create(
-    bucket = "s64-test-22",
-    action = s3_actions_read()
+    bucket = bucket,
+    action = s3_actions_read(),
+    resource = bucket_arn(bucket)
   )
 
   expect_s3_class(doc, "json")
@@ -23,9 +24,9 @@ test_that("aws_s3_policy_doc_create", {
 })
 
 
-test_that("aws_bucket_add_user - failure behavior", {
+test_that("six_bucket_add_user - failure behavior", {
   expect_error(
-    aws_bucket_add_user(
+    six_bucket_add_user(
       bucket = "mybucket",
       username = "sam",
       permissions = "notavalidpermission"
@@ -34,7 +35,7 @@ test_that("aws_bucket_add_user - failure behavior", {
   )
 
   expect_error(
-    aws_bucket_add_user(
+    six_bucket_add_user(
       bucket = "mybucket",
       username = "sam",
       permissions = c("read", "write")
@@ -43,8 +44,7 @@ test_that("aws_bucket_add_user - failure behavior", {
   )
 })
 
-
-test_that("aws_bucket_add_user", {
+test_that("six_bucket_add_user", {
   user_name <- random_string("user")
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
@@ -63,7 +63,7 @@ test_that("aws_bucket_add_user", {
       withr::with_options(
         list(cli.default_handler = function(...) { }),
         {
-          user_added <- aws_bucket_add_user(
+          user_added <- six_bucket_add_user(
             bucket = bucket_name,
             username = user_name,
             permissions = "read"
@@ -96,8 +96,8 @@ test_that("aws_bucket_add_user", {
 })
 
 
-test_that("aws_bucket_permissions", {
-  expect_error(aws_bucket_permissions("asdf"), "does not exist")
+test_that("six_bucket_permissions", {
+  expect_error(six_bucket_permissions("asdf"), "does not exist")
 
   user1 <- random_string("user")
   user2 <- random_string("user")
@@ -121,12 +121,12 @@ test_that("aws_bucket_permissions", {
       withr::with_options(
         list(cli.default_handler = function(...) { }),
         {
-          aws_bucket_add_user(
+          six_bucket_add_user(
             bucket = bucket_name,
             username = user1,
             permissions = "read"
           )
-          aws_bucket_add_user(
+          six_bucket_add_user(
             bucket = bucket_name,
             username = user2,
             permissions = "read"
@@ -138,7 +138,7 @@ test_that("aws_bucket_permissions", {
 
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
-    res <- aws_bucket_permissions(bucket_name)
+    res <- six_bucket_permissions(bucket_name)
   )
 
   expect_s3_class(res, "tbl")
@@ -166,12 +166,8 @@ test_that("aws_bucket_permissions", {
   )
 })
 
-
-test_that("aws_bucket_remove_user", {
+test_that("six_bucket_remove_user", {
   user_name <- random_string("user")
-  # vcr::use_cassette("aws_bucket_remove_user_setup_user", {
-  #   the_user <- aws_user_create(user_name)
-  # })
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
     {
@@ -180,9 +176,6 @@ test_that("aws_bucket_remove_user", {
   )
 
   bucket_name <- random_string("bucket")
-  # vcr::use_cassette("aws_bucket_remove_user_setup_bucket", {
-  #   aws_bucket_create(bucket_name)
-  # })
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
     {
@@ -190,25 +183,13 @@ test_that("aws_bucket_remove_user", {
     }
   )
 
-  # vcr::use_cassette("aws_bucket_remove_user_setup_add_user", {
-  #   withr::with_options(
-  #     list(cli.default_handler = function(...) { }),
-  #     {
-  #       aws_bucket_add_user(
-  #         bucket = bucket_name,
-  #         username = user_name,
-  #         permissions = "read"
-  #       )
-  #     }
-  #   )
-  # })
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
     {
       withr::with_options(
         list(cli.default_handler = function(...) { }),
         {
-          aws_bucket_add_user(
+          six_bucket_add_user(
             bucket = bucket_name,
             username = user_name,
             permissions = "read"
@@ -218,24 +199,13 @@ test_that("aws_bucket_remove_user", {
     }
   )
 
-  # vcr::use_cassette("aws_bucket_remove_user", {
-  #   withr::with_options(
-  #     list(cli.default_handler = function(...) { }),
-  #     {
-  #       user_removed <- aws_bucket_remove_user(
-  #         bucket = bucket_name,
-  #         username = user_name
-  #       )
-  #     }
-  #   )
-  # })
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
     {
       withr::with_options(
         list(cli.default_handler = function(...) { }),
         {
-          user_removed <- aws_bucket_remove_user(
+          user_removed <- six_bucket_remove_user(
             bucket = bucket_name,
             username = user_name
           )
@@ -269,4 +239,4 @@ test_that("aws_bucket_remove_user", {
 
 # cleanup
 buckets_empty()
-invisible(env64$s3 <- set_s3_interface("aws"))
+Sys.unsetenv("AWS_PROFILE")

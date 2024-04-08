@@ -4,7 +4,12 @@
 \alias{bucket_arn}
 \title{Get bucket ARN}
 \usage{
-bucket_arn(bucket)
+bucket_arn(bucket, objects = "")
+}
+\arguments{
+\item{bucket}{(character) a bucket name. required.}
+
+\item{objects}{(character) path for object(s). default: \code{""}}
 }
 \value{
 character string of bucket arn
@@ -12,4 +17,10 @@ character string of bucket arn
 \description{
 Get bucket ARN
 }
-\keyword{internal}
+\examples{
+bucket_arn("somebucket")
+bucket_arn("somebucket", objects = "*")
+bucket_arn("somebucket", objects = "data.csv")
+bucket_arn("somebucket", objects = "myfolder/subset/data.csv")
+bucket_arn("somebucket", objects = "myfolder/subset/*")
+}

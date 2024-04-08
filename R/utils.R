@@ -135,12 +135,6 @@ path_as_s3 <- function(paths) {
 #' @param target (character) a list element to get
 #' @param ... named args passed on to `fun`
 #' @keywords internal
-#' @examples \dontrun{
-#' # FIXME: could remove target param and poach the name of the fun
-#' # e.g,. from list_roles we can get Roles
-#' # paginate_aws_marker(fun = env64$iam$list_roles, target = "Roles")
-#' # paginate_aws_marker(fun = env64$iam$list_policies, target = "Policies")
-#' }
 paginate_aws_marker <- function(fun, target, ...) {
   con <- con_iam()
   res <- con[[fun]](...)
@@ -161,25 +155,6 @@ paginate_aws_marker <- function(fun, target, ...) {
   purrr::map(all_results, \(x) x[[target]]) %>% purrr::flatten()
 }
 
-# paginate_aws_marker2 <- function(fun, target, ...) {
-#   res <- fun(...)
-#   if (!rlang::has_name(res, "IsTruncated")) {
-#     return(res[[target]])
-#   }
-#   if (!res$IsTruncated) {
-#     return(res[[target]])
-#   }
-
-#   all_results <- list(res)
-#   more_results <- TRUE
-#   while (more_results) {
-#     res <- fun(Marker = res$Marker, ...)
-#     all_results <- c(all_results, list(res))
-#     if (!res$IsTruncated) more_results <- FALSE
-#   }
-#   purrr::map(all_results, \(x) x[[target]]) %>% purrr::flatten()
-# }
-
 #' Paginate over list_* methods with NextToken
 #'
 #' @importFrom rlang is_empty
@@ -187,12 +162,13 @@ paginate_aws_marker <- function(fun, target, ...) {
 #' @keywords internal
 #' @examples \dontrun{
 #' paginate_aws_token(
-#'   fun = env64$secretsmanager$list_secrets,
+#'   fun = con_sm()$list_secrets,
 #'   target = "SecretList"
 #' )
 #' }
 paginate_aws_token <- function(fun, target, ...) {
-  res <- fun(...)
+  con <- con_sm()
+  res <- con[[fun]](...)
   if (!rlang::has_name(res, "NextToken")) {
     return(res[[target]])
   }
@@ -203,7 +179,7 @@ paginate_aws_token <- function(fun, target, ...) {
   all_results <- list(res)
   more_results <- TRUE
   while (more_results) {
-    res <- fun(NextToken = res$NextToken)
+    res <- con[[fun]](NextToken = res$NextToken)
     all_results <- c(all_results, list(res))
     if (rlang::is_empty(res$NextToken)) more_results <- FALSE
   }
@@ -244,9 +220,9 @@ is_class <- function(x, class) {
   }
 }
 
-stop_if_not <- function(cond, msg) {
-  if (!cond) cli::cli_abort(msg)
+stop_if_not <- function(cond, msg, .envir = parent.frame()) {
+  if (!cond) cli::cli_abort(msg, .envir = .envir)
 }
-stop_if <- function(cond, msg) {
-  if (cond) cli::cli_abort(msg)
+stop_if <- function(cond, msg, .envir = parent.frame()) {
+  if (cond) cli::cli_abort(msg, .envir = .envir)
 }

@@ -14,18 +14,3 @@ invisible(vcr::vcr_configure(
   )
 ))
 vcr::check_cassette_names()
-
-purge_secrets <- function() {
-  x <- aws_secrets_list()
-  if (length(x$SecretList) > 0) {
-    x$SecretList %>%
-      purrr::map_vec(purrr::pluck, "Name") %>%
-      purrr::map(aws_secrets_delete)
-  }
-}
-
-random_string <- function(prefix, size = 8) {
-  glue::glue(
-    "{prefix}{paste0(sample(letters, size = size), collapse = '')}"
-  )
-}

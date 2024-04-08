@@ -12,7 +12,7 @@ aws_bucket_tree(bucket, recurse = TRUE, ...)
 \item{recurse}{(logical) returns all AWS S3 objects in lower sub
 directories, default: \code{TRUE}}
 
-\item{...}{Additional arguments passed to \code{\link[s3fs:s3_dir_tree]{s3fs::s3_dir_tree()}}}
+\item{...}{Additional arguments passed to \code{s3fs::s3_dir_tree()}}
 }
 \value{
 character vector of objects/files within the bucket,
@@ -56,6 +56,7 @@ Other buckets:
 \code{\link{aws_bucket_exists}()},
 \code{\link{aws_bucket_list_objects}()},
 \code{\link{aws_bucket_upload}()},
-\code{\link{aws_buckets}()}
+\code{\link{aws_buckets}()},
+\code{\link{six_bucket_delete}()}
 }
 \concept{buckets}

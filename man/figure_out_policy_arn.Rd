@@ -17,6 +17,9 @@ figure_out_policy_arn("MyTestPolicy")
 figure_out_policy_arn("DoesNotExist")
 # aws managed
 figure_out_policy_arn("AmazonS3ReadOnlyAccess")
+# aws managed, job function
+figure_out_policy_arn("Billing")
+figure_out_policy_arn("DataScientist")
 \dontshow{\}) # examplesIf}
 }
 \keyword{internal}

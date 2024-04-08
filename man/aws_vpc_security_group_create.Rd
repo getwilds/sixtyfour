@@ -6,7 +6,7 @@
 \usage{
 aws_vpc_security_group_create(
   name,
-  engine,
+  engine = "mariadb",
   description = NULL,
   vpc_id = NULL,
   tags = NULL,
@@ -26,7 +26,7 @@ VPC is used. To get your VPCs, see \code{\link[=aws_vpcs]{aws_vpcs()}}}
 
 \item{tags}{(character) The tags to assign to the security group. optional}
 
-\item{...}{named parameters passed on to \href{https://www.paws-r-sdk.com/docs/secretsmanager_create_secret/}{create_secret}}
+\item{...}{named parameters passed on to \href{https://www.paws-r-sdk.com/docs/ec2_create_security_group/}{create_security_group}}
 }
 \value{
 (list) with fields:
@@ -45,6 +45,22 @@ x <- aws_vpc_security_group_create(
   name = "testing1",
   description = "Testing security group creation"
 )
+aws_vpc_security_group_create(name = "testing2")
+aws_vpc_security_group_create(
+  name = "testing4",
+  tags = list(
+    list(
+      ResourceType = "security-group",
+      Tags = list(
+        list(
+          Key = "sky",
+          Value = "blue"
+        )
+      )
+    )
+  )
+)
+
 # add ingress
 aws_vpc_security_group_ingress(
   id = x$GroupId,
@@ -54,7 +70,6 @@ aws_vpc_security_group_ingress(
 }
 \seealso{
 Other security groups: 
-\code{\link{aws_ec2_client}()},
 \code{\link{aws_vpc_sec_group_rules}()},
 \code{\link{aws_vpc_security_group_ingress}()},
 \code{\link{aws_vpc_security_groups}()},

@@ -34,11 +34,13 @@ s3_actions_full <- function() {
 #' ID for you.
 #' @return a policy document as JSON (of class `json`)
 #' @examplesIf interactive()
+#' bucket <- random_string("bucket")
 #' aws_s3_policy_doc_create(
-#'   bucket = "s64-test-22",
-#'   action = s3_actions_read()
+#'   bucket = bucket,
+#'   action = s3_actions_read(),
+#'   resource = c(bucket_arn(bucket), bucket_arn(bucket, objects = "*"))
 #' )
-aws_s3_policy_doc_create <- function(bucket, action, effect = "Allow",
+aws_s3_policy_doc_create <- function(bucket, action, resource, effect = "Allow",
                                      sid = NULL, ...) {
   # FIXME: one can put more than 1 statement in the Statement slot -
   # the below line about adding a `sid` assumes there's only 1 - which
@@ -50,7 +52,7 @@ aws_s3_policy_doc_create <- function(bucket, action, effect = "Allow",
       list(
         Effect = effect,
         Action = action,
-        Resource = bucket_arn(bucket)
+        Resource = resource
       )
     )
   )
@@ -89,6 +91,10 @@ create_policy_if_missing <- function(bucket, permissions) {
     action = switch(permissions,
       read = s3_actions_read(),
       write = s3_actions_full()
+    ),
+    resource = c(
+      bucket_arn(bucket),
+      bucket_arn(bucket, objects = "*")
     )
   )
   aws_policy_create(policy_name, document = mydoc)
@@ -108,25 +114,46 @@ create_policy_if_missing <- function(bucket, permissions) {
 #' includes deleting buckets (THIS OPTION NOT ACCEPTED YET!)
 #' @return invisibly returns nothing
 #' @examplesIf interactive()
-#' aws_bucket_add_user(
-#'   bucket = "s64-test-22",
-#'   username = "jane",
+#' # create a bucket
+#' bucket <- random_string("bucket")
+#' if (!aws_bucket_exists(bucket)) {
+#'   aws_bucket_create(bucket)
+#' }
+#'
+#' # create a user
+#' user <- random_user()
+#' if (!aws_user_exists(user)) {
+#'   aws_user_create(user)
+#' }
+#'
+#' six_bucket_add_user(
+#'   bucket = bucket,
+#'   username = user,
 #'   permissions = "read"
 #' )
+#'
+#' # cleanup
+#' six_user_delete(user)
+#' aws_bucket_delete(bucket, force = TRUE)
+#'
 #' \dontrun{
 #' # not a valid permissions string
-#' aws_bucket_add_user(
+#' six_bucket_add_user(
 #'   bucket = "mybucket",
 #'   username = "userdmgziqpt",
 #'   permissions = "notavalidpermission"
 #' )
 #' }
-aws_bucket_add_user <- function(bucket, username, permissions) {
-  stopifnot(
-    "permissions must be one of read or write" =
-      permissions %in% c("read", "write")
+six_bucket_add_user <- function(bucket, username, permissions) {
+  stop_if_not(length(permissions) == 1, "permissions must be length 1")
+  stop_if_not(
+    permissions %in% c("read", "write"),
+    "permissions must be one of read or write"
   )
-  stopifnot("permissions must be length 1" = length(permissions) == 1)
+  stop_if_not(
+    aws_bucket_exists(bucket),
+    "bucket {.strong {bucket}} does not exist"
+  )
 
   policy_name <- bucket_to_policy_name(bucket, permissions)
   create_policy_if_missing(bucket, permissions)
@@ -149,54 +176,65 @@ aws_bucket_add_user <- function(bucket, username, permissions) {
 #' @export
 #' @importFrom purrr discard
 #' @importFrom dplyr starts_with
-#' @inheritParams aws_bucket_add_user
+#' @inheritParams six_bucket_add_user
 #' @return invisibly returns nothing
 #' @section Important:
 #' This function is built around policies named by this package. If you use
 #' your own policies that you name this function may not work.
 #' @examplesIf interactive()
+#' # create a bucket
+#' bucket <- random_string("bucket")
+#' if (!aws_bucket_exists(bucket)) {
+#'   aws_bucket_create(bucket)
+#' }
+#'
 #' # create user
-#' if (!aws_user_exists("jane")) {
-#'   aws_user_create("jane")
+#' user <- random_user()
+#' if (!aws_user_exists(user)) {
+#'   aws_user_create(user)
 #' }
 #'
 #' # user doesn't have any permissions for the bucket
-#' # - use aws_bucket_add_user to add permissions
-#' aws_bucket_change_user(
-#'   bucket = "s64-test-22",
-#'   username = "jane", permissions = "read"
+#' # - use six_bucket_add_user to add permissions
+#' six_bucket_change_user(
+#'   bucket = bucket,
+#'   username = user, permissions = "read"
 #' )
-#' aws_bucket_add_user(
-#'   bucket = "s64-test-22", username = "jane",
+#' six_bucket_add_user(
+#'   bucket = bucket, username = user,
 #'   permissions = "read"
 #' )
 #'
 #' # want to change to read to write, makes the change
-#' aws_bucket_change_user(
-#'   bucket = "s64-test-22", username = "jane",
+#' six_bucket_change_user(
+#'   bucket = bucket, username = user,
 #'   permissions = "write"
 #' )
 #'
-#' # want to change to write - but already has read
-#' aws_bucket_change_user(
-#'   bucket = "s64-test-22", username = "jane",
-#'   permissions = "read"
+#' # want to change to write - but already has write
+#' six_bucket_change_user(
+#'   bucket = bucket, username = user,
+#'   permissions = "write"
 #' )
-aws_bucket_change_user <- function(bucket, username, permissions) {
+#'
+#' # cleanup
+#' six_user_delete(user)
+#' aws_bucket_delete(bucket, force = TRUE)
+six_bucket_change_user <- function(bucket, username, permissions) {
   stopifnot(
     "permissions must be one of read or write" =
       permissions %in% c("read", "write")
   )
   stopifnot("permissions must be length 1" = length(permissions) == 1)
 
-  perms <- filter(aws_bucket_permissions(bucket), user == username)
+  perms <- filter(six_bucket_permissions(bucket), user == username)
   if (NROW(perms) == 0) {
     cli::cli_alert_warning(c(
       "No {.strong {bucket}} specific permissions",
       " found for {.strong {username}}"
     ))
     cli::cli_alert_info(c(
-      "Use {.strong aws_bucket_add_user} to add a user to a bucket"
+      "Use {.strong six_bucket_add_user} to add a user to a bucket"
     ))
     return(invisible())
   }
@@ -234,14 +272,27 @@ aws_bucket_change_user <- function(bucket, username, permissions) {
 
 #' Remove a user from a bucket
 #' @export
-#' @inheritParams aws_bucket_add_user
+#' @inheritParams six_bucket_add_user
 #' @autoglobal
 #' @details This function detaches a policy from a user for accessing
 #' the bucket; the policy itself is untouched
 #' @return invisibly returns nothing
 #' @examplesIf interactive()
-#' aws_bucket_remove_user("s64-test-22", "scott")
-aws_bucket_remove_user <- function(bucket, username) {
+#' # create a bucket
+#' bucket <- random_string("bucket")
+#' if (!aws_bucket_exists(bucket)) aws_bucket_create(bucket)
+#'
+#' # create user
+#' user <- random_user()
+#' if (!aws_user_exists(user)) aws_user_create(user)
+#'
+#' six_bucket_add_user(bucket, user, permissions = "read")
+#' six_bucket_remove_user(bucket, user)
+#'
+#' # cleanup
+#' six_user_delete(user)
+#' aws_bucket_delete(bucket, force = TRUE)
+six_bucket_remove_user <- function(bucket, username) {
   perms <- permissions_user_bucket(bucket) %>%
     filter(user == username)
   if (NROW(perms) == 0) {
@@ -268,16 +319,36 @@ aws_bucket_remove_user <- function(bucket, username) {
 #' @importFrom dplyr case_when distinct group_by ungroup rowwise select
 #' @importFrom cli cli_abort
 #' @importFrom tidyr pivot_wider
-#' @inheritParams aws_bucket_add_user
+#' @inheritParams six_bucket_add_user
 #' @autoglobal
 #' @return tibble with a row for each user, with columns:
-#' - user
-#' - permissions
+#' - user (always present)
+#' - permissions (always present)
+#' - policy_read (optionally present) the policy name behind the "read"
+#' permission (if present)
+#' - policy_admin (optionally present) the policy name behind the "admin"
+#' permission (if present)
 #'
 #' Note that users with no persmissions are not shown; see [aws_users()]
 #' @examplesIf interactive()
-#' aws_bucket_permissions("s64-test-22")
-aws_bucket_permissions <- function(bucket) {
+#' # create a bucket
+#' bucket <- random_string("bucket")
+#' if (!aws_bucket_exists(bucket)) aws_bucket_create(bucket)
+#'
+#' # create user
+#' user <- random_user()
+#' if (!aws_user_exists(user)) aws_user_create(user)
+#'
+#' six_bucket_permissions(bucket)
+#' six_bucket_add_user(bucket, user, permissions = "read")
+#' six_bucket_permissions(bucket)
+#' six_bucket_remove_user(bucket, user)
+#' six_bucket_permissions(bucket)
+#'
+#' # cleanup
+#' six_user_delete(user)
+#' aws_bucket_delete(bucket, force = TRUE)
+six_bucket_permissions <- function(bucket) {
   if (!aws_bucket_exists(bucket)) {
     cli::cli_abort("{.strong {bucket}} does not exist")
   }
@@ -363,11 +434,15 @@ AWS_REGION={Sys.getenv('AWS_REGION')}
 #' - CreateDate (POSIXct)
 #' @seealso [aws_user_access_key()], [aws_user_access_key_delete()]
 #' @examplesIf interactive()
-#' if (!aws_user_exists("jane")) aws_user_create("jane")
-#' aws_user_creds("jane")
-#' aws_user_access_key("jane")
-#' aws_user_creds("jane", copy_to_cp = TRUE)
-aws_user_creds <- function(username, copy_to_cp = FALSE) {
+#' user <- random_user()
+#' if (!aws_user_exists(user)) aws_user_create(user)
+#' six_user_creds(user)
+#' aws_user_access_key(user)
+#' six_user_creds(user, copy_to_cp = TRUE)
+#' aws_user_access_key(user)
+#' # cleanup
+#' six_user_delete(user)
+six_user_creds <- function(username, copy_to_cp = FALSE) {
   creds <- tryCatch(
     con_iam()$create_access_key(UserName = username),
     error = function(e) e
@@ -436,11 +511,11 @@ permissions_user_bucket <- function(bucket) {
 permissions_groups <- function() {
   aws_user_mem <- memoise::memoise(aws_user)
   tmp <- aws_users()$UserName %>%
-    keep(\(user) length(aws_user_mem(user)$groups$Groups) > 0) %>%
+    keep(\(user) !rlang::is_empty(aws_user_mem(user)$groups)) %>%
     map(\(user) {
       tibble(
         user = user,
-        group = map_chr(aws_user_mem(user)$groups$Groups, "GroupName")
+        group = aws_user_mem(user)$groups$GroupName
       )
     }) %>%
     list_rbind()
