@@ -13,6 +13,7 @@ jobs:
       MINIO_USER: ${{ secrets.MINIO_USER }}
       MINIO_PWD: ${{ secrets.MINIO_PWD }}
       MINIO_ENDPOINT: ${{ secrets.MINIO_ENDPOINT }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
