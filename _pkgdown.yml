@@ -73,7 +73,7 @@ reference:
       - starts_with("aws_vpc_security_group")
       - aws_vpc_sec_group_rules
       - ip_permissions_generator
-      - aws_vpc_sg_with_ingresss
+      - aws_vpc_sg_with_ingress
   - title: Utilities
     contents:
       - random_user
