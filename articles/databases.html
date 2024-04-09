@@ -108,7 +108,7 @@ IAM username/password (see notes below).</p>
 <p>First, let’s create a security group with an ingress rule so you can
 access your Redshift cluster.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_security_group</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aws_vpc_sg_with_ingresss.html">aws_vpc_sg_with_ingresss</a></span><span class="op">(</span><span class="st">"redshift"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_security_group</span> <span class="op">&lt;-</span> <span class="fu">aws_vpc_sg_with_ingresss</span><span class="op">(</span><span class="st">"redshift"</span><span class="op">)</span></span></code></pre></div>
 <p>Notes on the parameters used in the example below:</p>
 <ul>
 <li>

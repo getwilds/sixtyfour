@@ -256,7 +256,7 @@
     <loc>/reference/aws_vpc_security_groups.html</loc>
   </url>
   <url>
-    <loc>/reference/aws_vpc_sg_with_ingresss.html</loc>
+    <loc>/reference/aws_vpc_sg_with_ingress.html</loc>
   </url>
   <url>
     <loc>/reference/aws_vpcs.html</loc>
@@ -347,9 +347,6 @@
   </url>
   <url>
     <loc>/reference/service_map.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set_s3_interface.html</loc>
   </url>
   <url>
     <loc>/reference/six_admin_setup.html</loc>
