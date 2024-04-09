@@ -6,9 +6,7 @@
 \alias{sixtyfour-package}
 \title{sixtyfour: Humane Interface to AWS}
 \description{
-Write some more things here to give folks a
-sense of what the goal of this package is,
-high level entrypoints, etc.
+An opionated interface to AWS, with methods for interacting with IAM, S3, RDS, Redshift, and Billing.
 }
 \seealso{
 Useful links:
