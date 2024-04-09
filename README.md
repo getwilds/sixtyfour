@@ -15,7 +15,7 @@ Development version
 
 ```r
 if (!requireNamespace("pak", quietly = TRUE)) {
-	install.packages("pak")
+  install.packages("pak")
 }
 pak::pak("getwilds/sixtyfour")
 ```
