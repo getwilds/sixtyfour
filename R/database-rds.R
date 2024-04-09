@@ -169,7 +169,7 @@ aws_db_rds_create <-
 #' with slots:
 #' - Marker (for pagination)
 #' - DBInstances (each instance; empty list if no instances)
-#' @references <https://www.paws-r-sdk.com/docs/describe_db_instances/>
+#' @references <https://www.paws-r-sdk.com/docs/rds_describe_db_instances/>
 #' @keywords internal
 instance_details <- function() {
   con_rds()$describe_db_instances()
@@ -184,7 +184,7 @@ split_grep <- function(column, split, pattern) {
 #' @export
 #' @family database
 #' @return a tibble of instance details;
-#' see <https://www.paws-r-sdk.com/docs/describe_db_instances/>
+#' see <https://www.paws-r-sdk.com/docs/rds_describe_db_instances/>
 #' an empty tibble if no instances found
 #' @autoglobal
 #' @examplesIf interactive()

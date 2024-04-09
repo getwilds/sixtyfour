@@ -6,7 +6,7 @@
 #' `host`, `port`, and `dbname`. Refer to this parameter definition in
 #' [aws_db_redshift_create()] for more details.
 #' @param user,pwd,host,port,dbname,... named parameters passed on to
-#' [DBI::dbConnect](https://dbi.r-dbi.org/reference/dbconnect). Note that
+#' [DBI::dbConnect](https://dbi.r-dbi.org/reference/dbConnect.html). Note that
 #' the `user` and `pwd` are for your AWS IAM account; and the same as
 #' those you used to create the cluster with [aws_db_redshift_create()]
 #' @details

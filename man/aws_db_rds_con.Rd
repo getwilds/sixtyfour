@@ -17,7 +17,7 @@ aws_db_rds_con(
 }
 \arguments{
 \item{user, pwd, host, port, dbname, ...}{named parameters passed on to
-\href{https://dbi.r-dbi.org/reference/dbconnect}{DBI::dbConnect}. Note that
+\href{https://dbi.r-dbi.org/reference/dbConnect.html}{DBI::dbConnect}. Note that
 the \code{user} and \code{pwd} are for your AWS IAM account; and the same as
 those you used to create the cluster with \code{\link[=aws_db_redshift_create]{aws_db_redshift_create()}}}
 

@@ -18,6 +18,6 @@ with slots:
 Get information for all RDS instances
 }
 \references{
-\url{https://www.paws-r-sdk.com/docs/describe_db_instances/}
+\url{https://www.paws-r-sdk.com/docs/rds_describe_db_instances/}
 }
 \keyword{internal}
