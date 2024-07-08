@@ -1,10 +1,9 @@
 pandoc: 3.1.11
-pkgdown: 2.0.7
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   billing: billing.html
   contributing: contributing.html
   databases: databases.html
   sixtyfour: sixtyfour.html
-last_built: 2024-04-09T23:32Z
-
+last_built: 2024-07-08T23:11Z

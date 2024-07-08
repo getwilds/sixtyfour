@@ -1,396 +1,133 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/articles/billing.html</loc>
-  </url>
-  <url>
-    <loc>/articles/contributing.html</loc>
-  </url>
-  <url>
-    <loc>/articles/databases.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/sixtyfour.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/issue_template.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/account_id.html</loc>
-  </url>
-  <url>
-    <loc>/reference/as_policy_arn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_billing.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_billing_raw.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_bucket_create.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_bucket_delete.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_bucket_download.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_bucket_exists.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_bucket_list_objects.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_bucket_tree.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_bucket_upload.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_buckets.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_db_cluster_status.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_db_instance_status.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_db_rds_con.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_db_rds_create.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_db_rds_list.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_db_redshift_con.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_db_redshift_create.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_file_attr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_file_copy.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_file_delete.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_file_download.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_file_exists.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_file_rename.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_file_upload.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_group.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_group_create.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_group_delete.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_group_exists.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_groups.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_policies.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_policy.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_policy_attach.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_policy_create.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_policy_delete.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_policy_delete_version.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_policy_detach.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_policy_document_create.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_policy_exists.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_policy_list_entities.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_policy_list_versions.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_policy_statement.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_role.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_role_create.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_role_delete.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_role_exists.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_roles.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_s3_policy_doc_create.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_secrets_all.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_secrets_create.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_secrets_delete.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_secrets_get.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_secrets_list.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_secrets_pwd.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_secrets_rotate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_secrets_update.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_user.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_user_access_key.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_user_access_key_delete.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_user_add_to_group.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_user_create.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_user_current.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_user_delete.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_user_exists.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_users.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_vpc.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_vpc_sec_group_rules.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_vpc_security_group.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_vpc_security_group_create.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_vpc_security_group_ingress.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_vpc_security_groups.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_vpc_sg_with_ingress.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aws_vpcs.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bucket_arn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bucket_create_if_not.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bucket_region.html</loc>
-  </url>
-  <url>
-    <loc>/reference/cluster_con_info.html</loc>
-  </url>
-  <url>
-    <loc>/reference/cluster_details.html</loc>
-  </url>
-  <url>
-    <loc>/reference/con_factory.html</loc>
-  </url>
-  <url>
-    <loc>/reference/con_iam.html</loc>
-  </url>
-  <url>
-    <loc>/reference/con_s3fs.html</loc>
-  </url>
-  <url>
-    <loc>/reference/construct_db_secret.html</loc>
-  </url>
-  <url>
-    <loc>/reference/figure_out_policy_arn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/group_policies.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/instance_con_info.html</loc>
-  </url>
-  <url>
-    <loc>/reference/instance_details.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ip_address.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ip_permissions_generator.html</loc>
-  </url>
-  <url>
-    <loc>/reference/last.html</loc>
-  </url>
-  <url>
-    <loc>/reference/paginate_aws_marker.html</loc>
-  </url>
-  <url>
-    <loc>/reference/paginate_aws_token.html</loc>
-  </url>
-  <url>
-    <loc>/reference/path_as_s3.html</loc>
-  </url>
-  <url>
-    <loc>/reference/path_s3_build.html</loc>
-  </url>
-  <url>
-    <loc>/reference/path_s3_parse.html</loc>
-  </url>
-  <url>
-    <loc>/reference/random_string.html</loc>
-  </url>
-  <url>
-    <loc>/reference/random_user.html</loc>
-  </url>
-  <url>
-    <loc>/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>/reference/resource_rds.html</loc>
-  </url>
-  <url>
-    <loc>/reference/s3_actions_full.html</loc>
-  </url>
-  <url>
-    <loc>/reference/s3_actions_read.html</loc>
-  </url>
-  <url>
-    <loc>/reference/service_map.html</loc>
-  </url>
-  <url>
-    <loc>/reference/six_admin_setup.html</loc>
-  </url>
-  <url>
-    <loc>/reference/six_bucket_add_user.html</loc>
-  </url>
-  <url>
-    <loc>/reference/six_bucket_change_user.html</loc>
-  </url>
-  <url>
-    <loc>/reference/six_bucket_delete.html</loc>
-  </url>
-  <url>
-    <loc>/reference/six_bucket_permissions.html</loc>
-  </url>
-  <url>
-    <loc>/reference/six_bucket_remove_user.html</loc>
-  </url>
-  <url>
-    <loc>/reference/six_file_upload.html</loc>
-  </url>
-  <url>
-    <loc>/reference/six_user_create.html</loc>
-  </url>
-  <url>
-    <loc>/reference/six_user_creds.html</loc>
-  </url>
-  <url>
-    <loc>/reference/six_user_delete.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sixtyfour-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ui_fetch_secret.html</loc>
-  </url>
-  <url>
-    <loc>/reference/wait_for_cluster.html</loc>
-  </url>
-  <url>
-    <loc>/reference/wait_for_instance.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>/CONTRIBUTING.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/articles/billing.html</loc></url>
+<url><loc>/articles/contributing.html</loc></url>
+<url><loc>/articles/databases.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/sixtyfour.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/account_id.html</loc></url>
+<url><loc>/reference/as_policy_arn.html</loc></url>
+<url><loc>/reference/aws_billing.html</loc></url>
+<url><loc>/reference/aws_billing_raw.html</loc></url>
+<url><loc>/reference/aws_bucket_create.html</loc></url>
+<url><loc>/reference/aws_bucket_delete.html</loc></url>
+<url><loc>/reference/aws_bucket_download.html</loc></url>
+<url><loc>/reference/aws_bucket_exists.html</loc></url>
+<url><loc>/reference/aws_bucket_list_objects.html</loc></url>
+<url><loc>/reference/aws_bucket_tree.html</loc></url>
+<url><loc>/reference/aws_bucket_upload.html</loc></url>
+<url><loc>/reference/aws_buckets.html</loc></url>
+<url><loc>/reference/aws_db_cluster_status.html</loc></url>
+<url><loc>/reference/aws_db_instance_status.html</loc></url>
+<url><loc>/reference/aws_db_rds_con.html</loc></url>
+<url><loc>/reference/aws_db_rds_create.html</loc></url>
+<url><loc>/reference/aws_db_rds_list.html</loc></url>
+<url><loc>/reference/aws_db_redshift_con.html</loc></url>
+<url><loc>/reference/aws_db_redshift_create.html</loc></url>
+<url><loc>/reference/aws_file_attr.html</loc></url>
+<url><loc>/reference/aws_file_copy.html</loc></url>
+<url><loc>/reference/aws_file_delete.html</loc></url>
+<url><loc>/reference/aws_file_download.html</loc></url>
+<url><loc>/reference/aws_file_exists.html</loc></url>
+<url><loc>/reference/aws_file_rename.html</loc></url>
+<url><loc>/reference/aws_file_upload.html</loc></url>
+<url><loc>/reference/aws_group.html</loc></url>
+<url><loc>/reference/aws_group_create.html</loc></url>
+<url><loc>/reference/aws_group_delete.html</loc></url>
+<url><loc>/reference/aws_group_exists.html</loc></url>
+<url><loc>/reference/aws_groups.html</loc></url>
+<url><loc>/reference/aws_policies.html</loc></url>
+<url><loc>/reference/aws_policy.html</loc></url>
+<url><loc>/reference/aws_policy_attach.html</loc></url>
+<url><loc>/reference/aws_policy_create.html</loc></url>
+<url><loc>/reference/aws_policy_delete.html</loc></url>
+<url><loc>/reference/aws_policy_delete_version.html</loc></url>
+<url><loc>/reference/aws_policy_detach.html</loc></url>
+<url><loc>/reference/aws_policy_document_create.html</loc></url>
+<url><loc>/reference/aws_policy_exists.html</loc></url>
+<url><loc>/reference/aws_policy_list_entities.html</loc></url>
+<url><loc>/reference/aws_policy_list_versions.html</loc></url>
+<url><loc>/reference/aws_policy_statement.html</loc></url>
+<url><loc>/reference/aws_role.html</loc></url>
+<url><loc>/reference/aws_role_create.html</loc></url>
+<url><loc>/reference/aws_role_delete.html</loc></url>
+<url><loc>/reference/aws_role_exists.html</loc></url>
+<url><loc>/reference/aws_roles.html</loc></url>
+<url><loc>/reference/aws_s3_policy_doc_create.html</loc></url>
+<url><loc>/reference/aws_secrets_all.html</loc></url>
+<url><loc>/reference/aws_secrets_create.html</loc></url>
+<url><loc>/reference/aws_secrets_delete.html</loc></url>
+<url><loc>/reference/aws_secrets_get.html</loc></url>
+<url><loc>/reference/aws_secrets_list.html</loc></url>
+<url><loc>/reference/aws_secrets_pwd.html</loc></url>
+<url><loc>/reference/aws_secrets_rotate.html</loc></url>
+<url><loc>/reference/aws_secrets_update.html</loc></url>
+<url><loc>/reference/aws_user.html</loc></url>
+<url><loc>/reference/aws_user_access_key.html</loc></url>
+<url><loc>/reference/aws_user_access_key_delete.html</loc></url>
+<url><loc>/reference/aws_user_add_to_group.html</loc></url>
+<url><loc>/reference/aws_user_create.html</loc></url>
+<url><loc>/reference/aws_user_current.html</loc></url>
+<url><loc>/reference/aws_user_delete.html</loc></url>
+<url><loc>/reference/aws_user_exists.html</loc></url>
+<url><loc>/reference/aws_users.html</loc></url>
+<url><loc>/reference/aws_vpc.html</loc></url>
+<url><loc>/reference/aws_vpc_sec_group_rules.html</loc></url>
+<url><loc>/reference/aws_vpc_security_group.html</loc></url>
+<url><loc>/reference/aws_vpc_security_group_create.html</loc></url>
+<url><loc>/reference/aws_vpc_security_group_ingress.html</loc></url>
+<url><loc>/reference/aws_vpc_security_groups.html</loc></url>
+<url><loc>/reference/aws_vpc_sg_with_ingress.html</loc></url>
+<url><loc>/reference/aws_vpcs.html</loc></url>
+<url><loc>/reference/bucket_arn.html</loc></url>
+<url><loc>/reference/bucket_create_if_not.html</loc></url>
+<url><loc>/reference/bucket_region.html</loc></url>
+<url><loc>/reference/cluster_con_info.html</loc></url>
+<url><loc>/reference/cluster_details.html</loc></url>
+<url><loc>/reference/con_factory.html</loc></url>
+<url><loc>/reference/con_iam.html</loc></url>
+<url><loc>/reference/con_s3fs.html</loc></url>
+<url><loc>/reference/construct_db_secret.html</loc></url>
+<url><loc>/reference/figure_out_policy_arn.html</loc></url>
+<url><loc>/reference/group_policies.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/instance_con_info.html</loc></url>
+<url><loc>/reference/instance_details.html</loc></url>
+<url><loc>/reference/ip_address.html</loc></url>
+<url><loc>/reference/ip_permissions_generator.html</loc></url>
+<url><loc>/reference/last.html</loc></url>
+<url><loc>/reference/paginate_aws_marker.html</loc></url>
+<url><loc>/reference/paginate_aws_token.html</loc></url>
+<url><loc>/reference/path_as_s3.html</loc></url>
+<url><loc>/reference/path_s3_build.html</loc></url>
+<url><loc>/reference/path_s3_parse.html</loc></url>
+<url><loc>/reference/random_string.html</loc></url>
+<url><loc>/reference/random_user.html</loc></url>
+<url><loc>/reference/reexports.html</loc></url>
+<url><loc>/reference/resource_rds.html</loc></url>
+<url><loc>/reference/s3_actions_full.html</loc></url>
+<url><loc>/reference/s3_actions_read.html</loc></url>
+<url><loc>/reference/service_map.html</loc></url>
+<url><loc>/reference/six_admin_setup.html</loc></url>
+<url><loc>/reference/six_bucket_add_user.html</loc></url>
+<url><loc>/reference/six_bucket_change_user.html</loc></url>
+<url><loc>/reference/six_bucket_delete.html</loc></url>
+<url><loc>/reference/six_bucket_permissions.html</loc></url>
+<url><loc>/reference/six_bucket_remove_user.html</loc></url>
+<url><loc>/reference/six_file_upload.html</loc></url>
+<url><loc>/reference/six_user_create.html</loc></url>
+<url><loc>/reference/six_user_creds.html</loc></url>
+<url><loc>/reference/six_user_delete.html</loc></url>
+<url><loc>/reference/sixtyfour-package.html</loc></url>
+<url><loc>/reference/ui_fetch_secret.html</loc></url>
+<url><loc>/reference/wait_for_cluster.html</loc></url>
+<url><loc>/reference/wait_for_instance.html</loc></url>
 </urlset>
+
