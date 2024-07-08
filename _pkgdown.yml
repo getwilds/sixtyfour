@@ -1,6 +1,7 @@
 url: ~
 template:
   bootstrap: 5
+  light-switch: true
 reference:
   - title: sixtyfour
     desc: >
