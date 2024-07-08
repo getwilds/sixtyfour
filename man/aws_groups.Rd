@@ -26,9 +26,9 @@ aws_groups(username = aws_user_current())
 }
 \seealso{
 Other groups: 
+\code{\link{aws_group}()},
 \code{\link{aws_group_create}()},
 \code{\link{aws_group_delete}()},
-\code{\link{aws_group_exists}()},
-\code{\link{aws_group}()}
+\code{\link{aws_group_exists}()}
 }
 \concept{groups}

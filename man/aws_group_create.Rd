@@ -29,9 +29,9 @@ aws_group_create("testgroup")
 }
 \seealso{
 Other groups: 
+\code{\link{aws_group}()},
 \code{\link{aws_group_delete}()},
 \code{\link{aws_group_exists}()},
-\code{\link{aws_groups}()},
-\code{\link{aws_group}()}
+\code{\link{aws_groups}()}
 }
 \concept{groups}

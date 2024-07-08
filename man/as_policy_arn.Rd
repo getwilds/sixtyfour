@@ -46,14 +46,14 @@ as_policy_arn("AWSCostAndUsageReportAutomationPolicy",
 \seealso{
 Other policies: 
 \code{\link{aws_policies}()},
+\code{\link{aws_policy}()},
 \code{\link{aws_policy_attach}()},
 \code{\link{aws_policy_create}()},
-\code{\link{aws_policy_delete_version}()},
 \code{\link{aws_policy_delete}()},
+\code{\link{aws_policy_delete_version}()},
 \code{\link{aws_policy_detach}()},
 \code{\link{aws_policy_exists}()},
 \code{\link{aws_policy_list_entities}()},
-\code{\link{aws_policy_list_versions}()},
-\code{\link{aws_policy}()}
+\code{\link{aws_policy_list_versions}()}
 }
 \concept{policies}

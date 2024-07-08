@@ -24,9 +24,9 @@ aws_vpc_security_groups(MaxResults = 6)
 \seealso{
 Other security groups: 
 \code{\link{aws_vpc_sec_group_rules}()},
+\code{\link{aws_vpc_security_group}()},
 \code{\link{aws_vpc_security_group_create}()},
 \code{\link{aws_vpc_security_group_ingress}()},
-\code{\link{aws_vpc_security_group}()},
 \code{\link{aws_vpc_sg_with_ingress}()}
 }
 \concept{security groups}

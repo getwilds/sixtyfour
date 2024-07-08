@@ -17,9 +17,9 @@ Check if a role exists
 }
 \seealso{
 Other roles: 
+\code{\link{aws_role}()},
 \code{\link{aws_role_create}()},
 \code{\link{aws_role_delete}()},
-\code{\link{aws_roles}()},
-\code{\link{aws_role}()}
+\code{\link{aws_roles}()}
 }
 \concept{roles}
