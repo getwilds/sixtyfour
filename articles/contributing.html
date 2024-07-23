@@ -101,13 +101,29 @@ with a minimal reproducible example using <a href="https://www.tidyverse.org/hel
 <p>Note that this package has a <code>Makefile</code> in the root of the
 repository - see the targets in the <code>Makefile</code> for various
 package maintenance tasks.</p>
+</div>
+<div class="section level3">
+<h3 id="git-flow">Git Flow<a class="anchor" aria-label="anchor" href="#git-flow"></a>
+</h3>
+<p>This package follows <a href="https://nvie.com/posts/a-successful-git-branching-model/" class="external-link">Git
+Flow</a>. In brief, there’s two main branches: <code>main</code> and
+<code>dev</code>. <code>main</code> is considered to be more or less
+“production-ready” and at any given time should be associated with the
+most recent release. The <code>dev</code> branch has the most recent
+state of the in development code for the package. When <code>dev</code>
+reaches a state where we’re ready for a release, we’ll merge
+<code>dev</code> back to <code>main</code> and cut a release. When you
+make a feature branch, please branch off of <code>dev</code>.</p>
 <div class="section level4">
 <h4 id="pull-request-process">Pull request process<a class="anchor" aria-label="anchor" href="#pull-request-process"></a>
 </h4>
 <ul>
 <li>Fork the package and clone onto your computer</li>
-<li>Create a Git branch for your pull request (PR)</li>
-<li>Make your changes, commit to git, and then create a pull request.
+<li>Checkout the <code>dev</code> branch</li>
+<li>Create a Git branch off of <code>dev</code> for your pull request
+(PR)</li>
+<li>Make your changes, commit to git, and then create a pull request
+against <code>dev</code>.
 <ul>
 <li>The title of your PR should briefly describe the change.</li>
 <li>The body of your PR should contain
@@ -122,7 +138,7 @@ file.</li>
 <h4 id="code-style">Code style<a class="anchor" aria-label="anchor" href="#code-style"></a>
 </h4>
 <ul>
-<li>New code should follow the <a href="https://getwilds.org/guide/style.html" class="external-link">WILDS style guide</a>.</li>
+<li>New/edited code should follow the <a href="https://getwilds.org/guide/style.html" class="external-link">WILDS style guide</a>.</li>
 </ul>
 </div>
 </div>
@@ -136,9 +152,6 @@ using real accounts, e.g., setting them up can be difficult at some
 organizations; forgotten resources can be expensive; accidentally making
 unwated changes to an account, etc.</p>
 <p>We use two tools to replace real AWS accounts: Minio, Localstack.</p>
-<div class="section level3">
-<h3 id="section"></h3>
-</div>
 <div class="section level3">
 <h3 id="minio">Minio<a class="anchor" aria-label="anchor" href="#minio"></a>
 </h3>
