@@ -24,26 +24,29 @@ reproducible example using [reprex](https://www.tidyverse.org/help/#reprex).
 
 Note that this package has a `Makefile` in the root of the repository - see the targets in the `Makefile` for various package maintenance tasks.
 
+### Git Flow
+
+This package follows [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/). In brief, there's two main branches: `main` and `dev`. `main` is considered to be more or less "production-ready" and at any given time should be associated with the most recent release. The `dev` branch has the most recent state of the in development code for the package. When `dev` reaches a state where we're ready for a release, we'll merge `dev` back to `main` and cut a release. When you make a feature branch, please branch off of `dev`.
+
 #### Pull request process
 
 * Fork the package and clone onto your computer
-* Create a Git branch for your pull request (PR)
-* Make your changes, commit to git, and then create a pull request.
+* Checkout the `dev` branch
+* Create a Git branch off of `dev` for your pull request (PR)
+* Make your changes, commit to git, and then create a pull request against `dev`.
   * The title of your PR should briefly describe the change.
   * The body of your PR should contain `Fixes #issue-number`.
 * For user-facing changes, add a bullet to the `NEWS.md` file.
 
 #### Code style
 
-* New code should follow the [WILDS style guide](https://getwilds.org/guide/style.html).
+* New/edited code should follow the [WILDS style guide](https://getwilds.org/guide/style.html).
 
 ## Testing
 
 We strive to have all tests that do HTTP requests do so against resources that are not actual AWS accounts given the drawbacks with using real accounts, e.g., setting them up can be difficult at some organizations; forgotten resources can be expensive; accidentally making unwated changes to an account, etc.
 
 We use two tools to replace real AWS accounts: Minio, Localstack.
-
-###
 
 ### Minio
 

@@ -1,3 +1,5 @@
+<!-- Don't edit README.md! Edit README.Rmd, then run `make readme` -->
+
 # sixtyfour
 
 <!-- badges: start -->
@@ -13,10 +15,8 @@ A science-focused, more humane R interface to AWS.
 Development version
 
 
-```r
-if (!requireNamespace("pak", quietly = TRUE)) {
-  install.packages("pak")
-}
+``` r
+# install.packages("pak")
 pak::pak("getwilds/sixtyfour")
 ```
 
@@ -32,7 +32,9 @@ Open an issue on our [issue tracker](https://github.com/getwilds/sixtyfour/issue
 
 ## Contributors
 
-See the [Contributing article](http://getwilds.org/sixtyfour/articles/contributing.html)
+See the [Contributing article][vigncontrib]
+
+This package follows [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/). See the [Contributing guide] for details.
 
 ## Code of Conduct
 
@@ -42,3 +44,4 @@ Please note that the sixtyfour project is released with a [Contributor Code of C
 [paws]: https://www.paws-r-sdk.com/
 [s3fs]: https://dyfanjones.github.io/s3fs/
 [minio]: https://min.io/
+[vigncontrib]: http://getwilds.org/sixtyfour/articles/contributing.html
