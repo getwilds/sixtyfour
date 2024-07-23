@@ -34,7 +34,7 @@ Open an issue on our [issue tracker](https://github.com/getwilds/sixtyfour/issue
 
 See the [Contributing article][vigncontrib]
 
-This package follows [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/). See the [Contributing guide] for details.
+This package follows [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/). See the [Contributing guide][vigncontrib] for details.
 
 ## Code of Conduct
 
