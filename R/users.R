@@ -36,6 +36,7 @@ user_list_tidy <- function(x) {
 aws_users <- function(...) {
   users <- paginate_aws_marker("list_users", "Users", ...) %>%
     user_list_tidy()
+  if (is_empty(users)) return(tibble())
   purrr::map(users$UserName, \(x) con_iam()$get_user(x)) %>%
     purrr::map(purrr::pluck, "User") %>%
     user_list_tidy()

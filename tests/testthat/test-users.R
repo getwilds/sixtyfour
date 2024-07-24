@@ -1,22 +1,17 @@
 skip_if_not(localstack_available(), "LocalStack Not Available")
 
-# nolint start
-## FIXME: something wrong with aws_users when using localstack
-## perhaps having to do with using purrr?
-## perhaps b/c with_envvar only goes down one level of the stack?
-# test_that("aws_users", {
-#   withr::local_options(c("paws.log_level" = 3L))
-#   withr::with_envvar(
-#     c("AWS_PROFILE" = "localstack"),
-#     res <- aws_users()
-#   )
-#   expect_s3_class(res, "tbl")
-#   expect_gte(NROW(res), 1)
-#   expect_equal(res$UserName, user)
-#   expect_type(res$UserName, "character")
-#   expect_true(inherits(res$CreateDate, "POSIXct"))
-# })
-# nolint end
+# cleanup any existing users first
+withr::with_envvar(
+  c("AWS_PROFILE" = "localstack"),
+  {
+    existing_users <- aws_users()
+    if (NROW(existing_users) > 0) {
+      invisible(
+        map(existing_users$UserName, \(user) aws_user_delete(user))
+      )
+    }
+  }
+)
 
 # create user first
 the_user <- random_user()
@@ -27,11 +22,23 @@ withr::with_envvar(
   }
 )
 
+test_that("aws_users", {
+  # withr::local_options(c("paws.log_level" = 3L))
+  withr::with_envvar(
+    c("AWS_PROFILE" = "localstack"),
+    res <- aws_users()
+  )
+  expect_s3_class(res, "tbl")
+  expect_gte(NROW(res), 1)
+  expect_equal(res$UserName, the_user)
+  expect_type(res$UserName, "character")
+  expect_true(inherits(res$CreateDate, "POSIXct"))
+})
+
 test_that("aws_user", {
-  # FIXME: behavior for aws_user is different for localstack
+  # NOTE: behavior for aws_user is different for localstack
   # when hitting actual AWS the current user is determined from the AWS
-  # Access Key, but there doesn't appear to be a way to do that
-  # with localstack, but perhaps there is?
+  # Access Key, but localstack ignores access keys even if given
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
     res <- aws_user(the_user)
