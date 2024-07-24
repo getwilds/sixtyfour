@@ -25,7 +25,6 @@ picker <- function(msg, choices, .envir = parent.frame()) {
   utils::menu(choices)
 }
 
-# FIXME: clean this mess up!
 #' @importFrom purrr map_lgl pluck
 #' @autoglobal
 #' @keywords internal
