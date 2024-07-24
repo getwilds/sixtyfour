@@ -42,10 +42,6 @@ s3_actions_full <- function() {
 #' )
 aws_s3_policy_doc_create <- function(bucket, action, resource, effect = "Allow",
                                      sid = NULL, ...) {
-  # FIXME: one can put more than 1 statement in the Statement slot -
-  # the below line about adding a `sid` assumes there's only 1 - which
-  # does work cause we hard code just 1 statement here. Should we
-  # support more? probably
   doc <- list(
     Version = "2012-10-17",
     Statement = list(
