@@ -536,7 +536,6 @@ aws_policy_detach <- function(.x, policy) {
   call_x_method(.x)
 }
 
-# FIXME: this is probably fragile
 # get the entity type, one  of: role, group, user
 entity_type <- function(x) {
   if (is.data.frame(x)) {
@@ -550,7 +549,6 @@ entity_type <- function(x) {
   sub("name", "", tolower(piece))
 }
 
-# FIXME: this is probably fragile
 # get the name of the e.g. RoleName, e.,g, OrganizationAccountSecurityRole
 entity_value <- function(x) {
   if (is.data.frame(x)) {
