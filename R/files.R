@@ -240,8 +240,6 @@ aws_file_delete_one <- function(one_path, ...) {
 #' aws_file_attr(s3_path("s64-test-2", c("DESCRIPTION", "ddd")))
 #' }
 aws_file_attr <- function(remote_path) {
-  # TODO: error behavior isn't ideal b/c the error message doesn't indicate
-  # which file does not exist
   con_s3fs()$file_info(remote_path) %>% as_tibble()
 }
 
