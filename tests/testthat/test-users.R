@@ -23,7 +23,6 @@ withr::with_envvar(
 )
 
 test_that("aws_users", {
-  # withr::local_options(c("paws.log_level" = 3L))
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
     res <- aws_users()
