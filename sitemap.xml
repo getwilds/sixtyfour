@@ -129,5 +129,6 @@
 <url><loc>/reference/ui_fetch_secret.html</loc></url>
 <url><loc>/reference/wait_for_cluster.html</loc></url>
 <url><loc>/reference/wait_for_instance.html</loc></url>
+<url><loc>/reference/wait_until.html</loc></url>
 </urlset>
 
