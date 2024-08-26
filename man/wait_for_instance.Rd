@@ -7,10 +7,8 @@
 wait_for_instance(id, sleep = 2, status_target = "available")
 }
 \arguments{
-\item{id}{(character) Cluster identifier. Use this identifier to refer to
-the cluster for any subsequent cluster operations such as deleting or
-modifying. The identifier also appears in the Amazon Redshift console.
-Must be unique for all clusters within a Amazon Web Services account.}
+\item{id}{(character) an RDS instance identifier, or a Redshift
+cluster identifier. required}
 
 \item{sleep}{(integer/numeric) number of seconds to wait between
 checks of the cluster status (i.e., http requests)}

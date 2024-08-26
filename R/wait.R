@@ -1,4 +1,10 @@
-# wait fxn generator
+#' wait fxn generator
+#' @param fun (function) a function to check status of something;
+#' must return a single boolean, e.g., `aws_db_cluster_status` or
+#' `aws_db_instance_status`
+#' @param message (character) the message to print at the beginning
+#' of `cli::cli_progress_bar`
+#' @keywords internal
 wait_until <- function(fun, message) {
   function(id, sleep = 2, status_target = "available") {
     cli::cli_alert_info(c(
@@ -24,10 +30,8 @@ wait_until <- function(fun, message) {
 #' Wait for a Redshift cluster to have a certain status
 #'
 #' @importFrom cli cli_progress_bar cli_progress_update pb_spin
-#' @inheritParams aws_db_redshift_create
-#' @param fun (function) a function to check status of something;
-#' must return a single boolean, e.g., `aws_db_cluster_status` or
-#' `aws_db_instance_status`
+#' @param id (character) an RDS instance identifier, or a Redshift
+#' cluster identifier. required
 #' @param sleep (integer/numeric) number of seconds to wait between
 #' checks of the cluster status (i.e., http requests)
 #' @param status_target (character) status to wait for. default: "available"
