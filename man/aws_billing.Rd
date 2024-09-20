@@ -4,11 +4,13 @@
 \alias{aws_billing}
 \title{Fetch billing data - with some internal munging for ease of use}
 \usage{
-aws_billing(date_start, date_end = as.character(Sys.Date()))
+aws_billing(date_start, date_end = as.character(Sys.Date()), filter = NULL)
 }
 \arguments{
 \item{date_start, date_end}{Start and end date to get billing data for.
 Date format expected: \code{yyyy-MM-dd}. required}
+
+\item{filter}{(list) filters costs by different dimensions. optional.}
 }
 \value{
 tibble with columns:
@@ -47,6 +49,17 @@ beyond 14 months". See
 for help
 }
 
+\section{Filtering}{
+
+You can optionally pass a list to the \code{filter} argument to filter
+AWS costs by different dimensions (see possible dimensions: https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetDimensionValues.html)
+
+This is supplied as a list of Dimensions, with key-value pairs for each
+Dimension. For example, to only get "Usage" costs as opposed to credits,
+tax refunds etc., use the \code{RECORD_TYPE} dimension Key and set the Value to
+"Usage" (see examples)
+}
+
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(lubridate)
@@ -71,6 +84,17 @@ z \%>\%
   group_by(service) \%>\%
   summarise(sum_cost = sum(cost)) \%>\%
   filter(service == "Amazon Relational Database Service")
+
+# Filter to return only "Usage" costs:
+
+aws_billing(
+  date_start = start_date, 
+  filter = list(
+    Dimensions = list(
+      Key = "RECORD_TYPE",
+      Values = "Usage"
+    ))
+  )
 \dontshow{\}) # examplesIf}
 }
 \references{

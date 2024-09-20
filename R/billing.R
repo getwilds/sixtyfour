@@ -7,6 +7,7 @@
 #' @importFrom dplyr rename rename_with left_join coalesce
 #' @param date_start,date_end Start and end date to get billing data for.
 #' Date format expected: `yyyy-MM-dd`. required
+#' @param filter (list) filters costs by different dimensions. optional.
 #' @autoglobal
 #' @references <https://www.paws-r-sdk.com/docs/costexplorer/>
 #' @family billing
@@ -24,6 +25,15 @@
 #' beyond 14 months". See
 #' <https://docs.aws.amazon.com/cost-management/latest/userguide/ce-advanced-cost-analysis.html> #nolint
 #' for help
+#' @section Filtering:
+#' You can optionally pass a list to the `filter` argument to filter
+#' AWS costs by different dimensions (see possible dimensions: https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetDimensionValues.html)
+#' 
+#' This is supplied as a list of Dimensions, with key-value pairs for each
+#' Dimension. For example, to only get "Usage" costs as opposed to credits, 
+#' tax refunds etc., use the `RECORD_TYPE` dimension Key and set the Value to 
+#' "Usage" (see examples) 
+#' 
 #' @return tibble with columns:
 #' - id: "blended", "unblended"
 #' - date: date, in format `yyyy-MM-dd`
@@ -55,14 +65,26 @@
 #'   group_by(service) %>%
 #'   summarise(sum_cost = sum(cost)) %>%
 #'   filter(service == "Amazon Relational Database Service")
-aws_billing <- function(date_start, date_end = as.character(Sys.Date())) {
+#' 
+#' # Filter to return only "Usage" costs:
+#' 
+#' aws_billing(
+#'   date_start = start_date, 
+#'   filter = list(
+#'     Dimensions = list(
+#'       Key = "RECORD_TYPE",
+#'       Values = "Usage"
+#'     ))
+#'   )
+#' 
+aws_billing <- function(date_start, date_end = as.character(Sys.Date()), filter = NULL) {
   bind_rows(
     unblended = rename(
-      billing_unblended(date_start, date_end),
+      billing_unblended(date_start, date_end, filter = filter),
       cost = UnblendedCost
     ),
     blended = rename(
-      billing_blended(date_start, date_end),
+      billing_blended(date_start, date_end, filter = filter),
       cost = BlendedCost
     ),
     .id = "id"
@@ -74,17 +96,19 @@ aws_billing <- function(date_start, date_end = as.character(Sys.Date())) {
 #' @keywords internal
 #' @noRd
 billing_factory <- function(type) {
-  function(date_start, date_end) {
+  function(date_start, date_end, filter = NULL) {
     groupby <- list(
       list(Type = "DIMENSION", Key = "SERVICE"),
       list(Type = "DIMENSION", Key = "LINKED_ACCOUNT")
     )
-    raw_billing_data <- aws_billing_raw(date_start,
+    raw_billing_data <- aws_billing_raw(
+      date_start,
       metrics = type,
-      granularity = "daily", group_by = groupby,
-      date_end = date_end
+      granularity = "daily",
+      group_by = groupby,
+      date_end = date_end,
+      filter = filter
     )
-
     raw_billing_data$ResultsByTime %>%
       map(function(x) {
         tibble(
@@ -146,6 +170,7 @@ aws_billing_raw <- function(
   con_ce()$get_cost_and_usage(
     TimePeriod = list(Start = date_start, End = date_end),
     Granularity = toupper(granularity),
+    Filter = filter,
     Metrics = metrics,
     GroupBy = group_by
   )
