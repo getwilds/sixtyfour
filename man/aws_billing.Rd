@@ -52,7 +52,8 @@ for help
 \section{Filtering}{
 
 You can optionally pass a list to the \code{filter} argument to filter
-AWS costs by different dimensions (see possible dimensions: https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetDimensionValues.html)
+AWS costs by different dimensions (see possible dimensions:
+\url{https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetDimensionValues.html}) #nolint
 
 This is supplied as a list of Dimensions, with key-value pairs for each
 Dimension. For example, to only get "Usage" costs as opposed to credits,
@@ -88,13 +89,14 @@ z \%>\%
 # Filter to return only "Usage" costs:
 
 aws_billing(
-  date_start = start_date, 
+  date_start = start_date,
   filter = list(
     Dimensions = list(
       Key = "RECORD_TYPE",
       Values = "Usage"
-    ))
+    )
   )
+)
 \dontshow{\}) # examplesIf}
 }
 \references{
