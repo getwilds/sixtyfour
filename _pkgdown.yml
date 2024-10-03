@@ -59,9 +59,6 @@ reference:
       - starts_with("aws_polic")
       - as_policy_arn
       - resource_rds
-  - title: IAM
-    contents:
-      - starts_with("aws_iam")
   - title: Secrets manager
     contents:
       - starts_with("aws_secret")
