@@ -27,13 +27,14 @@
 #' for help
 #' @section Filtering:
 #' You can optionally pass a list to the `filter` argument to filter
-#' AWS costs by different dimensions (see possible dimensions: https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetDimensionValues.html)
-#' 
+#' AWS costs by different dimensions (see possible dimensions:
+#' <https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetDimensionValues.html>) #nolint
+#'
 #' This is supplied as a list of Dimensions, with key-value pairs for each
-#' Dimension. For example, to only get "Usage" costs as opposed to credits, 
-#' tax refunds etc., use the `RECORD_TYPE` dimension Key and set the Value to 
-#' "Usage" (see examples) 
-#' 
+#' Dimension. For example, to only get "Usage" costs as opposed to credits,
+#' tax refunds etc., use the `RECORD_TYPE` dimension Key and set the Value to
+#' "Usage" (see examples)
+#'
 #' @return tibble with columns:
 #' - id: "blended", "unblended"
 #' - date: date, in format `yyyy-MM-dd`
@@ -65,19 +66,24 @@
 #'   group_by(service) %>%
 #'   summarise(sum_cost = sum(cost)) %>%
 #'   filter(service == "Amazon Relational Database Service")
-#' 
+#'
 #' # Filter to return only "Usage" costs:
-#' 
+#'
 #' aws_billing(
-#'   date_start = start_date, 
+#'   date_start = start_date,
 #'   filter = list(
 #'     Dimensions = list(
 #'       Key = "RECORD_TYPE",
 #'       Values = "Usage"
-#'     ))
+#'     )
 #'   )
-#' 
-aws_billing <- function(date_start, date_end = as.character(Sys.Date()), filter = NULL) {
+#' )
+#'
+aws_billing <- function(
+  date_start,
+  date_end = as.character(Sys.Date()),
+  filter = NULL
+) {
   bind_rows(
     unblended = rename(
       billing_unblended(date_start, date_end, filter = filter),
