@@ -1,4 +1,4 @@
-LOCALSTACK_ENDPOINT <- "http://localhost.localstack.cloud:4566" # nolint
+LOCALSTACK_ENDPOINT <- "http://localhost:4566" # nolint
 
 localstack_available <- function() {
   curl_check <- purrr::safely(curl::curl_fetch_memory, FALSE)
