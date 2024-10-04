@@ -12,3 +12,7 @@ random_string <- function(prefix, size = 8) {
     "{prefix}{paste0(sample(letters, size = size), collapse = '')}"
   )
 }
+
+running_local_only_tests <- function() {
+  as.logical(Sys.getenv("SIXTYFOUR_RUN_LOCAL_ONLY_TESTS", FALSE))
+}

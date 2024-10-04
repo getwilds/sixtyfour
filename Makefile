@@ -40,7 +40,7 @@ vign_db:
 	cd ..
 
 test:
-	${RSCRIPT} -e "devtools::test()"
+	SIXTYFOUR_RUN_LOCAL_ONLY_TESTS=true ${RSCRIPT} -e "devtools::test()"
 
 readme:
 	${RSCRIPT} -e "knitr::knit('README.Rmd')"
