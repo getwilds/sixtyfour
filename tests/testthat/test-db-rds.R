@@ -1,5 +1,6 @@
 test_that("aws_db_rds_create", {
   skip_on_ci()
+  skip_if_not(running_local_only_tests())
   vcr::use_cassette("aws_db_rds_create", {
     z <- aws_db_rds_create(
       id = "bananas2", class = "db.t3.micro",
