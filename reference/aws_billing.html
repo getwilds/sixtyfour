@@ -52,7 +52,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">aws_billing</span><span class="op">(</span><span class="va">date_start</span>, date_end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">aws_billing</span><span class="op">(</span><span class="va">date_start</span>, date_end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, filter <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -62,6 +62,10 @@
 <dl><dt id="arg-date-start-date-end">date_start, date_end<a class="anchor" aria-label="anchor" href="#arg-date-start-date-end"></a></dt>
 <dd><p>Start and end date to get billing data for.
 Date format expected: <code>yyyy-MM-dd</code>. required</p></dd>
+
+
+<dt id="arg-filter">filter<a class="anchor" aria-label="anchor" href="#arg-filter"></a></dt>
+<dd><p>(list) filters costs by different dimensions. optional.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -95,6 +99,21 @@ you will likely see an error like "You haven't enabled historical data
 beyond 14 months". See
 <a href="https://docs.aws.amazon.com/cost-management/latest/userguide/ce-advanced-cost-analysis.html" class="external-link">https://docs.aws.amazon.com/cost-management/latest/userguide/ce-advanced-cost-analysis.html</a> #nolint
 for help</p>
+    </div>
+    <div class="section level2">
+    <h2 id="filtering">Filtering<a class="anchor" aria-label="anchor" href="#filtering"></a></h2>
+
+
+<p>You can optionally pass a list to the <code>filter</code> argument to filter AWS costs
+by different dimensions, tags, or cost categories. This filter expression is
+passed on to
+<a href="https://www.paws-r-sdk.com/docs/costexplorer_get_cost_and_usage/" class="external-link">paws</a>. See
+possible dimensions:
+<a href="https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetDimensionValues.html" class="external-link">https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetDimensionValues.html</a>) #nolint</p>
+<p>This is supplied as a list, with key-value pairs for each criteria.
+Different filter criteria can be combined in different ways using <code>AND</code>,
+<code>OR</code>, and <code>NOT</code>. See Examples below and more on Filter expressions at
+<a href="https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_Expression.html" class="external-link">https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_Expression.html</a>. #nolint</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -131,6 +150,73 @@ for help</p>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">service</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>sum_cost <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">cost</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">service</span> <span class="op">==</span> <span class="st">"Amazon Relational Database Service"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Simple filter to return only "Usage" costs:</span></span></span>
+<span class="r-in"><span><span class="fu">aws_billing</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  date_start <span class="op">=</span> <span class="va">start_date</span>,</span></span>
+<span class="r-in"><span>  filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    Dimensions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      Key <span class="op">=</span> <span class="st">"RECORD_TYPE"</span>,</span></span>
+<span class="r-in"><span>      Values <span class="op">=</span> <span class="st">"Usage"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Filter to return "Usage" costs for only m4.xlarge instances:</span></span></span>
+<span class="r-in"><span><span class="fu">aws_billing</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  date_start <span class="op">=</span> <span class="va">start_date</span>,</span></span>
+<span class="r-in"><span>  filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    And <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        Dimensions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>          Key <span class="op">=</span> <span class="st">"RECORD_TYPE"</span>,</span></span>
+<span class="r-in"><span>          Values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Usage"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>        <span class="op">)</span></span></span>
+<span class="r-in"><span>      <span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        Dimensions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>          Key <span class="op">=</span> <span class="st">"INSTANCE_TYPE"</span>,</span></span>
+<span class="r-in"><span>          Values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"m4.xlarge"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>        <span class="op">)</span></span></span>
+<span class="r-in"><span>      <span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Complex filter example, translated from the AWS Cost Explorer docs:</span></span></span>
+<span class="r-in"><span><span class="co"># &lt;https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_Expression.html&gt; #nolint</span></span></span>
+<span class="r-in"><span><span class="co"># Filter for operations within us-west-1 or us-west-2 regions OR have a</span></span></span>
+<span class="r-in"><span><span class="co"># specific Tag value, AND are NOT DataTransfer usage types:</span></span></span>
+<span class="r-in"><span><span class="fu">aws_billing</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  date_start <span class="op">=</span> <span class="va">start_date</span>,</span></span>
+<span class="r-in"><span>  filter <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    And <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        Or <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>          <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>            Dimensions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>              Key <span class="op">=</span> <span class="st">"REGION"</span>,</span></span>
+<span class="r-in"><span>              Values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"us-east-1"</span>, <span class="st">"us-west-1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>            <span class="op">)</span></span></span>
+<span class="r-in"><span>          <span class="op">)</span>,</span></span>
+<span class="r-in"><span>          <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>            Tags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>              Key <span class="op">=</span> <span class="st">"TagName"</span>,</span></span>
+<span class="r-in"><span>              Values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Value1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>            <span class="op">)</span></span></span>
+<span class="r-in"><span>          <span class="op">)</span></span></span>
+<span class="r-in"><span>        <span class="op">)</span></span></span>
+<span class="r-in"><span>      <span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>        Not <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>          Dimensions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>            Key <span class="op">=</span> <span class="st">"USAGE_TYPE"</span>,</span></span>
+<span class="r-in"><span>            Values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"DataTransfer"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>          <span class="op">)</span></span></span>
+<span class="r-in"><span>        <span class="op">)</span></span></span>
+<span class="r-in"><span>      <span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
