@@ -4,11 +4,13 @@
 \alias{aws_billing}
 \title{Fetch billing data - with some internal munging for ease of use}
 \usage{
-aws_billing(date_start, date_end = as.character(Sys.Date()))
+aws_billing(date_start, date_end = as.character(Sys.Date()), filter = NULL)
 }
 \arguments{
 \item{date_start, date_end}{Start and end date to get billing data for.
 Date format expected: \code{yyyy-MM-dd}. required}
+
+\item{filter}{(list) filters costs by different dimensions. optional.}
 }
 \value{
 tibble with columns:
@@ -47,6 +49,21 @@ beyond 14 months". See
 for help
 }
 
+\section{Filtering}{
+
+You can optionally pass a list to the \code{filter} argument to filter AWS costs
+by different dimensions, tags, or cost categories. This filter expression is
+passed on to
+\href{https://www.paws-r-sdk.com/docs/costexplorer_get_cost_and_usage/}{paws}. See
+possible dimensions:
+\url{https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetDimensionValues.html}) #nolint
+
+This is supplied as a list, with key-value pairs for each criteria.
+Different filter criteria can be combined in different ways using \code{AND},
+\code{OR}, and \code{NOT}. See Examples below and more on Filter expressions at
+\url{https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_Expression.html}. #nolint
+}
+
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(lubridate)
@@ -71,6 +88,73 @@ z \%>\%
   group_by(service) \%>\%
   summarise(sum_cost = sum(cost)) \%>\%
   filter(service == "Amazon Relational Database Service")
+
+# Simple filter to return only "Usage" costs:
+aws_billing(
+  date_start = start_date,
+  filter = list(
+    Dimensions = list(
+      Key = "RECORD_TYPE",
+      Values = "Usage"
+    )
+  )
+)
+
+# Filter to return "Usage" costs for only m4.xlarge instances:
+aws_billing(
+  date_start = start_date,
+  filter = list(
+    And = list(
+      list(
+        Dimensions = list(
+          Key = "RECORD_TYPE",
+          Values = list("Usage")
+        )
+      ),
+      list(
+        Dimensions = list(
+          Key = "INSTANCE_TYPE",
+          Values = list("m4.xlarge")
+        )
+      )
+    )
+  )
+)
+
+# Complex filter example, translated from the AWS Cost Explorer docs:
+# <https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_Expression.html> #nolint
+# Filter for operations within us-west-1 or us-west-2 regions OR have a
+# specific Tag value, AND are NOT DataTransfer usage types:
+aws_billing(
+  date_start = start_date,
+  filter = list(
+    And = list(
+      list(
+        Or = list(
+          list(
+            Dimensions = list(
+              Key = "REGION",
+              Values = list("us-east-1", "us-west-1")
+            )
+          ),
+          list(
+            Tags = list(
+              Key = "TagName",
+              Values = list("Value1")
+            )
+          )
+        )
+      ),
+      list(
+        Not = list(
+          Dimensions = list(
+            Key = "USAGE_TYPE",
+            Values = list("DataTransfer")
+          )
+        )
+      )
+    ))
+)
 \dontshow{\}) # examplesIf}
 }
 \references{
