@@ -51,6 +51,7 @@ Suggests:
     withr,
     ggplot2,
     webmockr
+Remotes: ropensci/webmockr@including
 Config/roxyglobals/filename: globals.R
 Config/roxyglobals/unique: FALSE
 Config/testthat/edition: 3
