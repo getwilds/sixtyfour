@@ -1,3 +1,4 @@
+# nolint start
 # vcr::vcr_configure(dir = "tests/fixtures")
 # cas <- vcr::use_cassette("billing_last_two_days", {
 #   library(lubridate)
@@ -24,6 +25,7 @@
 # }
 # randomize_json(responses[1], "UnblendedCost") %>% jsonlite::prettify(indent = 2)
 # randomize_json(responses[2], "BlendedCost") %>% jsonlite::prettify(indent = 2)
+# nolint end
 
 response_billing_unblended_1 <- '{
   "DimensionValueAttributes": [
