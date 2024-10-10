@@ -16,3 +16,6 @@ tests/fixtures/six_bucket*.yml
 tests/fixtures/aws_policy_attach*.yml
 tests/fixtures/aws_policy_detach*.yml
 tests/fixtures/aws_policy_list_entities*.yml
+tests/fixtures/billing*
+tests/fixtures/blob*
+tests/fixtures/*blob*
