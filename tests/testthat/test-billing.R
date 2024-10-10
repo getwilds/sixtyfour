@@ -1,29 +1,32 @@
 test_that("aws_billing", {
-  stub_request("post", "https://ce.us-east-1.amazonaws.com") |>
-    # wi_th(body = list(Metrics = c("UnblendedCost"))) |>
-    wi_th(body = fromJSON('{"TimePeriod":{"Start":"2024-10-03","End":"2024-10-05"},"Granularity":"DAILY","Metrics":["UnblendedCost"],"GroupBy":[{"Type":"DIMENSION","Key":"SERVICE"},{"Type":"DIMENSION","Key":"LINKED_ACCOUNT"}]}', FALSE)) |>
-    to_return(
-      body = jsonlite::minify(response_billing_unblended_1),
-      status = 200L,
-      headers = list("Content-type" = "application/x-amz-json-1.1")
-    )
-  stub_request("post", "https://ce.us-east-1.amazonaws.com") |>
-    # wi_th(body = list(Metrics = c("BlendedCost"))) |>
-    wi_th(body = fromJSON('{"TimePeriod":{"Start":"2024-10-03","End":"2024-10-05"},"Granularity":"DAILY","Metrics":["BlendedCost"],"GroupBy":[{"Type":"DIMENSION","Key":"SERVICE"},{"Type":"DIMENSION","Key":"LINKED_ACCOUNT"}]}', FALSE)) |>
-    to_return(
-      body = jsonlite::minify(response_billing_blended_1),
-      status = 200L,
-      headers = list("Content-type" = "application/x-amz-json-1.1")
-    )
+  withr::with_package("webmockr", {
+    ## Two stubs below are needed b/c aws_billing makes two http requests
+    ##  in one function call, for unblended and blended costs
+    stub_request("post", "https://ce.us-east-1.amazonaws.com") |>
+      wi_th(body = including(list(Metrics = list("UnblendedCost")))) |>
+      to_return(
+        body = jsonlite::minify(response_billing_unblended_1),
+        status = 200L,
+        headers = list("Content-type" = "application/x-amz-json-1.1")
+      )
 
-  enable(quiet = TRUE)
+    stub_request("post", "https://ce.us-east-1.amazonaws.com") |>
+      wi_th(body = including(list(Metrics = list("BlendedCost")))) |>
+      to_return(
+        body = jsonlite::minify(response_billing_blended_1),
+        status = 200L,
+        headers = list("Content-type" = "application/x-amz-json-1.1")
+      )
 
-  aws_billing(date_start = "2024-10-03", date_end = "2024-10-05")
+    enable(quiet = TRUE)
 
-  expect_type(start_res, "list")
-  expect_type(start_res$job_id, "character")
-  expect_type(start_res$info, "character")
+    out <- aws_billing(date_start = "2024-10-03", date_end = "2024-10-05")
 
-  stub_registry_clear()
-  disable(quiet = TRUE)
+    expect_s3_class(out, "tbl")
+    expect_equal(NCOL(out), 6)
+    expect_equal(sort(unique(out$id)), c("blended", "unblended"))
+
+    stub_registry_clear()
+    disable(quiet = TRUE)
+  })
 })

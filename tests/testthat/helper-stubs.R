@@ -1,5 +1,3 @@
-library(webmockr)
-
 # vcr::vcr_configure(dir = "tests/fixtures")
 # cas <- vcr::use_cassette("billing_last_two_days", {
 #   library(lubridate)
