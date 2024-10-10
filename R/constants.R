@@ -1,7 +1,7 @@
 # nolint start
 MINIO_USER_PWD <- "minioadmin"
 MINIO_ENDPOINT <- "http://127.0.0.1:9000"
-LOCALSTACK_ENDPOINT <- "http://localhost.localstack.cloud:4566"
+LOCALSTACK_ENDPOINT <- "http://localhost:4566"
 LOCALSTACK_KEY <- "NOTAREALKEY"
 LOCALSTACK_SECRET <- "AREALLYFAKETOKEN"
 # nolint end
