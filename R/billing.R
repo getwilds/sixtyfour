@@ -135,13 +135,13 @@
 #'           )
 #'         )
 #'       )
-#'     ))
+#'     )
+#'   )
 #' )
 aws_billing <- function(
-  date_start,
-  date_end = as.character(Sys.Date()),
-  filter = NULL
-) {
+    date_start,
+    date_end = as.character(Sys.Date()),
+    filter = NULL) {
   bind_rows(
     unblended = rename(
       billing_unblended(date_start, date_end, filter = filter),

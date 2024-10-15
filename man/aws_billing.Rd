@@ -153,7 +153,8 @@ aws_billing(
           )
         )
       )
-    ))
+    )
+  )
 )
 \dontshow{\}) # examplesIf}
 }
