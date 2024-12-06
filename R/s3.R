@@ -108,6 +108,13 @@ create_policy_if_missing <- function(bucket, permissions) {
 #' not include deleting buckets
 #' - admin: change user permissions (in addition to read and write);
 #' includes deleting buckets (THIS OPTION NOT ACCEPTED YET!)
+#' @section What is magical:
+#' - Exits early if permissions is not length 1
+#' - Exits early if permissions is not in allowed set
+#' - Exits early if bucket does not exist
+#' - Creates bucket policy if not created yet
+#' - If user not in bucket already, attach policy to user (which adds them
+#' to the bucket)
 #' @return invisibly returns nothing
 #' @examplesIf interactive()
 #' # create a bucket
