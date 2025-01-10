@@ -1,0 +1,238 @@
+---
+title: "S3"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{S3}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+bucket_delete <- function(bucket, force = FALSE) {
+  if (!aws_bucket_exists(bucket)) return()
+  list_obs <- purrr::safely(aws_bucket_list_objects)
+  objects <- list_obs(bucket)
+  if (NROW(objects$result) > 0) {
+    purrr::map(objects$result$uri, \(x) aws_file_delete(x))
+  }
+  aws_bucket_delete(bucket, force = force)
+}
+```
+
+This vignette focuses on blob storage using S3. See the Getting Started vignette for basic setup if you have not done that yet.
+
+S3 stands for Simple Storage Service - a product from AWS (Amazon Web Services). It's sort of like a file system on your computer in that you can store any arbitrary file type: an image, a spreadsheet, a presentation, a zip file, etc. - you can do the same in S3, but the files are called "objects". S3 is used for backups, archiving, data storage for many kinds of web or native apps, and more - and many AWS services work smoothly with S3 as the data storage layer. There's many S3 "compatible" clones offered by other companies, e.g., R2 from Cloudflare and Spaces from DigitalOcean.
+
+This vignette breaks down use cases around buckets (or groups of objects), and files (aka objects). `sixtyfour` has many functions for buckets and files with lower level methods prefixed with `aws_` while higher level functions are prefixed with `six_`.
+
+## Setup
+
+```{r setup}
+library(sixtyfour)
+```
+
+## Buckets
+
+Make a random bucket name with `random_string()` from `sixtyfour`:
+
+```{r}
+bucket <- random_string("egs-")
+bucket
+```
+
+Create a bucket - check if it exists first
+
+```{r}
+exists <- aws_bucket_exists(bucket)
+
+if (!exists) {
+  aws_bucket_create(bucket)
+}
+```
+
+Create files in a few different directories
+
+```{r}
+library(fs)
+tdir <- fs::path(tempdir(), "apples")
+fs::dir_create(tdir)
+tfiles <- replicate(n = 10, fs::file_temp(tmp_dir = tdir, ext = ".txt"))
+invisible(lapply(tfiles, function(x) write.csv(mtcars, x)))
+```
+
+Upload them to the newly created bucket
+
+```{r}
+aws_bucket_upload(path = tdir, bucket = bucket)
+```
+
+List objects in the bucket
+
+```{r}
+objects <- aws_bucket_list_objects(bucket)
+objects
+```
+
+Cleanup - delete the bucket.
+
+```{r eval=FALSE}
+aws_bucket_delete(bucket)
+```
+
+```{r run-to-get-error, echo=FALSE, error=TRUE}
+aws_bucket_delete(bucket, force = TRUE)
+```
+
+If there's files in your bucket you can not delete the bucket. First, delete all the files, then delete the bucket again:
+
+```{r eval=FALSE}
+aws_file_delete(objects$uri) # vector accepted
+aws_bucket_list_objects(bucket) # no objects remaining
+aws_bucket_delete(bucket)
+```
+
+```{r cleanup-buckets, echo=FALSE}
+bucket_delete(bucket, force = TRUE)
+```
+
+## Files
+
+All or most of the file functions are built around accepting and returning character vectors of length one or greater. This includes the functions that take two inputs, such as a source and destination file. Rather than using the `paws` package under the hood as most functions in this package use, the file functions use `s3fs` under the hood (which is itself built on `paws`) as `s3fs` is a cleaner interface to S3 than `paws`.
+
+First, create a bucket:
+
+```{r}
+my_bucket <- random_string("egs-")
+aws_bucket_create(my_bucket)
+```
+
+Then, upload some files
+
+```{r}
+temp_files <- replicate(n = 3, tempfile(fileext = ".txt"))
+for (i in temp_files) cat(letters, "\n", file = i)
+remote_files <- s3_path(my_bucket, basename(temp_files))
+aws_file_upload(path = temp_files, remote_path = remote_files)
+```
+
+List files in the bucket
+
+```{r}
+obs <- aws_bucket_list_objects(my_bucket)
+obs
+```
+
+Fetch file attributes
+
+```{r}
+aws_file_attr(remote_files)
+```
+
+Check if one or more files exist
+
+```{r}
+aws_file_exists(remote_files[1])
+aws_file_exists(remote_files)
+```
+
+Copy files
+
+```{r}
+new_bucket <- random_string("egs-")
+aws_bucket_create(new_bucket)
+
+# add existing files to the new bucket
+aws_file_copy(remote_files, new_bucket)
+
+# create bucket that doesn't exist yet
+# the force=TRUE makes this work non-interactively
+another_bucket <- random_string("egs-")
+aws_file_copy(remote_files, another_bucket, force = TRUE)
+```
+
+Download files
+
+```{r}
+tfile <- tempfile()
+aws_file_download(remote_files[1], tfile)
+readLines(tfile)
+```
+
+Rename files
+
+```{r}
+aws_file_exists(remote_files[1])
+aws_file_rename(remote_files[1], s3_path(dirname(remote_files[1]), "myfile.txt"))
+aws_file_exists(remote_files[1])
+```
+
+```{r cleanup-files, echo=FALSE, results='hide'}
+these_buckets <- grep("egs-.+", aws_buckets()$bucket_name, value = TRUE)
+invisible(purrr::map(these_buckets, bucket_delete, force = TRUE))
+```
+
+## "Magical" methods
+
+Magical methods are prefixed with `six_` and wrap `aws_` functions, adding helpful prompts and checks to make it more likely you'll get your task done faster.
+
+### Magical bucket methods
+
+The magical bucket functions are:
+
+- `six_bucket_add_user`
+- `six_bucket_change_user`
+- `six_bucket_delete`
+- `six_bucket_permissions`
+- `six_bucket_remove_user`
+
+An example of using one of the functions, `six_bucket_add_user()`:
+
+```{r six-bucket-add-user}
+# create a bucket
+bucket <- random_string("egs-")
+if (!aws_bucket_exists(bucket)) {
+  aws_bucket_create(bucket)
+}
+
+# create a user
+user <- random_user()
+if (!aws_user_exists(user)) {
+  aws_user_create(user)
+}
+
+six_bucket_add_user(
+  bucket = bucket,
+  username = user,
+  permissions = "read"
+)
+
+# cleanup
+six_user_delete(user)
+aws_bucket_delete(bucket, force = TRUE)
+```
+
+### Magical file methods
+
+There's one file function: `six_file_upload()`. An example of using it:
+
+```{r six-file-upload}
+bucket <- random_string("egs-")
+demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
+six_file_upload(demo_rds_file, bucket, force = TRUE)
+
+## many files at once
+links_file <- file.path(system.file(), "Meta/links.rds")
+six_file_upload(c(demo_rds_file, links_file), bucket)
+
+# set expiration, expire 1 minute from now
+six_file_upload(demo_rds_file, bucket, Expires = Sys.time() + 60)
+
+# cleanup
+obs <- aws_bucket_list_objects(bucket)
+aws_file_delete(obs$uri)
+aws_bucket_delete(bucket, force = TRUE)
+```

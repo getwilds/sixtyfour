@@ -26,7 +26,12 @@ check: build
 
 vign_getting_started:
 	cd vignettes;\
-	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('sixtyfour.Rmd.og', output = 'sixtyfour.Rmd')";\
+	CLIPR_ALLOW=TRUE ${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('sixtyfour.Rmd.og', output = 'sixtyfour.Rmd')";\
+	cd ..
+
+vign_s3:
+	cd vignettes;\
+	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('s3.Rmd.og', output = 's3.Rmd')";\
 	cd ..
 
 vign_billing:

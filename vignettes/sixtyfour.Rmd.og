@@ -58,24 +58,23 @@ Or set them in a variety of ways to be available across R sessions. See the [R S
 - `aws_user*`: manage AWS users
 - `aws_group*`: manage AWS groups
 - `aws_role*`: manage AWS roles
-- `aws_policy*`: manage AWS policies
+- `aws_policy*`/`aws_policies*`: manage AWS policies
 - `aws_db*`: interact with AWS database services Redshift and RDS
 - `aws_secrets*`: secrets manager
-- `aws_vpc_security*`: VPC security groups
+- `aws_vpc*`: VPC security groups
+- `con_*`: connection classes to various AWS services
+- `six_*`: magical methods
 
 ## Working with S3
 
-This vignette won't touch on all of the above parts of the package API - but instead will cover working with files as that's likely a common use case for `sixtyfour` users.
+We cover S3 in detail in another vignette (`vignette("s3")`), so we'll briefly touch on it here.
 
 ### Buckets
 
 Make a random bucket name
 
 ```{r}
-random_bucket_name <- function() {
-  glue::glue("egs-{paste0(sample(letters, size = 12), collapse = '')}")
-}
-bucket <- random_bucket_name()
+bucket <- random_string("egs-")
 ```
 
 Create a bucket - check if it exists first
@@ -88,58 +87,16 @@ if (!exists) {
 }
 ```
 
-Create files in a few different directories
-
-```{r}
-library(fs)
-tdir <- fs::path(tempdir(), "apples")
-fs::dir_create(tdir)
-tfiles <- replicate(n = 10, fs::file_temp(tmp_dir = tdir, ext = ".txt"))
-invisible(lapply(tfiles, function(x) write.csv(mtcars, x)))
-```
-
-Upload them to the newly created bucket
-
-```{r}
-aws_bucket_upload(path = tdir, bucket = bucket)
-```
-
-List objects in the bucket
-
-```{r}
-objects <- aws_bucket_list_objects(bucket)
-objects
-```
-
-Cleanup - delete the bucket.
-
 ```{r eval=FALSE}
 aws_bucket_delete(bucket)
-```
-
-```{r echo=FALSE, error=TRUE}
-aws_bucket_delete(bucket, force = TRUE)
-```
-
-If there's files in your bucket you can not delete it. Delete files, then delete bucket again
-
-```{r eval=FALSE}
-aws_file_delete(objects$uri)
-aws_bucket_delete(bucket)
-```
-
-```{r cleanup-buckets, echo=FALSE}
-bucket_delete(bucket, force = TRUE)
 ```
 
 ### Files
 
-All or most of the file functions are built around accepting and returning character vectors of length one or greater. This includes the functions that take two inputs, such as a source and destination file. Rather than using the `paws` package under the hood as most functions in this package use, the file functions use `s3fs` under the hood (which is itself built on `paws`) as it's a cleaner interface to S3.
-
 First, create a bucket:
 
 ```{r}
-my_bucket <- random_bucket_name()
+my_bucket <- random_string("egs-")
 aws_bucket_create(my_bucket)
 ```
 
@@ -159,53 +116,115 @@ obs <- aws_bucket_list_objects(my_bucket)
 obs
 ```
 
-Fetch file attributes
-
-```{r}
-aws_file_attr(remote_files)
-```
-
-Check if one or more files exist
-
-```{r}
-aws_file_exists(remote_files[1])
-aws_file_exists(remote_files)
-```
-
-Copy
-
-```{r}
-new_bucket <- random_bucket_name()
-aws_bucket_create(new_bucket)
-
-# add existing files to the new bucket
-aws_file_copy(remote_files, new_bucket)
-
-# create bucket that doesn't exist yet
-# the force=TRUE makes this work non-interactively
-aws_file_copy(remote_files, random_bucket_name(), force = TRUE)
-```
-
-Download
-
-```{r}
-tfile <- tempfile()
-aws_file_download(remote_files[1], tfile)
-readLines(tfile)
-```
-
-Rename
-
-```{r}
-aws_file_exists(remote_files[1])
-aws_file_rename(remote_files[1], s3_path(dirname(remote_files[1]), "myfile.txt"))
-aws_file_exists(remote_files[1])
-```
-
 ```{r cleanup-files, echo=FALSE, results='hide'}
 these_buckets <- grep("egs-.+", aws_buckets()$bucket_name, value = TRUE)
 invisible(purrr::map(these_buckets, bucket_delete, force = TRUE))
 ```
 
-[r-startup]: https://rstats.wtf/r-startup.html
+## Billing
 
+Billing is covered in the `vignette("billing")` vignette.
+
+## IAM
+
+IAM stands for Identity Access Management. IAM covers four resource types:
+
+- Users: via `aws_user*` functions
+- Groups: via `aws_group*` functions
+- Roles: via `aws_role*` functions
+- Policies: via `aws_policy*`/`aws_policies*` functions
+
+As a brief example let's create a group, a user, and two roles. We'll assign the user to a role, and the group to the other role. Then clean it all up.
+
+First, create a group
+
+```{r}
+group_name <- random_string("gr-")
+group_name
+aws_group_create(group_name)
+```
+
+Then create a user
+
+```{r}
+name <- random_user()
+name
+aws_user_create(name)
+```
+
+Now create two roles, which is more complicated than groups and users
+
+```{r}
+role_name1 <- random_user()
+trust_policy1 <- list(
+  Version = "2012-10-17",
+  Statement = list(
+    list(
+      Effect = "Allow",
+      Principal = list(
+        Service = "lambda.amazonaws.com"
+      ),
+      Action = "sts:AssumeRole"
+    )
+  )
+)
+doc1 <- jsonlite::toJSON(trust_policy1, auto_unbox = TRUE)
+aws_role_create(role_name1,
+  assume_role_policy_document = doc1,
+  description = "test role A"
+)
+
+role_name2 <- random_user()
+trust_policy2 <- list(
+  Version = "2012-10-17",
+  Statement = list(
+    list(
+      Effect = "Allow",
+      Principal = list(
+        Service = "lambda.amazonaws.com"
+      ),
+      Action = "sts:AssumeRole"
+    )
+  )
+)
+doc2 <- jsonlite::toJSON(trust_policy2, auto_unbox = TRUE)
+aws_role_create(role_name2,
+  assume_role_policy_document = doc2,
+  description = "test role B"
+)
+```
+
+Now
+
+```{r}
+```
+
+Finally, cleanup
+
+```{r}
+```
+
+
+## Databases
+
+Databases are covered in the `vignette("databases")` vignette.
+
+## Magical methods
+
+Magical methods are higher level functions to make your life easier.
+
+As an example, `six_user_create()` creates a new user, including a) creating the appropriate policy if it doesn't exist yet, b) attaching the policy to the created user, and c) creating an AWS Access Key for the user (and copy an email template to your clipboard with the details the new user needs).
+
+```{r}
+name <- random_user()
+name
+six_user_create(name)
+```
+
+```{r cleanup, echo=FALSE, message=FALSE}
+six_user_delete(name)
+```
+
+There are other magical methods. See the [docs](https://getwilds.org/sixtyfour/reference/#high-level-magical-methods) for more information.
+
+[r-startup]: https://rstats.wtf/r-startup.html
