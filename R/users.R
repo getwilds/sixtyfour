@@ -156,7 +156,7 @@ aws_user_create <- function(
 #' @section What is magical:
 #' - Adds a `GetUser` policy to your account if doesn't exist yet
 #' - Attaches `GetUser` policy to the user created
-#' - Grants an access key
+#' - Grants an access key, copying an email template to your clipboard
 #' @family users
 #' @family magicians
 #' @return NULL invisibly. A draft email is copied to your clipboard

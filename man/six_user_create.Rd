@@ -35,7 +35,7 @@ key. Add more policies using \verb{aws_polic*} functions
 \itemize{
 \item Adds a \code{GetUser} policy to your account if doesn't exist yet
 \item Attaches \code{GetUser} policy to the user created
-\item Grants an access key
+\item Grants an access key, copying an email template to your clipboard
 }
 }
 
