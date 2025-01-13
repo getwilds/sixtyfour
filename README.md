@@ -5,7 +5,7 @@
 <!-- badges: start -->
 [![Project Status: Prototype – Useable, some support, open to feedback, unstable API.](https://getwilds.org/badges/badges/prototype.svg)](https://getwilds.org/badges/#prototype)
 [![R-CMD-check](https://github.com/getwilds/sixtyfour/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/getwilds/sixtyfour/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/getwilds/sixtyfour/graph/badge.svg?token=BMER9MWIDN)](https://codecov.io/gh/getwilds/sixtyfour)
+[![codecov](https://codecov.io/gh/getwilds/sixtyfour/branch/main/graph/badge.svg)](https://codecov.io/gh/getwilds/sixtyfour)
 <!-- badges: end -->
 
 A science-focused, more humane R interface to AWS.
