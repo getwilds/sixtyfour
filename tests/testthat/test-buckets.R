@@ -152,8 +152,10 @@ test_that("six_bucket_upload, mixed inputs, single remote path", {
   dir_create(tdir)
   purrr::map(letters, \(l) file_create(path(tdir, l)))
   res <- suppressMessages(
-    six_bucket_upload(path = c(demo_rds_file, tdir), remote = bucket,
-      force = TRUE)
+    six_bucket_upload(
+      path = c(demo_rds_file, tdir), remote = bucket,
+      force = TRUE
+    )
   )
   objs <- aws_bucket_list_objects(bucket)
 
@@ -166,9 +168,11 @@ test_that("six_bucket_upload, mixed inputs, single remote path", {
 test_that("six_bucket_upload, two inputs, two remotes", {
   bucket <- random_string("bucket")
   links_file <- file.path(system.file(), "Meta/links.rds")
-  res <- six_bucket_upload(path = c(demo_rds_file, links_file),
+  res <- six_bucket_upload(
+    path = c(demo_rds_file, links_file),
     remote = path(bucket, c("afile.txt", "anotherfile.txt")),
-    force = TRUE)
+    force = TRUE
+  )
   objs <- aws_bucket_list_objects(bucket)
 
   expect_type(res, "character")

@@ -329,8 +329,10 @@ explode_file_paths <- function(path) {
 #' ## two files - two values passed to remote path
 #' bucket <- random_string("bucket")
 #' links_file <- file.path(system.file(), "Meta/links.rds")
-#' six_bucket_upload(path = c(demo_rds_file, links_file),
-#'  remote = path(bucket, c("afile.txt", "anotherfile.txt")))
+#' six_bucket_upload(
+#'   path = c(demo_rds_file, links_file),
+#'   remote = path(bucket, c("afile.txt", "anotherfile.txt"))
+#' )
 six_bucket_upload <- function(path, remote, force = FALSE, ...) {
   stop_if_not(is_character(path), "{.strong path} must be character")
   stop_if_not(is_character(remote), "{.strong remote} must be character")
@@ -365,8 +367,10 @@ six_bucket_upload <- function(path, remote, force = FALSE, ...) {
     }
   } else if (length(remote) > 1) {
     if (length(path) != length(remote)) {
-      cli_abort(paste0(c("if {.strong length(remote) > 1} then ",
-        "{.strong length(path)} == {.strong length(remote)}"), collapse = " "))
+      cli_abort(paste0(c(
+        "if {.strong length(remote) > 1} then ",
+        "{.strong length(path)} == {.strong length(remote)}"
+      ), collapse = " "))
     } else {
       remote_paths <- remote
     }
