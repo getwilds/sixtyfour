@@ -10,10 +10,10 @@ six_bucket_upload(path, remote, force = FALSE, ...)
 \item{path}{(character) one or more file paths to add to
 the \code{bucket}. required. can include directories or files}
 
-\item{remote}{(character) a vector of paths to use to upload
-files in \code{path}. the bucket name is determined from this param.
-if the vector passed in is length>1 then the base path component
-must all be the same. required}
+\item{remote}{(character/scalar) a character string to use to upload
+files in \code{path}. the first component of the path will be used as the
+bucket name. any subsequent path components will be used as a
+key prefix for all objects created in the bucket}
 
 \item{force}{(logical) force bucket creation without going through
 the prompt. default: \code{FALSE}. Should only be set to \code{TRUE} when
@@ -34,33 +34,45 @@ Magically upload a mix of files and directories into a bucket
 \itemize{
 \item Exits early if folder or files do not exist
 \item Creates the bucket if it does not exist
-\item Adds files to the bucket, figuring out the key to use from
-the supplied path
-\item Function is vectoried for the \code{path} argument; you can
-pass in many paths
+\item Adds files to the bucket at the top level with key as the file name
+\item Adds directories to the bucket, reconstructing the exact directory
+structure in the S3 bucket
 }
 }
 
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # single file, single remote path
-bucket <- random_string("bucket")
+bucket1 <- random_string("bucket")
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
-six_bucket_upload(path = demo_rds_file, remote = bucket)
+six_bucket_upload(path = demo_rds_file, remote = bucket1)
 
 ## a file and a directory - with a single remote path
-bucket <- random_string("bucket")
+bucket2 <- random_string("bucket")
 library(fs)
 tdir <- path(path_temp(), "mytmp")
 dir_create(tdir)
 purrr::map(letters, \(l) file_create(path(tdir, l)))
-six_bucket_upload(path = c(demo_rds_file, tdir), remote = bucket)
+dir_tree(tdir)
+six_bucket_upload(path = c(demo_rds_file, tdir), remote = bucket2)
 
-## two files - two values passed to remote path
-bucket <- random_string("bucket")
-links_file <- file.path(system.file(), "Meta/links.rds")
-six_bucket_upload(path = c(demo_rds_file, links_file),
- remote = path(bucket, c("afile.txt", "anotherfile.txt")))
+## a directory with nested dirs - with a single remote path
+bucket3 <- random_string("bucket")
+library(fs)
+tdir <- path(path_temp(), "apples")
+dir_create(tdir)
+dir_create(path(tdir, "mcintosh"))
+dir_create(path(tdir, "pink-lady"))
+cat("Some text in a readme", file = path(tdir, "README.md"))
+write.csv(Orange, file = path(tdir, "mcintosh", "orange.csv"))
+write.csv(iris, file = path(tdir, "pink-lady", "iris.csv"))
+dir_tree(tdir)
+six_bucket_upload(path = tdir, remote = path(bucket3, "fruit/basket"))
+
+# cleanup
+six_bucket_delete(bucket1, force = TRUE)
+six_bucket_delete(bucket2, force = TRUE)
+six_bucket_delete(bucket3, force = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
