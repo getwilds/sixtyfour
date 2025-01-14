@@ -284,11 +284,11 @@ explode_file_paths <- function(path) {
       if (is_dir(p)) {
         map(
           dir_ls(p, recurse = TRUE, type = "file"), \(z) {
-            tibble(key=path_from(z, basename(p)), path=unname(z))
+            tibble(key = path_from(z, basename(p)), path = unname(z))
           }
         ) %>% list_rbind()
       } else {
-        tibble(key=basename(p), path=p)
+        tibble(key = basename(p), path = p)
       }
     })
   } else {
