@@ -299,6 +299,7 @@ explode_file_paths <- function(path) {
 
 #' Magically upload a mix of files and directories into a bucket
 #'
+#' @importFrom fs path
 #' @export
 #' @param path (character) one or more file paths to add to
 #' the `bucket`. required. can include directories or files
