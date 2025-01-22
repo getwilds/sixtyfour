@@ -7,7 +7,7 @@
 #' See [connections] for more information.
 #' @return An S3 list with class 'sixtyfour_client'
 #' @seealso [paws_clients]
-#' @examplesIf interactive()
+#' @examplesIf aws_has_creds()
 #' con <- con_s3fs()
 #' con
 #' con_s3fs()$file_copy
@@ -149,10 +149,9 @@ print.sixtyfour_client <- function(x, ...) {
 #' - `con_ce`: a list with methods for interfacing with Cost Explorer;
 #' <https://www.paws-r-sdk.com/docs/costexplorer/>
 #'
-#' @examplesIf interactive()
+#' @examplesIf aws_has_creds()
 #' z <- con_iam()
 #' z
-#' z$get_group
 #'
 #' withr::with_envvar(
 #'   c("AWS_PROFILE" = "localstack"),
