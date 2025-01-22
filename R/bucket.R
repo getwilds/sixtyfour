@@ -261,6 +261,134 @@ aws_bucket_upload <- function(
   s3_path(bucket)
 }
 
+bucket_name <- function(x) {
+  first(fs::path_split(first(x))[[1]])
+}
+
+#' Get file path starting at a certain path component
+#' @importFrom fs path_join path_split
+#' @keywords internal
+#' @examplesIf interactive()
+#' path_from(path = "Rtmpxsqth0/apples/mcintosh/orange.csv", from = "apples")
+path_from <- function(path, from) {
+  parts <- fs::path_split(path)[[1]]
+  kept_parts <- parts[which(parts == from):length(parts)]
+  fs::path_join(kept_parts)
+}
+
+#' @importFrom fs is_dir dir_ls
+#' @importFrom purrr list_rbind
+explode_file_paths <- function(path) {
+  if (any(is_dir(path))) {
+    paths <- map(path, \(p) {
+      if (is_dir(p)) {
+        map(
+          dir_ls(p, recurse = TRUE, type = "file"), \(z) {
+            tibble(key = path_from(z, basename(p)), path = unname(z))
+          }
+        ) %>% list_rbind()
+      } else {
+        tibble(key = basename(p), path = p)
+      }
+    })
+  } else {
+    paths <- list(tibble(key = basename(path), path = path))
+  }
+  list_rbind(paths)
+}
+
+#' Magically upload a mix of files and directories into a bucket
+#'
+#' @importFrom fs path
+#' @export
+#' @param path (character) one or more file paths to add to
+#' the `bucket`. required. can include directories or files
+#' @param remote (character/scalar) a character string to use to upload
+#' files in `path`. the first component of the path will be used as the
+#' bucket name. any subsequent path components will be used as a
+#' key prefix for all objects created in the bucket
+#' @inheritParams aws_file_copy
+#' @param ... named params passed on to
+#' [put_object](https://www.paws-r-sdk.com/docs/s3_put_object/)
+#' @section What is magical:
+#' - Exits early if folder or files do not exist
+#' - Creates the bucket if it does not exist
+#' - Adds files to the bucket at the top level with key as the file name
+#' - Adds directories to the bucket, reconstructing the exact directory
+#' structure in the S3 bucket
+#' @family buckets
+#' @family magicians
+#' @return (character) a vector of remote s3 paths where your
+#' files are located
+#' @examplesIf interactive()
+#' # single file, single remote path
+#' bucket1 <- random_string("bucket")
+#' demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
+#' six_bucket_upload(path = demo_rds_file, remote = bucket1)
+#'
+#' ## a file and a directory - with a single remote path
+#' bucket2 <- random_string("bucket")
+#' library(fs)
+#' tdir <- path(path_temp(), "mytmp")
+#' dir_create(tdir)
+#' purrr::map(letters, \(l) file_create(path(tdir, l)))
+#' dir_tree(tdir)
+#' six_bucket_upload(path = c(demo_rds_file, tdir), remote = bucket2)
+#'
+#' ## a directory with nested dirs - with a single remote path
+#' bucket3 <- random_string("bucket")
+#' library(fs)
+#' tdir <- path(path_temp(), "apples")
+#' dir_create(tdir)
+#' dir_create(path(tdir, "mcintosh"))
+#' dir_create(path(tdir, "pink-lady"))
+#' cat("Some text in a readme", file = path(tdir, "README.md"))
+#' write.csv(Orange, file = path(tdir, "mcintosh", "orange.csv"))
+#' write.csv(iris, file = path(tdir, "pink-lady", "iris.csv"))
+#' dir_tree(tdir)
+#' six_bucket_upload(path = tdir, remote = path(bucket3, "fruit/basket"))
+#'
+#' # cleanup
+#' six_bucket_delete(bucket1, force = TRUE)
+#' six_bucket_delete(bucket2, force = TRUE)
+#' six_bucket_delete(bucket3, force = TRUE)
+six_bucket_upload <- function(path, remote, force = FALSE, ...) {
+  stop_if_not(is_character(path), "{.strong path} must be character")
+  stop_if_not(is_character(remote), "{.strong remote} must be character")
+  stop_if_not(length(remote) == 1, "{.strong remote} must be length 1")
+
+  path <- explode_file_paths(path)
+  stop_if_not(
+    all(file_exists(path$path)),
+    "one or more of {.strong path} don't exist"
+  )
+
+  bucket <- bucket_name(remote)
+  bucket_create_if_not(bucket, force)
+  if (!aws_bucket_exists(bucket)) {
+    cli_warning("bucket {.strong {bucket}} not created; exiting")
+    return(invisible())
+  }
+
+  # if remote has more than bucket name, use folder for keys
+  remote_parts <- path_split(remote)[[1]]
+  if (length(remote_parts) > 1) {
+    key_prefix <- path_join(remote_parts[-1])
+    cli_info("using key prefix {.strong {key_prefix}}")
+    path$key <- path(key_prefix, path$key)
+  }
+
+  map(apply(path, 1, as.list), \(row) {
+    con_s3()$put_object(
+      Bucket = bucket,
+      Key = row$key,
+      Body = row$path,
+      ...
+    )
+  })
+  s3_path(bucket, path$key)
+}
+
 #' List objects in an S3 bucket
 #'
 #' @export
