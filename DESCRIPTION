@@ -25,6 +25,7 @@ Imports:
     lubridate,
     magrittr,
     paws,
+    paws.common,
     purrr,
     rlang,
     tibble,

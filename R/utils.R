@@ -232,3 +232,16 @@ stop_if_not <- function(cond, msg, .envir = parent.frame()) {
 stop_if <- function(cond, msg, .envir = parent.frame()) {
   if (cond) cli::cli_abort(msg, .envir = .envir)
 }
+
+#' Check if appropriate AWS credentials are available
+#' @export
+#' @importFrom paws.common locate_credentials
+#' @examples
+#' aws_has_creds()
+aws_has_creds <- function() {
+  res <- tryCatch(
+    paws.common::locate_credentials(),
+    error = \(e) e
+  )
+  !inherits(res, "error")
+}

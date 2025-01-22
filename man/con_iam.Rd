@@ -82,10 +82,9 @@ than "localstack") then we don't set any credentials internally, but
 files, etc.-
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 z <- con_iam()
 z
-z$get_group
 
 withr::with_envvar(
   c("AWS_PROFILE" = "localstack"),
