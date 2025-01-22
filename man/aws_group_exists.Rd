@@ -20,10 +20,13 @@ uses \code{aws_group} internally. see docs
 \url{https://www.paws-r-sdk.com/docs/iam_get_group/}
 }
 \examples{
-\dontrun{
-aws_group_exists(name = "users")
-aws_group_exists(name = "apples")
-}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+aws_group_create("apples")
+aws_group_exists("apples")
+aws_group_exists("doesnotexist")
+# cleanup
+aws_group_delete("apples")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other groups: 

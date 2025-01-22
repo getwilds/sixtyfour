@@ -6,7 +6,7 @@
 \alias{sixtyfour-package}
 \title{sixtyfour: Humane Interface to AWS}
 \description{
-An opionated interface to AWS, with methods for interacting with IAM, S3, RDS, Redshift, and Billing.
+An opinionated interface to AWS, with methods for interacting with 'IAM', S3, RDS, Redshift, and Billing.
 }
 \seealso{
 Useful links:
