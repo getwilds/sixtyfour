@@ -64,6 +64,7 @@ jobs:
 
       - uses: r-lib/actions/check-r-package@v2
         with:
+          args: 'c("--no-examples", "--no-manual", "--as-cran")'
           upload-snapshots: true
         env:
           AWS_REGION: us-west-2

@@ -19,10 +19,10 @@ A tibble with information about groups
 List all groups or groups for a single user
 }
 \examples{
-\dontrun{
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 aws_groups()
 aws_groups(username = aws_user_current())
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other groups: 

@@ -20,9 +20,10 @@ See \url{https://www.paws-r-sdk.com/docs/iam_delete_group/}
 docs for more details
 }
 \examples{
-\dontrun{
-aws_group_delete(name = "testgroup")
-}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+aws_group_create("somegroup")
+aws_group_delete("somegroup")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other groups: 
