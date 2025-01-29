@@ -20,14 +20,27 @@ File attributes
 uses \code{\link[s3fs:info]{s3fs::s3_file_info()}} internally
 }
 \examples{
-\dontrun{
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+bucket <- random_string("bucket")
+aws_bucket_create(bucket)
+
+# upload some files
+tfiles <- replicate(n = 3, tempfile())
+paths <- s3_path(bucket, glue("{basename(tfiles)}.txt"))
+for (file in tfiles) cat("Hello saturn!!!!!!\n", file = file)
+for (file in tfiles) print(readLines(file))
+aws_file_upload(path = tfiles, remote_path = paths)
+
 # files one by one
-aws_file_attr(s3_path("s64-test-2", "DESCRIPTION"))
-aws_file_attr(s3_path("s64-test-2", "ddd"))
-aws_file_attr(s3_path("s64-test-2", "doesntexist"))
+aws_file_attr(paths[1])
+aws_file_attr(paths[2])
+aws_file_attr(paths[3])
 # or all together
-aws_file_attr(s3_path("s64-test-2", c("DESCRIPTION", "ddd")))
-}
+aws_file_attr(paths)
+
+# Cleanup
+six_bucket_delete(bucket, force = TRUE)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other files: 
