@@ -196,7 +196,7 @@ billing_factory <- function(type) {
         )
       }) %>%
       list_rbind() %>%
-      left_join(service_map, by = c("Service" = "service")) %>%
+      left_join(sixtyfour::service_map, by = c("Service" = "service")) %>%
       mutate(acronym = coalesce(acronym, Service))
   }
 }
