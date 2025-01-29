@@ -77,3 +77,4 @@ reference:
     contents:
       - random_user
       - random_string
+      - aws_has_creds
