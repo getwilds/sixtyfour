@@ -63,8 +63,8 @@ equal_lengths <- function(x, y) {
 #' aws_bucket_create(bucket3)
 #' ## Both the next two lines do the same exact thing: make a file in the
 #' ## same path in a bucket
-#' aws_file_upload("LICENSE.md", s3_path(bucket3, "LICENSE.md"))
-#' # aws_file_upload("LICENSE.md", s3_path(bucket3), overwrite=TRUE)
+#' aws_file_upload("LICENSE.md", s3_path(bucket3, "LICENSE2.md"))
+#' aws_file_upload("LICENSE.md", s3_path(bucket3))
 #'
 #' ## Without extension
 #' ## However, it's different for a file without an extension
