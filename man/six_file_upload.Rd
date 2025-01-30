@@ -75,11 +75,12 @@ six_file_upload(c(demo_rds_file, links_file), bucket2)
 six_file_upload(demo_rds_file, bucket2, Expires = Sys.time() + 60)
 
 # bucket doesn't exist, ask if you want to create it
-six_file_upload(demo_rds_file, "not-a-bucket")
+not_a_bucket <- random_string("not-a-bucket-")
+six_file_upload(demo_rds_file, not_a_bucket)
 
 # Cleanup
 six_bucket_delete(bucket2, force = TRUE)
-six_bucket_delete("not-a-bucket", force = TRUE)
+six_bucket_delete(not_a_bucket, force = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
