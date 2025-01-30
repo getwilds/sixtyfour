@@ -307,6 +307,7 @@ aws_file_attr <- function(remote_path) {
 #' `length(remote_path)`
 #' @family files
 #' @examplesIf aws_has_creds()
+#' library(glue)
 #' bucket <- random_string("bucket")
 #' aws_bucket_create(bucket)
 #'
