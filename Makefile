@@ -1,6 +1,7 @@
 PACKAGE := $(shell grep '^Package:' DESCRIPTION | sed -E 's/^Package:[[:space:]]+//')
 RSCRIPT = Rscript --no-init-file
 FILE_TARGET := "R/${FILE}"
+MAN_TARGET := "man/${TOPIC}.Rd"
 
 .PHONY: docs
 
@@ -16,8 +17,13 @@ doc:
 docs:
 	${RSCRIPT} -e "pkgdown::build_site(); pkgdown::preview_site(preview=TRUE)"
 
-eg:
+egs:
 	${RSCRIPT} -e "devtools::run_examples(run_dontrun = TRUE)"
+
+# use: `make eg TOPIC=aws_file_exists`
+# ("man/" is prepended); accepts 1 file only
+eg:
+	${RSCRIPT} -e 'pkgload::load_all(); pkgload::run_example(${MAN_TARGET})'
 
 check: build
 	_R_CHECK_CRAN_INCOMING_=FALSE R CMD CHECK --as-cran --no-manual `ls -1tr ${PACKAGE}*gz | tail -n1`

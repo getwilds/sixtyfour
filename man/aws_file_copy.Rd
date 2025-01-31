@@ -26,21 +26,32 @@ vector of paths, length matches \code{length(remote_path)}
 Copy files between buckets
 }
 \examples{
-\dontrun{
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+bucket1 <- random_string("bucket")
+aws_bucket_create(bucket1)
+
 # create files in an existing bucket
 tfiles <- replicate(n = 3, tempfile())
 for (i in tfiles) cat("Hello\nWorld\n", file = i)
-paths <- s3_path("s64-test-2", c("aaa", "bbb", "ccc"), ext = "txt")
+paths <- s3_path(bucket1, c("aaa", "bbb", "ccc"), ext = "txt")
 aws_file_upload(tfiles, paths)
 
 # create a new bucket
-new_bucket <- aws_bucket_create(bucket = "s64-test-3")
+bucket2 <- random_string("bucket")
+new_bucket <- aws_bucket_create(bucket = bucket2)
 
 # add existing files to the new bucket
-aws_file_copy(paths, path_as_s3(new_bucket))
-# create bucket that doesn't exist yet
-aws_file_copy(paths, "s64-test-4")
-}
+aws_file_copy(paths, bucket2)
+
+# or, create a bucket that doesn't exist yet
+bucket3 <- random_string("bucket")
+aws_file_copy(paths, bucket3, force = TRUE)
+
+# Cleanup
+six_bucket_delete(bucket1, force = TRUE)
+six_bucket_delete(bucket2, force = TRUE)
+six_bucket_delete(bucket3, force = TRUE)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other files: 

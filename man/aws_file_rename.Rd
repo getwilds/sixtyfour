@@ -2,7 +2,7 @@
 % Please edit documentation in R/files.R
 \name{aws_file_rename}
 \alias{aws_file_rename}
-\title{Rename a remote file}
+\title{Rename remote files}
 \usage{
 aws_file_rename(remote_path, new_remote_path, ...)
 }
@@ -18,24 +18,26 @@ length must match \code{remote_path}}
 vector of paths, length matches \code{length(remote_path)}
 }
 \description{
-Rename a remote file
+Rename remote files
 }
 \examples{
-\dontrun{
-aws_file_rename(
-  s3_path("s64-test-2", "DESCRIPTION"),
-  s3_path("s64-test-2", "DESC")
-)
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+bucket <- random_string("bucket")
+aws_bucket_create(bucket)
 
+# rename files
 tfiles <- replicate(n = 3, tempfile())
 for (i in tfiles) cat("Hello\nWorld\n", file = i)
-paths <- s3_path("s64-test-2", c("aaa", "bbb", "ccc"), ext = "txt")
+paths <- s3_path(bucket, c("aaa", "bbb", "ccc"), ext = "txt")
 aws_file_upload(tfiles, paths)
-new_paths <- s3_path("s64-test-2", c("new_aaa", "new_bbb", "new_ccc"),
+new_paths <- s3_path(bucket, c("new_aaa", "new_bbb", "new_ccc"),
   ext = "txt"
 )
 aws_file_rename(paths, new_paths)
-}
+
+# Cleanup
+six_bucket_delete(bucket, force = TRUE)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other files: 

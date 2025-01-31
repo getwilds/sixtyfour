@@ -24,51 +24,62 @@ Upload a file
 to upload a folder of files see \code{\link[=aws_bucket_upload]{aws_bucket_upload()}}
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-bucket <- random_string("bucket")
-aws_bucket_create(bucket)
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+bucket1 <- random_string("bucket")
+aws_bucket_create(bucket1)
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 aws_file_upload(
   demo_rds_file,
-  s3_path(bucket, basename(demo_rds_file))
+  s3_path(bucket1, basename(demo_rds_file))
 )
 
 ## many files at once
+bucket2 <- random_string("bucket")
+aws_bucket_create(bucket2)
 links_file <- file.path(system.file(), "Meta/links.rds")
 aws_file_upload(
   c(demo_rds_file, links_file),
-  s3_path("s64-test-2", c(basename(demo_rds_file), basename(links_file)))
+  s3_path(bucket2, c(basename(demo_rds_file), basename(links_file)))
 )
 
 # set expiration, expire 1 minute from now
-aws_file_upload(demo_rds_file, s3_path("s64-test-2", "ddd.rds"),
+aws_file_upload(demo_rds_file, s3_path(bucket2, "ddd.rds"),
   Expires = Sys.time() + 60
 )
 
 # bucket doesn't exist
-aws_file_upload(demo_rds_file, "s3://not-a-bucket/eee.rds")
+try(aws_file_upload(demo_rds_file, "s3://not-a-bucket/eee.rds"))
 
 # path doesn't exist
-aws_file_upload(
-  "file_doesnt_exist.txt",
-  s3_path("s64-test-2", "file_doesnt_exist.txt")
+try(
+  aws_file_upload(
+    "file_doesnt_exist.txt",
+    s3_path(bucket2, "file_doesnt_exist.txt")
+  )
 )
 
 # Path's without file extensions behave a little weird
 ## With extension
-## Both of these lines do the same exact thing: make a file in the
+bucket3 <- random_string("bucket")
+aws_bucket_create(bucket3)
+## Both the next two lines do the same exact thing: make a file in the
 ## same path in a bucket
-aws_file_upload("LICENSE.md", s3_path(bucket, "LICENSE.md"))
-aws_file_upload("LICENSE.md", s3_path(bucket))
+aws_file_upload("LICENSE.md", s3_path(bucket3, "LICENSE2.md"))
+aws_file_upload("LICENSE.md", s3_path(bucket3))
 
 ## Without extension
 ## However, it's different for a file without an extension
 ## This makes a file in the bucket at path DESCRIPTION
-aws_file_upload("DESCRIPTION", s3_path(bucket))
+aws_file_upload("DESCRIPTION", s3_path(bucket3))
 
 ## Whereas this creates a directory called DESCRIPTION with
 ## a file DESCRIPTION within it
-aws_file_upload("DESCRIPTION", s3_path(bucket, "DESCRIPTION"))
+aws_file_upload("DESCRIPTION", s3_path(bucket3, "DESCRIPTION"))
+
+# Cleanup
+six_bucket_delete(bucket1, force = TRUE)
+six_bucket_delete(bucket2, force = TRUE)
+six_bucket_delete(bucket3, force = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{

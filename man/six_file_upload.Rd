@@ -42,27 +42,45 @@ pass in many file paths
 }
 
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-bucket <- random_string("bucket")
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+bucket1 <- random_string("bucket")
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
-six_file_upload(demo_rds_file, bucket)
+six_file_upload(demo_rds_file, bucket1, force = TRUE)
+
+# path doesn't exist, error
+try(
+  six_file_upload("file_doesnt_exist.txt", random_string("bucket"))
+)
+
+# directories not supported, error
+mydir <- tempdir()
+try(
+  six_file_upload(mydir, random_string("bucket"))
+)
+
+# Cleanup
+six_bucket_delete(bucket1, force = TRUE)
+\dontshow{\}) # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# requires user interaction with prompts ...
+bucket2 <- random_string("bucket")
+demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
+six_file_upload(demo_rds_file, bucket2)
 
 ## many files at once
 links_file <- file.path(system.file(), "Meta/links.rds")
-six_file_upload(c(demo_rds_file, links_file), bucket)
+six_file_upload(c(demo_rds_file, links_file), bucket2)
 
 # set expiration, expire 1 minute from now
-six_file_upload(demo_rds_file, bucket, Expires = Sys.time() + 60)
+six_file_upload(demo_rds_file, bucket2, Expires = Sys.time() + 60)
 
 # bucket doesn't exist, ask if you want to create it
-six_file_upload(demo_rds_file, "not-a-buckets")
+not_a_bucket <- random_string("not-a-bucket-")
+six_file_upload(demo_rds_file, not_a_bucket)
 
-# path doesn't exist
-# six_file_upload("file_doesnt_exist.txt", random_string("bucket"))
-
-# directories not supported
-mydir <- tempdir()
-# six_file_upload(mydir, random_string("bucket"))
+# Cleanup
+six_bucket_delete(bucket2, force = TRUE)
+six_bucket_delete(not_a_bucket, force = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
