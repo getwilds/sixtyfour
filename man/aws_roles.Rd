@@ -17,9 +17,9 @@ A tibble with information about roles
 List roles
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 aws_roles()
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other roles: 

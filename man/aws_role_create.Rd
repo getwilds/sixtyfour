@@ -46,8 +46,8 @@ See \url{https://www.paws-r-sdk.com/docs/iam_create_role/}
 docs for details on the parameters
 }
 \examples{
-\dontrun{
-role_name <- "MyRole"
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+role_name <- "AMinorRole"
 trust_policy <- list(
   Version = "2012-10-17",
   Statement = list(
@@ -66,10 +66,13 @@ z <- aws_role_create(role_name,
   assume_role_policy_document = doc,
   description = desc
 )
-z
 # attach a policy
-z \%>\% aws_policy_attach("AWSLambdaBasicExecutionRole")
-}
+invisible(z \%>\% aws_policy_attach("AWSLambdaBasicExecutionRole"))
+
+# cleanup
+invisible(z \%>\% aws_policy_detach("AWSLambdaBasicExecutionRole"))
+aws_role_delete(role_name)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other roles: 
