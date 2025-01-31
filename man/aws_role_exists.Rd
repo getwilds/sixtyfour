@@ -15,6 +15,11 @@ a single boolean
 \description{
 Check if a role exists
 }
+\examples{
+aws_has_creds()
+aws_role_exists("AWSServiceRoleForRedshift")
+aws_role_exists("NotARole")
+}
 \seealso{
 Other roles: 
 \code{\link{aws_role}()},

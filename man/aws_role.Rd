@@ -26,16 +26,35 @@ also includes policies and attached policies by calling \code{list_role_policies
 and \code{list_attached_role_policies}
 }
 \examples{
-\dontrun{
-res <- aws_role(name = "OrganizationAccountSecurityRole")
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+trust_policy <- list(
+  Version = "2012-10-17",
+  Statement = list(
+    list(
+      Effect = "Allow",
+      Principal = list(
+        Service = "lambda.amazonaws.com"
+      ),
+      Action = "sts:AssumeRole"
+    )
+  )
+)
+doc <- jsonlite::toJSON(trust_policy, auto_unbox = TRUE)
+desc <- "Another test role"
+z <- aws_role_create("ALittleRole",
+  assume_role_policy_document = doc,
+  description = desc
+)
+
+res <- aws_role(name = "ALittleRole")
 res
 res$role
 res$policies
 res$attached_policies
 
-aws_role("AWSServiceRoleForCloudTrail")
-aws_role("AWSServiceRoleForRedshift")
-}
+# cleanup
+aws_role_delete("ALittleRole")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other roles: 
