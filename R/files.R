@@ -276,6 +276,7 @@ aws_file_delete_one <- function(one_path, ...) {
 #' of `remote_path`
 #' @note uses [s3fs::s3_file_info()] internally
 #' @family files
+#' library(glue)
 #' @examplesIf aws_has_creds()
 #' bucket <- random_string("bucket")
 #' aws_bucket_create(bucket)
