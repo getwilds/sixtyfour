@@ -92,7 +92,7 @@ check_aws_role <- purrr::safely(aws_role, otherwise = FALSE)
 #' @inheritParams aws_role
 #' @return a single boolean
 #' @family roles
-#' @examples aws_has_creds()
+#' @examplesIf aws_has_creds()
 #' aws_role_exists("AWSServiceRoleForRedshift")
 #' aws_role_exists("NotARole")
 aws_role_exists <- function(name) {

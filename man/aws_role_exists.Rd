@@ -16,9 +16,10 @@ a single boolean
 Check if a role exists
 }
 \examples{
-aws_has_creds()
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 aws_role_exists("AWSServiceRoleForRedshift")
 aws_role_exists("NotARole")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other roles: 
