@@ -36,7 +36,7 @@ test_that("aws_role", {
 
   expect_type(res, "list")
   expect_s3_class(res$role, "tbl")
-  expect_type(res$policies, "character")
+  expect_s3_class(res$policies, "tbl")
   expect_s3_class(res$attached_policies, "tbl")
   expect_equal(NROW(res$role), 1)
 })
@@ -105,7 +105,7 @@ test_that("aws_role_create", {
     }
   )
 
-  expect_type(z, "list")
+  expect_null(z)
   expect_length(z, 0)
 })
 
