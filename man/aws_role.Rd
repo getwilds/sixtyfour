@@ -45,7 +45,7 @@ z <- aws_role_create("ALittleRole",
   assume_role_policy_document = doc,
   description = desc
 )
-
+aws_policy_attach(z, "ReadOnlyAccess")
 res <- aws_role(name = "ALittleRole")
 res
 res$role
@@ -53,6 +53,8 @@ res$policies
 res$attached_policies
 
 # cleanup
+aws_role("ALittleRole") \%>\%
+ aws_policy_detach("ReadOnlyAccess")
 aws_role_delete("ALittleRole")
 \dontshow{\}) # examplesIf}
 }

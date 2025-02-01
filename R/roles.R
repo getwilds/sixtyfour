@@ -62,7 +62,7 @@ aws_roles <- function(...) {
 #'   assume_role_policy_document = doc,
 #'   description = desc
 #' )
-#'
+#' aws_policy_attach(z, "ReadOnlyAccess")
 #' res <- aws_role(name = "ALittleRole")
 #' res
 #' res$role
@@ -70,6 +70,8 @@ aws_roles <- function(...) {
 #' res$attached_policies
 #'
 #' # cleanup
+#' aws_role("ALittleRole") %>%
+#'  aws_policy_detach("ReadOnlyAccess")
 #' aws_role_delete("ALittleRole")
 aws_role <- function(name) {
   df <- con_iam()$get_role(name)$Role %>%
