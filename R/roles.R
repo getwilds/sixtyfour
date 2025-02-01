@@ -71,7 +71,7 @@ aws_roles <- function(...) {
 #'
 #' # cleanup
 #' aws_role("ALittleRole") %>%
-#'  aws_policy_detach("ReadOnlyAccess")
+#'   aws_policy_detach("ReadOnlyAccess")
 #' aws_role_delete("ALittleRole")
 aws_role <- function(name) {
   df <- con_iam()$get_role(name)$Role %>%

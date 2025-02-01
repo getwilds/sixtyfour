@@ -54,7 +54,7 @@ res$attached_policies
 
 # cleanup
 aws_role("ALittleRole") \%>\%
- aws_policy_detach("ReadOnlyAccess")
+  aws_policy_detach("ReadOnlyAccess")
 aws_role_delete("ALittleRole")
 \dontshow{\}) # examplesIf}
 }
