@@ -10,7 +10,7 @@ aws_role_delete(name)
 \item{name}{(character) A role name. required}
 }
 \value{
-an empty list
+\code{NULL} invisibly
 }
 \description{
 Delete a role

@@ -10,7 +10,7 @@ aws_group_delete(name)
 \item{name}{(character) A group name. required}
 }
 \value{
-an empty list
+\code{NULL} invisibly
 }
 \description{
 Delete a group

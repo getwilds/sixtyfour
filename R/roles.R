@@ -165,7 +165,7 @@ aws_role_create <- function(
 #'
 #' @export
 #' @inheritParams aws_role_create
-#' @return an empty list
+#' @return `NULL` invisibly
 #' @details See <https://www.paws-r-sdk.com/docs/iam_delete_role/>
 #' docs for more details
 #' @family roles
@@ -175,4 +175,5 @@ aws_role_create <- function(
 #' }
 aws_role_delete <- function(name) {
   con_iam()$delete_role(name)
+  invisible()
 }
