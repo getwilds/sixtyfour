@@ -25,7 +25,7 @@ length==1. The user must be in the same account as the account for the
 DB instance. by default calls \code{\link[=account_id]{account_id()}}}
 }
 \value{
-a resource ARN (character)
+a resource ARN (scalar, character)
 }
 \description{
 Create a resource string for a policy statement for RDS

@@ -16,7 +16,7 @@ single logical, \code{TRUE} or \code{FALSE}
 Checks for both customer managed and AWS managed policies
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # just the policy name
 aws_policy_exists("ReadOnlyAccess")
 # as an ARN
@@ -38,6 +38,7 @@ Other policies:
 \code{\link{aws_policy_delete_version}()},
 \code{\link{aws_policy_detach}()},
 \code{\link{aws_policy_list_entities}()},
-\code{\link{aws_policy_list_versions}()}
+\code{\link{aws_policy_list_versions}()},
+\code{\link{aws_policy_update}()}
 }
 \concept{policies}
