@@ -226,17 +226,17 @@ aws_policy_delete <- function(name) {
 
 #' Figure out policy Arn from a name
 #' @importFrom purrr compact
-#' @keywords internal
-#' @examplesIf interactive()
-#' # user managed, exists
-#' figure_out_policy_arn("MyTestPolicy")
-#' # user managed, doesn't exist
-#' figure_out_policy_arn("DoesNotExist")
+#' @export
+#' @param name (character) a policy name. required.
+#' @return `NULL` when not found; otherwise an ARN string
+#' @examplesIf aws_has_creds()
 #' # aws managed
 #' figure_out_policy_arn("AmazonS3ReadOnlyAccess")
 #' # aws managed, job function
 #' figure_out_policy_arn("Billing")
 #' figure_out_policy_arn("DataScientist")
+#' # doesn't exist
+#' figure_out_policy_arn("DoesNotExist")
 figure_out_policy_arn <- function(name) {
   compact(c(
     aws_policy_safe(name, local = TRUE)$result$Arn,
