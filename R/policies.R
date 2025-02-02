@@ -135,7 +135,52 @@ aws_policy_create <- function(
     Path = path,
     Description = description,
     Tags = tags
-  )
+  ) %>% policy_list_tidy()
+}
+
+#' Update a policy
+#'
+#' @export
+#' @param arn (character) policy arn. required
+#' @param document (character) the policy document you want to use
+#' as the content for the new policy. required
+#' @param default (character) set this version as the policy's default version?
+#' optional. When this parameter is `TRUE`, the new policy version becomes the
+#' operative version. That is, it becomes the version that is in effect for
+#' the IAM users, groups, and roles that the policy is attached to.
+#' default: `FALSE`
+#' @return a tibble with policy version details
+#' @details see docs
+#' <https://www.paws-r-sdk.com/docs/iam_create_policy_version/>
+#' @family policies
+#' @examplesIf aws_has_creds()
+#' if (aws_policy_exists("polisee")) {
+#'   aws_policy_delete("polisee")
+#' }
+#'
+#' # Create policy document
+#' st8ment1 <- aws_policy_statement("iam:GetUser", "*")
+#' st8ment2 <- aws_policy_statement("s3:ListAllMyBuckets", "*")
+#' doc <- aws_policy_document_create(st8ment1, st8ment2)
+#'
+#' # Create policy
+#' invisible(aws_policy_create("polisee", document = doc))
+#'
+#' # Update the same policy
+#' new_doc <- aws_policy_document_create(st8ment1)
+#' arn <- as_policy_arn("polisee", local = TRUE)
+#' aws_policy_update(arn, document = new_doc, defaul = TRUE)
+#' aws_policy_list_versions("polisee")
+#'
+#' # cleanup - delete the policy
+#' aws_policy_delete_version("polisee", "v1")
+#' aws_policy_delete("polisee")
+aws_policy_update <- function(arn, document, default = FALSE) {
+  con_iam()$create_policy_version(
+    PolicyArn = arn,
+    PolicyDocument = document,
+    SetAsDefault = default
+  ) %>% policy_list_versions_tidy()
 }
 
 #' Delete a user managed policy
