@@ -15,6 +15,12 @@ a single boolean
 \description{
 Check if a role exists
 }
+\examples{
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+aws_role_exists("AWSServiceRoleForRedshift")
+aws_role_exists("NotARole")
+\dontshow{\}) # examplesIf}
+}
 \seealso{
 Other roles: 
 \code{\link{aws_role}()},

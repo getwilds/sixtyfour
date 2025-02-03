@@ -108,7 +108,7 @@ aws_group_create <- function(name, path = NULL) {
 #'
 #' @export
 #' @inheritParams aws_group_create
-#' @return an empty list
+#' @return `NULL` invisibly
 #' @details See <https://www.paws-r-sdk.com/docs/iam_delete_group/>
 #' docs for more details
 #' @family groups
@@ -117,4 +117,5 @@ aws_group_create <- function(name, path = NULL) {
 #' aws_group_delete("somegroup")
 aws_group_delete <- function(name) {
   con_iam()$delete_group(name)
+  invisible()
 }

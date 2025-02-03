@@ -17,7 +17,7 @@ test_that("aws_group", {
 
   expect_type(res, "list")
   expect_s3_class(res$group, "tbl")
-  expect_type(res$policies, "character")
+  expect_s3_class(res$policies, "tbl")
   expect_s3_class(res$attached_policies, "tbl")
   expect_equal(NROW(res$group), 1)
 })
@@ -71,7 +71,7 @@ test_that("aws_group_create_and_delete", {
     }
   )
 
-  expect_type(z, "list")
+  expect_null(z)
   expect_length(z, 0)
 })
 
