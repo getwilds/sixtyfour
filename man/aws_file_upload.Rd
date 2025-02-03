@@ -35,7 +35,9 @@ aws_file_upload(
 
 ## many files at once
 bucket2 <- random_string("bucket")
-aws_bucket_create(bucket2)
+if (!aws_bucket_exists(bucket2)) {
+  aws_bucket_create(bucket2)
+}
 links_file <- file.path(system.file(), "Meta/links.rds")
 aws_file_upload(
   c(demo_rds_file, links_file),
@@ -64,17 +66,20 @@ bucket3 <- random_string("bucket")
 aws_bucket_create(bucket3)
 ## Both the next two lines do the same exact thing: make a file in the
 ## same path in a bucket
-aws_file_upload("LICENSE.md", s3_path(bucket3, "LICENSE2.md"))
-aws_file_upload("LICENSE.md", s3_path(bucket3))
+pkg_rds_file <- file.path(system.file(), "Meta/package.rds")
+aws_file_upload(pkg_rds_file, s3_path(bucket3, "package2.rds"))
+aws_file_upload(pkg_rds_file, s3_path(bucket3))
 
 ## Without extension
 ## However, it's different for a file without an extension
 ## This makes a file in the bucket at path DESCRIPTION
-aws_file_upload("DESCRIPTION", s3_path(bucket3))
+rd_file <- file.path(system.file(), "Meta/Rd.rds")
+desc_file <- system.file("DESCRIPTION", package = "sixtyfour")
+aws_file_upload(desc_file, s3_path(bucket3))
 
 ## Whereas this creates a directory called DESCRIPTION with
 ## a file DESCRIPTION within it
-aws_file_upload("DESCRIPTION", s3_path(bucket3, "DESCRIPTION"))
+aws_file_upload(desc_file, s3_path(bucket3, "DESCRIPTION"))
 
 # Cleanup
 six_bucket_delete(bucket1, force = TRUE)
