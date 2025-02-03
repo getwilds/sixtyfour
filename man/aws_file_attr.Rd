@@ -21,6 +21,7 @@ uses \code{\link[s3fs:info]{s3fs::s3_file_info()}} internally
 }
 \examples{
 \dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+library(glue)
 bucket <- random_string("bucket")
 aws_bucket_create(bucket)
 

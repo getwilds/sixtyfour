@@ -10,7 +10,7 @@ aws_user_delete(username)
 \item{username}{(character) A user name. required}
 }
 \value{
-NULL invisibly
+\code{NULL} invisibly
 }
 \description{
 Delete a user

@@ -665,8 +665,12 @@ entity_value <- function(x) {
 #' @noRd
 #' @keywords internal
 policies <- function(which, name) {
-  method <- glue("list_{which}_policies")
-  con_iam()[[method]](name)$PolicyNames
+  method <- glue::glue("list_{which}_policies")
+  res <- con_iam()[[method]](name)$PolicyNames
+  if (is_empty(res)) {
+    res <- list()
+  }
+  bind_rows(res)
 }
 #' @importFrom dplyr bind_rows
 #' @param which (character) one of role, user, or group
