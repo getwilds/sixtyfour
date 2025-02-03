@@ -198,7 +198,7 @@ six_user_create <- function(
 #'
 #' @export
 #' @inheritParams aws_user_create
-#' @return NULL invisibly
+#' @return `NULL` invisibly
 #' @details See <https://www.paws-r-sdk.com/docs/iam_delete_user/>
 #' docs for more details
 #' @family users
