@@ -11,6 +11,41 @@ equal_lengths <- function(x, y) {
   }
 }
 
+#' File attributes
+#'
+#' @export
+#' @inheritParams aws_file_download
+#' @return a tibble with many columns, with number of rows matching length
+#' of `remote_path`
+#' @note uses [s3fs::s3_file_info()] internally
+#' @family files
+#' @examplesIf aws_has_creds()
+#' library(glue)
+#' bucket <- random_string("bucket")
+#' if (!aws_bucket_exists(bucket)) {
+#'   aws_bucket_create(bucket)
+#' }
+#'
+#' # upload some files
+#' tfiles <- replicate(n = 3, tempfile())
+#' paths <- s3_path(bucket, glue("{basename(tfiles)}.txt"))
+#' for (file in tfiles) cat("Hello saturn!!!!!!\n", file = file)
+#' for (file in tfiles) print(readLines(file))
+#' aws_file_upload(path = tfiles, remote_path = paths)
+#'
+#' # files one by one
+#' aws_file_attr(paths[1])
+#' aws_file_attr(paths[2])
+#' aws_file_attr(paths[3])
+#' # or all together
+#' aws_file_attr(paths)
+#'
+#' # Cleanup
+#' six_bucket_delete(bucket, force = TRUE)
+aws_file_attr <- function(remote_path) {
+  con_s3fs()$file_info(remote_path) %>% as_tibble()
+}
+
 #' Upload a file
 #'
 #' @export
@@ -26,6 +61,7 @@ equal_lengths <- function(x, y) {
 #' @examplesIf aws_has_creds()
 #' bucket1 <- random_string("bucket")
 #' aws_bucket_create(bucket1)
+#' cat(bucket1)
 #' demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 #' aws_file_upload(
 #'   demo_rds_file,
@@ -34,16 +70,21 @@ equal_lengths <- function(x, y) {
 #'
 #' ## many files at once
 #' bucket2 <- random_string("bucket")
-#' aws_bucket_create(bucket2)
+#' if (!aws_bucket_exists(bucket2)) {
+#'   aws_bucket_create(bucket2)
+#' }
+#' cat(bucket2)
 #' links_file <- file.path(system.file(), "Meta/links.rds")
 #' aws_file_upload(
 #'   c(demo_rds_file, links_file),
-#'   s3_path(bucket2, c(basename(demo_rds_file), basename(links_file)))
+#'   s3_path(bucket2, c(basename(demo_rds_file), basename(links_file))),
+#'   overwrite = TRUE
 #' )
 #'
 #' # set expiration, expire 1 minute from now
 #' aws_file_upload(demo_rds_file, s3_path(bucket2, "ddd.rds"),
-#'   Expires = Sys.time() + 60
+#'   Expires = Sys.time() + 60,
+#'   overwrite = TRUE
 #' )
 #'
 #' # bucket doesn't exist
@@ -60,20 +101,28 @@ equal_lengths <- function(x, y) {
 #' # Path's without file extensions behave a little weird
 #' ## With extension
 #' bucket3 <- random_string("bucket")
-#' aws_bucket_create(bucket3)
+#' if (!aws_bucket_exists(bucket3)) {
+#'   aws_bucket_create(bucket3)
+#' }
 #' ## Both the next two lines do the same exact thing: make a file in the
 #' ## same path in a bucket
-#' aws_file_upload("LICENSE.md", s3_path(bucket3, "LICENSE2.md"))
-#' aws_file_upload("LICENSE.md", s3_path(bucket3))
+#' pkg_rds_file <- file.path(system.file(), "Meta/package.rds")
+#' aws_file_upload(pkg_rds_file, s3_path(bucket3, "package2.rds"),
+#'  overwrite = TRUE)
+#' aws_file_upload(pkg_rds_file, s3_path(bucket3),
+#'  overwrite = TRUE)
 #'
 #' ## Without extension
 #' ## However, it's different for a file without an extension
 #' ## This makes a file in the bucket at path DESCRIPTION
-#' aws_file_upload("DESCRIPTION", s3_path(bucket3))
+#' rd_file <- file.path(system.file(), "Meta/Rd.rds")
+#' desc_file <- system.file("DESCRIPTION", package = "sixtyfour")
+#' aws_file_upload(desc_file, s3_path(bucket3), overwrite = TRUE)
 #'
 #' ## Whereas this creates a directory called DESCRIPTION with
 #' ## a file DESCRIPTION within it
-#' aws_file_upload("DESCRIPTION", s3_path(bucket3, "DESCRIPTION"))
+#' aws_file_upload(desc_file, s3_path(bucket3, "DESCRIPTION"),
+#'   overwrite = TRUE)
 #'
 #' # Cleanup
 #' six_bucket_delete(bucket1, force = TRUE)
@@ -266,39 +315,6 @@ aws_file_delete_one <- function(one_path, ...) {
     glue("{key}{ifelse(trailing_slash, '/', '')}")
   )
   invisible()
-}
-
-#' File attributes
-#'
-#' @export
-#' @inheritParams aws_file_download
-#' @return a tibble with many columns, with number of rows matching length
-#' of `remote_path`
-#' @note uses [s3fs::s3_file_info()] internally
-#' @family files
-#' @examplesIf aws_has_creds()
-#' library(glue)
-#' bucket <- random_string("bucket")
-#' aws_bucket_create(bucket)
-#'
-#' # upload some files
-#' tfiles <- replicate(n = 3, tempfile())
-#' paths <- s3_path(bucket, glue("{basename(tfiles)}.txt"))
-#' for (file in tfiles) cat("Hello saturn!!!!!!\n", file = file)
-#' for (file in tfiles) print(readLines(file))
-#' aws_file_upload(path = tfiles, remote_path = paths)
-#'
-#' # files one by one
-#' aws_file_attr(paths[1])
-#' aws_file_attr(paths[2])
-#' aws_file_attr(paths[3])
-#' # or all together
-#' aws_file_attr(paths)
-#'
-#' # Cleanup
-#' six_bucket_delete(bucket, force = TRUE)
-aws_file_attr <- function(remote_path) {
-  con_s3fs()$file_info(remote_path) %>% as_tibble()
 }
 
 #' Check if a file exists
