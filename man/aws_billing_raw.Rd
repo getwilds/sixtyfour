@@ -42,8 +42,9 @@ list with slots for:
 Fetch billing data - rawest form
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-aws_billing_x(date_start = "2023-02-01", metrics = "BlendedCost")
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+library(lubridate)
+aws_billing_raw(date_start = today() - days(3), metrics = "BlendedCost")
 \dontshow{\}) # examplesIf}
 }
 \seealso{

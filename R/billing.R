@@ -47,7 +47,7 @@
 #' - cost: cost in USD
 #' - acronym: short code for the service; if none known, this row
 #' will have the value in `service`
-#' @examplesIf interactive()
+#' @examplesIf interactive() && aws_has_creds()
 #' library(lubridate)
 #' library(dplyr)
 #'
@@ -221,8 +221,9 @@ billing_blended <- billing_factory("BlendedCost")
 #' - GroupDefinitions
 #' - ResultsByTime
 #' - DimensionValueAttributes
-#' @examplesIf interactive()
-#' aws_billing_x(date_start = "2023-02-01", metrics = "BlendedCost")
+#' @examplesIf interactive() && aws_has_creds()
+#' library(lubridate)
+#' aws_billing_raw(date_start = today() - days(3), metrics = "BlendedCost")
 aws_billing_raw <- function(
     date_start, metrics, granularity = "daily",
     filter = NULL, group_by = NULL, date_end = as.character(Sys.Date())) {
