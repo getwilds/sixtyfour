@@ -44,7 +44,7 @@ to the bucket)
 }
 
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # create a bucket
 bucket <- random_string("bucket")
 if (!aws_bucket_exists(bucket)) {
