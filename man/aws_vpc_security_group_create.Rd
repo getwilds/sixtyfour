@@ -2,6 +2,7 @@
 % Please edit documentation in R/vpc_security_groups.R
 \name{aws_vpc_security_group_create}
 \alias{aws_vpc_security_group_create}
+\alias{aws_vpc_security_group_delete}
 \title{Create a security group}
 \usage{
 aws_vpc_security_group_create(
@@ -12,9 +13,12 @@ aws_vpc_security_group_create(
   tags = NULL,
   ...
 )
+
+aws_vpc_security_group_delete(id = NULL, name = NULL, ...)
 }
 \arguments{
-\item{name}{(character) The name of the new secret. required}
+\item{name}{(character) The name of the new secret. required for
+\verb{*_create} and optional for \verb{*_delete}}
 
 \item{engine}{(character) The engine to use. default: "mariadb". required.
 one of: mariadb, mysql, or postgres}
@@ -27,6 +31,9 @@ VPC is used. To get your VPCs, see \code{\link[=aws_vpcs]{aws_vpcs()}}}
 \item{tags}{(character) The tags to assign to the security group. optional}
 
 \item{...}{named parameters passed on to \href{https://www.paws-r-sdk.com/docs/ec2_create_security_group/}{create_security_group}}
+
+\item{id}{(character) The id of the security group. optional. provide \code{id}
+or \code{name}}
 }
 \value{
 (list) with fields:
@@ -41,13 +48,18 @@ Create a security group
 \examples{
 \dontrun{
 # create security group
+grp_name1 <- random_string("vpcsecgroup")
 x <- aws_vpc_security_group_create(
-  name = "testing1",
+  name = grp_name1,
   description = "Testing security group creation"
 )
-aws_vpc_security_group_create(name = "testing2")
+
+grp_name2 <- random_string("vpcsecgroup")
+aws_vpc_security_group_create(name = grp_name2)
+
+grp_name3 <- random_string("vpcsecgroup")
 aws_vpc_security_group_create(
-  name = "testing4",
+  name = grp_name3,
   tags = list(
     list(
       ResourceType = "security-group",
@@ -66,13 +78,18 @@ aws_vpc_security_group_ingress(
   id = x$GroupId,
   ip_permissions = ip_permissions_generator("mariadb")
 )
+
+# cleanup
+aws_vpc_security_group_delete(name = grp_name1)
+aws_vpc_security_group_delete(name = grp_name2)
+aws_vpc_security_group_delete(name = grp_name3)
 }
 }
 \seealso{
 Other security groups: 
-\code{\link{aws_vpc_sec_group_rules}()},
 \code{\link{aws_vpc_security_group}()},
 \code{\link{aws_vpc_security_group_ingress}()},
+\code{\link{aws_vpc_security_group_rules_mod}()},
 \code{\link{aws_vpc_security_groups}()},
 \code{\link{aws_vpc_sg_with_ingress}()}
 }
