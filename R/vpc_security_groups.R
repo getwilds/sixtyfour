@@ -390,10 +390,11 @@ aws_vpc_security_group_ingress <- function(id, ip_permissions = NULL, ...) {
 #' my_rule
 #'
 #' # modify the rule
+#' rule_id <- my_rule$SecurityGroupRules[[1]]$SecurityGroupRuleId
 #' aws_vpc_security_group_rules_mod(
 #'   id = x$GroupId,
 #'   rules = list(
-#'     SecurityGroupRuleId = my_rule$SecurityGroupRules[[1]]$SecurityGroupRuleId,
+#'     SecurityGroupRuleId = rule_id,
 #'     SecurityGroupRule = list(
 #'       IpProtocol = "tcp",
 #'       FromPort = 3307,
@@ -406,7 +407,7 @@ aws_vpc_security_group_ingress <- function(id, ip_permissions = NULL, ...) {
 #'
 #' # cleanup
 #' aws_vpc_security_group_delete(name = a_grp_name)
-aws_vpc_security_group_rules_mod <- function(id, rules, ...) {
+aws_vpc_sec_group_rules_mod <- function(id, rules, ...) {
   con_ec2()$modify_security_group_rules(
     GroupId = id,
     SecurityGroupRules = list(rules),

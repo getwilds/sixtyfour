@@ -43,9 +43,9 @@ Authorize Security Group Ingress
 }
 \seealso{
 Other security groups: 
+\code{\link{aws_vpc_sec_group_rules_mod}()},
 \code{\link{aws_vpc_security_group}()},
 \code{\link{aws_vpc_security_group_create}()},
-\code{\link{aws_vpc_security_group_rules_mod}()},
 \code{\link{aws_vpc_security_groups}()},
 \code{\link{aws_vpc_sg_with_ingress}()}
 }
