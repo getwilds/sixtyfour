@@ -276,8 +276,10 @@ aws_vpc_security_group_create <- function(
 #' @param id (character) The id of the security group. optional. provide `id`
 #' or `name`
 aws_vpc_security_group_delete <- function(id = NULL, name = NULL, ...) {
-  stop_if_not(xor(!is.null(id), !is.null(name)),
-    "Provide one of id or name, not both")
+  stop_if_not(
+    xor(!is.null(id), !is.null(name)),
+    "Provide one of id or name, not both"
+  )
   con_ec2()$delete_security_group(
     GroupId = id,
     GroupName = name,
