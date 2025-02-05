@@ -72,7 +72,7 @@ aws_users <- function(...) {
 #' }
 #' aws_user_create("testBlueBird")
 #' aws_user("testBlueBird")
-#' 
+#'
 #' # cleanup
 #' aws_user_delete("testBlueBird")
 aws_user <- function(username = NULL) {
@@ -139,7 +139,7 @@ aws_user_current <- function() {
 #'   aws_user_delete(user1)
 #' }
 #' aws_user_create(user1)
-#' 
+#'
 #' # cleanup
 #' aws_user_delete(user1)
 aws_user_create <- function(
@@ -172,7 +172,7 @@ aws_user_create <- function(
 #' @examplesIf interactive() && aws_has_creds()
 #' name <- random_user()
 #' six_user_create(name)
-#' 
+#'
 #' # cleanup
 #' six_user_delete(name)
 six_user_create <- function(
