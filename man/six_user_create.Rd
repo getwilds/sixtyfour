@@ -40,9 +40,12 @@ key. Add more policies using \verb{aws_polic*} functions
 }
 
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 name <- random_user()
 six_user_create(name)
+
+# cleanup
+six_user_delete(name)
 \dontshow{\}) # examplesIf}
 }
 \seealso{

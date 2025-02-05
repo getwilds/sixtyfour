@@ -29,9 +29,16 @@ See \url{https://www.paws-r-sdk.com/docs/iam_create_user/}
 docs for details on the parameters
 }
 \examples{
-\dontrun{
-aws_user_create("testBlueBird")
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+user1 <- random_user()
+if (aws_user_exists(user1)) {
+  aws_user_delete(user1)
 }
+aws_user_create(user1)
+
+# cleanup
+aws_user_delete(user1)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other users: 

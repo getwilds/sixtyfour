@@ -20,10 +20,10 @@ uses \code{\link[=aws_user]{aws_user()}} internally. see docs
 \url{https://www.paws-r-sdk.com/docs/iam_get_user/}
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 aws_user_exists(aws_user_current())
-aws_user_exists("blueberry")
-}
+aws_user_exists("doesnotexist")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other users: 
