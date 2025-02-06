@@ -16,7 +16,6 @@ we lookup the policy arn which is what's passed to the AWS API}
 \value{
 tibble with columns:
 \itemize{
-\item Document
 \item VersionId
 \item IsDefaultVersion
 \item CreateDate

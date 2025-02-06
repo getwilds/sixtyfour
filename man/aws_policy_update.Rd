@@ -19,7 +19,12 @@ the IAM users, groups, and roles that the policy is attached to.
 default: \code{FALSE}}
 }
 \value{
-a tibble with policy version details
+a tibble with policy version details:
+\itemize{
+\item VersionId
+\item IsDefaultVersion
+\item CreateDate
+}
 }
 \description{
 Update a policy
@@ -45,7 +50,7 @@ invisible(aws_policy_create("polisee", document = doc))
 # Update the same policy
 new_doc <- aws_policy_document_create(st8ment1)
 arn <- as_policy_arn("polisee", local = TRUE)
-aws_policy_update(arn, document = new_doc, defaul = TRUE)
+aws_policy_update(arn, document = new_doc, default = TRUE)
 aws_policy_list_versions("polisee")
 
 # cleanup - delete the policy

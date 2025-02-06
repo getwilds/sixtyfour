@@ -22,7 +22,7 @@ policy_list_tidy <- function(x) {
 #' @keywords internal
 policy_list_versions_tidy <- function(x) {
   vars <- c(
-    "Document", "VersionId", "IsDefaultVersion", "CreateDate"
+    "VersionId", "IsDefaultVersion", "CreateDate"
   )
   tidy_generator(vars)(x)
 }
@@ -171,7 +171,10 @@ aws_policy_create <- function(
 #' operative version. That is, it becomes the version that is in effect for
 #' the IAM users, groups, and roles that the policy is attached to.
 #' default: `FALSE`
-#' @return a tibble with policy version details
+#' @return a tibble with policy version details:
+#' - VersionId
+#' - IsDefaultVersion
+#' - CreateDate
 #' @details see docs
 #' <https://www.paws-r-sdk.com/docs/iam_create_policy_version/>
 #' @family policies
@@ -191,7 +194,7 @@ aws_policy_create <- function(
 #' # Update the same policy
 #' new_doc <- aws_policy_document_create(st8ment1)
 #' arn <- as_policy_arn("polisee", local = TRUE)
-#' aws_policy_update(arn, document = new_doc, defaul = TRUE)
+#' aws_policy_update(arn, document = new_doc, default = TRUE)
 #' aws_policy_list_versions("polisee")
 #'
 #' # cleanup - delete the policy
@@ -369,7 +372,6 @@ aws_policy_list_entities <- function(name, ...) {
 #' @inheritParams aws_policy_delete
 #' @inheritParams aws_policy_list_entities
 #' @return tibble with columns:
-#' - Document
 #' - VersionId
 #' - IsDefaultVersion
 #' - CreateDate
