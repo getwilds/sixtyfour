@@ -7,7 +7,7 @@
 aws_user_current()
 }
 \value{
-username as character
+username as character, scalar
 }
 \description{
 Get the current logged-in username as a string
