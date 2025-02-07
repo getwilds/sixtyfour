@@ -63,7 +63,7 @@ group and how you'd like to store secrets.
 }
 
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 user <- random_user()
 if (!aws_user_exists(user)) aws_user_create(user)
 six_user_creds(user)

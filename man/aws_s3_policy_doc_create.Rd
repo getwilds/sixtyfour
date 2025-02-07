@@ -40,12 +40,10 @@ buckets are globally unique, so AWS figures out the region and account
 ID for you.
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 bucket <- random_string("bucket")
 aws_s3_policy_doc_create(
   bucket = bucket,
   action = s3_actions_read(),
   resource = c(bucket_arn(bucket), bucket_arn(bucket, objects = "*"))
 )
-\dontshow{\}) # examplesIf}
 }

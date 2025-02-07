@@ -14,4 +14,6 @@ character vector of actions
 S3 actions for full access (read and write), from the AWS
 managed policy \code{AmazonS3FullAccess}
 }
-\keyword{internal}
+\examples{
+s3_actions_full()
+}
