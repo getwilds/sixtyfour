@@ -216,9 +216,8 @@ test_that("aws_policy_create", {
     }
   )
 
-  expect_type(polisee, "list")
-  expect_named(polisee, "Policy")
-  expect_equal(polisee$Policy$PolicyName, policy_name)
+  expect_s3_class(polisee, "tbl")
+  expect_equal(polisee$PolicyName, policy_name)
 
   # cleanup
   withr::with_envvar(

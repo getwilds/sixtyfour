@@ -19,14 +19,18 @@ A tibble with information about policies
 Attach a policy to a user, group, or role
 }
 \examples{
-\dontrun{
-aws_policy("AmazonRDSDataFullAccess")
-aws_user() \%>\% aws_policy_attach("AmazonRDSDataFullAccess")
-aws_user()$attached_policies
-
-# aws_role("OrganizationAccountSecurityRole") \%>\%
-#  aws_policy_attach("ReadOnlyAccess")
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+if (aws_user_exists("user123")) {
+  aws_user_delete("user123")
 }
+
+aws_user_create("user123")
+aws_policy("AmazonRDSDataFullAccess")
+aws_user("user123") \%>\% aws_policy_attach("AmazonRDSDataFullAccess")
+aws_user("user123")$attached_policies
+# cleanup
+six_user_delete("user123")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other policies: 
@@ -39,6 +43,7 @@ Other policies:
 \code{\link{aws_policy_detach}()},
 \code{\link{aws_policy_exists}()},
 \code{\link{aws_policy_list_entities}()},
-\code{\link{aws_policy_list_versions}()}
+\code{\link{aws_policy_list_versions}()},
+\code{\link{aws_policy_update}()}
 }
 \concept{policies}
