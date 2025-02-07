@@ -39,7 +39,8 @@ Imports:
     curl,
     snakecase,
     tidyr,
-    clipr
+    clipr,
+    ipaddress
 Suggests: 
     knitr,
     rmarkdown,

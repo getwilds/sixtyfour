@@ -33,7 +33,7 @@ security_group_handler <- function(ids, engine) {
     return(ids)
   }
   port <- engine2port(engine) # nolint
-  ip <- ip_address() # nolint
+  ip <- .ip_address() # nolint
   sgs <- aws_vpc_security_groups()
   sgsdf <- jsonlite::fromJSON(
     jsonlite::toJSON(sgs$SecurityGroups, auto_unbox = TRUE)
@@ -299,6 +299,7 @@ engine2port <- function(engine) {
 
 #' Ip Permissions generator
 #'
+#' @importFrom ipaddress ip_address is_ipv6
 #' @export
 #' @param engine (character) one of mariadb, mysql, or postgres
 #' @param port (character) port number. port determined from `engine`
@@ -312,23 +313,26 @@ ip_permissions_generator <- function(engine, port = NULL, description = NULL) {
   if (is.null(description)) {
     description <- glue("Access for {Sys.info()[['user']]} from sixtyfour")
   }
+  ip <- .ip_address()
+  ip_data <- if (is_ipv6(ip_address(ip))) {
+    list(CidrIpv6 = glue("{ip}/32"))
+  } else {
+    list(CidrIp = glue("{ip}/32"))
+  }
+  ip_data$description <- description
   list(
     FromPort = port,
     ToPort = port,
     IpProtocol = protocol,
-    IpRanges = list(
-      list(
-        CidrIp = glue("{ip_address()}/32"),
-        Description = description
-      )
-    )
+    IpRanges = list(ip_data)
   )
 }
 
 #' Get your IP address using <https://ifconfig.me/ip>
-#' @return (character) ip address
+#' @return (character) ip address, either ipv4 or ipv6 depending on your
+#' machine
 #' @keywords internal
-ip_address <- function() {
+.ip_address <- function() {
   res <- curl::curl_fetch_memory("https://ifconfig.me/ip")
   rawToChar(res$content)
 }
