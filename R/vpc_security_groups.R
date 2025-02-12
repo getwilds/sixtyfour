@@ -395,7 +395,7 @@ aws_vpc_security_group_ingress <- function(id, ip_permissions = NULL, ...) {
 #'
 #' # modify the rule
 #' rule_id <- my_rule$SecurityGroupRules[[1]]$SecurityGroupRuleId
-#' aws_vpc_security_group_rules_mod(
+#' aws_vpc_sec_group_rules_mod(
 #'   id = x$GroupId,
 #'   rules = list(
 #'     SecurityGroupRuleId = rule_id,
