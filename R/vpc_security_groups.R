@@ -314,18 +314,21 @@ ip_permissions_generator <- function(engine, port = NULL, description = NULL) {
     description <- glue("Access for {Sys.info()[['user']]} from sixtyfour")
   }
   ip <- .ip_address()
-  ip_data <- if (is_ipv6(ip_address(ip))) {
-    list(CidrIpv6 = glue("{ip}/32"))
-  } else {
-    list(CidrIp = glue("{ip}/32"))
-  }
-  ip_data$description <- description
-  list(
+  result <- list(
     FromPort = port,
     ToPort = port,
-    IpProtocol = protocol,
-    IpRanges = list(ip_data)
+    IpProtocol = protocol
   )
+  if (is_ipv6(ip_address(ip))) {
+    result$Ipv6Ranges <- list(
+      list(CidrIpv6 = glue("{ip}/128"), description = description)
+    )
+  } else {
+    result$IpRanges <- list(
+      list(CidrIp = glue("{ip}/32"), description = description)
+    )
+  }
+  result
 }
 
 #' Get your IP address using <https://ifconfig.me/ip>

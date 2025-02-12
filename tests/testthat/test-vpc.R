@@ -153,5 +153,61 @@ test_that("security_group_handler", {
   expect_error(security_group_handler(NULL, engine = "asdff"))
 })
 
+test_that("aws_vpc_sec_group_rules_mod works for ipv6 address", {
+  local_mocked_bindings(
+    .ip_address = function() {
+      as.character(ipaddress::sample_ipv6(1))
+    }
+  )
+
+  a_grp_name <- random_string("vpcsecgroup")
+  x <- aws_vpc_security_group_create(name = a_grp_name)
+
+  perms <- ip_permissions_generator("mariadb")
+
+  expect_true(
+    ipaddress::is_ipv6(
+      ipaddress::as_ip_network(perms$Ipv6Ranges[[1]]$CidrIpv6)
+    )
+  )
+
+  a_rule <- aws_vpc_security_group_ingress(
+    id = x$GroupId,
+    ip_permissions = perms
+  )
+
+  expect_type(a_rule, "list")
+  expect_named(a_rule, c("Return", "SecurityGroupRules"))
+  expect_true(a_rule$Return)
+})
+
+test_that("aws_vpc_sec_group_rules_mod works for ipv4 address", {
+  local_mocked_bindings(
+    .ip_address = function() {
+      as.character(ipaddress::sample_ipv4(1))
+    }
+  )
+
+  a_grp_name <- random_string("vpcsecgroup")
+  x <- aws_vpc_security_group_create(name = a_grp_name)
+
+  perms <- ip_permissions_generator("mariadb")
+
+  expect_true(
+    ipaddress::is_ipv4(
+      ipaddress::as_ip_network(perms$IpRanges[[1]]$CidrIp)
+    )
+  )
+
+  a_rule <- aws_vpc_security_group_ingress(
+    id = x$GroupId,
+    ip_permissions = perms
+  )
+
+  expect_type(a_rule, "list")
+  expect_named(a_rule, c("Return", "SecurityGroupRules"))
+  expect_true(a_rule$Return)
+})
+
 # cleanup
 Sys.unsetenv("AWS_PROFILE")
