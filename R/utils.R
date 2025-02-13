@@ -7,7 +7,7 @@ env_var <- function(env_name) {
   x <- Sys.getenv(env_name, "")
   stop_msg <- sprintf("Environment variable '%s' not found", env_name)
   if (identical(x, "")) stop(stop_msg)
-  return(x)
+  x
 }
 
 #' lifted directly from the devtools package within the file (MIT licensed):

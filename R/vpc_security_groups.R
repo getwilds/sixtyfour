@@ -135,7 +135,7 @@ security_group_handler <- function(ids, engine) {
       "Found security group {.strong {ip_df$GroupId}} ",
       "w/ access for {.strong {engine}} and your IP address {.strong {ip}}"
     ))
-    return(ip_df$GroupId)
+    ip_df$GroupId
   } else {
     sgoptions <-
       ip_df %>%
@@ -158,11 +158,11 @@ security_group_handler <- function(ids, engine) {
         "w/ access for {.strong {engine}},",
         "{.emph but} not with your IP address {.strong {ip}}"
       ))
-      return(NULL)
+      NULL
     } else {
       idtouse <- ip_df[picked, "GroupId"]
       cli::cli_alert_success("Using security group {.strong {idtouse}}")
-      return(idtouse)
+      idtouse
     }
   }
 }
