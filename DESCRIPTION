@@ -39,7 +39,8 @@ Imports:
     curl,
     snakecase,
     tidyr,
-    clipr
+    clipr,
+    ipaddress
 Suggests: 
     knitr,
     rmarkdown,
@@ -52,7 +53,6 @@ Suggests:
     withr,
     ggplot2,
     webmockr
-Remotes: ropensci/webmockr
 Config/roxyglobals/filename: globals.R
 Config/roxyglobals/unique: FALSE
 Config/testthat/edition: 3

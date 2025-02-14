@@ -2,8 +2,8 @@
 #' @export
 #' @param ... parameters passed on to [describe_vpcs](
 #' https://www.paws-r-sdk.com/docs/ec2_describe_vpcs/)
-#' @return (list) list with VPCs
-#' @examplesIf interactive()
+#' @return (list) list with VPCs, see [aws_vpc()] for details
+#' @examplesIf interactive() && aws_has_creds()
 #' aws_vpcs()
 #' aws_vpcs(MaxResults = 6)
 aws_vpcs <- function(...) {

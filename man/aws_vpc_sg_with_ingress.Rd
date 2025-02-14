@@ -24,7 +24,7 @@ and \code{\link[=aws_vpc_security_group_ingress]{aws_vpc_security_group_ingress(
 }
 \seealso{
 Other security groups: 
-\code{\link{aws_vpc_sec_group_rules}()},
+\code{\link{aws_vpc_sec_group_rules_mod}()},
 \code{\link{aws_vpc_security_group}()},
 \code{\link{aws_vpc_security_group_create}()},
 \code{\link{aws_vpc_security_group_ingress}()},
