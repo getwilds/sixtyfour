@@ -38,11 +38,16 @@ uses \code{memoise} internally to cache results to speed up all
 subsequent calls to the function
 }
 \examples{
-\dontrun{
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# takes a while on the first execution in an R session
 aws_policies()
+\dontshow{\}) # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# faster because first call memoised the result
 aws_policies()
+# refresh=TRUE will pull from AWS
 aws_policies(refresh = TRUE)
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other policies: 
@@ -55,6 +60,7 @@ Other policies:
 \code{\link{aws_policy_detach}()},
 \code{\link{aws_policy_exists}()},
 \code{\link{aws_policy_list_entities}()},
-\code{\link{aws_policy_list_versions}()}
+\code{\link{aws_policy_list_versions}()},
+\code{\link{aws_policy_update}()}
 }
 \concept{policies}

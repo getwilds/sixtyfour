@@ -27,13 +27,9 @@ Zero row tibble if there are no entities
 List policy entities
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-pols <- aws_policies(Scope = "Local")
-for (policy in pols$PolicyName) {
-  cat("\n\n", policy, "\n")
-  print(aws_policy_list_entities(policy))
-}
-aws_policy_list_entities("S3ReadOnlyAccessS64Test22")
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+aws_policy_list_entities("AdministratorAccess")
+aws_policy_list_entities("AmazonRedshiftReadOnlyAccess")
 \dontshow{\}) # examplesIf}
 }
 \references{
@@ -50,6 +46,7 @@ Other policies:
 \code{\link{aws_policy_delete_version}()},
 \code{\link{aws_policy_detach}()},
 \code{\link{aws_policy_exists}()},
-\code{\link{aws_policy_list_versions}()}
+\code{\link{aws_policy_list_versions}()},
+\code{\link{aws_policy_update}()}
 }
 \concept{policies}

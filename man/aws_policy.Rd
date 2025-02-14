@@ -25,10 +25,13 @@ Get a policy
 see docs \url{https://www.paws-r-sdk.com/docs/iam_get_policy/}
 }
 \examples{
-\dontrun{
-aws_policy("ReadOnlyAccess")
-aws_policy("arn:aws:iam::aws:policy/ReadOnlyAccess")
-}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+# get an AWS managed policy (local = FALSE - the default)
+aws_policy("AmazonS3FullAccess")
+
+# get a policy by arn
+aws_policy("arn:aws:iam::aws:policy/AmazonS3FullAccess")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other policies: 
@@ -41,6 +44,7 @@ Other policies:
 \code{\link{aws_policy_detach}()},
 \code{\link{aws_policy_exists}()},
 \code{\link{aws_policy_list_entities}()},
-\code{\link{aws_policy_list_versions}()}
+\code{\link{aws_policy_list_versions}()},
+\code{\link{aws_policy_update}()}
 }
 \concept{policies}

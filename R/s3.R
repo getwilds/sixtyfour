@@ -1,7 +1,7 @@
-#' S3 actions for reading, from the AWS managed policy
-#' `AmazonS3ReadOnlyAccess`
-#' @keywords internal
+#' S3 actions for reading, from the AWS managed policy `AmazonS3ReadOnlyAccess`
+#' @export
 #' @return character vector of actions
+#' @examples s3_actions_read()
 s3_actions_read <- function() {
   c(
     "s3:Get*",
@@ -14,8 +14,9 @@ s3_actions_read <- function() {
 
 #' S3 actions for full access (read and write), from the AWS
 #' managed policy `AmazonS3FullAccess`
-#' @keywords internal
+#' @export
 #' @return character vector of actions
+#' @examples s3_actions_full()
 s3_actions_full <- function() {
   c(
     "s3:*",
@@ -33,7 +34,7 @@ s3_actions_full <- function() {
 #' buckets are globally unique, so AWS figures out the region and account
 #' ID for you.
 #' @return a policy document as JSON (of class `json`)
-#' @examplesIf interactive()
+#' @examples
 #' bucket <- random_string("bucket")
 #' aws_s3_policy_doc_create(
 #'   bucket = bucket,
@@ -116,7 +117,7 @@ create_policy_if_missing <- function(bucket, permissions) {
 #' - If user not in bucket already, attach policy to user (which adds them
 #' to the bucket)
 #' @return invisibly returns nothing
-#' @examplesIf interactive()
+#' @examplesIf interactive() && aws_has_creds()
 #' # create a bucket
 #' bucket <- random_string("bucket")
 #' if (!aws_bucket_exists(bucket)) {
@@ -184,7 +185,7 @@ six_bucket_add_user <- function(bucket, username, permissions) {
 #' @section Important:
 #' This function is built around policies named by this package. If you use
 #' your own policies that you name this function may not work.
-#' @examplesIf interactive()
+#' @examplesIf interactive() && aws_has_creds()
 #' # create a bucket
 #' bucket <- random_string("bucket")
 #' if (!aws_bucket_exists(bucket)) {
@@ -280,7 +281,7 @@ six_bucket_change_user <- function(bucket, username, permissions) {
 #' @details This function detaches a policy from a user for accessing
 #' the bucket; the policy itself is untouched
 #' @return invisibly returns nothing
-#' @examplesIf interactive()
+#' @examplesIf interactive() && aws_has_creds()
 #' # create a bucket
 #' bucket <- random_string("bucket")
 #' if (!aws_bucket_exists(bucket)) aws_bucket_create(bucket)
@@ -333,7 +334,7 @@ six_bucket_remove_user <- function(bucket, username) {
 #' permission (if present)
 #'
 #' Note that users with no persmissions are not shown; see [aws_users()]
-#' @examplesIf interactive()
+#' @examplesIf interactive() && aws_has_creds()
 #' # create a bucket
 #' bucket <- random_string("bucket")
 #' if (!aws_bucket_exists(bucket)) aws_bucket_create(bucket)
@@ -436,7 +437,7 @@ AWS_REGION={Sys.getenv('AWS_REGION')}
 #' - SecretAccessKey (character)
 #' - CreateDate (POSIXct)
 #' @seealso [aws_user_access_key()], [aws_user_access_key_delete()]
-#' @examplesIf interactive()
+#' @examplesIf interactive() && aws_has_creds()
 #' user <- random_user()
 #' if (!aws_user_exists(user)) aws_user_create(user)
 #' six_user_creds(user)

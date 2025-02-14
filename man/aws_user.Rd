@@ -35,14 +35,20 @@ if username not supplied, gets logged in user
 }
 \examples{
 \dontrun{
-# if username not supplied, gets logged in user
+# if username not supplied, gets the logged in user
 aws_user()
-
-# supply a username to get that user's information
-aws_user_create("testBlueBird")
-aws_user(username = "testBlueBird")
-aws_user_delete("testBlueBird") # cleanup user
 }
+
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+if (aws_user_exists("testBlueBird")) {
+  aws_user_delete("testBlueBird")
+}
+aws_user_create("testBlueBird")
+aws_user("testBlueBird")
+
+# cleanup
+aws_user_delete("testBlueBird")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other users: 

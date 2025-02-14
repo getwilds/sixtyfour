@@ -32,17 +32,21 @@ Create a policy
 see docs \url{https://www.paws-r-sdk.com/docs/iam_create_policy/}
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-doc <- aws_policy_document_create(
-  region = "us-east-2",
-  account_id = "1234567890",
-  resource_id = "*",
-  user = "jane_doe",
-  action = "rds-db:connect"
-)
-aws_policy_create("RdsAllow123", document = doc)
-# cleanup
-aws_policy_delete("RdsAllow123")
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+if (aws_policy_exists("MyPolicy123")) {
+  aws_policy_delete("MyPolicy123")
+}
+
+# Create policy document
+st8ment1 <- aws_policy_statement("iam:GetUser", "*")
+st8ment2 <- aws_policy_statement("s3:ListAllMyBuckets", "*")
+doc <- aws_policy_document_create(st8ment1, st8ment2)
+
+# Create policy
+aws_policy_create("MyPolicy123", document = doc)
+
+# cleanup - delete policy
+aws_policy_delete("MyPolicy123")
 \dontshow{\}) # examplesIf}
 }
 \seealso{
@@ -56,6 +60,7 @@ Other policies:
 \code{\link{aws_policy_detach}()},
 \code{\link{aws_policy_exists}()},
 \code{\link{aws_policy_list_entities}()},
-\code{\link{aws_policy_list_versions}()}
+\code{\link{aws_policy_list_versions}()},
+\code{\link{aws_policy_update}()}
 }
 \concept{policies}

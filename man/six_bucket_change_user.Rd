@@ -27,7 +27,7 @@ your own policies that you name this function may not work.
 }
 
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # create a bucket
 bucket <- random_string("bucket")
 if (!aws_bucket_exists(bucket)) {
