@@ -13,7 +13,7 @@ bucket_delete <- function(bucket, force = FALSE) {
 buckets_empty <- function() {
   if (isNamespaceLoaded("vcr")) {
     unloadNamespace("vcr")
-    on.exit(vcr_setup(), add = TRUE)
+    on.exit(vcr_setup(), add = TRUE) # nolint
   }
   buckets <- aws_buckets()
   if (NROW(buckets) > 0) {
