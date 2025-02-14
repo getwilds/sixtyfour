@@ -398,17 +398,19 @@ aws_vpc_security_group_ingress <- function(id, ip_permissions = NULL, ...) {
 #'
 #' # modify the rule
 #' rule_id <- my_rule$SecurityGroupRules[[1]]$SecurityGroupRuleId
+#' fields_to_keep <- c(
+#'   "IpProtocol", "FromPort", "ToPort", "CidrIpv4",
+#'   "CidrIpv6", "PrefixListId", "Description"
+#' )
+#' rule_old <- my_rule$SecurityGroupRules[[1]]
+#' rule_new <- rule_old[fields_to_keep]
+#' rule_new$Description <- "Modified description"
+#'
 #' aws_vpc_sec_group_rules_mod(
 #'   id = x$GroupId,
 #'   rules = list(
 #'     SecurityGroupRuleId = rule_id,
-#'     SecurityGroupRule = list(
-#'       IpProtocol = "tcp",
-#'       FromPort = 3307,
-#'       ToPort = 3307,
-#'       CidrIpv4 = "3.3.3.3/32",
-#'       Description = "Modified description"
-#'     )
+#'     SecurityGroupRule = rule_new
 #'   )
 #' )
 #'
