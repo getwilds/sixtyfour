@@ -11,6 +11,10 @@ bucket_delete <- function(bucket, force = FALSE) {
 }
 
 buckets_empty <- function() {
+  if (isNamespaceLoaded("vcr")) {
+    unloadNamespace("vcr")
+    on.exit(vcr_setup(), add = TRUE)
+  }
   buckets <- aws_buckets()
   if (NROW(buckets) > 0) {
     invisible(purrr::map(buckets$bucket_name, bucket_delete, force = TRUE))
