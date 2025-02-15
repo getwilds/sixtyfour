@@ -225,6 +225,6 @@ six_user_create(name)
 six_user_delete(name)
 ```
 
-There are other magical methods. See the [docs](https://getwilds.org/sixtyfour/reference/#high-level-magical-methods) for more information.
+There are other magical methods. See the [docs](https://getwilds.org/sixtyfour/reference/#high-level-magical-methods) and the `vignette("six")` vignette for more information.
 
 [r-startup]: https://rstats.wtf/r-startup.html
