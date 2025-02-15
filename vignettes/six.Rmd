@@ -1,0 +1,62 @@
+---
+title: "High level six functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{High level six functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+High level `sixtyfour` functions - or "magical" methods - or we can call them "six methods" after the package name `sixtyfour` - are higher level functions to make your life easier.
+
+It can perhaps best be understood by way of an example.
+
+The function `aws_user_create()` creates a new user. However, there's some basic housekeeping that needs to be done for a new user to be of basic use. First, the just created user can't get information on herself. Second, the user has no credentials by default for accessing AWS programatically.
+
+To create a nicer user experience `six_user_create()` creates a new user, including a) creating the appropriate policies if they don't exist yet, b) attaching the policies to the created user, and c) creating an AWS Access Key for the user (and copy an email template to your clipboard with the details the new user needs).
+
+## Installation
+
+
+``` r
+library(sixtyfour)
+```
+
+## All the magical methods
+
+Here are all the magical methods:
+
+
+```
+#>  - six_admin_setup
+#>  - six_bucket_add_user
+#>  - six_bucket_change_user
+#>  - six_bucket_delete
+#>  - six_bucket_permissions
+#>  - six_bucket_remove_user
+#>  - six_bucket_upload
+#>  - six_file_upload
+#>  - six_user_create
+#>  - six_user_creds
+#>  - six_user_delete
+```
+
+### S3 Buckets magical methods
+
+flow buckets and files:
+
+- six_bucket_add_user
+- six_bucket_change_user
+- six_bucket_permissions
+- six_bucket_remove_user
+- six_bucket_delete
+- six_bucket_upload
+- six_file_upload
+
+### User magical methods
+
+- six_user_create
+- six_user_creds
+- six_user_delete
