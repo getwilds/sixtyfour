@@ -3,7 +3,6 @@
 utils::globalVariables(c(
   "UnblendedCost", # <aws_billing>
   "BlendedCost", # <aws_billing>
-  "service_map", # <billing_factory>
   "acronym", # <billing_factory>
   "Service", # <billing_factory>
   "Size", # <aws_bucket_list_objects>
