@@ -112,7 +112,9 @@ six_admin_setup <- function(users_group = "users", admin_group = "admin") {
   }
   ## policies
   users <- aws_group(users_group)
-  check_users_pols <- map_lgl(group_policies_data$users, \(x) has_policy(users, x))
+  check_users_pols <- map_lgl(
+    group_policies_data$users, \(x) has_policy(users, x)
+  )
   if (!all(check_users_pols)) {
     invisible(map(group_policies_data$users, \(p) aws_policy_attach(users, p)))
     cli_info(cli_admin_setup$users_policies)
@@ -131,7 +133,9 @@ six_admin_setup <- function(users_group = "users", admin_group = "admin") {
   }
   ## policies
   admin <- aws_group(admin_group)
-  check_admin_pols <- map_lgl(group_policies_data$admin, \(x) has_policy(admin, x))
+  check_admin_pols <- map_lgl(
+    group_policies_data$admin, \(x) has_policy(admin, x)
+  )
   if (!all(check_admin_pols)) {
     invisible(map(group_policies_data$admin, \(p) aws_policy_attach(admin, p)))
     cli_info(cli_admin_setup$admin_policies)
