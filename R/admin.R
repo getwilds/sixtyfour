@@ -61,7 +61,7 @@ cli_admin_setup <- list(
   ),
   users_policies = c(
     "Added policies to the {.strong {users_group}} group: ",
-    "{paste0(group_policies$users, collapse=", ")}"
+    "{paste0(group_policies_data$users, collapse=", ")}"
   ),
   users_not_policies = c(
     "All policies already present in the {.strong {users_group}} group"
@@ -76,7 +76,7 @@ cli_admin_setup <- list(
   ),
   admin_policies = c(
     "Added policies to the {.strong {admin_group}} group: ",
-    "{paste0(group_policies$admin, collapse=", ")}"
+    "{paste0(group_policies_data$admin, collapse=", ")}"
   ),
   admin_not_policies = c(
     "All policies already present in the {.strong {admin_group}} group"
@@ -108,14 +108,14 @@ six_admin_setup <- function(users_group = "users", admin_group = "admin") {
   }
   ## policies
   users <- aws_group(users_group)
-  check_users_pols <- map_lgl(group_policies$users, \(x) has_policy(users, x))
+  check_users_pols <- map_lgl(group_policies_data$users, \(x) has_policy(users, x))
   if (!all(check_users_pols)) {
-    invisible(map(group_policies$users, \(p) aws_policy_attach(users, p)))
+    invisible(map(group_policies_data$users, \(p) aws_policy_attach(users, p)))
     cli_info(cli_admin_setup$users_policies)
   } else {
     cli_info(cli_admin_setup$users_not_policies)
   }
-  cli_alert_info("")
+  cli_info("")
 
   # admin
   ## create group
@@ -127,14 +127,14 @@ six_admin_setup <- function(users_group = "users", admin_group = "admin") {
   }
   ## policies
   admin <- aws_group(admin_group)
-  check_admin_pols <- map_lgl(group_policies$admin, \(x) has_policy(admin, x))
+  check_admin_pols <- map_lgl(group_policies_data$admin, \(x) has_policy(admin, x))
   if (!all(check_admin_pols)) {
-    invisible(map(group_policies$admin, \(p) aws_policy_attach(admin, p)))
+    invisible(map(group_policies_data$admin, \(p) aws_policy_attach(admin, p)))
     cli_info(cli_admin_setup$admin_policies)
   } else {
     cli_info(cli_admin_setup$admin_not_policies)
   }
-  cli_alert_info("")
+  cli_info("")
 
   cli_info("Done!")
 }
