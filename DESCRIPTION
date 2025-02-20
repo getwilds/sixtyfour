@@ -39,7 +39,8 @@ Imports:
     curl,
     snakecase,
     tidyr,
-    clipr
+    clipr,
+    withr
 Suggests: 
     knitr,
     rmarkdown,
@@ -49,7 +50,6 @@ Suggests:
     RMariaDB,
     testthat (>= 3.0.0),
     vcr (>= 0.6.0),
-    withr,
     ggplot2,
     webmockr
 Remotes: ropensci/webmockr
