@@ -177,7 +177,7 @@ aws_user_create <- function(
 #' six_user_delete(name)
 six_user_create <- function(
     username, path = NULL, permission_boundary = NULL,
-    tags = NULL) {
+    tags = NULL, copy_to_cb = TRUE) {
   aws_user_create(
     path = path,
     username = username,
@@ -194,16 +194,16 @@ six_user_create <- function(
       aws_policy_statement(actions, "*")
     )
     aws_policy_create(policy_name, policy_doc)
-    cli_alert_info("Added policy {.strong {policy_name}} to your account")
+    cli_info("Added policy {.strong {policy_name}} to your account")
   }
   user_obj <- aws_user(username)
   if (!has_policy(user_obj, policy_name)) {
     aws_policy_attach(user_obj, policy_name)
-    cli_alert_info(
+    cli_info(
       "Added policy {.strong {policy_name}} to {.strong {username}}"
     )
   }
-  six_user_creds(username, copy_to_cp = TRUE)
+  six_user_creds(username, copy_to_cb = copy_to_cb)
 }
 
 #' Delete a user
