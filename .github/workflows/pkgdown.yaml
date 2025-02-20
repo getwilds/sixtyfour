@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main, s3-iam]
+    branches: [main, dev]
   release:
     types: [published]
   workflow_dispatch:
@@ -20,7 +20,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           org: ${{ github.repository_owner }}
           repo: ${{ github.event.repository.name }}
-          user: 'github-actions[bot]'
+          user: "github-actions[bot]"
           issue: ${{ github.event.number }}
 
   pkgdown:
@@ -67,7 +67,7 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: 0bd96a31-c99c-4493-9efe-a7aaf1deaab9
         with:
-          publish-dir: './docs'
+          publish-dir: "./docs"
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: |
             Deploy from GHA: ${{ github.event.pull_request.title || github.event.head_commit.message }} (${{ github.sha }})
