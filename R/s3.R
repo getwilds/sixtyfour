@@ -164,14 +164,14 @@ six_bucket_add_user <- function(bucket, username, permissions) {
   user_data <- aws_user(username)
   if (NROW(user_data$attached_policies) == 0) {
     aws_user(username) %>% aws_policy_attach(policy_name)
-    cli::cli_alert_success(add_user_now_has)
+    cli_success(add_user_now_has)
     return(invisible())
   }
   if (policy_name %in% user_data$attached_policies$PolicyName) {
-    cli::cli_alert_success(add_user_already)
+    cli_success(add_user_already)
   } else {
     aws_user(username) %>% aws_policy_attach(policy_name)
-    cli::cli_alert_success(add_user_now_has)
+    cli_success(add_user_now_has)
   }
   invisible()
 }
@@ -233,18 +233,18 @@ six_bucket_change_user <- function(bucket, username, permissions) {
 
   perms <- filter(six_bucket_permissions(bucket), user == username)
   if (NROW(perms) == 0) {
-    cli::cli_alert_warning(c(
+    cli_warning(c(
       "No {.strong {bucket}} specific permissions",
       " found for {.strong {username}}"
     ))
-    cli::cli_alert_info(c(
+    cli_info(c(
       "Use {.strong six_bucket_add_user} to add a user to a bucket"
     ))
     return(invisible())
   }
 
   if (grepl(permissions, perms$permissions)) {
-    cli::cli_alert_success(add_user_already)
+    cli_success(add_user_already)
     return(invisible())
   }
 
@@ -269,7 +269,7 @@ six_bucket_change_user <- function(bucket, username, permissions) {
   aws_user(username) %>% aws_policy_attach(policy_name)
 
   # let em know
-  cli::cli_alert_success(add_user_now_has)
+  cli_success(add_user_now_has)
 
   invisible()
 }
@@ -300,7 +300,7 @@ six_bucket_remove_user <- function(bucket, username) {
   perms <- permissions_user_bucket(bucket) %>%
     filter(user == username)
   if (NROW(perms) == 0) {
-    cli::cli_alert_warning(c(
+    cli_warning(c(
       "No {.strong {bucket}} specific permissions",
       " found for {.strong {username}}"
     ))
@@ -310,7 +310,7 @@ six_bucket_remove_user <- function(bucket, username) {
   userobj <- aws_user(username)
   map(perms$PolicyName, \(policy) aws_policy_detach(userobj, policy))
 
-  cli::cli_alert_success(c(
+  cli_success(c(
     "{.strong {username}} access to",
     " {.strong {bucket}} has been removed"
   ))
@@ -354,7 +354,7 @@ six_bucket_remove_user <- function(bucket, username) {
 #' aws_bucket_delete(bucket, force = TRUE)
 six_bucket_permissions <- function(bucket) {
   if (!aws_bucket_exists(bucket)) {
-    cli::cli_abort("{.strong {bucket}} does not exist")
+    cli_abort("{.strong {bucket}} does not exist")
   }
   perms <- permissions_user_bucket(bucket)
   user_perms <-

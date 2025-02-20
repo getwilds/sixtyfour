@@ -46,8 +46,11 @@ group_policies <- function(group) {
 
 aws_whoami <- function() {
   user <- aws_user() # nolint
-  cli_info("whoami: {user$user$UserName} (account: {account_id()})")
-  cli_alert_info("")
+  if (env64$redacted) {
+    cli_info("whoami: {env64$redact_str}")
+  } else {
+    cli_info("whoami: {user$user$UserName} (account: {account_id()})")
+  }
 }
 
 cli_admin_setup <- list(
@@ -97,6 +100,7 @@ cli_admin_setup <- list(
 #' @return NULL invisibly
 six_admin_setup <- function(users_group = "users", admin_group = "admin") {
   aws_whoami()
+  cli_info("")
 
   # users
   ## create group

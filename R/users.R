@@ -249,7 +249,7 @@ six_user_delete <- function(username) {
   if (!rlang::is_empty(attpols)) {
     policies <- attpols$PolicyName
     map(policies, \(policy) aws_policy_detach(user_obj, policy))
-    cli_alert_info("Polic{?y/ies} {.strong {policies}} detached")
+    cli_info("Polic{?y/ies} {.strong {policies}} detached")
   }
 
   # remove access keys
@@ -262,11 +262,11 @@ six_user_delete <- function(username) {
   if (!rlang::is_empty(user_obj$groups)) {
     groups <- user_obj$groups
     map(groups$GroupName, \(g) aws_user_remove_from_group(username, g))
-    cli_alert_info("Group{?s} {.strong {groups$GroupName}} detached")
+    cli_info("Group{?s} {.strong {groups$GroupName}} detached")
   }
 
   aws_user_delete(username)
-  cli_alert_info("{.strong {username}} deleted")
+  cli_info("{.strong {username}} deleted")
 }
 
 #' Get AWS Access Key for a user
@@ -285,7 +285,7 @@ six_user_delete <- function(username) {
 aws_user_access_key <- function(username = NULL, ...) {
   out <- con_iam()$list_access_keys(username, ...)
   if (length(out$AccessKeyMetadata) == 0) {
-    cli::cli_alert_warning("No access keys found for {.strong {username}}")
+    cli_warning("No access keys found for {.strong {username}}")
     return(invisible())
   }
   bind_rows(out$AccessKeyMetadata)
