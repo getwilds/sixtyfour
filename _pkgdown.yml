@@ -8,6 +8,13 @@ reference:
       High level overview of package
     contents:
       - sixtyfour
+  - title: Configuration
+    desc: >
+      asdfasdfasdf
+    contents:
+      - aws_configure
+      - with_redacted
+      - without_verbose
   - title: High level "magical" methods
     desc: >
       Higher level functions to make your life easier
@@ -79,3 +86,6 @@ reference:
       - random_user
       - random_string
       - aws_has_creds
+      - figure_out_policy_arn
+      - s3_actions_full
+      - s3_actions_read
