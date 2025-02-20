@@ -71,7 +71,7 @@ reference:
   - title: VPC Security Groups
     contents:
       - starts_with("aws_vpc_security_group")
-      - aws_vpc_sec_group_rules
+      - aws_vpc_sec_group_rules_mod
       - ip_permissions_generator
       - aws_vpc_sg_with_ingress
   - title: Utilities
