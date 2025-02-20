@@ -12,20 +12,24 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+Sys.setenv(AWS_REGION = "us-east-1")
+library(sixtyfour)
+aws_configure(redacted = TRUE)
 ```
 
 High level `sixtyfour` functions - or "magical" methods - or we can call them "six methods" after the package name `sixtyfour` - are higher level functions to make your life easier.
 
 It can perhaps best be understood by way of an example.
 
-The function `aws_user_create()` creates a new user. However, there's some basic housekeeping that needs to be done for a new user to be of basic use. First, the just created user can't get information on herself. Second, the user has no credentials by default for accessing AWS programatically.
+The function `aws_user_create()` creates a new user. However, there's some basic housekeeping that needs to be done for a new user to be truly useable. First, the just created user can't get information on herself. Second, the user has no credentials by default for accessing AWS programatically.
 
-To create a nicer user experience `six_user_create()` creates a new user, including a) creating the appropriate policies if they don't exist yet, b) attaching the policies to the created user, and c) creating an AWS Access Key for the user (and copy an email template to your clipboard with the details the new user needs).
+To create a smoother user experience `six_user_create()` creates a new user, including a) creating the appropriate policies if they don't exist yet, b) attaching the policies to the created user, and c) creating an AWS Access Key for the user (and copy an email template to your clipboard with the details the new user needs).
 
 ## Installation
 
 ```{r setup}
 library(sixtyfour)
+library(fs)
 ```
 
 ## All the magical methods
@@ -37,7 +41,232 @@ sixes <- grep("six_", getNamespaceExports("sixtyfour"), value = TRUE)
 cat(paste(" -", paste(sixes[order(sixes)], collapse = "\n - ")))
 ```
 
-### S3 Buckets magical methods
+## Notes about magical methods
+
+All of these methods have a `force` parameter that accepts `TRUE` or `FALSE`. The default is `FALSE` in which case you are given a prompt in your R session asking you to confirm that you really do want to create a bucket of a particular name. Sometimes you supply the bucket name, while other magic methods figure out a bucket name from an S3 file path (e.g., `s3://bucketname/some/file.csv`). Because we want this vignette to compile without human interaction, we're using `force=TRUE`, so you won't see the prompots that you'll see when you use these functions interactively.
+
+
+
+## S3 magical methods
 
 Make a random bucket name
 
+```{r}
+bucket1 <- random_string("bucket")
+```
+
+### Upload to a bucket
+
+A file
+
+```{r}
+demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
+```
+
+A directory with files
+
+```{r}
+tdir <- path(path_temp(), "mytmp")
+dir_create(tdir)
+invisible(purrr::map(letters[1:13], \(l) file_create(path(tdir, l))))
+dir_tree(tdir)
+```
+
+Upload both the file and the directory of files to `bucket1`: `r bucket1`
+
+```{r eval=FALSE}
+six_bucket_upload(path = c(demo_rds_file, tdir), remote = bucket1)
+```
+```{r echo=FALSE}
+six_bucket_upload(path = c(demo_rds_file, tdir), remote = bucket1, force = TRUE)
+```
+
+
+### File upload
+
+Now that we have a bucket, we can upload a file to the existing bucket with `six_file_upload`.
+
+```{r eval=FALSE}
+links_file <- file.path(system.file(), "Meta/links.rds")
+six_file_upload(links_file, bucket1)
+```
+```{r echo=FALSE}
+links_file <- file.path(system.file(), "Meta/links.rds")
+six_file_upload(links_file, bucket1, force = TRUE)
+```
+
+
+### Add a user to a bucket
+
+Now that we created a bucket, and added some files, let's add a user to this bucket.
+
+Create a random user name and create the user in AWS.
+
+```{r}
+user1 <- random_user()
+aws_user_create(user1)
+```
+
+Now add the user to the bucket so they can access it with the permissions we're assigning to them.
+
+
+```{r}
+six_bucket_add_user(
+  bucket = bucket1,
+  username = user1,
+  permissions = "read"
+)
+```
+
+### Get all user permissions for a bucket
+
+You'll often want to get a summary of the permissions on a given bucket. `six_bucket_permissions()` gives you that summary.
+
+```{r get-perms-and-hide-admins-show, eval=FALSE}
+six_bucket_permissions(bucket1)
+```
+```{r get-perms-and-hide-admins-run, echo=FALSE, message=FALSE}
+library(dplyr)
+six_bucket_permissions(bucket1) %>%
+  filter(permissions == "read")
+```
+
+
+
+### Change a user's permissions for a bucket
+
+After adding a user to a bucket you may want to change their permissions - for example, if they had read access only but need admin, or vice versa. The magic function `six_bucket_change_user()` is meant for these kinds of use cases.
+
+First, let's see what permissions `user1` has right now using the previous magic function we learned about:
+
+```{r get-perms-and-hide-admins-show1, eval=FALSE}
+six_bucket_permissions(bucket1)
+```
+```{r get-perms-and-hide-admins-run1, echo=FALSE}
+library(dplyr)
+six_bucket_permissions(bucket1) %>%
+  filter(permissions != "admin")
+```
+
+`user1` has read access, but we'd like to change that to write access:
+
+```{r}
+six_bucket_change_user(
+  bucket = bucket1,
+  username = user1,
+  permissions = "write"
+)
+```
+
+`six_bucket_change_user()` returns inivisibly. Let's check the permissions for this user and bucket after this change:
+
+```{r get-perms-and-hide-admins-show2, eval=FALSE}
+six_bucket_permissions(bucket1)
+```
+```{r get-perms-and-hide-admins-run2, echo=FALSE}
+library(dplyr)
+six_bucket_permissions(bucket1) %>%
+  filter(permissions != "admin")
+```
+
+
+### Remove a user from a bucket
+
+You may at some point want to remove a user from a bucket that you've previously added. The magic function `six_bucket_remove_user()` helps you do just that.
+
+```{r}
+six_bucket_remove_user(bucket1, user1)
+```
+
+
+### Delete a bucket
+
+Finally, there's a magic function to make deleting a bucket easier. For good reason AWS doesn't allow a bucket to be deleted if it has obejcts. `six_bucket_delete()` helps you delete a bucket by cleaning out any objects with prompts. Though, you can force deletion as well.
+
+First, create a bucket with some objects
+
+```{r}
+bucket2 <- random_string("bucket")
+aws_bucket_create(bucket2)
+demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
+links_file <- file.path(system.file(), "Meta/links.rds")
+aws_file_upload(
+  c(demo_rds_file, links_file),
+  s3_path(bucket2, c(basename(demo_rds_file), basename(links_file)))
+)
+aws_bucket_list_objects(bucket2)
+```
+
+Then delete the bucket
+
+```{r delete-bucket-show, eval=FALSE}
+six_bucket_delete(bucket2)
+```
+```{r delete-bucket-run, echo=FALSE}
+six_bucket_delete(bucket2, force = TRUE)
+```
+
+## IAM magical methods
+
+Right now we have magical methods for IAM related to managing user groups (`six_admin_setup()`) and users (`six_user*()` functions).
+
+### Admin setup
+
+`six_admin_setup()` is a helper function for administrators of AWS accounts. It creates an admin and a user group with the idea that many administrators are going to want two basic groups of people associated with their AWS account: users and admins, where users only have read and maybe write access, while admins have additional permissions in addition to reading and writing. To these two groups (users and admins) this function adds a set of five policies each that give appropriate levels of permissions for each group. You can of course change the policies, but we think these are a good default set of policies.
+
+
+```{r six-admin-setup}
+six_admin_setup(users_group = "myusers", admin_group = "myadmin")
+```
+
+```{r six-admin-setup-cleanup, echo=FALSE}
+without_verbose(six_group_delete("myusers"))
+without_verbose(six_group_delete("myadmin"))
+```
+
+### User management
+
+```{r echo=FALSE}
+sixes_users <- grep("six_user", sixes, value = TRUE)
+```
+
+There's currently `r length(sixes_users)` magic functions for managing users:
+
+```{r echo=FALSE}
+cat(paste(" -", paste(sixes_users[order(sixes_users)], collapse = "\n - ")))
+```
+
+`six_user_creds()` is a helper function to create credentials for an existing users - credentials being an AWS secret access key and corresponding access key ID. That function is used inside of `six_user_create()` to create credentials for a new user. Let's see how it works. `six_user_create()` will:
+
+- Create a new user
+- Add a new `UserInfo` policy to your account if doesn't exist yet
+- Attach the `UserInfo` policy to the newly created user
+- Grants an access key to the new user, copying an email template to your clipboard
+
+
+```{r six-user-create-show, eval=FALSE}
+user2 <- random_user()
+six_user_create(user2)
+```
+```{r six-user-create-eval, echo=FALSE}
+user2 <- random_user()
+six_user_create(user2, copy_to_cb = FALSE)
+```
+
+It can't be shown here, but an email template is copied to your clipboard with the new credentials so you can give them to the person that is associated with the new user, whether that be via email, chat, or other means.
+
+You can also delete a user. If a user has any attached policies or access keys the user can not be deleted. `six_user_delete()` does those tasks for you then deletes the user:
+
+```{r six-user-delete}
+six_user_delete(user2)
+```
+
+
+
+
+```{r cleanup, echo=FALSE}
+suppressMessages(six_bucket_delete(bucket1, force = TRUE))
+suppressMessages(six_bucket_remove_user(bucket1, user1))
+suppressMessages(six_user_delete(user1))
+Sys.unsetenv("AWS_REGION")
+```

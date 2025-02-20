@@ -154,17 +154,18 @@ aws_user_create <- function(
     user_list_tidy()
 }
 
-#' Create a user
+#' Create a user, magically
 #'
 #' @export
 #' @inheritParams aws_user_create
+#' @inheritParams six_user_creds
 #' @details See [aws_user_create()] for more details.
 #' This function creates a user, adds policies so the
 #' user can access their own account, and grants them an access
 #' key. Add more policies using `aws_polic*` functions
 #' @section What is magical:
-#' - Adds a `GetUser` policy to your account if doesn't exist yet
-#' - Attaches `GetUser` policy to the user created
+#' - Adds a `UserInfo` policy to your account if doesn't exist yet
+#' - Attaches `UserInfo` policy to the user created
 #' - Grants an access key, copying an email template to your clipboard
 #' @family users
 #' @family magicians
@@ -307,7 +308,8 @@ aws_user_access_key <- function(username = NULL, ...) {
 #' @family users
 aws_user_access_key_delete <- function(access_key_id, username = NULL) {
   con_iam()$delete_access_key(UserName = username, AccessKeyId = access_key_id)
-  cli::cli_alert_success("Access Key ID {.strong {access_key_id}} deleted")
+  key <- ifelse(env64$redacted, env64$redact_str, access_key_id) # nolint
+  cli_success("Access Key ID {.strong {key}} deleted")
   invisible()
 }
 
