@@ -20,7 +20,7 @@ RoxygenNote: 7.3.2
 LazyData: true
 Depends:
     R (>= 2.10)
-Imports: 
+Imports:
     dplyr,
     lubridate,
     magrittr,
@@ -42,7 +42,7 @@ Imports:
     clipr,
     withr,
     ipaddress
-Suggests: 
+Suggests:
     knitr,
     rmarkdown,
     roxyglobals,
