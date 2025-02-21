@@ -44,9 +44,8 @@ aws_bucket_create <- function(bucket, ...) {
   bucket_checks(bucket)
   con_s3()$create_bucket(
     Bucket = bucket,
-    ...
-    # CreateBucketConfiguration =
-    #   list(LocationConstraint = env_var("AWS_REGION")), ...
+    CreateBucketConfiguration =
+      list(LocationConstraint = env_var("AWS_REGION")), ...
   )$Location
 }
 
