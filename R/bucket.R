@@ -44,8 +44,10 @@ aws_bucket_create <- function(bucket, ...) {
   bucket_checks(bucket)
   con_s3()$create_bucket(
     Bucket = bucket,
-    CreateBucketConfiguration =
-      list(LocationConstraint = env_var("AWS_REGION")), ...
+    CreateBucketConfiguration = list(
+      LocationConstraint = env_var("AWS_REGION")
+    ),
+    ...
   )$Location
 }
 
@@ -57,8 +59,10 @@ bucket_create_if_not <- function(bucket, force = FALSE) {
     if (!force) {
       if (yesno("{.strong {bucket}} does not exist. Create it?")) {
         cli::cli_inform("Exiting without creating bucket {.strong {bucket}}")
-        cli::cli_inform("Run again & respond affirmatively
-          or use `aws_bucket_create`")
+        cli::cli_inform(
+          "Run again & respond affirmatively
+          or use `aws_bucket_create`"
+        )
         return(invisible())
       }
     }
@@ -239,8 +243,12 @@ aws_bucket_download <- function(bucket, dest_path, ...) {
 #' aws_bucket_delete(bucket_name, force = TRUE)
 #' aws_bucket_exists(bucket_name)
 aws_bucket_upload <- function(
-    path, bucket, max_batch = fs::fs_bytes("100MB"), force = FALSE,
-    ...) {
+  path,
+  bucket,
+  max_batch = fs::fs_bytes("100MB"),
+  force = FALSE,
+  ...
+) {
   stop_if(rlang::is_missing(path), "{.strong path} is required")
   stop_if(rlang::is_missing(bucket), "{.strong bucket} is required")
   if (!aws_bucket_exists(bucket)) {
@@ -283,10 +291,12 @@ explode_file_paths <- function(path) {
     paths <- map(path, \(p) {
       if (is_dir(p)) {
         map(
-          dir_ls(p, recurse = TRUE, type = "file"), \(z) {
+          dir_ls(p, recurse = TRUE, type = "file"),
+          \(z) {
             tibble(key = path_from(z, basename(p)), path = unname(z))
           }
-        ) %>% list_rbind()
+        ) %>%
+          list_rbind()
       } else {
         tibble(key = basename(p), path = p)
       }
