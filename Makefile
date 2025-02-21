@@ -50,6 +50,10 @@ vign_db:
 	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('databases.Rmd.og', output = 'databases.Rmd')";\
 	cd ..
 
+vign_six:
+	cd vignettes;\
+	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('six.Rmd.og', output = 'six.Rmd')";\
+
 vign_auth:
 	cd vignettes;\
 	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('auth.Rmd.og', output = 'auth.Rmd')";\

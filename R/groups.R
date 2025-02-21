@@ -119,3 +119,37 @@ aws_group_delete <- function(name) {
   con_iam()$delete_group(name)
   invisible()
 }
+
+#' Delete a group, magically
+#'
+#' @export
+#' @inheritParams aws_group_create
+#' @return `NULL` invisibly
+#' @details See <https://www.paws-r-sdk.com/docs/iam_delete_group/>
+#' docs for more details
+#' @family groups
+#' @examplesIf aws_has_creds()
+#' group <- random_string("group")
+#' aws_group_create(group)
+#' six_group_delete(group)
+six_group_delete <- function(name) {
+  group <- aws_group(name)
+
+  # remove policies
+  attpols <- group$attached_policies
+  if (!rlang::is_empty(attpols)) {
+    policies <- attpols$PolicyName
+    map(policies, \(policy) aws_policy_detach(group, policy))
+    cli_info("Polic{?y/ies} {.strong {policies}} detached")
+  }
+
+  # remove users
+  if (!rlang::is_empty(group$users)) {
+    users <- group$users
+    map(users$UserName, \(g) aws_user_remove_from_group(g, name))
+    cli_info("User{?s} {.strong {users$UserName}} detached")
+  }
+
+  aws_group_delete(name)
+  cli_info("group {.strong {name}} deleted")
+}

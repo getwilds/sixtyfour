@@ -29,6 +29,7 @@ Other groups:
 \code{\link{aws_group}()},
 \code{\link{aws_group_create}()},
 \code{\link{aws_group_delete}()},
-\code{\link{aws_group_exists}()}
+\code{\link{aws_group_exists}()},
+\code{\link{six_group_delete}()}
 }
 \concept{groups}

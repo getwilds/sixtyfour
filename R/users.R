@@ -154,17 +154,18 @@ aws_user_create <- function(
     user_list_tidy()
 }
 
-#' Create a user
+#' Create a user, magically
 #'
 #' @export
 #' @inheritParams aws_user_create
+#' @inheritParams six_user_creds
 #' @details See [aws_user_create()] for more details.
 #' This function creates a user, adds policies so the
 #' user can access their own account, and grants them an access
 #' key. Add more policies using `aws_polic*` functions
 #' @section What is magical:
-#' - Adds a `GetUser` policy to your account if doesn't exist yet
-#' - Attaches `GetUser` policy to the user created
+#' - Adds a `UserInfo` policy to your account if doesn't exist yet
+#' - Attaches `UserInfo` policy to the user created
 #' - Grants an access key, copying an email template to your clipboard
 #' @family users
 #' @family magicians
@@ -177,7 +178,7 @@ aws_user_create <- function(
 #' six_user_delete(name)
 six_user_create <- function(
     username, path = NULL, permission_boundary = NULL,
-    tags = NULL) {
+    tags = NULL, copy_to_cb = TRUE) {
   aws_user_create(
     path = path,
     username = username,
@@ -194,16 +195,16 @@ six_user_create <- function(
       aws_policy_statement(actions, "*")
     )
     aws_policy_create(policy_name, policy_doc)
-    cli_alert_info("Added policy {.strong {policy_name}} to your account")
+    cli_info("Added policy {.strong {policy_name}} to your account")
   }
   user_obj <- aws_user(username)
   if (!has_policy(user_obj, policy_name)) {
     aws_policy_attach(user_obj, policy_name)
-    cli_alert_info(
+    cli_info(
       "Added policy {.strong {policy_name}} to {.strong {username}}"
     )
   }
-  six_user_creds(username, copy_to_cp = TRUE)
+  six_user_creds(username, copy_to_cb = copy_to_cb)
 }
 
 #' Delete a user
@@ -249,7 +250,7 @@ six_user_delete <- function(username) {
   if (!rlang::is_empty(attpols)) {
     policies <- attpols$PolicyName
     map(policies, \(policy) aws_policy_detach(user_obj, policy))
-    cli_alert_info("Polic{?y/ies} {.strong {policies}} detached")
+    cli_info("Polic{?y/ies} {.strong {policies}} detached")
   }
 
   # remove access keys
@@ -262,11 +263,11 @@ six_user_delete <- function(username) {
   if (!rlang::is_empty(user_obj$groups)) {
     groups <- user_obj$groups
     map(groups$GroupName, \(g) aws_user_remove_from_group(username, g))
-    cli_alert_info("Group{?s} {.strong {groups$GroupName}} detached")
+    cli_info("Group{?s} {.strong {groups$GroupName}} detached")
   }
 
   aws_user_delete(username)
-  cli_alert_info("{.strong {username}} deleted")
+  cli_info("{.strong {username}} deleted")
 }
 
 #' Get AWS Access Key for a user
@@ -285,7 +286,7 @@ six_user_delete <- function(username) {
 aws_user_access_key <- function(username = NULL, ...) {
   out <- con_iam()$list_access_keys(username, ...)
   if (length(out$AccessKeyMetadata) == 0) {
-    cli::cli_alert_warning("No access keys found for {.strong {username}}")
+    cli_warning("No access keys found for {.strong {username}}")
     return(invisible())
   }
   bind_rows(out$AccessKeyMetadata)
@@ -307,7 +308,8 @@ aws_user_access_key <- function(username = NULL, ...) {
 #' @family users
 aws_user_access_key_delete <- function(access_key_id, username = NULL) {
   con_iam()$delete_access_key(UserName = username, AccessKeyId = access_key_id)
-  cli::cli_alert_success("Access Key ID {.strong {access_key_id}} deleted")
+  key <- ifelse(env64$redacted, env64$redact_str, access_key_id) # nolint
+  cli_success("Access Key ID {.strong {key}} deleted")
   invisible()
 }
 

@@ -73,7 +73,7 @@ con_factory <- function(service) {
         endpoint = Sys.getenv("LOCALSTACK_ENDPOINT", LOCALSTACK_ENDPOINT)
       )
     } else {
-      con <- svc()
+      con <- svc(region = NULL)
     }
     as_64_con(con, service, profile)
   }

@@ -164,14 +164,14 @@ six_bucket_add_user <- function(bucket, username, permissions) {
   user_data <- aws_user(username)
   if (NROW(user_data$attached_policies) == 0) {
     aws_user(username) %>% aws_policy_attach(policy_name)
-    cli::cli_alert_success(add_user_now_has)
+    cli_success(add_user_now_has)
     return(invisible())
   }
   if (policy_name %in% user_data$attached_policies$PolicyName) {
-    cli::cli_alert_success(add_user_already)
+    cli_success(add_user_already)
   } else {
     aws_user(username) %>% aws_policy_attach(policy_name)
-    cli::cli_alert_success(add_user_now_has)
+    cli_success(add_user_now_has)
   }
   invisible()
 }
@@ -233,18 +233,18 @@ six_bucket_change_user <- function(bucket, username, permissions) {
 
   perms <- filter(six_bucket_permissions(bucket), user == username)
   if (NROW(perms) == 0) {
-    cli::cli_alert_warning(c(
+    cli_warning(c(
       "No {.strong {bucket}} specific permissions",
       " found for {.strong {username}}"
     ))
-    cli::cli_alert_info(c(
+    cli_info(c(
       "Use {.strong six_bucket_add_user} to add a user to a bucket"
     ))
     return(invisible())
   }
 
   if (grepl(permissions, perms$permissions)) {
-    cli::cli_alert_success(add_user_already)
+    cli_success(add_user_already)
     return(invisible())
   }
 
@@ -269,7 +269,7 @@ six_bucket_change_user <- function(bucket, username, permissions) {
   aws_user(username) %>% aws_policy_attach(policy_name)
 
   # let em know
-  cli::cli_alert_success(add_user_now_has)
+  cli_success(add_user_now_has)
 
   invisible()
 }
@@ -300,7 +300,7 @@ six_bucket_remove_user <- function(bucket, username) {
   perms <- permissions_user_bucket(bucket) %>%
     filter(user == username)
   if (NROW(perms) == 0) {
-    cli::cli_alert_warning(c(
+    cli_warning(c(
       "No {.strong {bucket}} specific permissions",
       " found for {.strong {username}}"
     ))
@@ -310,7 +310,7 @@ six_bucket_remove_user <- function(bucket, username) {
   userobj <- aws_user(username)
   map(perms$PolicyName, \(policy) aws_policy_detach(userobj, policy))
 
-  cli::cli_alert_success(c(
+  cli_success(c(
     "{.strong {username}} access to",
     " {.strong {bucket}} has been removed"
   ))
@@ -354,7 +354,7 @@ six_bucket_remove_user <- function(bucket, username) {
 #' aws_bucket_delete(bucket, force = TRUE)
 six_bucket_permissions <- function(bucket) {
   if (!aws_bucket_exists(bucket)) {
-    cli::cli_abort("{.strong {bucket}} does not exist")
+    cli_abort("{.strong {bucket}} does not exist")
   }
   perms <- permissions_user_bucket(bucket)
   user_perms <-
@@ -405,7 +405,7 @@ AWS_REGION={Sys.getenv('AWS_REGION')}
 #' @importFrom dplyr case_match
 #' @importFrom clipr write_clip
 #' @param username (character) A user name. required
-#' @param copy_to_cp (logical) Copy to clipboard. Default: `FALSE`. See
+#' @param copy_to_cb (logical) Copy to clipboard. Default: `FALSE`. See
 #' section "Clipboard" below for more details.
 #' @details A user can have more than one pair of access keys.
 #' By default a user can have up to 2 pairs of access keys.
@@ -423,10 +423,10 @@ AWS_REGION={Sys.getenv('AWS_REGION')}
 #' Save the secret key after running this function as it can not be
 #' viewed again.
 #' @section Clipboard:
-#' If you set `copy_to_cp=TRUE` we'll copy to your clipboard an
+#' If you set `copy_to_cb=TRUE` we'll copy to your clipboard an
 #' email template with the credentials and a small amount of instructions.
 #' Please do edit that email with information tailored to your
-#' group and how you'd like to store secrets.
+#' group and how you'd like to store secrets
 #' @section Known error behaviors:
 #' - `LimitExceeded (HTTP 409). Cannot exceed quota for AccessKeysPerUser: 2`
 #' - `NoSuchEntity (HTTP 404). The user with name xxx cannot be found.`
@@ -442,11 +442,11 @@ AWS_REGION={Sys.getenv('AWS_REGION')}
 #' if (!aws_user_exists(user)) aws_user_create(user)
 #' six_user_creds(user)
 #' aws_user_access_key(user)
-#' six_user_creds(user, copy_to_cp = TRUE)
+#' six_user_creds(user, copy_to_cb = TRUE)
 #' aws_user_access_key(user)
 #' # cleanup
 #' six_user_delete(user)
-six_user_creds <- function(username, copy_to_cp = FALSE) {
+six_user_creds <- function(username, copy_to_cb = FALSE) {
   creds <- tryCatch(
     con_iam()$create_access_key(UserName = username),
     error = function(e) e
@@ -463,14 +463,20 @@ six_user_creds <- function(username, copy_to_cp = FALSE) {
     cli_abort(c(creds$message, help_msg))
   }
 
-  cli_alert_success("Key pair created for {.strong {username}}")
+  cli_success("Key pair created for {.strong {username}}")
   creds$AccessKey$AwsRegion <- Sys.getenv("AWS_REGION")
   for (i in seq_along(creds$AccessKey)) {
-    cli_alert_info("{names(creds$AccessKey)[i]}: {creds$AccessKey[[i]]}")
+    if (env64$redacted) {
+      if (grepl("AccessKey", names(creds$AccessKey)[i])) {
+        cli_info("{names(creds$AccessKey)[i]}: {env64$redact_str}")
+      }
+    } else {
+      cli_info("{names(creds$AccessKey)[i]}: {creds$AccessKey[[i]]}")
+    }
   }
 
-  if (copy_to_cp) {
-    cli_alert_info("Email template copied to your clipboard")
+  if (copy_to_cb) {
+    cli_info("Email template copied to your clipboard")
     glue(creds_template)
     clipr::write_clip(glue(creds_template))
   }
