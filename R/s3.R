@@ -82,9 +82,16 @@ bucket_to_policy_name <- function(bucket, permissions) {
   glue("S3{perm}{upper_camel_case(bucket)}")
 }
 
+upper_first <- function(string) {
+  sub("^(\\w?)", "\\U\\1", string, perl = TRUE)
+}
+remove_separators <- function(string) {
+  gsub("[^[:alnum:]]", "", string, perl = TRUE)
+}
 upper_camel_case <- function(string) {
-  string <- sub("^(\\w?)", "\\U\\1", string, perl = TRUE)
-  gsub("\\.(\\w?)", "\\U\\1", string, perl = TRUE)
+  string <- upper_first(string)
+  string <- remove_separators(string)
+  trimws(string)
 }
 
 create_policy_if_missing <- function(bucket, permissions) {
