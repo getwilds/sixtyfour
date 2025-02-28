@@ -480,6 +480,7 @@ resource_rds <- function(
 #' )
 #' aws_policy_document_create(st8ment_rds) %>% prettify()
 #'
+#' @examplesIf aws_has_creds()
 #' ### DB account = user in a database that has access to it
 #' # all DB instances & DB accounts for a AWS account and AWS Region
 #' aws_policy_document_create(
