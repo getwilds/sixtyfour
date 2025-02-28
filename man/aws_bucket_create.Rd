@@ -22,9 +22,13 @@ Create an S3 bucket
 Requires the env var \code{AWS_REGION}
 }
 \examples{
-\dontrun{
-aws_bucket_create(bucket = "s64-test-2")
-}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+bucket2 <- random_string("bucket")
+aws_bucket_create(bucket2)
+
+# cleanup
+six_bucket_delete(bucket2, force = TRUE)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other buckets: 

@@ -33,14 +33,14 @@ can be deleted cleanly
 }
 
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # bucket does not exist
 six_bucket_delete("notabucket")
 
 # bucket exists w/o objects
 bucket <- random_string("bucket")
 aws_bucket_create(bucket)
-six_bucket_delete(bucket)
+six_bucket_delete(bucket, force = TRUE)
 
 # bucket exists w/ objects (files and directories with files)
 bucket <- random_string("bucket")
@@ -59,7 +59,7 @@ aws_file_upload(
   )
 )
 aws_bucket_list_objects(bucket)
-six_bucket_delete(bucket)
+six_bucket_delete(bucket, force = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{

@@ -41,20 +41,21 @@ structure in the S3 bucket
 }
 
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # single file, single remote path
 bucket1 <- random_string("bucket")
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
-six_bucket_upload(path = demo_rds_file, remote = bucket1)
+six_bucket_upload(path = demo_rds_file, remote = bucket1, force = TRUE)
 
 ## a file and a directory - with a single remote path
 bucket2 <- random_string("bucket")
 library(fs)
 tdir <- path(path_temp(), "mytmp")
 dir_create(tdir)
-purrr::map(letters, \(l) file_create(path(tdir, l)))
+invisible(purrr::map(letters, \(l) file_create(path(tdir, l))))
 dir_tree(tdir)
-six_bucket_upload(path = c(demo_rds_file, tdir), remote = bucket2)
+six_bucket_upload(path = c(demo_rds_file, tdir), remote = bucket2,
+force = TRUE)
 
 ## a directory with nested dirs - with a single remote path
 bucket3 <- random_string("bucket")
@@ -67,7 +68,8 @@ cat("Some text in a readme", file = path(tdir, "README.md"))
 write.csv(Orange, file = path(tdir, "mcintosh", "orange.csv"))
 write.csv(iris, file = path(tdir, "pink-lady", "iris.csv"))
 dir_tree(tdir)
-six_bucket_upload(path = tdir, remote = path(bucket3, "fruit/basket"))
+six_bucket_upload(path = tdir, remote = path(bucket3, "fruit/basket"),
+force = TRUE)
 
 # cleanup
 six_bucket_delete(bucket1, force = TRUE)
