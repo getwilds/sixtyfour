@@ -59,6 +59,13 @@ vign_auth:
 	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('auth.Rmd.og', output = 'auth.Rmd')";\
 	cd ..
 
+vign_s3iam:
+	cd vignettes;\
+	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true')" \
+	-e "knitr::knit('s3iam.Rmd.og', output = 's3iam.Rmd')";\
+	sed "s/${AWS_ACCOUNT_ID}/*****/g" s3iam.Rmd > tmp && mv tmp s3iam.Rmd;\
+	cd ..
+
 test:
 	SIXTYFOUR_RUN_LOCAL_ONLY_TESTS=true ${RSCRIPT} -e "devtools::test()"
 
