@@ -42,13 +42,12 @@ s3_actions_full <- function() {
 #'   resource = c(bucket_arn(bucket), bucket_arn(bucket, objects = "*"))
 #' )
 aws_s3_policy_doc_create <- function(
-  bucket,
-  action,
-  resource,
-  effect = "Allow",
-  sid = NULL,
-  ...
-) {
+    bucket,
+    action,
+    resource,
+    effect = "Allow",
+    sid = NULL,
+    ...) {
   doc <- list(
     Version = "2012-10-17",
     Statement = list(
@@ -76,13 +75,16 @@ add_user_now_has <- c(
 
 #' @keywords internal
 bucket_to_policy_name <- function(bucket, permissions) {
-  perm <- switch(permissions, read = "ReadOnlyAccess", write = "FullAccess")
+  perm <- switch(permissions,
+    read = "ReadOnlyAccess",
+    write = "FullAccess"
+  )
   glue("S3{perm}{upper_camel_case(bucket)}")
 }
 
 upper_camel_case <- function(string) {
-  string <- sub('^(\\w?)', '\\U\\1', string, perl = TRUE)
-  gsub('\\.(\\w?)', '\\U\\1', string, perl = TRUE)
+  string <- sub("^(\\w?)", "\\U\\1", string, perl = TRUE)
+  gsub("\\.(\\w?)", "\\U\\1", string, perl = TRUE)
 }
 
 create_policy_if_missing <- function(bucket, permissions) {
@@ -92,8 +94,7 @@ create_policy_if_missing <- function(bucket, permissions) {
   }
   mydoc <- aws_s3_policy_doc_create(
     bucket = bucket,
-    action = switch(
-      permissions,
+    action = switch(permissions,
       read = s3_actions_read(),
       write = s3_actions_full()
     ),
