@@ -30,7 +30,7 @@ is an S3 bucket, with 8 columns:
 List objects in an S3 bucket
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 bucket_name <- random_string("bucket")
 if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
 links_file <- file.path(system.file(), "Meta/links.rds")
@@ -39,6 +39,8 @@ aws_file_upload(
   s3_path(bucket_name, basename(links_file))
 )
 aws_bucket_list_objects(bucket = bucket_name)
+# cleanup
+six_bucket_delete(bucket_name, force = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{

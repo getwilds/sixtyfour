@@ -21,7 +21,7 @@ Requires the env var \code{AWS_REGION}. This function prompts you to make
 sure that you want to delete the bucket.
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 bucket <- random_string("bucket")
 aws_bucket_create(bucket = bucket)
 desc_file <- file.path(system.file(), "DESCRIPTION")
@@ -32,7 +32,7 @@ aws_bucket_download(bucket = bucket, dest_path = temp_dir)
 fs::dir_ls(temp_dir)
 
 # cleanup
-aws_bucket_delete("tmp-bucket-369")
+six_bucket_delete(bucket, force = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{

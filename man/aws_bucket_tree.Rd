@@ -22,7 +22,7 @@ printed as a tree
 Print a tree of the objects in a bucket
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 bucket_name <- random_string("bucket")
 if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
 links_file <- file.path(system.file(), "Meta/links.rds")

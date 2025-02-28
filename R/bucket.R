@@ -11,12 +11,17 @@ bucket_checks <- function(bucket) {
 #' [head_bucket](https://www.paws-r-sdk.com/docs/s3_head_bucket/)
 #' @family buckets
 #' @return a single boolean (logical)
-#' @examples \dontrun{
+#' @examplesIf aws_has_creds()
+#' bucket1 <- random_string("bucket")
+#' aws_bucket_create(bucket1)
+#'
 #' # exists
-#' aws_bucket_exists(bucket = "s64-test-2")
+#' aws_bucket_exists(bucket = bucket1)
 #' # does not exist
 #' aws_bucket_exists(bucket = "no-bucket")
-#' }
+#'
+#' # cleanup
+#' six_bucket_delete(bucket1, force = TRUE)
 aws_bucket_exists <- function(bucket) {
   bucket_checks(bucket)
   res <- tryCatch(
@@ -37,9 +42,12 @@ aws_bucket_exists <- function(bucket) {
 #' @note Requires the env var `AWS_REGION`
 #' @return the bucket path (character)
 #' @family buckets
-#' @examples \dontrun{
-#' aws_bucket_create(bucket = "s64-test-2")
-#' }
+#' @examplesIf aws_has_creds()
+#' bucket2 <- random_string("bucket")
+#' aws_bucket_create(bucket2)
+#'
+#' # cleanup
+#' six_bucket_delete(bucket2, force = TRUE)
 aws_bucket_create <- function(bucket, ...) {
   bucket_checks(bucket)
   con_s3()$create_bucket(
@@ -83,12 +91,12 @@ bucket_create_if_not <- function(bucket, force = FALSE) {
 #' sure that you want to delete the bucket.
 #' @family buckets
 #' @return `NULL`, invisibly
-#' @examplesIf interactive()
-#' bucket_name <- "bucket-to-delete-113"
+#' @examplesIf aws_has_creds()
+#' bucket_name <- random_string("bucket")
 #' if (!aws_bucket_exists(bucket_name)) {
 #'   aws_bucket_create(bucket = bucket_name)
 #'   aws_buckets()
-#'   aws_bucket_delete(bucket = bucket_name)
+#'   aws_bucket_delete(bucket = bucket_name, force = TRUE)
 #'   aws_buckets()
 #' }
 aws_bucket_delete <- function(bucket, force = FALSE, ...) {
@@ -117,14 +125,14 @@ aws_bucket_delete <- function(bucket, force = FALSE, ...) {
 #' @family buckets
 #' @family magicians
 #' @return `NULL`, invisibly
-#' @examplesIf interactive()
+#' @examplesIf aws_has_creds()
 #' # bucket does not exist
 #' six_bucket_delete("notabucket")
 #'
 #' # bucket exists w/o objects
 #' bucket <- random_string("bucket")
 #' aws_bucket_create(bucket)
-#' six_bucket_delete(bucket)
+#' six_bucket_delete(bucket, force = TRUE)
 #'
 #' # bucket exists w/ objects (files and directories with files)
 #' bucket <- random_string("bucket")
@@ -143,7 +151,7 @@ aws_bucket_delete <- function(bucket, force = FALSE, ...) {
 #'   )
 #' )
 #' aws_bucket_list_objects(bucket)
-#' six_bucket_delete(bucket)
+#' six_bucket_delete(bucket, force = TRUE)
 six_bucket_delete <- function(bucket, force = FALSE, ...) {
   msg_no_objects <- c(
     "Are you sure you want to delete {.strong {bucket}}?"
@@ -194,7 +202,7 @@ six_bucket_delete <- function(bucket, force = FALSE, ...) {
 #' @note Requires the env var `AWS_REGION`. This function prompts you to make
 #' sure that you want to delete the bucket.
 #' @family buckets
-#' @examplesIf interactive()
+#' @examplesIf aws_has_creds()
 #' bucket <- random_string("bucket")
 #' aws_bucket_create(bucket = bucket)
 #' desc_file <- file.path(system.file(), "DESCRIPTION")
@@ -205,7 +213,7 @@ six_bucket_delete <- function(bucket, force = FALSE, ...) {
 #' fs::dir_ls(temp_dir)
 #'
 #' # cleanup
-#' aws_bucket_delete("tmp-bucket-369")
+#' six_bucket_delete(bucket, force = TRUE)
 aws_bucket_download <- function(bucket, dest_path, ...) {
   con_s3fs()$dir_download(path = bucket, new_path = dest_path, ...)
 }
@@ -224,7 +232,7 @@ aws_bucket_download <- function(bucket, dest_path, ...) {
 #' @family buckets
 #' @details To upload individual files see [aws_file_upload()]
 #' @return the s3 format path of the bucket uploaded to
-#' @examplesIf interactive()
+#' @examplesIf aws_has_creds()
 #' library(fs)
 #' tdir <- path(tempdir(), "apples")
 #' dir.create(tdir)
@@ -276,7 +284,7 @@ bucket_name <- function(x) {
 #' Get file path starting at a certain path component
 #' @importFrom fs path_join path_split
 #' @keywords internal
-#' @examplesIf interactive()
+#' @examples
 #' path_from(path = "Rtmpxsqth0/apples/mcintosh/orange.csv", from = "apples")
 path_from <- function(path, from) {
   parts <- fs::path_split(path)[[1]]
@@ -330,20 +338,21 @@ explode_file_paths <- function(path) {
 #' @family magicians
 #' @return (character) a vector of remote s3 paths where your
 #' files are located
-#' @examplesIf interactive()
+#' @examplesIf aws_has_creds()
 #' # single file, single remote path
 #' bucket1 <- random_string("bucket")
 #' demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
-#' six_bucket_upload(path = demo_rds_file, remote = bucket1)
+#' six_bucket_upload(path = demo_rds_file, remote = bucket1, force = TRUE)
 #'
 #' ## a file and a directory - with a single remote path
 #' bucket2 <- random_string("bucket")
 #' library(fs)
 #' tdir <- path(path_temp(), "mytmp")
 #' dir_create(tdir)
-#' purrr::map(letters, \(l) file_create(path(tdir, l)))
+#' invisible(purrr::map(letters, \(l) file_create(path(tdir, l))))
 #' dir_tree(tdir)
-#' six_bucket_upload(path = c(demo_rds_file, tdir), remote = bucket2)
+#' six_bucket_upload(path = c(demo_rds_file, tdir), remote = bucket2,
+#' force = TRUE)
 #'
 #' ## a directory with nested dirs - with a single remote path
 #' bucket3 <- random_string("bucket")
@@ -356,7 +365,8 @@ explode_file_paths <- function(path) {
 #' write.csv(Orange, file = path(tdir, "mcintosh", "orange.csv"))
 #' write.csv(iris, file = path(tdir, "pink-lady", "iris.csv"))
 #' dir_tree(tdir)
-#' six_bucket_upload(path = tdir, remote = path(bucket3, "fruit/basket"))
+#' six_bucket_upload(path = tdir, remote = path(bucket3, "fruit/basket"),
+#' force = TRUE)
 #'
 #' # cleanup
 #' six_bucket_delete(bucket1, force = TRUE)
@@ -417,7 +427,7 @@ six_bucket_upload <- function(path, remote, force = FALSE, ...) {
 #' * owner (character)
 #' * etag (character)
 #' * last_modified (dttm)
-#' @examplesIf interactive()
+#' @examplesIf aws_has_creds()
 #' bucket_name <- random_string("bucket")
 #' if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
 #' links_file <- file.path(system.file(), "Meta/links.rds")
@@ -426,6 +436,8 @@ six_bucket_upload <- function(path, remote, force = FALSE, ...) {
 #'   s3_path(bucket_name, basename(links_file))
 #' )
 #' aws_bucket_list_objects(bucket = bucket_name)
+#' # cleanup
+#' six_bucket_delete(bucket_name, force = TRUE)
 aws_bucket_list_objects <- function(bucket, ...) {
   out <- con_s3()$list_objects(bucket, ...)
   if (rlang::is_empty(out$Contents)) {
@@ -458,9 +470,8 @@ aws_bucket_list_objects <- function(bucket, ...) {
 #' @note we set `refresh=TRUE` internally to make sure we return up to date
 #' information about your buckets rather than what's cached locally
 #' @family buckets
-#' @examples \dontrun{
+#' @examplesIf aws_has_creds()
 #' aws_buckets()
-#' }
 aws_buckets <- function(...) {
   out <- con_s3fs()$dir_info(refresh = TRUE, ...)
   if (is.data.frame(out) && NROW(out) > 0) {
@@ -480,7 +491,7 @@ aws_buckets <- function(...) {
 #' @family buckets
 #' @return character vector of objects/files within the bucket,
 #' printed as a tree
-#' @examplesIf interactive()
+#' @examplesIf aws_has_creds()
 #' bucket_name <- random_string("bucket")
 #' if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
 #' links_file <- file.path(system.file(), "Meta/links.rds")

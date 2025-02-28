@@ -10,8 +10,6 @@ path_from(path, from)
 Get file path starting at a certain path component
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 path_from(path = "Rtmpxsqth0/apples/mcintosh/orange.csv", from = "apples")
-\dontshow{\}) # examplesIf}
 }
 \keyword{internal}
