@@ -51,8 +51,8 @@ The admin user:
 ``` r
 name_admin <- random_user()
 user_admin <- six_user_create(name_admin, copy_to_cb = FALSE)
-#> ℹ Added policy UserInfo to UpstartCoding
-#> ✔ Key pair created for UpstartCoding
+#> ℹ Added policy UserInfo to PromisingReinfor
+#> ✔ Key pair created for PromisingReinfor
 #> ℹ AccessKeyId: *****
 #> ℹ SecretAccessKey: *****
 aws_user_add_to_group(name_admin, "myadmin")
@@ -65,16 +65,16 @@ The non-admin users:
 users_non_admin <- map(1:3, \(x) {
   six_user_create(random_user(), copy_to_cb = FALSE)
 })
-#> ℹ Added policy UserInfo to FumingMatron
-#> ✔ Key pair created for FumingMatron
+#> ℹ Added policy UserInfo to SummaryColleague
+#> ✔ Key pair created for SummaryColleague
 #> ℹ AccessKeyId: *****
 #> ℹ SecretAccessKey: *****
-#> ℹ Added policy UserInfo to ForkedBounds
-#> ✔ Key pair created for ForkedBounds
+#> ℹ Added policy UserInfo to DeludedArrow
+#> ✔ Key pair created for DeludedArrow
 #> ℹ AccessKeyId: *****
 #> ℹ SecretAccessKey: *****
-#> ℹ Added policy UserInfo to MemorableLustre
-#> ✔ Key pair created for MemorableLustre
+#> ℹ Added policy UserInfo to SanctionedStilln
+#> ✔ Key pair created for SanctionedStilln
 #> ℹ AccessKeyId: *****
 #> ℹ SecretAccessKey: *****
 invisible(map(users_non_admin, \(x) {
@@ -89,8 +89,8 @@ And last, create a user that is not part of either of the above groups.
 ``` r
 name_user_wo <- random_user()
 user_wo_access <- six_user_create(name_user_wo, copy_to_cb = FALSE)
-#> ℹ Added policy UserInfo to PedestrianDoorst
-#> ✔ Key pair created for PedestrianDoorst
+#> ℹ Added policy UserInfo to UndisturbedMayor
+#> ✔ Key pair created for UndisturbedMayor
 #> ℹ AccessKeyId: *****
 #> ℹ SecretAccessKey: *****
 ```
@@ -104,7 +104,7 @@ Create a bucket, and put a file in it.
 bucket <- random_string("bucket")
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 six_bucket_upload(path = demo_rds_file, remote = bucket, force = TRUE)
-#> [1] "s3://bucketqozlabhg/demo.rds"
+#> [1] "s3://bucketuqsahenb/demo.rds"
 ```
 
 ## Check access
@@ -122,25 +122,40 @@ withr::with_envvar(
   ),
   aws_bucket_list_objects(bucket)
 )
-#> Error: AccessDenied (HTTP 403). User: arn:aws:iam::*****:user/PedestrianDoorst is not authorized to perform: s3:ListBucket on resource: "arn:aws:s3:::bucketqozlabhg" because no identity-based policy allows the s3:ListBucket action
+#> Error: AccessDenied (HTTP 403). User: arn:aws:iam::*****:user/UndisturbedMayor is not authorized to perform: s3:ListBucket on resource: "arn:aws:s3:::bucketuqsahenb" because no identity-based policy allows the s3:ListBucket action
 ```
 
-User PedestrianDoorst does not have access (read or write), as intended.
+User UndisturbedMayor does not have access (read or write), as intended.
 
-Then check access for a user that should have read access:
+Then check access for a user that should have read access and NOT write access:
 
 
 ``` r
+# Read
 withr::with_envvar(
   c("AWS_REGION" = users_non_admin[[1]]$AwsRegion,
     "AWS_ACCESS_KEY_ID" = users_non_admin[[1]]$AccessKeyId,
     "AWS_SECRET_ACCESS_KEY" = users_non_admin[[1]]$SecretAccessKey
   ),
   {
-    # read
     aws_bucket_list_objects(bucket)
+  }
+)
+#> # A tibble: 1 × 8
+#>   bucket         key    uri    size type  etag  lastmodified        storageclass
+#>   <glue>         <chr>  <glu> <fs:> <chr> <chr> <dttm>              <chr>       
+#> 1 bucketuqsahenb demo.… s3:/…   257 file  "\"2… 2025-02-28 17:22:36 STANDARD
+```
 
-    # write
+
+``` r
+# Write
+withr::with_envvar(
+  c("AWS_REGION" = users_non_admin[[1]]$AwsRegion,
+    "AWS_ACCESS_KEY_ID" = users_non_admin[[1]]$AccessKeyId,
+    "AWS_SECRET_ACCESS_KEY" = users_non_admin[[1]]$SecretAccessKey
+  ),
+  {
     links_rds_file <- file.path(system.file(), "Meta/links.rds")
     six_bucket_upload(path = links_rds_file, remote = bucket, force = TRUE)
   }
@@ -148,32 +163,46 @@ withr::with_envvar(
 #> Error in `map()`:
 #> ℹ In index: 1.
 #> Caused by error:
-#> ! AccessDenied (HTTP 403). User: arn:aws:iam::*****:user/FumingMatron is not authorized to perform: s3:PutObject on resource: "arn:aws:s3:::bucketqozlabhg/links.rds" because no identity-based policy allows the s3:PutObject action
+#> ! AccessDenied (HTTP 403). User: arn:aws:iam::*****:user/SummaryColleague is not authorized to perform: s3:PutObject on resource: "arn:aws:s3:::bucketuqsahenb/links.rds" because no identity-based policy allows the s3:PutObject action
 ```
 
-User FumingMatron does have access for read and NOT for write, as intended.
+User SummaryColleague does have access for read and NOT for write, as intended.
 
 And make sure the admin has read and write access
 
 
 ``` r
+# Read
 withr::with_envvar(
   c("AWS_REGION" = user_admin$AwsRegion,
     "AWS_ACCESS_KEY_ID" = user_admin$AccessKeyId,
     "AWS_SECRET_ACCESS_KEY" = user_admin$SecretAccessKey
   ), {
-    # read
     aws_bucket_list_objects(bucket)
+  }
+)
+#> # A tibble: 1 × 8
+#>   bucket         key    uri    size type  etag  lastmodified        storageclass
+#>   <glue>         <chr>  <glu> <fs:> <chr> <chr> <dttm>              <chr>       
+#> 1 bucketuqsahenb demo.… s3:/…   257 file  "\"2… 2025-02-28 17:22:36 STANDARD
+```
 
-    # write
+
+``` r
+# Write
+withr::with_envvar(
+  c("AWS_REGION" = user_admin$AwsRegion,
+    "AWS_ACCESS_KEY_ID" = user_admin$AccessKeyId,
+    "AWS_SECRET_ACCESS_KEY" = user_admin$SecretAccessKey
+  ), {
     links_rds_file <- file.path(system.file(), "Meta/links.rds")
     six_bucket_upload(path = links_rds_file, remote = bucket, force = TRUE)
   }
 )
-#> [1] "s3://bucketqozlabhg/links.rds"
+#> [1] "s3://bucketuqsahenb/links.rds"
 ```
 
-User UpstartCoding does have access for read and write, as intended.
+User PromisingReinfor DOES have access for read and write, as intended.
 
 ## Cleanup
 

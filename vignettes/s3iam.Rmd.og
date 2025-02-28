@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -20,7 +20,7 @@ A common use case is to manage a small group of users and their access to AWS re
 
 ## Installation
 
-```{r setup}
+```{r load-pkgs}
 library(sixtyfour)
 library(purrr)
 ```
@@ -99,19 +99,29 @@ withr::with_envvar(
 
 User `r user_wo_access$UserName` does not have access (read or write), as intended.
 
-Then check access for a user that should have read access:
+Then check access for a user that should have read access and NOT write access:
 
-```{r verify-user, error=TRUE}
+```{r verify-user-read}
+# Read
 withr::with_envvar(
   c("AWS_REGION" = users_non_admin[[1]]$AwsRegion,
     "AWS_ACCESS_KEY_ID" = users_non_admin[[1]]$AccessKeyId,
     "AWS_SECRET_ACCESS_KEY" = users_non_admin[[1]]$SecretAccessKey
   ),
   {
-    # read
     aws_bucket_list_objects(bucket)
+  }
+)
+```
 
-    # write
+```{r verify-user-write, error=TRUE}
+# Write
+withr::with_envvar(
+  c("AWS_REGION" = users_non_admin[[1]]$AwsRegion,
+    "AWS_ACCESS_KEY_ID" = users_non_admin[[1]]$AccessKeyId,
+    "AWS_SECRET_ACCESS_KEY" = users_non_admin[[1]]$SecretAccessKey
+  ),
+  {
     links_rds_file <- file.path(system.file(), "Meta/links.rds")
     six_bucket_upload(path = links_rds_file, remote = bucket, force = TRUE)
   }
@@ -122,23 +132,32 @@ User `r users_non_admin[[1]]$UserName` does have access for read and NOT for wri
 
 And make sure the admin has read and write access
 
-```{r verify-admin}
+```{r verify-admin-read}
+# Read
 withr::with_envvar(
   c("AWS_REGION" = user_admin$AwsRegion,
     "AWS_ACCESS_KEY_ID" = user_admin$AccessKeyId,
     "AWS_SECRET_ACCESS_KEY" = user_admin$SecretAccessKey
   ), {
-    # read
     aws_bucket_list_objects(bucket)
+  }
+)
+```
 
-    # write
+```{r verify-admin-write}
+# Write
+withr::with_envvar(
+  c("AWS_REGION" = user_admin$AwsRegion,
+    "AWS_ACCESS_KEY_ID" = user_admin$AccessKeyId,
+    "AWS_SECRET_ACCESS_KEY" = user_admin$SecretAccessKey
+  ), {
     links_rds_file <- file.path(system.file(), "Meta/links.rds")
     six_bucket_upload(path = links_rds_file, remote = bucket, force = TRUE)
   }
 )
 ```
 
-User `r user_admin$UserName` does have access for read and write, as intended.
+User `r user_admin$UserName` DOES have access for read and write, as intended.
 
 ## Cleanup
 
