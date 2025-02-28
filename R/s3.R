@@ -41,8 +41,14 @@ s3_actions_full <- function() {
 #'   action = s3_actions_read(),
 #'   resource = c(bucket_arn(bucket), bucket_arn(bucket, objects = "*"))
 #' )
-aws_s3_policy_doc_create <- function(bucket, action, resource, effect = "Allow",
-                                     sid = NULL, ...) {
+aws_s3_policy_doc_create <- function(
+  bucket,
+  action,
+  resource,
+  effect = "Allow",
+  sid = NULL,
+  ...
+) {
   doc <- list(
     Version = "2012-10-17",
     Statement = list(
@@ -68,14 +74,15 @@ add_user_now_has <- c(
   " to bucket {.strong {bucket}}"
 )
 
-#' @importFrom snakecase to_upper_camel_case
 #' @keywords internal
 bucket_to_policy_name <- function(bucket, permissions) {
-  perm <- switch(permissions,
-    read = "ReadOnlyAccess",
-    write = "FullAccess"
-  )
-  glue("S3{perm}{to_upper_camel_case(bucket)}")
+  perm <- switch(permissions, read = "ReadOnlyAccess", write = "FullAccess")
+  glue("S3{perm}{upper_camel_case(bucket)}")
+}
+
+upper_camel_case <- function(string) {
+  string <- sub('^(\\w?)', '\\U\\1', string, perl = TRUE)
+  gsub('\\.(\\w?)', '\\U\\1', string, perl = TRUE)
 }
 
 create_policy_if_missing <- function(bucket, permissions) {
@@ -85,7 +92,8 @@ create_policy_if_missing <- function(bucket, permissions) {
   }
   mydoc <- aws_s3_policy_doc_create(
     bucket = bucket,
-    action = switch(permissions,
+    action = switch(
+      permissions,
       read = s3_actions_read(),
       write = s3_actions_full()
     ),
@@ -226,8 +234,8 @@ six_bucket_add_user <- function(bucket, username, permissions) {
 #' aws_bucket_delete(bucket, force = TRUE)
 six_bucket_change_user <- function(bucket, username, permissions) {
   stopifnot(
-    "permissions must be one of read or write" =
-      permissions %in% c("read", "write")
+    "permissions must be one of read or write" = permissions %in%
+      c("read", "write")
   )
   stopifnot("permissions must be length 1" = length(permissions) == 1)
 
