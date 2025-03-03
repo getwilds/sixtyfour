@@ -1,6 +1,7 @@
 test_that("aws_db_rds_create", {
   skip_on_ci()
   skip_if_not(running_local_only_tests())
+  skip_if_not(aws_has_creds())
   vcr::use_cassette("aws_db_rds_create", {
     z <- aws_db_rds_create(
       id = "bananas2", class = "db.t3.micro",
@@ -26,6 +27,7 @@ test_that("aws_db_rds_client", {
 
 test_that("instance_details", {
   # Recorded with no RDS instances running
+  skip_if_not(aws_has_creds())
   vcr::use_cassette("instance_details", {
     x <- instance_details()
   })
