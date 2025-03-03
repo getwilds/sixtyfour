@@ -283,6 +283,7 @@ bucket_name <- function(x) {
 
 #' Get file path starting at a certain path component
 #' @importFrom fs path_join path_split
+#' @export
 #' @keywords internal
 #' @examples
 #' path_from(path = "Rtmpxsqth0/apples/mcintosh/orange.csv", from = "apples")
