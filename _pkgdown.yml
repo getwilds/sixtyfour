@@ -11,8 +11,6 @@ reference:
     contents:
       - sixtyfour
   - title: Configuration
-    desc: >
-      asdfasdfasdf
     contents:
       - aws_configure
       - with_redacted
