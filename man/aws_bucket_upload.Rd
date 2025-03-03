@@ -40,7 +40,7 @@ Requires the env var \code{AWS_REGION}. This function prompts you to make
 sure that you want to delete the bucket.
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(fs)
 tdir <- path(tempdir(), "apples")
 dir.create(tdir)
