@@ -11,18 +11,6 @@ on:
 name: pkgdown
 
 jobs:
-  delete-bot-comments:
-    runs-on: ubuntu-latest
-    steps:
-      - name: pr-deleter
-        uses: maheshrayas/action-pr-comment-delete@v3.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          org: ${{ github.repository_owner }}
-          repo: ${{ github.event.repository.name }}
-          user: "github-actions[bot]"
-          issue: ${{ github.event.number }}
-
   pkgdown:
     runs-on: ubuntu-latest
     # Only restrict concurrency for non-PR jobs
@@ -76,5 +64,5 @@ jobs:
           enable-pull-request-comment: true
           enable-commit-comment: false
           enable-commit-status: true
-          overwrites-pull-request-comment: false
+          overwrites-pull-request-comment: true
         timeout-minutes: 1
