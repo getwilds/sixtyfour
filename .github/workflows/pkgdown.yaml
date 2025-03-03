@@ -22,14 +22,13 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const issue_number = context.issue.number;
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: issue_number
+              issue_number: context.issue.number,
             });
 
-            const botUsername = 'github-actions';
+            const botUsername = 'github-actions[bot]';
             for (const comment of comments) {
               if (comment.user.login === botUsername) {
                 console.log(`Deleting comment ${comment.id}`);
