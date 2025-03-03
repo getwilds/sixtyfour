@@ -11,7 +11,38 @@ on:
 name: pkgdown
 
 jobs:
+  delete-bot-comments:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Delete bot comments
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue_number = context.issue.number;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number
+            });
+
+            const botUsername = 'github-actions';
+            for (const comment of comments) {
+              if (comment.user.login === botUsername) {
+                console.log(`Deleting comment ${comment.id}`);
+                await github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: comment.id
+                });
+              }
+            }
+
   pkgdown:
+    needs: delete-bot-comments
     runs-on: ubuntu-latest
     # Only restrict concurrency for non-PR jobs
     concurrency:
