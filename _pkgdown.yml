@@ -1,4 +1,4 @@
-url: ~
+url: https://getwilds.org/sixtyfour/
 template:
   bootstrap: 5
   light-switch: true
@@ -9,8 +9,6 @@ reference:
     contents:
       - sixtyfour
   - title: Configuration
-    desc: >
-      asdfasdfasdf
     contents:
       - aws_configure
       - with_redacted
