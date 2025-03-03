@@ -2,8 +2,6 @@ url: https://getwilds.org/sixtyfour/
 template:
   bootstrap: 5
   light-switch: true
-  css:
-    - pkgdown/extra.css
 reference:
   - title: sixtyfour
     desc: >
