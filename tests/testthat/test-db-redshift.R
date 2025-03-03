@@ -3,9 +3,11 @@ test_that("aws_db_redshift_create", {
   vcr::use_cassette("aws_db_redshift_create", {
     z <- aws_db_redshift_create(
       id = "abdfghtyu",
-      user = "floppy", pwd = "xxxxxxxxxx",
+      user = "floppy",
+      pwd = "xxxxxxxxxx",
       security_group_ids = list("sg-xxxxxxxxx"),
-      wait = FALSE, verbose = FALSE
+      wait = FALSE,
+      verbose = FALSE
     )
   })
 
