@@ -452,7 +452,7 @@ aws_bucket_list_objects <- function(bucket, ...) {
       bucket = bucket,
       uri = glue("s3://{bucket}/{Key}"),
       Size = fs::as_fs_bytes(Size),
-      LastModified = as_datetime(LastModified)
+      LastModified = .as_datetime(LastModified)
     ) %>%
     rowwise() %>%
     mutate(

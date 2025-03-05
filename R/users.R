@@ -14,7 +14,7 @@ user_list_tidy <- function(x) {
     "PasswordLastUsed"
   )
   tidy_generator(vars)(x) %>%
-    mutate(PasswordLastUsed = as_datetime(PasswordLastUsed))
+    mutate(PasswordLastUsed = .as_datetime(PasswordLastUsed))
 }
 
 #' List Users

@@ -22,7 +22,6 @@ Depends:
     R (>= 4.1.0)
 Imports:
     dplyr,
-    lubridate,
     paws,
     paws.common,
     purrr,
@@ -47,9 +46,10 @@ Suggests:
     DBI,
     RPostgres,
     RMariaDB,
+    ggplot2,
+    lubridate,
     testthat (>= 3.0.0),
     vcr (>= 0.6.0),
-    ggplot2,
     webmockr
 Config/roxyglobals/filename: globals.R
 Config/roxyglobals/unique: FALSE
