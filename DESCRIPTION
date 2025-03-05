@@ -23,7 +23,6 @@ Depends:
 Imports:
     dplyr,
     lubridate,
-    magrittr,
     paws,
     paws.common,
     purrr,
