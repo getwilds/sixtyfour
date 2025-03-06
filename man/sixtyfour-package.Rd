@@ -12,7 +12,7 @@ An opinionated interface to AWS, with methods for interacting with 'IAM', S3, RD
 Useful links:
 \itemize{
   \item \url{https://github.com/getwilds/sixtyfour}
-  \item \url{https://getwilds.org/sixtyfour}
+  \item \url{https://getwilds.org/sixtyfour/}
   \item Report bugs at \url{https://github.com/getwilds/sixtyfour/issues}
 }
 

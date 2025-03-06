@@ -2,7 +2,6 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @importFrom magrittr %>% %<>%
 #' @importFrom paws s3 iam costexplorer
 #' @importFrom s3fs s3_file_system
 #' @importFrom glue glue

@@ -283,6 +283,7 @@ bucket_name <- function(x) {
 
 #' Get file path starting at a certain path component
 #' @importFrom fs path_join path_split
+#' @export
 #' @keywords internal
 #' @examples
 #' path_from(path = "Rtmpxsqth0/apples/mcintosh/orange.csv", from = "apples")
@@ -451,7 +452,7 @@ aws_bucket_list_objects <- function(bucket, ...) {
       bucket = bucket,
       uri = glue("s3://{bucket}/{Key}"),
       Size = fs::as_fs_bytes(Size),
-      LastModified = as_datetime(LastModified)
+      LastModified = .as_datetime(LastModified)
     ) %>%
     rowwise() %>%
     mutate(

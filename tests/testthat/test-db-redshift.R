@@ -1,10 +1,13 @@
 test_that("aws_db_redshift_create", {
+  skip_if_not(aws_has_creds())
   vcr::use_cassette("aws_db_redshift_create", {
     z <- aws_db_redshift_create(
       id = "abdfghtyu",
-      user = "floppy", pwd = "xxxxxxxxxx",
+      user = "floppy",
+      pwd = "xxxxxxxxxx",
       security_group_ids = list("sg-xxxxxxxxx"),
-      wait = FALSE, verbose = FALSE
+      wait = FALSE,
+      verbose = FALSE
     )
   })
 
@@ -23,6 +26,7 @@ test_that("aws_db_redshift_client", {
 
 test_that("cluster_details", {
   # Recorded with no Redshift instances running
+  skip_if_not(aws_has_creds())
   vcr::use_cassette("cluster_details", {
     x <- cluster_details()
   })

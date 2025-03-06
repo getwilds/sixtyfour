@@ -199,7 +199,6 @@ paginate_aws_token <- function(fun, target, ...) {
 #' @importFrom purrr map list_rbind
 #' @importFrom dplyr mutate
 #' @importFrom tibble as_tibble
-#' @importFrom lubridate as_datetime
 #' @autoglobal
 #' @noRd
 #' @param vars (character) vector of list names to get
@@ -211,8 +210,13 @@ tidy_generator <- function(vars) {
       map(\(x) map(x, \(y) ifelse(length(y) < 1, NA, y))) %>%
       map(as_tibble) %>%
       list_rbind() %>%
-      mutate(CreateDate = as_datetime(CreateDate))
+      mutate(CreateDate = .as_datetime(CreateDate))
   }
+}
+
+# replaces lubridate::as_datetime
+.as_datetime <- function(x) {
+  as.POSIXct(x, origin = "1970-01-01 UTC", tz = "UTC")
 }
 
 is_class <- function(x, class) {
