@@ -3,18 +3,35 @@ capfirst <- function(x) {
   x
 }
 
-#' Get a random user
+#' Get a random user or role
 #'
 #' @export
-#' @return (character) a username with a random adjective plus a
+#' @return (character) a username or role name with a random adjective plus a
 #' random noun combined into one string, shortened to no longer than 16
 #' characters if longer than 16
 #' @examples
 #' random_user()
+#' random_role()
 #' replicate(10, random_user())
 random_user <- function() {
   sample_upcase <- function(x) capfirst(sample(x, size = 1))
   substring(paste0(sample_upcase(adjectives), sample_upcase(nouns)), 1, 16)
+}
+#' @export
+#' @rdname random_user
+random_role <- random_user
+
+#' Get a random bucket name
+#'
+#' @export
+#' @inheritParams random_string
+#' @return (character) a bucket name prefixed with `prefix`
+#' (default: "bucket-")
+#' @examples
+#' random_bucket()
+#' replicate(10, random_bucket())
+random_bucket <- function(prefix = "bucket-", length = 16) {
+  random_string(prefix, length)
 }
 
 #' Get a random string with prefix
