@@ -21,6 +21,8 @@ bucket_delete <- function(bucket, force = FALSE) {
   }
   aws_bucket_delete(bucket, force = force)
 }
+library(sixtyfour)
+aws_configure(redacted = TRUE)
 ```
 
 A science-focused, more humane R interface to AWS.
@@ -31,13 +33,15 @@ library(sixtyfour)
 
 ## Authentication
 
-To be able to use this package you'll need two AWS secrets and an AWS region in the following three environment variables:
+We leverage the package `paws` to handle AWS authentication. There are many ways to configure `paws` to authenticate with AWS - see [paws documentation](https://paws-r.github.io/developer_guide/credentials/#set-credentials).
+
+One way to authenticate is using these three environment variables:
 
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
 - `AWS_REGION`
 
-You can set these within R for the current R session like:
+You can set these three environment variables within R for the current R session like:
 
 ```
 Sys.setenv(
@@ -47,7 +51,7 @@ Sys.setenv(
 )
 ```
 
-Or set them in a variety of ways to be available across R sessions. See the [R Startup chapter][r-startup] of _What They Forgot to Teach You About R_ book for more details.
+Or set environment variables in a variety of ways to be available across R sessions. See the [R Startup chapter][r-startup] of _What They Forgot to Teach You About R_ book for more details.
 
 
 ## Package API Overview
@@ -74,7 +78,7 @@ We cover S3 in detail in another vignette (`vignette("s3")`), so we'll briefly t
 Make a random bucket name
 
 ```{r}
-bucket <- random_string("egs-")
+bucket <- random_bucket()
 ```
 
 Create a bucket - check if it exists first
@@ -96,7 +100,7 @@ aws_bucket_delete(bucket)
 First, create a bucket:
 
 ```{r}
-my_bucket <- random_string("egs-")
+my_bucket <- random_bucket()
 aws_bucket_create(my_bucket)
 ```
 
@@ -117,7 +121,7 @@ obs
 ```
 
 ```{r cleanup-files, echo=FALSE, results='hide'}
-these_buckets <- grep("egs-.+", aws_buckets()$bucket_name, value = TRUE)
+these_buckets <- grep("bucket-.+", aws_buckets()$bucket_name, value = TRUE)
 invisible(purrr::map(these_buckets, bucket_delete, force = TRUE))
 ```
 
@@ -134,7 +138,7 @@ IAM stands for Identity Access Management. IAM covers four resource types:
 - Roles: via `aws_role*` functions
 - Policies: via `aws_policy*`/`aws_policies*` functions
 
-As a brief example let's create a group, a user, and two roles. We'll assign the user to a role, and the group to the other role. Then clean it all up.
+As a brief example let's create a group, a user, and a role. We'll assign the user to the group. Then clean it all up.
 
 First, create a group
 
@@ -152,14 +156,21 @@ name
 aws_user_create(name)
 ```
 
-Now create two roles, which is more complicated than groups and users
+Now add the user to the group
 
 ```{r}
-role_name1 <- random_user()
-trust_policy1 <- list(
+aws_user_add_to_group(name, group_name)
+```
+
+Now create a role
+
+```{r}
+role_name <- random_role()
+trust_policy <- list(
   Version = "2012-10-17",
   Statement = list(
     list(
+      Sid = "Statement1",
       Effect = "Allow",
       Principal = list(
         Service = "lambda.amazonaws.com"
@@ -168,42 +179,20 @@ trust_policy1 <- list(
     )
   )
 )
-doc1 <- jsonlite::toJSON(trust_policy1, auto_unbox = TRUE)
-aws_role_create(role_name1,
+doc1 <- jsonlite::toJSON(trust_policy, auto_unbox = TRUE)
+aws_role_create(role_name,
   assume_role_policy_document = doc1,
   description = "test role A"
 )
-
-role_name2 <- random_user()
-trust_policy2 <- list(
-  Version = "2012-10-17",
-  Statement = list(
-    list(
-      Effect = "Allow",
-      Principal = list(
-        Service = "lambda.amazonaws.com"
-      ),
-      Action = "sts:AssumeRole"
-    )
-  )
-)
-doc2 <- jsonlite::toJSON(trust_policy2, auto_unbox = TRUE)
-aws_role_create(role_name2,
-  assume_role_policy_document = doc2,
-  description = "test role B"
-)
-```
-
-Now
-
-```{r}
 ```
 
 Finally, cleanup
 
 ```{r}
+aws_role_delete(role_name)
+six_user_delete(name)
+six_group_delete(group_name)
 ```
-
 
 ## Databases
 
