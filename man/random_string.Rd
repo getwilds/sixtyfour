@@ -2,9 +2,18 @@
 % Please edit documentation in R/random.R
 \name{random_string}
 \alias{random_string}
-\title{Get a random string with prefix}
+\alias{random_bucket}
+\alias{random_user}
+\alias{random_role}
+\title{Get a random string, bucket name, user name or role name}
 \usage{
 random_string(prefix, size = 8)
+
+random_bucket(prefix = "bucket-", size = 16)
+
+random_user()
+
+random_role()
 }
 \arguments{
 \item{prefix}{(character) any string. required.}
@@ -13,12 +22,25 @@ random_string(prefix, size = 8)
 \code{prefix})}
 }
 \value{
-(character) a string with \code{prefix} at beginning
+\itemize{
+\item \code{random_string}: (character) a string with \code{prefix} at beginning
+\item \code{random_bucket}: (character) a bucket name prefixed with \code{prefix}
+(default: "bucket-")
+\item \code{random_user}/\code{random_role}: (character) a user or role name with
+a random adjective plus a random noun combined into one string, shortened
+to no longer than 16 characters, if longer than 16
+}
 }
 \description{
-Get a random string with prefix
+Get a random string, bucket name, user name or role name
 }
 \examples{
-random_string("bucket")
-replicate(10, random_string("bucket"))
+random_string("group-")
+replicate(10, random_string("group-"))
+random_bucket()
+replicate(10, random_bucket())
+random_user()
+replicate(10, random_user())
+random_role()
+replicate(10, random_role())
 }

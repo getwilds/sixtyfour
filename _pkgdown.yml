@@ -79,10 +79,14 @@ reference:
       - aws_vpc_sec_group_rules_mod
       - ip_permissions_generator
       - aws_vpc_sg_with_ingress
-  - title: Utilities
+  - title: Random strings
     contents:
       - random_user
+      - random_role
       - random_string
+      - random_bucket
+  - title: Utilities
+    contents:
       - aws_has_creds
       - figure_out_policy_arn
       - s3_actions_full
