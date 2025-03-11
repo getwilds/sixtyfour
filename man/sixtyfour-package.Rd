@@ -25,5 +25,10 @@ Authors:
   \item Sean Kross
 }
 
+Other contributors:
+\itemize{
+  \item Fred Hutchinson Cancer Center \email{wilds@fredhutch.org} [funder]
+}
+
 }
 \keyword{internal}
