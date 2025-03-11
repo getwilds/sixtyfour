@@ -5,7 +5,8 @@ Authors@R: c(
     person("Sean", "Kross", role = "aut"),
     person("Scott", "Chamberlain", , "sachamber@fredhutch.org", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-1444-9135")),
-    person("Fred Hutchinson Cancer Center", , , "wilds@fredhutch.org", role = "fnd")
+    person("Fred Hutchinson Cancer Center", , , "wilds@fredhutch.org", role = "fnd",
+           comment = c(ROR = "007ps6h72"))
   )
 Description: An opinionated interface to AWS, with methods for interacting
     with 'IAM', S3, RDS, Redshift, and Billing.
