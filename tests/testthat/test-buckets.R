@@ -177,7 +177,7 @@ test_that("six_bucket_upload, remote includes key prefix change", {
   res <- suppressMessages(
     six_bucket_upload(
       path = c(demo_rds_file, tdir),
-      remote = path(bucket, "some/dir"),
+      remote = path(bucket, "some", "dir"),
       force = TRUE
     )
   )
