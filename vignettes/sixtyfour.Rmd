@@ -76,7 +76,7 @@ exists <- aws_bucket_exists(bucket)
 if (!exists) {
   aws_bucket_create(bucket)
 }
-#> [1] "http://bucket-wxjnzcavfulyeopm.s3.amazonaws.com/"
+#> [1] "http://bucket-lphnzotejwfyuxkm.s3.amazonaws.com/"
 ```
 
 
@@ -92,7 +92,7 @@ First, create a bucket:
 ``` r
 my_bucket <- random_bucket()
 aws_bucket_create(my_bucket)
-#> [1] "http://bucket-jnypsagozxkrdbmc.s3.amazonaws.com/"
+#> [1] "http://bucket-cdzsxyjiofheptnr.s3.amazonaws.com/"
 ```
 
 Then, upload some files
@@ -103,9 +103,9 @@ temp_files <- replicate(n = 3, tempfile(fileext = ".txt"))
 for (i in temp_files) cat(letters, "\n", file = i)
 remote_files <- s3_path(my_bucket, basename(temp_files))
 aws_file_upload(path = temp_files, remote_path = remote_files)
-#> [1] "s3://bucket-jnypsagozxkrdbmc/filea2411312f6b2.txt"
-#> [2] "s3://bucket-jnypsagozxkrdbmc/filea241420229e6.txt"
-#> [3] "s3://bucket-jnypsagozxkrdbmc/filea2411c0cdce5.txt"
+#> [1] "s3://bucket-cdzsxyjiofheptnr/file4602690d8946.txt"
+#> [2] "s3://bucket-cdzsxyjiofheptnr/file460277af888b.txt"
+#> [3] "s3://bucket-cdzsxyjiofheptnr/file4602252d9b10.txt"
 ```
 
 List files in the bucket
@@ -117,9 +117,9 @@ obs
 #> # A tibble: 3 × 8
 #>   bucket          key   uri    size type  etag  lastmodified        storageclass
 #>   <glue>          <chr> <glu> <fs:> <chr> <chr> <dttm>              <chr>       
-#> 1 bucket-jnypsag… file… s3:/…    53 file  "\"a… 2025-03-07 22:24:00 STANDARD    
-#> 2 bucket-jnypsag… file… s3:/…    53 file  "\"a… 2025-03-07 22:24:01 STANDARD    
-#> 3 bucket-jnypsag… file… s3:/…    53 file  "\"a… 2025-03-07 22:24:01 STANDARD
+#> 1 bucket-cdzsxyj… file… s3:/…    53 file  "\"a… 2025-03-12 22:37:56 STANDARD    
+#> 2 bucket-cdzsxyj… file… s3:/…    53 file  "\"a… 2025-03-12 22:37:56 STANDARD    
+#> 3 bucket-cdzsxyj… file… s3:/…    53 file  "\"a… 2025-03-12 22:37:56 STANDARD
 ```
 
 
@@ -145,12 +145,12 @@ First, create a group
 ``` r
 group_name <- random_string("gr-")
 group_name
-#> gr-qrbghyxi
+#> gr-gmpcjatq
 aws_group_create(group_name)
 #> # A tibble: 1 × 5
 #>   GroupName   GroupId               Path  Arn   CreateDate         
 #>   <chr>       <chr>                 <chr> <chr> <dttm>             
-#> 1 gr-qrbghyxi AGPA22PL7JXX3LF4SLQ5M /     ***** 2025-03-07 22:24:01
+#> 1 gr-gmpcjatq AGPA22PL7JXXVUJ3JBAZV /     ***** 2025-03-12 22:37:57
 ```
 
 Then create a user
@@ -159,12 +159,12 @@ Then create a user
 ``` r
 name <- random_user()
 name
-#> [1] "DesigningReactio"
+#> [1] "RepellentFinale"
 aws_user_create(name)
 #> # A tibble: 1 × 6
-#>   UserName         UserId    Path  Arn   CreateDate          PasswordLastUsed
-#>   <chr>            <chr>     <chr> <chr> <dttm>              <dttm>          
-#> 1 DesigningReactio AIDA22PL… /     ***** 2025-03-07 22:24:02 NA
+#>   UserName        UserId     Path  Arn   CreateDate          PasswordLastUsed
+#>   <chr>           <chr>      <chr> <chr> <dttm>              <dttm>          
+#> 1 RepellentFinale AIDA22PL7… /     ***** 2025-03-12 22:37:57 NA
 ```
 
 Now add the user to the group
@@ -174,9 +174,9 @@ Now add the user to the group
 aws_user_add_to_group(name, group_name)
 #> $user
 #> # A tibble: 1 × 6
-#>   UserName         UserId    Path  Arn   CreateDate          PasswordLastUsed
-#>   <chr>            <chr>     <chr> <chr> <dttm>              <dttm>          
-#> 1 DesigningReactio AIDA22PL… /     ***** 2025-03-07 22:24:02 NA              
+#>   UserName        UserId     Path  Arn   CreateDate          PasswordLastUsed
+#>   <chr>           <chr>      <chr> <chr> <dttm>              <dttm>          
+#> 1 RepellentFinale AIDA22PL7… /     ***** 2025-03-12 22:37:57 NA              
 #> 
 #> $policies
 #> # A tibble: 0 × 0
@@ -188,7 +188,7 @@ aws_user_add_to_group(name, group_name)
 #> # A tibble: 1 × 5
 #>   GroupName   GroupId               Path  Arn   CreateDate         
 #>   <chr>       <chr>                 <chr> <chr> <dttm>             
-#> 1 gr-qrbghyxi AGPA22PL7JXX3LF4SLQ5M /     ***** 2025-03-07 22:24:01
+#> 1 gr-gmpcjatq AGPA22PL7JXXVUJ3JBAZV /     ***** 2025-03-12 22:37:57
 ```
 
 Now create a role
@@ -217,7 +217,7 @@ aws_role_create(role_name,
 #> # A tibble: 1 × 7
 #>   RoleName         RoleId            Path  Arn   CreateDate          Description
 #>   <chr>            <chr>             <chr> <chr> <dttm>              <lgl>      
-#> 1 MasteredAssignme AROA22PL7JXXY6ME… /     ***** 2025-03-07 22:24:02 NA         
+#> 1 BridgedLiquidati AROA22PL7JXXYRQB… /     ***** 2025-03-12 22:37:58 NA         
 #> # ℹ 1 more variable: AssumeRolePolicyDocument <chr>
 ```
 
@@ -227,11 +227,11 @@ Finally, cleanup
 ``` r
 aws_role_delete(role_name)
 six_user_delete(name)
-#> ! No access keys found for DesigningReactio
-#> ℹ Group gr-qrbghyxi detached
-#> ℹ DesigningReactio deleted
+#> ! No access keys found for RepellentFinale
+#> ℹ Group gr-gmpcjatq detached
+#> ℹ RepellentFinale deleted
 six_group_delete(group_name)
-#> ℹ group gr-qrbghyxi deleted
+#> ℹ group gr-gmpcjatq deleted
 ```
 
 ## Databases
@@ -248,10 +248,10 @@ As an example, `six_user_create()` creates a new user, including a) creating the
 ``` r
 name <- random_user()
 name
-#> [1] "SeatedCornerston"
+#> [1] "GildedArchery"
 six_user_create(name)
-#> ℹ Added policy UserInfo to SeatedCornerston
-#> ✔ Key pair created for SeatedCornerston
+#> ℹ Added policy UserInfo to GildedArchery
+#> ✔ Key pair created for GildedArchery
 #> ℹ AccessKeyId: *****
 #> ℹ SecretAccessKey: *****
 #> ℹ Email template copied to your clipboard

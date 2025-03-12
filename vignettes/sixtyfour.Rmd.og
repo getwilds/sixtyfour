@@ -23,6 +23,7 @@ bucket_delete <- function(bucket, force = FALSE) {
 }
 library(sixtyfour)
 aws_configure(redacted = TRUE)
+set.seed(293748)
 ```
 
 A science-focused, more humane R interface to AWS.
