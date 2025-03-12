@@ -2,7 +2,7 @@
 % Please edit documentation in R/configure.R
 \name{with_redacted}
 \alias{with_redacted}
-\title{Without secrets redacted}
+\title{With secrets redacted}
 \usage{
 with_redacted(code)
 }
@@ -10,5 +10,5 @@ with_redacted(code)
 \item{code}{(expression) Code to run with secrets redacted}
 }
 \description{
-Without secrets redacted
+With secrets redacted
 }
