@@ -51,8 +51,8 @@ The admin user:
 ``` r
 name_admin <- random_user()
 user_admin <- six_user_create(name_admin, copy_to_cb = FALSE)
-#> ℹ Added policy UserInfo to DreadOutset
-#> ✔ Key pair created for DreadOutset
+#> ℹ Added policy UserInfo to SleepySubsidy
+#> ✔ Key pair created for SleepySubsidy
 #> ℹ AccessKeyId: *****
 #> ℹ SecretAccessKey: *****
 aws_user_add_to_group(name_admin, "myadmin")
@@ -65,16 +65,16 @@ The non-admin users:
 users_non_admin <- map(1:3, \(x) {
   six_user_create(random_user(), copy_to_cb = FALSE)
 })
-#> ℹ Added policy UserInfo to NegativePlaza
-#> ✔ Key pair created for NegativePlaza
+#> ℹ Added policy UserInfo to NoncommercialPub
+#> ✔ Key pair created for NoncommercialPub
 #> ℹ AccessKeyId: *****
 #> ℹ SecretAccessKey: *****
-#> ℹ Added policy UserInfo to PreparatoryOrien
-#> ✔ Key pair created for PreparatoryOrien
+#> ℹ Added policy UserInfo to BridgedSomewhere
+#> ✔ Key pair created for BridgedSomewhere
 #> ℹ AccessKeyId: *****
 #> ℹ SecretAccessKey: *****
-#> ℹ Added policy UserInfo to SubjugatedStamin
-#> ✔ Key pair created for SubjugatedStamin
+#> ℹ Added policy UserInfo to DoctrinalSeating
+#> ✔ Key pair created for DoctrinalSeating
 #> ℹ AccessKeyId: *****
 #> ℹ SecretAccessKey: *****
 invisible(map(users_non_admin, \(x) {
@@ -89,8 +89,8 @@ And last, create a user that is not part of either of the above groups.
 ``` r
 name_user_wo <- random_user()
 user_wo_access <- six_user_create(name_user_wo, copy_to_cb = FALSE)
-#> ℹ Added policy UserInfo to RemorselessTende
-#> ✔ Key pair created for RemorselessTende
+#> ℹ Added policy UserInfo to BrimmingAviation
+#> ✔ Key pair created for BrimmingAviation
 #> ℹ AccessKeyId: *****
 #> ℹ SecretAccessKey: *****
 ```
@@ -104,7 +104,7 @@ Create a bucket, and put a file in it.
 bucket <- random_bucket()
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 six_bucket_upload(path = demo_rds_file, remote = bucket, force = TRUE)
-#> [1] "s3://bucket-mlbsjyetvxcgzind/demo.rds"
+#> [1] "s3://bucket-cuwgyafqtleomkhd/demo.rds"
 ```
 
 ## Check access
@@ -122,10 +122,10 @@ withr::with_envvar(
   ),
   aws_bucket_list_objects(bucket)
 )
-#> Error: AccessDenied (HTTP 403). User: arn:aws:iam::*****:user/RemorselessTende is not authorized to perform: s3:ListBucket on resource: "arn:aws:s3:::bucket-mlbsjyetvxcgzind" because no identity-based policy allows the s3:ListBucket action
+#> Error: AccessDenied (HTTP 403). User: arn:aws:iam::*****:user/BrimmingAviation is not authorized to perform: s3:ListBucket on resource: "arn:aws:s3:::bucket-cuwgyafqtleomkhd" because no identity-based policy allows the s3:ListBucket action
 ```
 
-User RemorselessTende does not have access (read or write), as intended.
+User BrimmingAviation does not have access (read or write), as intended.
 
 Then check access for a user that should have read access and NOT write access:
 
@@ -144,7 +144,7 @@ withr::with_envvar(
 #> # A tibble: 1 × 8
 #>   bucket          key   uri    size type  etag  lastmodified        storageclass
 #>   <glue>          <chr> <glu> <fs:> <chr> <chr> <dttm>              <chr>       
-#> 1 bucket-mlbsjye… demo… s3:/…   254 file  "\"0… 2025-03-12 21:33:39 STANDARD
+#> 1 bucket-cuwgyaf… demo… s3:/…   256 file  "\"7… 2025-03-12 22:51:04 STANDARD
 ```
 
 
@@ -163,10 +163,10 @@ withr::with_envvar(
 #> Error in `map()`:
 #> ℹ In index: 1.
 #> Caused by error:
-#> ! AccessDenied (HTTP 403). User: arn:aws:iam::*****:user/NegativePlaza is not authorized to perform: s3:PutObject on resource: "arn:aws:s3:::bucket-mlbsjyetvxcgzind/links.rds" because no identity-based policy allows the s3:PutObject action
+#> ! AccessDenied (HTTP 403). User: arn:aws:iam::*****:user/NoncommercialPub is not authorized to perform: s3:PutObject on resource: "arn:aws:s3:::bucket-cuwgyafqtleomkhd/links.rds" because no identity-based policy allows the s3:PutObject action
 ```
 
-User NegativePlaza does have access for read and NOT for write, as intended.
+User NoncommercialPub does have access for read and NOT for write, as intended.
 
 And make sure the admin has read and write access
 
@@ -184,7 +184,7 @@ withr::with_envvar(
 #> # A tibble: 1 × 8
 #>   bucket          key   uri    size type  etag  lastmodified        storageclass
 #>   <glue>          <chr> <glu> <fs:> <chr> <chr> <dttm>              <chr>       
-#> 1 bucket-mlbsjye… demo… s3:/…   254 file  "\"0… 2025-03-12 21:33:39 STANDARD
+#> 1 bucket-cuwgyaf… demo… s3:/…   256 file  "\"7… 2025-03-12 22:51:04 STANDARD
 ```
 
 
@@ -199,10 +199,10 @@ withr::with_envvar(
     six_bucket_upload(path = links_rds_file, remote = bucket, force = TRUE)
   }
 )
-#> [1] "s3://bucket-mlbsjyetvxcgzind/links.rds"
+#> [1] "s3://bucket-cuwgyafqtleomkhd/links.rds"
 ```
 
-User DreadOutset DOES have access for read and write, as intended.
+User SleepySubsidy DOES have access for read and write, as intended.
 
 ## Cleanup
 

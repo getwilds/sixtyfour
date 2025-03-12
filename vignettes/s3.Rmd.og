@@ -21,6 +21,7 @@ bucket_delete <- function(bucket, force = FALSE) {
   }
   aws_bucket_delete(bucket, force = force)
 }
+set.seed(9164852)
 ```
 
 This vignette focuses on blob storage using S3. See the Getting Started vignette for basic setup if you have not done that yet.

@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
 )
 library(sixtyfour)
 aws_configure(redacted = TRUE)
+set.seed(59874612)
 ```
 
 A common use case is to manage a small group of users and their access to AWS resources. This can be done using the `sixtyfour` package, which provides a set of high-level functions to make your life easier.
