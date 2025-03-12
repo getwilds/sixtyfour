@@ -57,7 +57,7 @@ Make a random bucket name
 
 
 ``` r
-bucket1 <- random_string("bucket")
+bucket1 <- random_bucket()
 ```
 
 ### Upload to a bucket
@@ -77,7 +77,7 @@ tdir <- path(path_temp(), "mytmp")
 dir_create(tdir)
 invisible(purrr::map(letters[1:13], \(l) file_create(path(tdir, l))))
 dir_tree(tdir)
-#> /var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T/RtmpRxCJXC/mytmp
+#> /var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T/Rtmp29dr9A/mytmp
 #> ├── a
 #> ├── b
 #> ├── c
@@ -93,7 +93,7 @@ dir_tree(tdir)
 #> └── m
 ```
 
-Upload both the file and the directory of files to `bucket1`: bucketnqwadzhx
+Upload both the file and the directory of files to `bucket1`: bucket-xtdvfuhpnckqziyj
 
 
 ``` r
@@ -101,13 +101,20 @@ six_bucket_upload(path = c(demo_rds_file, tdir), remote = bucket1)
 ```
 
 ```
-#>  [1] "s3://bucketnqwadzhx/demo.rds" "s3://bucketnqwadzhx/mytmp/a" 
-#>  [3] "s3://bucketnqwadzhx/mytmp/b"  "s3://bucketnqwadzhx/mytmp/c" 
-#>  [5] "s3://bucketnqwadzhx/mytmp/d"  "s3://bucketnqwadzhx/mytmp/e" 
-#>  [7] "s3://bucketnqwadzhx/mytmp/f"  "s3://bucketnqwadzhx/mytmp/g" 
-#>  [9] "s3://bucketnqwadzhx/mytmp/h"  "s3://bucketnqwadzhx/mytmp/i" 
-#> [11] "s3://bucketnqwadzhx/mytmp/j"  "s3://bucketnqwadzhx/mytmp/k" 
-#> [13] "s3://bucketnqwadzhx/mytmp/l"  "s3://bucketnqwadzhx/mytmp/m"
+#>  [1] "s3://bucket-xtdvfuhpnckqziyj/demo.rds"
+#>  [2] "s3://bucket-xtdvfuhpnckqziyj/mytmp/a" 
+#>  [3] "s3://bucket-xtdvfuhpnckqziyj/mytmp/b" 
+#>  [4] "s3://bucket-xtdvfuhpnckqziyj/mytmp/c" 
+#>  [5] "s3://bucket-xtdvfuhpnckqziyj/mytmp/d" 
+#>  [6] "s3://bucket-xtdvfuhpnckqziyj/mytmp/e" 
+#>  [7] "s3://bucket-xtdvfuhpnckqziyj/mytmp/f" 
+#>  [8] "s3://bucket-xtdvfuhpnckqziyj/mytmp/g" 
+#>  [9] "s3://bucket-xtdvfuhpnckqziyj/mytmp/h" 
+#> [10] "s3://bucket-xtdvfuhpnckqziyj/mytmp/i" 
+#> [11] "s3://bucket-xtdvfuhpnckqziyj/mytmp/j" 
+#> [12] "s3://bucket-xtdvfuhpnckqziyj/mytmp/k" 
+#> [13] "s3://bucket-xtdvfuhpnckqziyj/mytmp/l" 
+#> [14] "s3://bucket-xtdvfuhpnckqziyj/mytmp/m"
 ```
 
 
@@ -122,7 +129,7 @@ six_file_upload(links_file, bucket1)
 ```
 
 ```
-#> [1] "s3://bucketnqwadzhx/links.rds"
+#> [1] "s3://bucket-xtdvfuhpnckqziyj/links.rds"
 ```
 
 
@@ -137,9 +144,9 @@ Create a random user name and create the user in AWS.
 user1 <- random_user()
 aws_user_create(user1)
 #> # A tibble: 1 × 6
-#>   UserName       UserId      Path  Arn   CreateDate          PasswordLastUsed
-#>   <chr>          <chr>       <chr> <chr> <dttm>              <dttm>          
-#> 1 SnuffFormality AIDA22PL7J… /     arn:… 2025-02-20 21:27:14 NA
+#>   UserName         UserId    Path  Arn   CreateDate          PasswordLastUsed
+#>   <chr>            <chr>     <chr> <chr> <dttm>              <dttm>          
+#> 1 UntimelyStandpoi AIDA22PL… /     ***** 2025-03-12 21:49:39 NA
 ```
 
 Now add the user to the bucket so they can access it with the permissions we're assigning to them.
@@ -152,7 +159,7 @@ six_bucket_add_user(
   username = user1,
   permissions = "read"
 )
-#> ✔ SnuffFormality now has read access to bucket bucketnqwadzhx
+#> ✔ UntimelyStandpoi now has read access to bucket bucket-xtdvfuhpnckqziyj
 ```
 
 ### Get all user permissions for a bucket
@@ -166,9 +173,9 @@ six_bucket_permissions(bucket1)
 
 ```
 #> # A tibble: 1 × 4
-#>   user           permissions policy_read                    policy_admin
-#>   <chr>          <chr>       <chr>                          <chr>       
-#> 1 SnuffFormality read        S3ReadOnlyAccessBucketnqwadzhx <NA>
+#>   user             permissions policy_read                          policy_admin
+#>   <chr>            <chr>       <chr>                                <chr>       
+#> 1 UntimelyStandpoi read        S3ReadOnlyAccessBucketxtdvfuhpnckqz… <NA>
 ```
 
 
@@ -186,9 +193,9 @@ six_bucket_permissions(bucket1)
 
 ```
 #> # A tibble: 1 × 4
-#>   user           permissions policy_read                    policy_admin
-#>   <chr>          <chr>       <chr>                          <chr>       
-#> 1 SnuffFormality read        S3ReadOnlyAccessBucketnqwadzhx <NA>
+#>   user             permissions policy_read                          policy_admin
+#>   <chr>            <chr>       <chr>                                <chr>       
+#> 1 UntimelyStandpoi read        S3ReadOnlyAccessBucketxtdvfuhpnckqz… <NA>
 ```
 
 `user1` has read access, but we'd like to change that to write access:
@@ -200,7 +207,7 @@ six_bucket_change_user(
   username = user1,
   permissions = "write"
 )
-#> ✔ SnuffFormality now has write access to bucket bucketnqwadzhx
+#> ✔ UntimelyStandpoi now has write access to bucket bucket-xtdvfuhpnckqziyj
 ```
 
 `six_bucket_change_user()` returns inivisibly. Let's check the permissions for this user and bucket after this change:
@@ -212,9 +219,9 @@ six_bucket_permissions(bucket1)
 
 ```
 #> # A tibble: 1 × 4
-#>   user           permissions policy_write               policy_admin
-#>   <chr>          <chr>       <chr>                      <chr>       
-#> 1 SnuffFormality write       S3FullAccessBucketnqwadzhx <NA>
+#>   user             permissions policy_write                       policy_admin
+#>   <chr>            <chr>       <chr>                              <chr>       
+#> 1 UntimelyStandpoi write       S3FullAccessBucketxtdvfuhpnckqziyj <NA>
 ```
 
 
@@ -225,7 +232,7 @@ You may at some point want to remove a user from a bucket that you've previously
 
 ``` r
 six_bucket_remove_user(bucket1, user1)
-#> ✔ SnuffFormality access to bucketnqwadzhx has been removed
+#> ✔ UntimelyStandpoi access to bucket-xtdvfuhpnckqziyj has been removed
 ```
 
 
@@ -237,22 +244,23 @@ First, create a bucket with some objects
 
 
 ``` r
-bucket2 <- random_string("bucket")
+bucket2 <- random_bucket()
 aws_bucket_create(bucket2)
-#> [1] "/bucketmehyvgdz"
+#> [1] "http://bucket-zgxwcbvjaohfspyt.s3.amazonaws.com/"
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 links_file <- file.path(system.file(), "Meta/links.rds")
 aws_file_upload(
   c(demo_rds_file, links_file),
   s3_path(bucket2, c(basename(demo_rds_file), basename(links_file)))
 )
-#> [1] "s3://bucketmehyvgdz/demo.rds"  "s3://bucketmehyvgdz/links.rds"
+#> [1] "s3://bucket-zgxwcbvjaohfspyt/demo.rds" 
+#> [2] "s3://bucket-zgxwcbvjaohfspyt/links.rds"
 aws_bucket_list_objects(bucket2)
 #> # A tibble: 2 × 8
 #>   bucket         key   uri     size type  etag  lastmodified        storageclass
 #>   <glue>         <chr> <glu> <fs::> <chr> <chr> <dttm>              <chr>       
-#> 1 bucketmehyvgdz demo… s3:/…    257 file  "\"2… 2025-02-20 21:29:22 STANDARD    
-#> 2 bucketmehyvgdz link… s3:/…  13.2K file  "\"1… 2025-02-20 21:29:22 STANDARD
+#> 1 bucket-zgxwcb… demo… s3:/…    256 file  "\"7… 2025-03-12 21:50:14 STANDARD    
+#> 2 bucket-zgxwcb… link… s3:/…  13.2K file  "\"0… 2025-03-12 21:50:14 STANDARD
 ```
 
 Then delete the bucket
@@ -263,7 +271,7 @@ six_bucket_delete(bucket2)
 ```
 
 ```
-#> ℹ deleting bucket bucketmehyvgdz
+#> ℹ deleting bucket bucket-zgxwcbvjaohfspyt
 ```
 
 ## IAM magical methods
@@ -321,8 +329,8 @@ six_user_create(user2)
 ```
 
 ```
-#> ℹ Added policy UserInfo to SunsetFulfillmen
-#> ✔ Key pair created for SunsetFulfillmen
+#> ℹ Added policy UserInfo to EmergencyAdverti
+#> ✔ Key pair created for EmergencyAdverti
 #> ℹ AccessKeyId: *****
 #> ℹ SecretAccessKey: *****
 ```
@@ -336,7 +344,7 @@ You can also delete a user. If a user has any attached policies or access keys t
 six_user_delete(user2)
 #> ℹ Policy UserInfo detached
 #> ✔ Access Key ID ***** deleted
-#> ℹ SunsetFulfillmen deleted
+#> ℹ EmergencyAdverti deleted
 ```
 
 

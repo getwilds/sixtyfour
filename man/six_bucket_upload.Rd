@@ -43,12 +43,12 @@ structure in the S3 bucket
 \examples{
 \dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # single file, single remote path
-bucket1 <- random_string("bucket")
+bucket1 <- random_bucket()
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 six_bucket_upload(path = demo_rds_file, remote = bucket1, force = TRUE)
 
 ## a file and a directory - with a single remote path
-bucket2 <- random_string("bucket")
+bucket2 <- random_bucket()
 library(fs)
 tdir <- path(path_temp(), "mytmp")
 dir_create(tdir)
@@ -58,7 +58,7 @@ six_bucket_upload(path = c(demo_rds_file, tdir), remote = bucket2,
 force = TRUE)
 
 ## a directory with nested dirs - with a single remote path
-bucket3 <- random_string("bucket")
+bucket3 <- random_bucket()
 library(fs)
 tdir <- path(path_temp(), "apples")
 dir_create(tdir)

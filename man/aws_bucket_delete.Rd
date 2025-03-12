@@ -28,7 +28,7 @@ sure that you want to delete the bucket.
 }
 \examples{
 \dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-bucket_name <- random_string("bucket")
+bucket_name <- random_bucket()
 if (!aws_bucket_exists(bucket_name)) {
   aws_bucket_create(bucket = bucket_name)
   aws_buckets()

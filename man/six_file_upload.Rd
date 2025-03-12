@@ -43,19 +43,19 @@ pass in many file paths
 
 \examples{
 \dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-bucket1 <- random_string("bucket")
+bucket1 <- random_bucket()
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 six_file_upload(demo_rds_file, bucket1, force = TRUE)
 
 # path doesn't exist, error
 try(
-  six_file_upload("file_doesnt_exist.txt", random_string("bucket"))
+  six_file_upload("file_doesnt_exist.txt", random_bucket())
 )
 
 # directories not supported, error
 mydir <- tempdir()
 try(
-  six_file_upload(mydir, random_string("bucket"))
+  six_file_upload(mydir, random_bucket())
 )
 
 # Cleanup
@@ -63,7 +63,7 @@ six_bucket_delete(bucket1, force = TRUE)
 \dontshow{\}) # examplesIf}
 \dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # requires user interaction with prompts ...
-bucket2 <- random_string("bucket")
+bucket2 <- random_bucket()
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 six_file_upload(demo_rds_file, bucket2)
 

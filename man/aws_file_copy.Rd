@@ -27,7 +27,7 @@ Copy files between buckets
 }
 \examples{
 \dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-bucket1 <- random_string("bucket")
+bucket1 <- random_bucket()
 aws_bucket_create(bucket1)
 
 # create files in an existing bucket
@@ -37,14 +37,14 @@ paths <- s3_path(bucket1, c("aaa", "bbb", "ccc"), ext = "txt")
 aws_file_upload(tfiles, paths)
 
 # create a new bucket
-bucket2 <- random_string("bucket")
+bucket2 <- random_bucket()
 new_bucket <- aws_bucket_create(bucket = bucket2)
 
 # add existing files to the new bucket
 aws_file_copy(paths, bucket2)
 
 # or, create a bucket that doesn't exist yet
-bucket3 <- random_string("bucket")
+bucket3 <- random_bucket()
 aws_file_copy(paths, bucket3, force = TRUE)
 
 # Cleanup

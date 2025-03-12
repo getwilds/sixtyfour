@@ -74,7 +74,7 @@ user_wo_access <- six_user_create(name_user_wo, copy_to_cb = FALSE)
 Create a bucket, and put a file in it.
 
 ```{r create-bucket}
-bucket <- random_string("bucket")
+bucket <- random_bucket()
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 six_bucket_upload(path = demo_rds_file, remote = bucket, force = TRUE)
 ```

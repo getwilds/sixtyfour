@@ -24,13 +24,13 @@ library(sixtyfour)
 
 ## Buckets
 
-Make a random bucket name with `random_string()` from `sixtyfour`:
+Make a random bucket name with `random_bucket()` from `sixtyfour`:
 
 
 ``` r
-bucket <- random_string("egs-")
+bucket <- random_bucket()
 bucket
-#> egs-xvrsghta
+#> bucket-hbmkfxwpdnoilrts
 ```
 
 Create a bucket - check if it exists first
@@ -42,7 +42,7 @@ exists <- aws_bucket_exists(bucket)
 if (!exists) {
   aws_bucket_create(bucket)
 }
-#> [1] "http://egs-xvrsghta.s3.amazonaws.com/"
+#> [1] "http://bucket-hbmkfxwpdnoilrts.s3.amazonaws.com/"
 ```
 
 Create files in a few different directories
@@ -61,7 +61,7 @@ Upload them to the newly created bucket
 
 ``` r
 aws_bucket_upload(path = tdir, bucket = bucket)
-#> [1] "s3://egs-xvrsghta"
+#> [1] "s3://bucket-hbmkfxwpdnoilrts"
 ```
 
 List objects in the bucket
@@ -71,18 +71,18 @@ List objects in the bucket
 objects <- aws_bucket_list_objects(bucket)
 objects
 #> # A tibble: 10 × 8
-#>    bucket       key     uri    size type  etag  lastmodified        storageclass
-#>    <glue>       <chr>   <glu> <fs:> <chr> <chr> <dttm>              <chr>       
-#>  1 egs-xvrsghta file81… s3:/… 1.74K file  "\"6… 2025-01-10 19:15:29 STANDARD    
-#>  2 egs-xvrsghta file81… s3:/… 1.74K file  "\"6… 2025-01-10 19:15:30 STANDARD    
-#>  3 egs-xvrsghta file81… s3:/… 1.74K file  "\"6… 2025-01-10 19:15:30 STANDARD    
-#>  4 egs-xvrsghta file81… s3:/… 1.74K file  "\"6… 2025-01-10 19:15:30 STANDARD    
-#>  5 egs-xvrsghta file81… s3:/… 1.74K file  "\"6… 2025-01-10 19:15:30 STANDARD    
-#>  6 egs-xvrsghta file81… s3:/… 1.74K file  "\"6… 2025-01-10 19:15:31 STANDARD    
-#>  7 egs-xvrsghta file81… s3:/… 1.74K file  "\"6… 2025-01-10 19:15:31 STANDARD    
-#>  8 egs-xvrsghta file81… s3:/… 1.74K file  "\"6… 2025-01-10 19:15:31 STANDARD    
-#>  9 egs-xvrsghta file81… s3:/… 1.74K file  "\"6… 2025-01-10 19:15:32 STANDARD    
-#> 10 egs-xvrsghta file81… s3:/… 1.74K file  "\"6… 2025-01-10 19:15:32 STANDARD
+#>    bucket         key   uri    size type  etag  lastmodified        storageclass
+#>    <glue>         <chr> <glu> <fs:> <chr> <chr> <dttm>              <chr>       
+#>  1 bucket-hbmkfx… file… s3:/… 1.74K file  "\"6… 2025-03-12 21:32:20 STANDARD    
+#>  2 bucket-hbmkfx… file… s3:/… 1.74K file  "\"6… 2025-03-12 21:32:20 STANDARD    
+#>  3 bucket-hbmkfx… file… s3:/… 1.74K file  "\"6… 2025-03-12 21:32:21 STANDARD    
+#>  4 bucket-hbmkfx… file… s3:/… 1.74K file  "\"6… 2025-03-12 21:32:21 STANDARD    
+#>  5 bucket-hbmkfx… file… s3:/… 1.74K file  "\"6… 2025-03-12 21:32:21 STANDARD    
+#>  6 bucket-hbmkfx… file… s3:/… 1.74K file  "\"6… 2025-03-12 21:32:21 STANDARD    
+#>  7 bucket-hbmkfx… file… s3:/… 1.74K file  "\"6… 2025-03-12 21:32:21 STANDARD    
+#>  8 bucket-hbmkfx… file… s3:/… 1.74K file  "\"6… 2025-03-12 21:32:21 STANDARD    
+#>  9 bucket-hbmkfx… file… s3:/… 1.74K file  "\"6… 2025-03-12 21:32:21 STANDARD    
+#> 10 bucket-hbmkfx… file… s3:/… 1.74K file  "\"6… 2025-03-12 21:32:21 STANDARD
 ```
 
 Cleanup - delete the bucket.
@@ -116,9 +116,9 @@ First, create a bucket:
 
 
 ``` r
-my_bucket <- random_string("egs-")
+my_bucket <- random_bucket()
 aws_bucket_create(my_bucket)
-#> [1] "http://egs-jfvsikzx.s3.amazonaws.com/"
+#> [1] "http://bucket-ymaozqbhlvdiwpce.s3.amazonaws.com/"
 ```
 
 Then, upload some files
@@ -129,9 +129,9 @@ temp_files <- replicate(n = 3, tempfile(fileext = ".txt"))
 for (i in temp_files) cat(letters, "\n", file = i)
 remote_files <- s3_path(my_bucket, basename(temp_files))
 aws_file_upload(path = temp_files, remote_path = remote_files)
-#> [1] "s3://egs-jfvsikzx/file817471ff6764.txt"
-#> [2] "s3://egs-jfvsikzx/file817436dd10b4.txt"
-#> [3] "s3://egs-jfvsikzx/file81746b73b58f.txt"
+#> [1] "s3://bucket-ymaozqbhlvdiwpce/file111ba2ba0b6a1.txt"
+#> [2] "s3://bucket-ymaozqbhlvdiwpce/file111ba44361a67.txt"
+#> [3] "s3://bucket-ymaozqbhlvdiwpce/file111ba3bff832d.txt"
 ```
 
 List files in the bucket
@@ -141,11 +141,11 @@ List files in the bucket
 obs <- aws_bucket_list_objects(my_bucket)
 obs
 #> # A tibble: 3 × 8
-#>   bucket       key      uri    size type  etag  lastmodified        storageclass
-#>   <glue>       <chr>    <glu> <fs:> <chr> <chr> <dttm>              <chr>       
-#> 1 egs-jfvsikzx file817… s3:/…    53 file  "\"a… 2025-01-10 19:15:36 STANDARD    
-#> 2 egs-jfvsikzx file817… s3:/…    53 file  "\"a… 2025-01-10 19:15:36 STANDARD    
-#> 3 egs-jfvsikzx file817… s3:/…    53 file  "\"a… 2025-01-10 19:15:35 STANDARD
+#>   bucket          key   uri    size type  etag  lastmodified        storageclass
+#>   <glue>          <chr> <glu> <fs:> <chr> <chr> <dttm>              <chr>       
+#> 1 bucket-ymaozqb… file… s3:/…    53 file  "\"a… 2025-03-12 21:32:23 STANDARD    
+#> 2 bucket-ymaozqb… file… s3:/…    53 file  "\"a… 2025-03-12 21:32:23 STANDARD    
+#> 3 bucket-ymaozqb… file… s3:/…    53 file  "\"a… 2025-03-12 21:32:23 STANDARD
 ```
 
 Fetch file attributes
@@ -154,11 +154,11 @@ Fetch file attributes
 ``` r
 aws_file_attr(remote_files)
 #> # A tibble: 3 × 39
-#>   bucket_name  key     uri    size type  etag  last_modified       delete_marker
-#>   <chr>        <chr>   <chr> <fs:> <chr> <chr> <dttm>              <lgl>        
-#> 1 egs-jfvsikzx file81… s3:/…    53 file  "\"a… 2025-01-10 19:15:35 NA           
-#> 2 egs-jfvsikzx file81… s3:/…    53 file  "\"a… 2025-01-10 19:15:36 NA           
-#> 3 egs-jfvsikzx file81… s3:/…    53 file  "\"a… 2025-01-10 19:15:36 NA           
+#>   bucket_name    key   uri    size type  etag  last_modified       delete_marker
+#>   <chr>          <chr> <chr> <fs:> <chr> <chr> <dttm>              <lgl>        
+#> 1 bucket-ymaozq… file… s3:/…    53 file  "\"a… 2025-03-12 21:32:23 NA           
+#> 2 bucket-ymaozq… file… s3:/…    53 file  "\"a… 2025-03-12 21:32:23 NA           
+#> 3 bucket-ymaozq… file… s3:/…    53 file  "\"a… 2025-03-12 21:32:23 NA           
 #> # ℹ 31 more variables: accept_ranges <chr>, expiration <chr>, restore <chr>,
 #> #   archive_status <chr>, checksum_crc32 <chr>, checksum_crc32_c <chr>,
 #> #   checksum_sha1 <chr>, checksum_sha256 <chr>, missing_meta <int>,
@@ -182,23 +182,23 @@ Copy files
 
 
 ``` r
-new_bucket <- random_string("egs-")
+new_bucket <- random_bucket()
 aws_bucket_create(new_bucket)
-#> [1] "http://egs-tsbcdvhg.s3.amazonaws.com/"
+#> [1] "http://bucket-hizdwfnkjpcrqugs.s3.amazonaws.com/"
 
 # add existing files to the new bucket
 aws_file_copy(remote_files, new_bucket)
-#> [1] "s3://egs-tsbcdvhg/file817471ff6764.txt"
-#> [2] "s3://egs-tsbcdvhg/file817436dd10b4.txt"
-#> [3] "s3://egs-tsbcdvhg/file81746b73b58f.txt"
+#> [1] "s3://bucket-hizdwfnkjpcrqugs/file111ba2ba0b6a1.txt"
+#> [2] "s3://bucket-hizdwfnkjpcrqugs/file111ba44361a67.txt"
+#> [3] "s3://bucket-hizdwfnkjpcrqugs/file111ba3bff832d.txt"
 
 # create bucket that doesn't exist yet
 # the force=TRUE makes this work non-interactively
-another_bucket <- random_string("egs-")
+another_bucket <- random_bucket()
 aws_file_copy(remote_files, another_bucket, force = TRUE)
-#> [1] "s3://egs-wuozsfjt/file817471ff6764.txt"
-#> [2] "s3://egs-wuozsfjt/file817436dd10b4.txt"
-#> [3] "s3://egs-wuozsfjt/file81746b73b58f.txt"
+#> [1] "s3://bucket-pcbzdwktujoifmrg/file111ba2ba0b6a1.txt"
+#> [2] "s3://bucket-pcbzdwktujoifmrg/file111ba44361a67.txt"
+#> [3] "s3://bucket-pcbzdwktujoifmrg/file111ba3bff832d.txt"
 ```
 
 Download files
@@ -207,7 +207,7 @@ Download files
 ``` r
 tfile <- tempfile()
 aws_file_download(remote_files[1], tfile)
-#> [1] "/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T//RtmplCZ06h/file817477e2ae84"
+#> [1] "/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T//RtmpR9Kq1f/file111ba4f790260"
 readLines(tfile)
 #> [1] "a b c d e f g h i j k l m n o p q r s t u v w x y z "
 ```
@@ -219,7 +219,7 @@ Rename files
 aws_file_exists(remote_files[1])
 #> [1] TRUE
 aws_file_rename(remote_files[1], s3_path(dirname(remote_files[1]), "myfile.txt"))
-#> [1] "s3://egs-jfvsikzx/myfile.txt"
+#> [1] "s3://bucket-ymaozqbhlvdiwpce/myfile.txt"
 aws_file_exists(remote_files[1])
 #> [1] FALSE
 ```
@@ -245,11 +245,11 @@ An example of using one of the functions, `six_bucket_add_user()`:
 
 ``` r
 # create a bucket
-bucket <- random_string("egs-")
+bucket <- random_bucket()
 if (!aws_bucket_exists(bucket)) {
   aws_bucket_create(bucket)
 }
-#> [1] "http://egs-gciavhtw.s3.amazonaws.com/"
+#> [1] "http://bucket-qpgzdesoctbxhvar.s3.amazonaws.com/"
 
 # create a user
 user <- random_user()
@@ -257,22 +257,22 @@ if (!aws_user_exists(user)) {
   aws_user_create(user)
 }
 #> # A tibble: 1 × 6
-#>   UserName         UserId    Path  Arn   CreateDate          PasswordLastUsed
-#>   <chr>            <chr>     <chr> <chr> <dttm>              <dttm>          
-#> 1 SensedForgivenes AIDA22PL… /     arn:… 2025-01-10 19:15:46 NA
+#>   UserName    UserId         Path  Arn   CreateDate          PasswordLastUsed
+#>   <chr>       <chr>          <chr> <chr> <dttm>              <dttm>          
+#> 1 FellowAnkle AIDA22PL7JXXR… /     arn:… 2025-03-12 21:32:28 NA
 
 six_bucket_add_user(
   bucket = bucket,
   username = user,
   permissions = "read"
 )
-#> ✔ SensedForgivenes now has read access to bucket egs-gciavhtw
+#> ✔ FellowAnkle now has read access to bucket bucket-qpgzdesoctbxhvar
 
 # cleanup
 six_user_delete(user)
-#> ℹ Policy S3ReadOnlyAccessEgsGciavhtw detached
-#> ! No access keys found for SensedForgivenes
-#> ℹ SensedForgivenes deleted
+#> ℹ Policy S3ReadOnlyAccessBucketqpgzdesoctbxhvar detached
+#> ! No access keys found for FellowAnkle
+#> ℹ FellowAnkle deleted
 aws_bucket_delete(bucket, force = TRUE)
 ```
 
@@ -282,24 +282,25 @@ There's one file function: `six_file_upload()`. An example of using it:
 
 
 ``` r
-bucket <- random_string("egs-")
+bucket <- random_bucket()
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 six_file_upload(demo_rds_file, bucket, force = TRUE)
-#> [1] "s3://egs-ozrpxeyh/demo.rds"
+#> [1] "s3://bucket-jazdrlchemykqxsv/demo.rds"
 
 ## many files at once
 links_file <- file.path(system.file(), "Meta/links.rds")
 six_file_upload(c(demo_rds_file, links_file), bucket)
-#> [1] "s3://egs-ozrpxeyh/demo.rds"  "s3://egs-ozrpxeyh/links.rds"
+#> [1] "s3://bucket-jazdrlchemykqxsv/demo.rds" 
+#> [2] "s3://bucket-jazdrlchemykqxsv/links.rds"
 
 # set expiration, expire 1 minute from now
 six_file_upload(demo_rds_file, bucket, Expires = Sys.time() + 60)
-#> [1] "s3://egs-ozrpxeyh/demo.rds"
+#> [1] "s3://bucket-jazdrlchemykqxsv/demo.rds"
 
 # cleanup
 obs <- aws_bucket_list_objects(bucket)
 aws_file_delete(obs$uri)
-#> s3://egs-ozrpxeyh/demo.rds
-#> s3://egs-ozrpxeyh/links.rds
+#> s3://bucket-jazdrlchemykqxsv/demo.rds
+#> s3://bucket-jazdrlchemykqxsv/links.rds
 aws_bucket_delete(bucket, force = TRUE)
 ```

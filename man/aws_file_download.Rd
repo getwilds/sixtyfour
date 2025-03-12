@@ -24,7 +24,7 @@ Download a file
 library(glue)
 
 # single file
-bucket1 <- random_string("bucket")
+bucket1 <- random_bucket()
 aws_bucket_create(bucket1)
 tfile1 <- tempfile()
 remote1 <- s3_path(bucket1, glue("{basename(tfile1)}.txt"))
@@ -35,7 +35,7 @@ aws_file_download(remote_path = remote1, path = dfile)
 readLines(dfile)
 
 # many files
-bucket2 <- random_string("bucket")
+bucket2 <- random_bucket()
 aws_bucket_create(bucket2)
 tfiles <- replicate(n = 3, tempfile())
 for (file in tfiles) cat("Hello mars!!!!!!\n", file = file)

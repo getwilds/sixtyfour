@@ -21,7 +21,7 @@ equal_lengths <- function(x, y) {
 #' @family files
 #' @examplesIf aws_has_creds()
 #' library(glue)
-#' bucket <- random_string("bucket")
+#' bucket <- random_bucket()
 #' if (!aws_bucket_exists(bucket)) {
 #'   aws_bucket_create(bucket)
 #' }
@@ -59,7 +59,7 @@ aws_file_attr <- function(remote_path) {
 #' @details to upload a folder of files see [aws_bucket_upload()]
 #' @family files
 #' @examplesIf aws_has_creds()
-#' bucket1 <- random_string("bucket")
+#' bucket1 <- random_bucket()
 #' aws_bucket_create(bucket1)
 #' cat(bucket1)
 #' demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
@@ -69,7 +69,7 @@ aws_file_attr <- function(remote_path) {
 #' )
 #'
 #' ## many files at once
-#' bucket2 <- random_string("bucket")
+#' bucket2 <- random_bucket()
 #' if (!aws_bucket_exists(bucket2)) {
 #'   aws_bucket_create(bucket2)
 #' }
@@ -100,7 +100,7 @@ aws_file_attr <- function(remote_path) {
 #'
 #' # Path's without file extensions behave a little weird
 #' ## With extension
-#' bucket3 <- random_string("bucket")
+#' bucket3 <- random_bucket()
 #' if (!aws_bucket_exists(bucket3)) {
 #'   aws_bucket_create(bucket3)
 #' }
@@ -159,26 +159,26 @@ aws_file_upload <- function(path, remote_path, ...) {
 #' @return (character) a vector of remote s3 paths where your
 #' files are located
 #' @examplesIf aws_has_creds()
-#' bucket1 <- random_string("bucket")
+#' bucket1 <- random_bucket()
 #' demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 #' six_file_upload(demo_rds_file, bucket1, force = TRUE)
 #'
 #' # path doesn't exist, error
 #' try(
-#'   six_file_upload("file_doesnt_exist.txt", random_string("bucket"))
+#'   six_file_upload("file_doesnt_exist.txt", random_bucket())
 #' )
 #'
 #' # directories not supported, error
 #' mydir <- tempdir()
 #' try(
-#'   six_file_upload(mydir, random_string("bucket"))
+#'   six_file_upload(mydir, random_bucket())
 #' )
 #'
 #' # Cleanup
 #' six_bucket_delete(bucket1, force = TRUE)
 #' @examplesIf interactive() && aws_has_creds()
 #' # requires user interaction with prompts ...
-#' bucket2 <- random_string("bucket")
+#' bucket2 <- random_bucket()
 #' demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 #' six_file_upload(demo_rds_file, bucket2)
 #'
@@ -229,7 +229,7 @@ six_file_upload <- function(path, bucket, force = FALSE, ...) {
 #' library(glue)
 #'
 #' # single file
-#' bucket1 <- random_string("bucket")
+#' bucket1 <- random_bucket()
 #' aws_bucket_create(bucket1)
 #' tfile1 <- tempfile()
 #' remote1 <- s3_path(bucket1, glue("{basename(tfile1)}.txt"))
@@ -240,7 +240,7 @@ six_file_upload <- function(path, bucket, force = FALSE, ...) {
 #' readLines(dfile)
 #'
 #' # many files
-#' bucket2 <- random_string("bucket")
+#' bucket2 <- random_bucket()
 #' aws_bucket_create(bucket2)
 #' tfiles <- replicate(n = 3, tempfile())
 #' for (file in tfiles) cat("Hello mars!!!!!!\n", file = file)
@@ -283,7 +283,7 @@ aws_file_download <- function(remote_path, path, ...) {
 #' @return `NULL` invisibly
 #' @examplesIf aws_has_creds()
 #' # create a file
-#' bucket <- random_string("bucket")
+#' bucket <- random_bucket()
 #' aws_bucket_create(bucket)
 #' tfile <- tempfile()
 #' cat("Hello World!\n", file = tfile)
@@ -326,7 +326,7 @@ aws_file_delete_one <- function(one_path, ...) {
 #' @family files
 #' @examplesIf aws_has_creds()
 #' library(glue)
-#' bucket <- random_string("bucket")
+#' bucket <- random_bucket()
 #' aws_bucket_create(bucket)
 #'
 #' # upload some files
@@ -357,7 +357,7 @@ aws_file_exists <- function(remote_path) {
 #' @return vector of paths, length matches `length(remote_path)`
 #' @family files
 #' @examplesIf aws_has_creds()
-#' bucket <- random_string("bucket")
+#' bucket <- random_bucket()
 #' aws_bucket_create(bucket)
 #'
 #' # rename files
@@ -391,7 +391,7 @@ aws_file_rename <- function(remote_path, new_remote_path, ...) {
 #' @return vector of paths, length matches `length(remote_path)`
 #' @family files
 #' @examplesIf aws_has_creds()
-#' bucket1 <- random_string("bucket")
+#' bucket1 <- random_bucket()
 #' aws_bucket_create(bucket1)
 #'
 #' # create files in an existing bucket
@@ -401,14 +401,14 @@ aws_file_rename <- function(remote_path, new_remote_path, ...) {
 #' aws_file_upload(tfiles, paths)
 #'
 #' # create a new bucket
-#' bucket2 <- random_string("bucket")
+#' bucket2 <- random_bucket()
 #' new_bucket <- aws_bucket_create(bucket = bucket2)
 #'
 #' # add existing files to the new bucket
 #' aws_file_copy(paths, bucket2)
 #'
 #' # or, create a bucket that doesn't exist yet
-#' bucket3 <- random_string("bucket")
+#' bucket3 <- random_bucket()
 #' aws_file_copy(paths, bucket3, force = TRUE)
 #'
 #' # Cleanup

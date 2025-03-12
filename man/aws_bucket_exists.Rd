@@ -21,7 +21,7 @@ internally uses
 }
 \examples{
 \dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-bucket1 <- random_string("bucket")
+bucket1 <- random_bucket()
 aws_bucket_create(bucket1)
 
 # exists

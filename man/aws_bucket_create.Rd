@@ -23,7 +23,7 @@ Requires the env var \code{AWS_REGION}
 }
 \examples{
 \dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-bucket2 <- random_string("bucket")
+bucket2 <- random_bucket()
 aws_bucket_create(bucket2)
 
 # cleanup

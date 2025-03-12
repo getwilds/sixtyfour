@@ -12,7 +12,7 @@ bucket_checks <- function(bucket) {
 #' @family buckets
 #' @return a single boolean (logical)
 #' @examplesIf aws_has_creds()
-#' bucket1 <- random_string("bucket")
+#' bucket1 <- random_bucket()
 #' aws_bucket_create(bucket1)
 #'
 #' # exists
@@ -43,7 +43,7 @@ aws_bucket_exists <- function(bucket) {
 #' @return the bucket path (character)
 #' @family buckets
 #' @examplesIf aws_has_creds()
-#' bucket2 <- random_string("bucket")
+#' bucket2 <- random_bucket()
 #' aws_bucket_create(bucket2)
 #'
 #' # cleanup
@@ -92,7 +92,7 @@ bucket_create_if_not <- function(bucket, force = FALSE) {
 #' @family buckets
 #' @return `NULL`, invisibly
 #' @examplesIf aws_has_creds()
-#' bucket_name <- random_string("bucket")
+#' bucket_name <- random_bucket()
 #' if (!aws_bucket_exists(bucket_name)) {
 #'   aws_bucket_create(bucket = bucket_name)
 #'   aws_buckets()
@@ -130,12 +130,12 @@ aws_bucket_delete <- function(bucket, force = FALSE, ...) {
 #' six_bucket_delete("notabucket")
 #'
 #' # bucket exists w/o objects
-#' bucket <- random_string("bucket")
+#' bucket <- random_bucket()
 #' aws_bucket_create(bucket)
 #' six_bucket_delete(bucket, force = TRUE)
 #'
 #' # bucket exists w/ objects (files and directories with files)
-#' bucket <- random_string("bucket")
+#' bucket <- random_bucket()
 #' aws_bucket_create(bucket)
 #' demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 #' links_file <- file.path(system.file(), "Meta/links.rds")
@@ -203,7 +203,7 @@ six_bucket_delete <- function(bucket, force = FALSE, ...) {
 #' sure that you want to delete the bucket.
 #' @family buckets
 #' @examplesIf aws_has_creds()
-#' bucket <- random_string("bucket")
+#' bucket <- random_bucket()
 #' aws_bucket_create(bucket = bucket)
 #' desc_file <- file.path(system.file(), "DESCRIPTION")
 #' aws_file_upload(desc_file, s3_path(bucket, "DESCRIPTION.txt"))
@@ -239,7 +239,7 @@ aws_bucket_download <- function(bucket, dest_path, ...) {
 #' tfiles <- replicate(n = 10, file_temp(tmp_dir = tdir, ext = ".txt"))
 #' invisible(lapply(tfiles, function(x) write.csv(mtcars, x)))
 #'
-#' bucket_name <- random_string("bucket")
+#' bucket_name <- random_bucket()
 #' if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
 #' aws_bucket_upload(path = tdir, bucket = bucket_name)
 #' aws_bucket_list_objects(bucket_name)
@@ -341,12 +341,12 @@ explode_file_paths <- function(path) {
 #' files are located
 #' @examplesIf aws_has_creds()
 #' # single file, single remote path
-#' bucket1 <- random_string("bucket")
+#' bucket1 <- random_bucket()
 #' demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 #' six_bucket_upload(path = demo_rds_file, remote = bucket1, force = TRUE)
 #'
 #' ## a file and a directory - with a single remote path
-#' bucket2 <- random_string("bucket")
+#' bucket2 <- random_bucket()
 #' library(fs)
 #' tdir <- path(path_temp(), "mytmp")
 #' dir_create(tdir)
@@ -356,7 +356,7 @@ explode_file_paths <- function(path) {
 #' force = TRUE)
 #'
 #' ## a directory with nested dirs - with a single remote path
-#' bucket3 <- random_string("bucket")
+#' bucket3 <- random_bucket()
 #' library(fs)
 #' tdir <- path(path_temp(), "apples")
 #' dir_create(tdir)
@@ -429,7 +429,7 @@ six_bucket_upload <- function(path, remote, force = FALSE, ...) {
 #' * etag (character)
 #' * last_modified (dttm)
 #' @examplesIf aws_has_creds()
-#' bucket_name <- random_string("bucket")
+#' bucket_name <- random_bucket()
 #' if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
 #' links_file <- file.path(system.file(), "Meta/links.rds")
 #' aws_file_upload(
@@ -493,7 +493,7 @@ aws_buckets <- function(...) {
 #' @return character vector of objects/files within the bucket,
 #' printed as a tree
 #' @examplesIf aws_has_creds()
-#' bucket_name <- random_string("bucket")
+#' bucket_name <- random_bucket()
 #' if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
 #' links_file <- file.path(system.file(), "Meta/links.rds")
 #' pkgs_file <- file.path(system.file(), "Meta/package.rds")
