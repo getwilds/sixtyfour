@@ -8,15 +8,46 @@ aws_configure(redacted = FALSE, redact_str = "*****", verbose = TRUE)
 }
 \arguments{
 \item{redacted}{(logical) Redact secrets? Default: \code{FALSE}. If \code{TRUE},
-secret values are redacted (replaced with \verb{*****}) only in printed
-messages to the console, and are not redacted in the output from
-running functions.}
+secret values are redacted (replaced with \code{redact_str}) in certain
+messages and output from functions. See \emph{What is Redacted} below.}
 
 \item{redact_str}{(character) String to use to replace redacted values.
 Default: \code{"*****"}}
 
-\item{verbose}{(logical) Print verbose output? Default: \code{TRUE}.}
+\item{verbose}{(logical) Print verbose output? Default: \code{TRUE}. Applies
+only to \code{cli::cli_alert_info()}, \code{cli::cli_alert_warning()}, and
+\code{cli::cli_alert_success()} functions that are used throughout this package.
+There's still a few places where \code{verbose} may not be respected.}
 }
 \description{
 Configure sixtyfour settings
 }
+\section{What is Redacted}{
+
+What's redacted is currently hard-coded in the package. There's only
+certain functions and certain elements in the output of those functions
+that are redacted. The following is what's redacted with
+\code{aws_configure(redacted = TRUE)} or \code{with_redacted()}:
+\itemize{
+\item \code{aws_whoami()}: AWS Account ID via \code{account_id()}
+\item \code{six_user_creds()}: Access Key ID
+\item groups functions:
+\itemize{
+\item functions: \code{aws_groups()}, \code{aws_group()}, \code{aws_group_create()}
+\item attribute: \code{Arn} (includes AWS Account ID)
+}
+\item roles functions:
+\itemize{
+\item functions: \code{aws_roles()}, \code{aws_role()}, \code{aws_role_create()}
+\item attribute: \code{Arn} (includes AWS Account ID)
+}
+\item user functions:
+\itemize{
+\item functions: \code{aws_users()}, \code{aws_user()}, \code{aws_user_create()},
+\code{aws_user_add_to_group()}, \code{aws_user_remove_from_group()}
+\item attribute: \code{Arn} (includes AWS Account ID)
+}
+\item \code{aws_user_access_key_delete()}: Access Key ID
+}
+}
+

@@ -11,10 +11,16 @@ role_list_tidy <- function(x) {
     return(tibble())
   }
   vars <- c(
-    "RoleName", "RoleId", "Path", "Arn", "CreateDate",
-    "Description", "AssumeRolePolicyDocument"
+    "RoleName",
+    "RoleId",
+    "Path",
+    "Arn",
+    "CreateDate",
+    "Description",
+    "AssumeRolePolicyDocument"
   )
-  tidy_generator(vars)(x)
+  tidy_generator(vars)(x) %>%
+    mutate(Arn = ifelse(env64$redacted, env64$redact_str, Arn))
 }
 
 #' List roles
@@ -146,9 +152,14 @@ aws_role_exists <- function(name) {
 #' invisible(z %>% aws_policy_detach("AWSLambdaBasicExecutionRole"))
 #' aws_role_delete(role_name)
 aws_role_create <- function(
-    name, assume_role_policy_document, path = NULL,
-    description = NULL, max_session_duration = NULL, permission_boundary = NULL,
-    tags = NULL) {
+  name,
+  assume_role_policy_document,
+  path = NULL,
+  description = NULL,
+  max_session_duration = NULL,
+  permission_boundary = NULL,
+  tags = NULL
+) {
   con_iam()$create_role(
     Path = path,
     RoleName = name,

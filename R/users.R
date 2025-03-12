@@ -10,11 +10,18 @@ user_list_tidy <- function(x) {
     return(tibble())
   }
   vars <- c(
-    "UserName", "UserId", "Path", "Arn", "CreateDate",
+    "UserName",
+    "UserId",
+    "Path",
+    "Arn",
+    "CreateDate",
     "PasswordLastUsed"
   )
   tidy_generator(vars)(x) %>%
-    mutate(PasswordLastUsed = .as_datetime(PasswordLastUsed))
+    mutate(
+      PasswordLastUsed = .as_datetime(PasswordLastUsed),
+      Arn = ifelse(env64$redacted, env64$redact_str, Arn)
+    )
 }
 
 #' List Users
@@ -143,8 +150,11 @@ aws_user_current <- function() {
 #' # cleanup
 #' aws_user_delete(user1)
 aws_user_create <- function(
-    username, path = NULL, permission_boundary = NULL,
-    tags = NULL) {
+  username,
+  path = NULL,
+  permission_boundary = NULL,
+  tags = NULL
+) {
   con_iam()$create_user(
     Path = path,
     UserName = username,
@@ -177,8 +187,12 @@ aws_user_create <- function(
 #' # cleanup
 #' six_user_delete(name)
 six_user_create <- function(
-    username, path = NULL, permission_boundary = NULL,
-    tags = NULL, copy_to_cb = TRUE) {
+  username,
+  path = NULL,
+  permission_boundary = NULL,
+  tags = NULL,
+  copy_to_cb = TRUE
+) {
   aws_user_create(
     path = path,
     username = username,
@@ -188,8 +202,10 @@ six_user_create <- function(
   policy_name <- "UserInfo"
   if (!aws_policy_exists(policy_name)) {
     actions <- c(
-      "iam:GetUser", "iam:ListUserPolicies",
-      "iam:ListAttachedUserPolicies", "iam:ListGroupsForUser"
+      "iam:GetUser",
+      "iam:ListUserPolicies",
+      "iam:ListAttachedUserPolicies",
+      "iam:ListGroupsForUser"
     )
     policy_doc <- aws_policy_document_create(
       aws_policy_statement(actions, "*")

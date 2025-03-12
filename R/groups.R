@@ -9,7 +9,8 @@ group_list_tidy <- function(x) {
     return(tibble())
   }
   vars <- c("GroupName", "GroupId", "Path", "Arn", "CreateDate")
-  tidy_generator(vars)(x)
+  tidy_generator(vars)(x) %>%
+    mutate(Arn = ifelse(env64$redacted, env64$redact_str, Arn))
 }
 
 #' List all groups or groups for a single user
@@ -28,8 +29,11 @@ aws_groups <- function(username = NULL, ...) {
     paginate_aws_marker("list_groups", "Groups", ...) %>%
       group_list_tidy()
   } else {
-    paginate_aws_marker("list_groups_for_user", "Groups",
-      UserName = username, ...
+    paginate_aws_marker(
+      "list_groups_for_user",
+      "Groups",
+      UserName = username,
+      ...
     ) %>%
       group_list_tidy()
   }
