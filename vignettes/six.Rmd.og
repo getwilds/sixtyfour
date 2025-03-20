@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
 )
 library(sixtyfour)
 aws_configure(redacted = TRUE)
+set.seed(1938747)
 ```
 
 High level `sixtyfour` functions - or "magical" methods - or we can call them "six methods" after the package name `sixtyfour` - are higher level functions to make your life easier.
