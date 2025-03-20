@@ -4,12 +4,12 @@
 \alias{six_user_creds}
 \title{Create access keys for a user}
 \usage{
-six_user_creds(username, copy_to_cp = FALSE)
+six_user_creds(username, copy_to_cb = FALSE)
 }
 \arguments{
 \item{username}{(character) A user name. required}
 
-\item{copy_to_cp}{(logical) Copy to clipboard. Default: \code{FALSE}. See
+\item{copy_to_cb}{(logical) Copy to clipboard. Default: \code{FALSE}. See
 section "Clipboard" below for more details.}
 }
 \value{
@@ -48,10 +48,10 @@ viewed again.
 
 \section{Clipboard}{
 
-If you set \code{copy_to_cp=TRUE} we'll copy to your clipboard an
+If you set \code{copy_to_cb=TRUE} we'll copy to your clipboard an
 email template with the credentials and a small amount of instructions.
 Please do edit that email with information tailored to your
-group and how you'd like to store secrets.
+group and how you'd like to store secrets
 }
 
 \section{Known error behaviors}{
@@ -63,12 +63,12 @@ group and how you'd like to store secrets.
 }
 
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 user <- random_user()
 if (!aws_user_exists(user)) aws_user_create(user)
 six_user_creds(user)
 aws_user_access_key(user)
-six_user_creds(user, copy_to_cp = TRUE)
+six_user_creds(user, copy_to_cb = TRUE)
 aws_user_access_key(user)
 # cleanup
 six_user_delete(user)

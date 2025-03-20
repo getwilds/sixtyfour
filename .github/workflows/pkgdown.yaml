@@ -13,17 +13,38 @@ name: pkgdown
 jobs:
   delete-bot-comments:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
-      - name: pr-deleter
-        uses: maheshrayas/action-pr-comment-delete@v3.0
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Delete bot comments
+        uses: actions/github-script@v7
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          org: ${{ github.repository_owner }}
-          repo: ${{ github.event.repository.name }}
-          user: "github-actions[bot]"
-          issue: ${{ github.event.number }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botUsername = 'github-actions[bot]';
+            for (const comment of comments) {
+              if (comment.user.login === botUsername) {
+                console.log(`Deleting comment ${comment.id}`);
+                await github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: comment.id
+                });
+              }
+            }
 
   pkgdown:
+    needs: delete-bot-comments
     runs-on: ubuntu-latest
     # Only restrict concurrency for non-PR jobs
     concurrency:
@@ -75,5 +96,5 @@ jobs:
           enable-pull-request-comment: true
           enable-commit-comment: false
           enable-commit-status: true
-          overwrites-pull-request-comment: false
+          overwrites-pull-request-comment: true
         timeout-minutes: 1

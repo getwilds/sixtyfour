@@ -17,11 +17,26 @@ vector of booleans (\code{TRUE} or \code{FALSE}), length matches
 Check if a file exists
 }
 \examples{
-\dontrun{
-aws_file_exists(s3_path("s64-test-2", "DESCRIPTION"))
-aws_file_exists(s3_path("s64-test-2", "doesntexist"))
-aws_file_exists(s3_path("s64-test-2", c("DESCRIPTION", "doesntexist")))
-}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+library(glue)
+bucket <- random_bucket()
+aws_bucket_create(bucket)
+
+# upload some files
+tfiles <- replicate(n = 3, tempfile())
+paths <- s3_path(bucket, glue("{basename(tfiles)}.txt"))
+for (file in tfiles) cat("Hello saturn!!!!!!\n", file = file)
+for (file in tfiles) print(readLines(file))
+aws_file_upload(path = tfiles, remote_path = paths)
+
+# check that files exist
+aws_file_exists(paths[1])
+aws_file_exists(paths[2])
+aws_file_exists(s3_path(bucket, "doesnotexist.txt"))
+
+# Cleanup
+six_bucket_delete(bucket, force = TRUE)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other files: 

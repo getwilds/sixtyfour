@@ -1,15 +1,16 @@
 Package: sixtyfour
 Title: Humane Interface to AWS
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person("Sean", "Kross", role = "aut"),
-    person("Scott", "Chamberlain", role = c("aut", "cre"),
-        email = "sachamber@fredhutch.org",
-        comment = c(ORCID = "0000-0003-1444-9135"))
+    person("Scott", "Chamberlain", , "sachamber@fredhutch.org", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-1444-9135")),
+    person("Fred Hutchinson Cancer Center", , , "wilds@fredhutch.org", role = "fnd",
+           comment = c(ROR = "007ps6h72"))
   )
-Description: An opionated interface to AWS, with methods for interacting
-    with IAM, S3, RDS, Redshift, and Billing.
-URL: https://github.com/getwilds/sixtyfour
+Description: An opinionated interface to AWS, with methods for interacting
+    with 'IAM', S3, RDS, Redshift, and Billing.
+URL: https://github.com/getwilds/sixtyfour, https://getwilds.org/sixtyfour/
 BugReports: https://github.com/getwilds/sixtyfour/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -19,12 +20,11 @@ Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace", "rd",
 RoxygenNote: 7.3.2
 LazyData: true
 Depends:
-    R (>= 2.10)
-Imports: 
+    R (>= 4.1.0)
+Imports:
     dplyr,
-    lubridate,
-    magrittr,
-    paws,
+    paws (>= 0.9.0),
+    paws.common (>= 0.8.1),
     purrr,
     rlang,
     tibble,
@@ -36,22 +36,22 @@ Imports:
     uuid,
     jsonlite,
     curl,
-    snakecase,
     tidyr,
-    clipr
-Suggests: 
+    clipr,
+    withr,
+    ipaddress
+Suggests:
     knitr,
     rmarkdown,
     roxyglobals,
     DBI,
     RPostgres,
     RMariaDB,
+    ggplot2,
+    lubridate,
     testthat (>= 3.0.0),
     vcr (>= 0.6.0),
-    withr,
-    ggplot2,
     webmockr
-Remotes: ropensci/webmockr
 Config/roxyglobals/filename: globals.R
 Config/roxyglobals/unique: FALSE
 Config/testthat/edition: 3

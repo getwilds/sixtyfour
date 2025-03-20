@@ -16,22 +16,42 @@ letter 'v' followed by one or two digits, and optionally followed by a
 period '.' and a string of letters and digits.}
 }
 \value{
-invisibly returns nothing
+invisibly returns \code{NULL}
 }
 \description{
 Delete a policy version
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+if (aws_policy_exists("RdsAllow888")) {
+  aws_policy_delete("RdsAllow888")
+}
+
+# Create policy document
 doc <- aws_policy_document_create(
-  region = "us-east-2",
-  account_id = "1234567890",
-  resource_id = "*",
-  user = "jane_doe",
-  action = "rds-db:connect"
+  aws_policy_statement(
+    action = "rds-db:connect",
+    resource = "*"
+  )
 )
-aws_policy_create("RdsAllow456", document = doc)
-aws_policy_delete_version("RdsAllow456", "v1")
+
+# Create policy
+invisible(aws_policy_create("RdsAllow888", document = doc))
+
+# Add a new version of the policy
+st8ment1 <- aws_policy_statement("iam:GetUser", "*")
+new_doc <- aws_policy_document_create(st8ment1)
+arn <- as_policy_arn("RdsAllow888", local = TRUE)
+aws_policy_update(arn, document = new_doc, defaul = TRUE)
+
+# List versions of the policy
+aws_policy_list_versions("RdsAllow888")
+
+# Delete a policy version
+aws_policy_delete_version("RdsAllow888", "v1")
+
+# Cleanup - delete  policy
+aws_policy_delete("RdsAllow888")
 \dontshow{\}) # examplesIf}
 }
 \references{
@@ -48,6 +68,7 @@ Other policies:
 \code{\link{aws_policy_detach}()},
 \code{\link{aws_policy_exists}()},
 \code{\link{aws_policy_list_entities}()},
-\code{\link{aws_policy_list_versions}()}
+\code{\link{aws_policy_list_versions}()},
+\code{\link{aws_policy_update}()}
 }
 \concept{policies}

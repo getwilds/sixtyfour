@@ -23,15 +23,19 @@ See \url{https://www.paws-r-sdk.com/docs/iam_create_group/}
 docs for details on the parameters
 }
 \examples{
-\dontrun{
-aws_group_create("testgroup")
-}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+aws_group_create("testingagroup")
+aws_group("testingagroup")
+# cleanup
+aws_group_delete("testingagroup")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other groups: 
 \code{\link{aws_group}()},
 \code{\link{aws_group_delete}()},
 \code{\link{aws_group_exists}()},
-\code{\link{aws_groups}()}
+\code{\link{aws_groups}()},
+\code{\link{six_group_delete}()}
 }
 \concept{groups}

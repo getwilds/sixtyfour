@@ -1,0 +1,52 @@
+---
+title: "Managing AWS Auth"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Managing AWS Auth}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette gives guidance on how to manage AWS auth within `sixtyfour`.
+
+## paws auth
+
+We use the package [paws][] to interact with AWS. `paws` also handles the authentication. `paws` looks for credentials in a few different places, in the following order:
+
+1. "Settings" (aka: function inputs) provided to individual AWS services [paws service settings](https://www.paws-r-sdk.com/developer_guide/credentials/#service-settings)
+2. Environment variables [paws supported env vars](https://www.paws-r-sdk.com/developer_guide/credentials/#environment-variables)
+  - You can set the three most important environment variables within R for the current R session like: `Sys.setenv(AWS_ACCESS_KEY_ID = "", AWS_SECRET_ACCESS_KEY = "", AWS_REGION = "us-west-2")`. Or set them in a variety of ways to be available across R sessions. See the [R Startup chapter][r-startup] of _What They Forgot to Teach You About R_ book for more details.
+3. AWS [shared credentials file](https://www.paws-r-sdk.com/developer_guide/credentials/#shared-credentials-file) and [AWS config file](https://www.paws-r-sdk.com/developer_guide/credentials/#config-file)
+  - The default location for the AWS shared credentials file is `~/.aws/credentials`. Look there to see if you have this set.
+  - The default location for the AWS config file is `~/.aws/config`
+4. An EC2 instance or IAM role
+
+`sixtyfour` intializes R6 classes that are the object behind a `paws` service (e.g., for S3), and during the initialization it attempts to gather credentials following the above order.
+
+`sixtyfour` does not provide any mechanism directly in the package to modify what credentials are used. However, following the `paws` docs linked above you can modify what credentials are used by adjusting what credentials you have set.
+
+Some users may have more than one set of credentials - the next section digs into how to approach making sure `sixtyfour` is using the credentials you want to be using.
+
+Note that the first option above - passing credentials directly as function parameters - we do not use in `sixtyfour` so that we're not encouraging secrets being directly put into code where those secrets may show up in public.
+
+For many different auth scenarios see the [paws credentials docs](https://www.paws-r-sdk.com/developer_guide/credentials/).
+
+## Setting credentials
+
+It probably makes the most sense to manage your AWS credentials using only one of the above methods. However, you may need to use a combination depending on your needs.
+
+There are various ways to set credentials. Most often - as the [paws docs spell out](https://www.paws-r-sdk.com/developer_guide/credentials/) - you will tell `paws` what creds to use via environment variables. You can do that in various ways:
+
+- You can already have env vars exported globally on your system, and then R will pick those up
+- Start R with an env var set just for that R session, for example: `AWS_REGION=us-east-1 R`, then when you load `paws` it will use that env var
+- You can set env vars within an R session, either globally for the session or perhaps with for exmaple `withr::with_envvar`, setting a certain set of AWS creds for just the duration of the call block passed in to `with_envvar`.
+
+
+[paws]: https://www.paws-r-sdk.com/

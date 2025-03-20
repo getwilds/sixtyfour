@@ -1,7 +1,7 @@
 skip_if_not(localstack_available(), "LocalStack Not Available")
 
 # create user first
-the_role <- random_string("role")
+the_role <- random_role()
 withr::with_envvar(
   c("AWS_PROFILE" = "localstack"),
   if (!aws_role_exists(the_role)) {
@@ -36,7 +36,7 @@ test_that("aws_role", {
 
   expect_type(res, "list")
   expect_s3_class(res$role, "tbl")
-  expect_type(res$policies, "character")
+  expect_s3_class(res$policies, "tbl")
   expect_s3_class(res$attached_policies, "tbl")
   expect_equal(NROW(res$role), 1)
 })
@@ -63,7 +63,7 @@ test_that("aws_roles", {
 })
 
 test_that("aws_role_create", {
-  create_role_role <- random_string("role")
+  create_role_role <- random_role()
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
     {
@@ -105,7 +105,7 @@ test_that("aws_role_create", {
     }
   )
 
-  expect_type(z, "list")
+  expect_null(z)
   expect_length(z, 0)
 })
 

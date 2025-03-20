@@ -20,12 +20,18 @@ internally uses
 \href{https://www.paws-r-sdk.com/docs/s3_head_bucket/}{head_bucket}
 }
 \examples{
-\dontrun{
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+bucket1 <- random_bucket()
+aws_bucket_create(bucket1)
+
 # exists
-aws_bucket_exists(bucket = "s64-test-2")
+aws_bucket_exists(bucket = bucket1)
 # does not exist
 aws_bucket_exists(bucket = "no-bucket")
-}
+
+# cleanup
+six_bucket_delete(bucket1, force = TRUE)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other buckets: 
@@ -36,6 +42,7 @@ Other buckets:
 \code{\link{aws_bucket_tree}()},
 \code{\link{aws_bucket_upload}()},
 \code{\link{aws_buckets}()},
-\code{\link{six_bucket_delete}()}
+\code{\link{six_bucket_delete}()},
+\code{\link{six_bucket_upload}()}
 }
 \concept{buckets}

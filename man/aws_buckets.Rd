@@ -35,9 +35,9 @@ we set \code{refresh=TRUE} internally to make sure we return up to date
 information about your buckets rather than what's cached locally
 }
 \examples{
-\dontrun{
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 aws_buckets()
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other buckets: 
@@ -48,6 +48,7 @@ Other buckets:
 \code{\link{aws_bucket_list_objects}()},
 \code{\link{aws_bucket_tree}()},
 \code{\link{aws_bucket_upload}()},
-\code{\link{six_bucket_delete}()}
+\code{\link{six_bucket_delete}()},
+\code{\link{six_bucket_upload}()}
 }
 \concept{buckets}

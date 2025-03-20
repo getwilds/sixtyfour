@@ -45,7 +45,7 @@ test_that("aws_user", {
 
   expect_type(res, "list")
   expect_s3_class(res$user, "tbl")
-  expect_type(res$policies, "character")
+  expect_s3_class(res$policies, "tbl")
   expect_s3_class(res$attached_policies, "tbl")
   expect_type(res$groups, "list")
   expect_equal(NROW(res$user), 1)

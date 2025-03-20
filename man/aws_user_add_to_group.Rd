@@ -32,16 +32,20 @@ See \url{https://www.paws-r-sdk.com/docs/iam_add_user_to_group/}
 docs for more details
 }
 \examples{
-\dontrun{
-if (!aws_group_exists("testgroup3")) {
-  aws_group_create("testgroup3")
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+group1 <- random_string("group")
+if (!aws_group_exists(group1)) {
+  aws_group_create(group1)
 }
-if (!aws_user_exists("testBlueBird3")) {
-  aws_user_create("testBlueBird3")
+name1 <- random_user()
+if (!aws_user_exists(name1)) {
+  aws_user_create(name1)
 }
-aws_user_add_to_group("testBlueBird3", "testgroup3")
-aws_user_remove_from_group("testBlueBird3", "testgroup3")
-}
+aws_user_add_to_group(name1, group1)
+aws_group(group1) # has user name1
+aws_user_remove_from_group(name1, group1)
+aws_group(group1) # does not have user name1
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other users: 

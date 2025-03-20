@@ -40,14 +40,14 @@ Requires the env var \code{AWS_REGION}. This function prompts you to make
 sure that you want to delete the bucket.
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(fs)
 tdir <- path(tempdir(), "apples")
 dir.create(tdir)
 tfiles <- replicate(n = 10, file_temp(tmp_dir = tdir, ext = ".txt"))
 invisible(lapply(tfiles, function(x) write.csv(mtcars, x)))
 
-bucket_name <- random_string("bucket")
+bucket_name <- random_bucket()
 if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
 aws_bucket_upload(path = tdir, bucket = bucket_name)
 aws_bucket_list_objects(bucket_name)
@@ -69,6 +69,7 @@ Other buckets:
 \code{\link{aws_bucket_list_objects}()},
 \code{\link{aws_bucket_tree}()},
 \code{\link{aws_buckets}()},
-\code{\link{six_bucket_delete}()}
+\code{\link{six_bucket_delete}()},
+\code{\link{six_bucket_upload}()}
 }
 \concept{buckets}

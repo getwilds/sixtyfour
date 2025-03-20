@@ -1,7 +1,7 @@
-#' S3 actions for reading, from the AWS managed policy
-#' `AmazonS3ReadOnlyAccess`
-#' @keywords internal
+#' S3 actions for reading, from the AWS managed policy `AmazonS3ReadOnlyAccess`
+#' @export
 #' @return character vector of actions
+#' @examples s3_actions_read()
 s3_actions_read <- function() {
   c(
     "s3:Get*",
@@ -14,8 +14,9 @@ s3_actions_read <- function() {
 
 #' S3 actions for full access (read and write), from the AWS
 #' managed policy `AmazonS3FullAccess`
-#' @keywords internal
+#' @export
 #' @return character vector of actions
+#' @examples s3_actions_full()
 s3_actions_full <- function() {
   c(
     "s3:*",
@@ -33,15 +34,21 @@ s3_actions_full <- function() {
 #' buckets are globally unique, so AWS figures out the region and account
 #' ID for you.
 #' @return a policy document as JSON (of class `json`)
-#' @examplesIf interactive()
-#' bucket <- random_string("bucket")
+#' @examples
+#' bucket <- random_bucket()
 #' aws_s3_policy_doc_create(
 #'   bucket = bucket,
 #'   action = s3_actions_read(),
 #'   resource = c(bucket_arn(bucket), bucket_arn(bucket, objects = "*"))
 #' )
-aws_s3_policy_doc_create <- function(bucket, action, resource, effect = "Allow",
-                                     sid = NULL, ...) {
+aws_s3_policy_doc_create <- function(
+  bucket,
+  action,
+  resource,
+  effect = "Allow",
+  sid = NULL,
+  ...
+) {
   doc <- list(
     Version = "2012-10-17",
     Statement = list(
@@ -67,14 +74,22 @@ add_user_now_has <- c(
   " to bucket {.strong {bucket}}"
 )
 
-#' @importFrom snakecase to_upper_camel_case
 #' @keywords internal
 bucket_to_policy_name <- function(bucket, permissions) {
-  perm <- switch(permissions,
-    read = "ReadOnlyAccess",
-    write = "FullAccess"
-  )
-  glue("S3{perm}{to_upper_camel_case(bucket)}")
+  perm <- switch(permissions, read = "ReadOnlyAccess", write = "FullAccess")
+  glue("S3{perm}{upper_camel_case(bucket)}")
+}
+
+upper_first <- function(string) {
+  sub("^(\\w?)", "\\U\\1", string, perl = TRUE)
+}
+remove_separators <- function(string) {
+  gsub("[^[:alnum:]]", "", string, perl = TRUE)
+}
+upper_camel_case <- function(string) {
+  string <- upper_first(string)
+  string <- remove_separators(string)
+  trimws(string)
 }
 
 create_policy_if_missing <- function(bucket, permissions) {
@@ -84,7 +99,8 @@ create_policy_if_missing <- function(bucket, permissions) {
   }
   mydoc <- aws_s3_policy_doc_create(
     bucket = bucket,
-    action = switch(permissions,
+    action = switch(
+      permissions,
       read = s3_actions_read(),
       write = s3_actions_full()
     ),
@@ -108,10 +124,17 @@ create_policy_if_missing <- function(bucket, permissions) {
 #' not include deleting buckets
 #' - admin: change user permissions (in addition to read and write);
 #' includes deleting buckets (THIS OPTION NOT ACCEPTED YET!)
+#' @section What is magical:
+#' - Exits early if permissions is not length 1
+#' - Exits early if permissions is not in allowed set
+#' - Exits early if bucket does not exist
+#' - Creates bucket policy if not created yet
+#' - If user not in bucket already, attach policy to user (which adds them
+#' to the bucket)
 #' @return invisibly returns nothing
-#' @examplesIf interactive()
+#' @examplesIf interactive() && aws_has_creds()
 #' # create a bucket
-#' bucket <- random_string("bucket")
+#' bucket <- random_bucket()
 #' if (!aws_bucket_exists(bucket)) {
 #'   aws_bucket_create(bucket)
 #' }
@@ -156,14 +179,14 @@ six_bucket_add_user <- function(bucket, username, permissions) {
   user_data <- aws_user(username)
   if (NROW(user_data$attached_policies) == 0) {
     aws_user(username) %>% aws_policy_attach(policy_name)
-    cli::cli_alert_success(add_user_now_has)
+    cli_success(add_user_now_has)
     return(invisible())
   }
   if (policy_name %in% user_data$attached_policies$PolicyName) {
-    cli::cli_alert_success(add_user_already)
+    cli_success(add_user_already)
   } else {
     aws_user(username) %>% aws_policy_attach(policy_name)
-    cli::cli_alert_success(add_user_now_has)
+    cli_success(add_user_now_has)
   }
   invisible()
 }
@@ -177,9 +200,9 @@ six_bucket_add_user <- function(bucket, username, permissions) {
 #' @section Important:
 #' This function is built around policies named by this package. If you use
 #' your own policies that you name this function may not work.
-#' @examplesIf interactive()
+#' @examplesIf interactive() && aws_has_creds()
 #' # create a bucket
-#' bucket <- random_string("bucket")
+#' bucket <- random_bucket()
 #' if (!aws_bucket_exists(bucket)) {
 #'   aws_bucket_create(bucket)
 #' }
@@ -218,25 +241,25 @@ six_bucket_add_user <- function(bucket, username, permissions) {
 #' aws_bucket_delete(bucket, force = TRUE)
 six_bucket_change_user <- function(bucket, username, permissions) {
   stopifnot(
-    "permissions must be one of read or write" =
-      permissions %in% c("read", "write")
+    "permissions must be one of read or write" = permissions %in%
+      c("read", "write")
   )
   stopifnot("permissions must be length 1" = length(permissions) == 1)
 
   perms <- filter(six_bucket_permissions(bucket), user == username)
   if (NROW(perms) == 0) {
-    cli::cli_alert_warning(c(
+    cli_warning(c(
       "No {.strong {bucket}} specific permissions",
       " found for {.strong {username}}"
     ))
-    cli::cli_alert_info(c(
+    cli_info(c(
       "Use {.strong six_bucket_add_user} to add a user to a bucket"
     ))
     return(invisible())
   }
 
   if (grepl(permissions, perms$permissions)) {
-    cli::cli_alert_success(add_user_already)
+    cli_success(add_user_already)
     return(invisible())
   }
 
@@ -261,7 +284,7 @@ six_bucket_change_user <- function(bucket, username, permissions) {
   aws_user(username) %>% aws_policy_attach(policy_name)
 
   # let em know
-  cli::cli_alert_success(add_user_now_has)
+  cli_success(add_user_now_has)
 
   invisible()
 }
@@ -273,9 +296,9 @@ six_bucket_change_user <- function(bucket, username, permissions) {
 #' @details This function detaches a policy from a user for accessing
 #' the bucket; the policy itself is untouched
 #' @return invisibly returns nothing
-#' @examplesIf interactive()
+#' @examplesIf interactive() && aws_has_creds()
 #' # create a bucket
-#' bucket <- random_string("bucket")
+#' bucket <- random_bucket()
 #' if (!aws_bucket_exists(bucket)) aws_bucket_create(bucket)
 #'
 #' # create user
@@ -292,7 +315,7 @@ six_bucket_remove_user <- function(bucket, username) {
   perms <- permissions_user_bucket(bucket) %>%
     filter(user == username)
   if (NROW(perms) == 0) {
-    cli::cli_alert_warning(c(
+    cli_warning(c(
       "No {.strong {bucket}} specific permissions",
       " found for {.strong {username}}"
     ))
@@ -302,7 +325,7 @@ six_bucket_remove_user <- function(bucket, username) {
   userobj <- aws_user(username)
   map(perms$PolicyName, \(policy) aws_policy_detach(userobj, policy))
 
-  cli::cli_alert_success(c(
+  cli_success(c(
     "{.strong {username}} access to",
     " {.strong {bucket}} has been removed"
   ))
@@ -326,9 +349,9 @@ six_bucket_remove_user <- function(bucket, username) {
 #' permission (if present)
 #'
 #' Note that users with no persmissions are not shown; see [aws_users()]
-#' @examplesIf interactive()
+#' @examplesIf interactive() && aws_has_creds()
 #' # create a bucket
-#' bucket <- random_string("bucket")
+#' bucket <- random_bucket()
 #' if (!aws_bucket_exists(bucket)) aws_bucket_create(bucket)
 #'
 #' # create user
@@ -346,7 +369,7 @@ six_bucket_remove_user <- function(bucket, username) {
 #' aws_bucket_delete(bucket, force = TRUE)
 six_bucket_permissions <- function(bucket) {
   if (!aws_bucket_exists(bucket)) {
-    cli::cli_abort("{.strong {bucket}} does not exist")
+    cli_abort("{.strong {bucket}} does not exist")
   }
   perms <- permissions_user_bucket(bucket)
   user_perms <-
@@ -397,7 +420,7 @@ AWS_REGION={Sys.getenv('AWS_REGION')}
 #' @importFrom dplyr case_match
 #' @importFrom clipr write_clip
 #' @param username (character) A user name. required
-#' @param copy_to_cp (logical) Copy to clipboard. Default: `FALSE`. See
+#' @param copy_to_cb (logical) Copy to clipboard. Default: `FALSE`. See
 #' section "Clipboard" below for more details.
 #' @details A user can have more than one pair of access keys.
 #' By default a user can have up to 2 pairs of access keys.
@@ -415,10 +438,10 @@ AWS_REGION={Sys.getenv('AWS_REGION')}
 #' Save the secret key after running this function as it can not be
 #' viewed again.
 #' @section Clipboard:
-#' If you set `copy_to_cp=TRUE` we'll copy to your clipboard an
+#' If you set `copy_to_cb=TRUE` we'll copy to your clipboard an
 #' email template with the credentials and a small amount of instructions.
 #' Please do edit that email with information tailored to your
-#' group and how you'd like to store secrets.
+#' group and how you'd like to store secrets
 #' @section Known error behaviors:
 #' - `LimitExceeded (HTTP 409). Cannot exceed quota for AccessKeysPerUser: 2`
 #' - `NoSuchEntity (HTTP 404). The user with name xxx cannot be found.`
@@ -429,16 +452,16 @@ AWS_REGION={Sys.getenv('AWS_REGION')}
 #' - SecretAccessKey (character)
 #' - CreateDate (POSIXct)
 #' @seealso [aws_user_access_key()], [aws_user_access_key_delete()]
-#' @examplesIf interactive()
+#' @examplesIf interactive() && aws_has_creds()
 #' user <- random_user()
 #' if (!aws_user_exists(user)) aws_user_create(user)
 #' six_user_creds(user)
 #' aws_user_access_key(user)
-#' six_user_creds(user, copy_to_cp = TRUE)
+#' six_user_creds(user, copy_to_cb = TRUE)
 #' aws_user_access_key(user)
 #' # cleanup
 #' six_user_delete(user)
-six_user_creds <- function(username, copy_to_cp = FALSE) {
+six_user_creds <- function(username, copy_to_cb = FALSE) {
   creds <- tryCatch(
     con_iam()$create_access_key(UserName = username),
     error = function(e) e
@@ -455,14 +478,20 @@ six_user_creds <- function(username, copy_to_cp = FALSE) {
     cli_abort(c(creds$message, help_msg))
   }
 
-  cli_alert_success("Key pair created for {.strong {username}}")
+  cli_success("Key pair created for {.strong {username}}")
   creds$AccessKey$AwsRegion <- Sys.getenv("AWS_REGION")
   for (i in seq_along(creds$AccessKey)) {
-    cli_alert_info("{names(creds$AccessKey)[i]}: {creds$AccessKey[[i]]}")
+    if (env64$redacted) {
+      if (grepl("AccessKey", names(creds$AccessKey)[i])) {
+        cli_info("{names(creds$AccessKey)[i]}: {env64$redact_str}")
+      }
+    } else {
+      cli_info("{names(creds$AccessKey)[i]}: {creds$AccessKey[[i]]}")
+    }
   }
 
-  if (copy_to_cp) {
-    cli_alert_info("Email template copied to your clipboard")
+  if (copy_to_cb) {
+    cli_info("Email template copied to your clipboard")
     glue(creds_template)
     clipr::write_clip(glue(creds_template))
   }

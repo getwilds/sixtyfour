@@ -31,10 +31,22 @@ includes deleting buckets (THIS OPTION NOT ACCEPTED YET!)
 }
 }
 
+\section{What is magical}{
+
+\itemize{
+\item Exits early if permissions is not length 1
+\item Exits early if permissions is not in allowed set
+\item Exits early if bucket does not exist
+\item Creates bucket policy if not created yet
+\item If user not in bucket already, attach policy to user (which adds them
+to the bucket)
+}
+}
+
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # create a bucket
-bucket <- random_string("bucket")
+bucket <- random_bucket()
 if (!aws_bucket_exists(bucket)) {
   aws_bucket_create(bucket)
 }

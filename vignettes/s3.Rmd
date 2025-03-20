@@ -1,0 +1,306 @@
+---
+title: "S3"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{S3}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+This vignette focuses on blob storage using S3. See the Getting Started vignette for basic setup if you have not done that yet.
+
+S3 stands for Simple Storage Service - a product from AWS (Amazon Web Services). It's sort of like a file system on your computer in that you can store any arbitrary file type: an image, a spreadsheet, a presentation, a zip file, etc. - you can do the same in S3, but the files are called "objects". S3 is used for backups, archiving, data storage for many kinds of web or native apps, and more - and many AWS services work smoothly with S3 as the data storage layer. There's many S3 "compatible" clones offered by other companies, e.g., R2 from Cloudflare and Spaces from DigitalOcean.
+
+This vignette breaks down use cases around buckets (or groups of objects), and files (aka objects). `sixtyfour` has many functions for buckets and files with lower level methods prefixed with `aws_` while higher level functions are prefixed with `six_`.
+
+## Setup
+
+
+``` r
+library(sixtyfour)
+```
+
+## Buckets
+
+Make a random bucket name with `random_bucket()` from `sixtyfour`:
+
+
+``` r
+bucket <- random_bucket()
+bucket
+#> bucket-pjwcmbnahdoyvurs
+```
+
+Create a bucket - check if it exists first
+
+
+``` r
+exists <- aws_bucket_exists(bucket)
+
+if (!exists) {
+  aws_bucket_create(bucket)
+}
+#> [1] "http://bucket-pjwcmbnahdoyvurs.s3.amazonaws.com/"
+```
+
+Create files in a few different directories
+
+
+``` r
+library(fs)
+tdir <- fs::path(tempdir(), "apples")
+fs::dir_create(tdir)
+tfiles <- replicate(n = 10, fs::file_temp(tmp_dir = tdir, ext = ".txt"))
+invisible(lapply(tfiles, function(x) write.csv(mtcars, x)))
+```
+
+Upload them to the newly created bucket
+
+
+``` r
+aws_bucket_upload(path = tdir, bucket = bucket)
+#> [1] "s3://bucket-pjwcmbnahdoyvurs"
+```
+
+List objects in the bucket
+
+
+``` r
+objects <- aws_bucket_list_objects(bucket)
+objects
+#> # A tibble: 10 × 8
+#>    bucket         key   uri    size type  etag  lastmodified        storageclass
+#>    <glue>         <chr> <glu> <fs:> <chr> <chr> <dttm>              <chr>       
+#>  1 bucket-pjwcmb… file… s3:/… 1.74K file  "\"6… 2025-03-12 22:50:16 STANDARD    
+#>  2 bucket-pjwcmb… file… s3:/… 1.74K file  "\"6… 2025-03-12 22:50:16 STANDARD    
+#>  3 bucket-pjwcmb… file… s3:/… 1.74K file  "\"6… 2025-03-12 22:50:16 STANDARD    
+#>  4 bucket-pjwcmb… file… s3:/… 1.74K file  "\"6… 2025-03-12 22:50:16 STANDARD    
+#>  5 bucket-pjwcmb… file… s3:/… 1.74K file  "\"6… 2025-03-12 22:50:17 STANDARD    
+#>  6 bucket-pjwcmb… file… s3:/… 1.74K file  "\"6… 2025-03-12 22:50:17 STANDARD    
+#>  7 bucket-pjwcmb… file… s3:/… 1.74K file  "\"6… 2025-03-12 22:50:17 STANDARD    
+#>  8 bucket-pjwcmb… file… s3:/… 1.74K file  "\"6… 2025-03-12 22:50:17 STANDARD    
+#>  9 bucket-pjwcmb… file… s3:/… 1.74K file  "\"6… 2025-03-12 22:50:17 STANDARD    
+#> 10 bucket-pjwcmb… file… s3:/… 1.74K file  "\"6… 2025-03-12 22:50:17 STANDARD
+```
+
+Cleanup - delete the bucket.
+
+
+``` r
+aws_bucket_delete(bucket)
+```
+
+
+```
+#> Error: BucketNotEmpty (HTTP 409). The bucket you tried to delete is not empty
+```
+
+If there's files in your bucket you can not delete the bucket. First, delete all the files, then delete the bucket again:
+
+
+``` r
+aws_file_delete(objects$uri) # vector accepted
+aws_bucket_list_objects(bucket) # no objects remaining
+aws_bucket_delete(bucket)
+```
+
+
+
+## Files
+
+All or most of the file functions are built around accepting and returning character vectors of length one or greater. This includes the functions that take two inputs, such as a source and destination file. Rather than using the `paws` package under the hood as most functions in this package use, the file functions use `s3fs` under the hood (which is itself built on `paws`) as `s3fs` is a cleaner interface to S3 than `paws`.
+
+First, create a bucket:
+
+
+``` r
+my_bucket <- random_bucket()
+aws_bucket_create(my_bucket)
+#> [1] "http://bucket-sdcghqxilarjzpnk.s3.amazonaws.com/"
+```
+
+Then, upload some files
+
+
+``` r
+temp_files <- replicate(n = 3, tempfile(fileext = ".txt"))
+for (i in temp_files) cat(letters, "\n", file = i)
+remote_files <- s3_path(my_bucket, basename(temp_files))
+aws_file_upload(path = temp_files, remote_path = remote_files)
+#> [1] "s3://bucket-sdcghqxilarjzpnk/file68b73610b168.txt"
+#> [2] "s3://bucket-sdcghqxilarjzpnk/file68b71ef3e93.txt" 
+#> [3] "s3://bucket-sdcghqxilarjzpnk/file68b71f525e3.txt"
+```
+
+List files in the bucket
+
+
+``` r
+obs <- aws_bucket_list_objects(my_bucket)
+obs
+#> # A tibble: 3 × 8
+#>   bucket          key   uri    size type  etag  lastmodified        storageclass
+#>   <glue>          <chr> <glu> <fs:> <chr> <chr> <dttm>              <chr>       
+#> 1 bucket-sdcghqx… file… s3:/…    53 file  "\"a… 2025-03-12 22:50:19 STANDARD    
+#> 2 bucket-sdcghqx… file… s3:/…    53 file  "\"a… 2025-03-12 22:50:19 STANDARD    
+#> 3 bucket-sdcghqx… file… s3:/…    53 file  "\"a… 2025-03-12 22:50:19 STANDARD
+```
+
+Fetch file attributes
+
+
+``` r
+aws_file_attr(remote_files)
+#> # A tibble: 3 × 41
+#>   bucket_name    key   uri    size type  etag  last_modified       delete_marker
+#>   <chr>          <chr> <chr> <fs:> <chr> <chr> <dttm>              <lgl>        
+#> 1 bucket-sdcghq… file… s3:/…    53 file  "\"a… 2025-03-12 22:50:19 NA           
+#> 2 bucket-sdcghq… file… s3:/…    53 file  "\"a… 2025-03-12 22:50:19 NA           
+#> 3 bucket-sdcghq… file… s3:/…    53 file  "\"a… 2025-03-12 22:50:19 NA           
+#> # ℹ 33 more variables: accept_ranges <chr>, expiration <chr>, restore <chr>,
+#> #   archive_status <chr>, checksum_crc32 <chr>, checksum_crc32_c <chr>,
+#> #   checksum_crc64_nvme <chr>, checksum_sha1 <chr>, checksum_sha256 <chr>,
+#> #   checksum_type <chr>, missing_meta <int>, version_id <chr>,
+#> #   cache_control <chr>, content_disposition <chr>, content_encoding <chr>,
+#> #   content_language <chr>, content_type <chr>, content_range <chr>,
+#> #   expires <dttm>, website_redirect_location <chr>, …
+```
+
+Check if one or more files exist
+
+
+``` r
+aws_file_exists(remote_files[1])
+#> [1] TRUE
+aws_file_exists(remote_files)
+#> [1] TRUE TRUE TRUE
+```
+
+Copy files
+
+
+``` r
+new_bucket <- random_bucket()
+aws_bucket_create(new_bucket)
+#> [1] "http://bucket-ujdvcgpqwhxstlyz.s3.amazonaws.com/"
+
+# add existing files to the new bucket
+aws_file_copy(remote_files, new_bucket)
+#> [1] "s3://bucket-ujdvcgpqwhxstlyz/file68b73610b168.txt"
+#> [2] "s3://bucket-ujdvcgpqwhxstlyz/file68b71ef3e93.txt" 
+#> [3] "s3://bucket-ujdvcgpqwhxstlyz/file68b71f525e3.txt"
+
+# create bucket that doesn't exist yet
+# the force=TRUE makes this work non-interactively
+another_bucket <- random_bucket()
+aws_file_copy(remote_files, another_bucket, force = TRUE)
+#> [1] "s3://bucket-cwalziftpomkqyxv/file68b73610b168.txt"
+#> [2] "s3://bucket-cwalziftpomkqyxv/file68b71ef3e93.txt" 
+#> [3] "s3://bucket-cwalziftpomkqyxv/file68b71f525e3.txt"
+```
+
+Download files
+
+
+``` r
+tfile <- tempfile()
+aws_file_download(remote_files[1], tfile)
+#> [1] "/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T//RtmpgkiUGL/file68b7188a278"
+readLines(tfile)
+#> [1] "a b c d e f g h i j k l m n o p q r s t u v w x y z "
+```
+
+Rename files
+
+
+``` r
+aws_file_exists(remote_files[1])
+#> [1] TRUE
+aws_file_rename(remote_files[1], s3_path(dirname(remote_files[1]), "myfile.txt"))
+#> [1] "s3://bucket-sdcghqxilarjzpnk/myfile.txt"
+aws_file_exists(remote_files[1])
+#> [1] FALSE
+```
+
+
+
+## "Magical" methods
+
+Magical methods are prefixed with `six_` and wrap `aws_` functions, adding helpful prompts and checks to make it more likely you'll get your task done faster.
+
+### Magical bucket methods
+
+The magical bucket functions are:
+
+- `six_bucket_add_user`
+- `six_bucket_change_user`
+- `six_bucket_delete`
+- `six_bucket_permissions`
+- `six_bucket_remove_user`
+
+An example of using one of the functions, `six_bucket_add_user()`:
+
+
+``` r
+# create a bucket
+bucket <- random_bucket()
+if (!aws_bucket_exists(bucket)) {
+  aws_bucket_create(bucket)
+}
+#> [1] "http://bucket-eoxhtgipqjnrskaf.s3.amazonaws.com/"
+
+# create a user
+user <- random_user()
+if (!aws_user_exists(user)) {
+  aws_user_create(user)
+}
+#> # A tibble: 1 × 6
+#>   UserName        UserId     Path  Arn   CreateDate          PasswordLastUsed
+#>   <chr>           <chr>      <chr> <chr> <dttm>              <dttm>          
+#> 1 SimplisticSnail AIDA22PL7… /     arn:… 2025-03-12 22:50:24 NA
+
+six_bucket_add_user(
+  bucket = bucket,
+  username = user,
+  permissions = "read"
+)
+#> ✔ SimplisticSnail now has read access to bucket bucket-eoxhtgipqjnrskaf
+
+# cleanup
+six_user_delete(user)
+#> ℹ Policy S3ReadOnlyAccessBucketeoxhtgipqjnrskaf detached
+#> ! No access keys found for SimplisticSnail
+#> ℹ SimplisticSnail deleted
+aws_bucket_delete(bucket, force = TRUE)
+```
+
+### Magical file methods
+
+There's one file function: `six_file_upload()`. An example of using it:
+
+
+``` r
+bucket <- random_bucket()
+demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
+six_file_upload(demo_rds_file, bucket, force = TRUE)
+#> [1] "s3://bucket-hnwctmpyreodfqlj/demo.rds"
+
+## many files at once
+links_file <- file.path(system.file(), "Meta/links.rds")
+six_file_upload(c(demo_rds_file, links_file), bucket)
+#> [1] "s3://bucket-hnwctmpyreodfqlj/demo.rds" 
+#> [2] "s3://bucket-hnwctmpyreodfqlj/links.rds"
+
+# set expiration, expire 1 minute from now
+six_file_upload(demo_rds_file, bucket, Expires = Sys.time() + 60)
+#> [1] "s3://bucket-hnwctmpyreodfqlj/demo.rds"
+
+# cleanup
+obs <- aws_bucket_list_objects(bucket)
+aws_file_delete(obs$uri)
+#> s3://bucket-hnwctmpyreodfqlj/demo.rds
+#> s3://bucket-hnwctmpyreodfqlj/links.rds
+aws_bucket_delete(bucket, force = TRUE)
+```

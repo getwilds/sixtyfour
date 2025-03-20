@@ -25,9 +25,9 @@ A tibble with information about user accounts, with columns:
 List Users
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 aws_users()
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other users: 

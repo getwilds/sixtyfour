@@ -20,28 +20,39 @@ aws_file_download(remote_path, path, ...)
 Download a file
 }
 \examples{
-\dontrun{
-tfile <- tempfile()
-aws_file_download(remote_path = "s3://s64-test-2/DESCRIPTION", path = tfile)
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+library(glue)
+
+# single file
+bucket1 <- random_bucket()
+aws_bucket_create(bucket1)
+tfile1 <- tempfile()
+remote1 <- s3_path(bucket1, glue("{basename(tfile1)}.txt"))
+cat("Hello World!\n", file = tfile1)
+aws_file_upload(path = tfile1, remote_path = remote1)
+dfile <- tempfile()
+aws_file_download(remote_path = remote1, path = dfile)
+readLines(dfile)
 
 # many files
+bucket2 <- random_bucket()
+aws_bucket_create(bucket2)
 tfiles <- replicate(n = 3, tempfile())
-aws_file_download(
-  remote_path =
-    s3_path("s64-test-2", c("a_file", "c_file", "d_file")), path = tfiles
-)
-
-## length of `remote_path` and `path` must be the same
-tfiles <- replicate(n = 2, tempfile())
-aws_file_download(
-  remote_path =
-    s3_path("s64-test-2", c("a_file", "c_file", "d_file")), path = tfiles
-)
-
-# S3 file does not exist
-temp_path <- tempfile()
-aws_file_download(s3_path("s64-test-2", "TESTING123"), temp_path)
+for (file in tfiles) cat("Hello mars!!!!!!\n", file = file)
+for (file in tfiles) print(readLines(file))
+for (file in tfiles) {
+  aws_file_upload(file, s3_path(bucket2, glue("{basename(file)}.txt")))
 }
+downloadedfiles <- replicate(n = 3, tempfile())
+for (file in downloadedfiles) print(file.exists(file))
+remotes2 <- s3_path(bucket2, glue("{basename(tfiles)}.txt"))
+aws_file_download(remote_path = remotes2, path = downloadedfiles)
+for (file in downloadedfiles) print(readLines(file))
+
+# Cleanup
+six_bucket_delete(bucket1, force = TRUE)
+six_bucket_delete(bucket2, force = TRUE)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other files: 

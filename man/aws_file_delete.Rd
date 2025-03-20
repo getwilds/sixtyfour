@@ -19,18 +19,23 @@ aws_file_delete(remote_path, ...)
 Delete a file
 }
 \examples{
-\dontrun{
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # create a file
+bucket <- random_bucket()
+aws_bucket_create(bucket)
 tfile <- tempfile()
-cat("Hello World!", file = tfile)
-aws_file_upload(remote_path = "s3://s64-test-2", path = tfile)
+cat("Hello World!\n", file = tfile)
+aws_file_upload(path = tfile, remote_path = s3_path(bucket))
 
 # delete the file
-aws_file_delete(s3_path("s64-test-2", basename(tfile)))
+aws_file_delete(s3_path(bucket, basename(tfile)))
 
 # file does not exist - no error is raised
-aws_file_delete(s3_path("s64-test-2", "TESTING123"))
-}
+aws_file_delete(s3_path(bucket, "TESTING123"))
+
+# Cleanup
+six_bucket_delete(bucket, force = TRUE)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other files: 

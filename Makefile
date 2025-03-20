@@ -1,6 +1,7 @@
 PACKAGE := $(shell grep '^Package:' DESCRIPTION | sed -E 's/^Package:[[:space:]]+//')
 RSCRIPT = Rscript --no-init-file
 FILE_TARGET := "R/${FILE}"
+MAN_TARGET := "man/${TOPIC}.Rd"
 
 .PHONY: docs
 
@@ -16,17 +17,27 @@ doc:
 docs:
 	${RSCRIPT} -e "pkgdown::build_site(); pkgdown::preview_site(preview=TRUE)"
 
-eg:
+egs:
 	${RSCRIPT} -e "devtools::run_examples(run_dontrun = TRUE)"
 
+# use: `make eg TOPIC=aws_file_exists`
+# ("man/" is prepended); accepts 1 file only
+eg:
+	${RSCRIPT} -e 'pkgload::load_all(); pkgload::run_example(${MAN_TARGET})'
+
 check: build
-	_R_CHECK_CRAN_INCOMING_=FALSE R CMD CHECK --as-cran --no-manual `ls -1tr ${PACKAGE}*gz | tail -n1`
+	_R_CHECK_SYSTEM_CLOCK_=0 _R_CHECK_CRAN_INCOMING_=FALSE R CMD CHECK --as-cran --no-manual `ls -1tr ${PACKAGE}*gz | tail -n1`
 	@rm -f `ls -1tr ${PACKAGE}*gz | tail -n1`
 	@rm -rf ${PACKAGE}.Rcheck
 
 vign_getting_started:
 	cd vignettes;\
-	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('sixtyfour.Rmd.og', output = 'sixtyfour.Rmd')";\
+	CLIPR_ALLOW=TRUE ${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('sixtyfour.Rmd.og', output = 'sixtyfour.Rmd')";\
+	cd ..
+
+vign_s3:
+	cd vignettes;\
+	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('s3.Rmd.og', output = 's3.Rmd')";\
 	cd ..
 
 vign_billing:
@@ -37,6 +48,22 @@ vign_billing:
 vign_db:
 	cd vignettes;\
 	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('databases.Rmd.og', output = 'databases.Rmd')";\
+	cd ..
+
+vign_six:
+	cd vignettes;\
+	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('six.Rmd.og', output = 'six.Rmd')";\
+
+vign_auth:
+	cd vignettes;\
+	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true'); knitr::knit('auth.Rmd.og', output = 'auth.Rmd')";\
+	cd ..
+
+vign_s3iam:
+	cd vignettes;\
+	${RSCRIPT} -e "Sys.setenv(NOT_CRAN='true')" \
+	-e "knitr::knit('s3iam.Rmd.og', output = 's3iam.Rmd')";\
+	sed "s/${AWS_ACCOUNT_ID}/*****/g" s3iam.Rmd > tmp && mv tmp s3iam.Rmd;\
 	cd ..
 
 test:

@@ -19,29 +19,28 @@ before the \code{name} value}
 a policy ARN (character)
 }
 \description{
-This function simply constructs a string, then checks that the
-ARN is valid using
-\href{https://www.paws-r-sdk.com/docs/iam_get_policy/}{get_policy}
+This function simply constructs a string. It only makes an HTTP request
+if \code{local=TRUE} and environment variable \code{AWS_PROFILE} != "localstack"
 }
 \examples{
-\dontrun{
 as_policy_arn("ReadOnlyAccess")
 as_policy_arn("arn:aws:iam::aws:policy/ReadOnlyAccess")
 as_policy_arn("AmazonRDSDataFullAccess")
-# as_policy_arn("Blarp")
-# as_policy_arn(letters)
-# as_policy_arn(5)
-as_policy_arn("MyTestPolicy", local = TRUE)
-# returns an arn - and if given an arn returns self
-as_policy_arn("MyTestPolicy", local = TRUE) \%>\%
-  as_policy_arn()
+
 # path = Job function
 as_policy_arn("Billing", path = "job-function")
+
 # path = Service role
 as_policy_arn("AWSCostAndUsageReportAutomationPolicy",
   path = "service-role"
 )
-}
+
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+as_policy_arn("MyTestPolicy", local = TRUE)
+# returns an arn - and if given an arn returns self
+as_policy_arn("MyTestPolicy", local = TRUE) \%>\%
+  as_policy_arn()
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other policies: 
@@ -54,6 +53,7 @@ Other policies:
 \code{\link{aws_policy_detach}()},
 \code{\link{aws_policy_exists}()},
 \code{\link{aws_policy_list_entities}()},
-\code{\link{aws_policy_list_versions}()}
+\code{\link{aws_policy_list_versions}()},
+\code{\link{aws_policy_update}()}
 }
 \concept{policies}

@@ -6,12 +6,13 @@
 \alias{sixtyfour-package}
 \title{sixtyfour: Humane Interface to AWS}
 \description{
-An opionated interface to AWS, with methods for interacting with IAM, S3, RDS, Redshift, and Billing.
+An opinionated interface to AWS, with methods for interacting with 'IAM', S3, RDS, Redshift, and Billing.
 }
 \seealso{
 Useful links:
 \itemize{
   \item \url{https://github.com/getwilds/sixtyfour}
+  \item \url{https://getwilds.org/sixtyfour/}
   \item Report bugs at \url{https://github.com/getwilds/sixtyfour/issues}
 }
 
@@ -22,6 +23,11 @@ Useful links:
 Authors:
 \itemize{
   \item Sean Kross
+}
+
+Other contributors:
+\itemize{
+  \item Fred Hutchinson Cancer Center \email{wilds@fredhutch.org} (007ps6h72) [funder]
 }
 
 }

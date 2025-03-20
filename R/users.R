@@ -10,11 +10,18 @@ user_list_tidy <- function(x) {
     return(tibble())
   }
   vars <- c(
-    "UserName", "UserId", "Path", "Arn", "CreateDate",
+    "UserName",
+    "UserId",
+    "Path",
+    "Arn",
+    "CreateDate",
     "PasswordLastUsed"
   )
   tidy_generator(vars)(x) %>%
-    mutate(PasswordLastUsed = as_datetime(PasswordLastUsed))
+    mutate(
+      PasswordLastUsed = .as_datetime(PasswordLastUsed),
+      Arn = ifelse(env64$redacted, env64$redact_str, Arn)
+    )
 }
 
 #' List Users
@@ -30,9 +37,8 @@ user_list_tidy <- function(x) {
 #' - Arn
 #' - CreateDate
 #' - PasswordLastUsed
-#' @examples \dontrun{
+#' @examplesIf interactive() && aws_has_creds()
 #' aws_users()
-#' }
 aws_users <- function(...) {
   users <- paginate_aws_marker("list_users", "Users", ...) %>%
     user_list_tidy()
@@ -63,14 +69,19 @@ aws_users <- function(...) {
 #' @note if username not supplied, gets logged in user
 #' @family users
 #' @examples \dontrun{
-#' # if username not supplied, gets logged in user
+#' # if username not supplied, gets the logged in user
 #' aws_user()
-#'
-#' # supply a username to get that user's information
-#' aws_user_create("testBlueBird")
-#' aws_user(username = "testBlueBird")
-#' aws_user_delete("testBlueBird") # cleanup user
 #' }
+#'
+#' @examplesIf aws_has_creds()
+#' if (aws_user_exists("testBlueBird")) {
+#'   aws_user_delete("testBlueBird")
+#' }
+#' aws_user_create("testBlueBird")
+#' aws_user("testBlueBird")
+#'
+#' # cleanup
+#' aws_user_delete("testBlueBird")
 aws_user <- function(username = NULL) {
   x <- con_iam()$get_user(username)$User %>%
     list(.) %>%
@@ -99,10 +110,9 @@ check_aws_user <- purrr::safely(aws_user, otherwise = FALSE)
 #' @details uses [aws_user()] internally. see docs
 #' <https://www.paws-r-sdk.com/docs/iam_get_user/>
 #' @family users
-#' @examples \dontrun{
+#' @examplesIf interactive() && aws_has_creds()
 #' aws_user_exists(aws_user_current())
-#' aws_user_exists("blueberry")
-#' }
+#' aws_user_exists("doesnotexist")
 aws_user_exists <- function(username) {
   is.null(check_aws_user(username)$error)
 }
@@ -110,7 +120,7 @@ aws_user_exists <- function(username) {
 #' Get the current logged-in username as a string
 #' @export
 #' @family users
-#' @return username as character
+#' @return username as character, scalar
 aws_user_current <- function() {
   x <- aws_user()
   x$user$UserName
@@ -130,12 +140,21 @@ aws_user_current <- function() {
 #' @details See <https://www.paws-r-sdk.com/docs/iam_create_user/>
 #' docs for details on the parameters
 #' @family users
-#' @examples \dontrun{
-#' aws_user_create("testBlueBird")
+#' @examplesIf interactive() && aws_has_creds()
+#' user1 <- random_user()
+#' if (aws_user_exists(user1)) {
+#'   aws_user_delete(user1)
 #' }
+#' aws_user_create(user1)
+#'
+#' # cleanup
+#' aws_user_delete(user1)
 aws_user_create <- function(
-    username, path = NULL, permission_boundary = NULL,
-    tags = NULL) {
+  username,
+  path = NULL,
+  permission_boundary = NULL,
+  tags = NULL
+) {
   con_iam()$create_user(
     Path = path,
     UserName = username,
@@ -145,27 +164,35 @@ aws_user_create <- function(
     user_list_tidy()
 }
 
-#' Create a user
+#' Create a user, magically
 #'
 #' @export
 #' @inheritParams aws_user_create
+#' @inheritParams six_user_creds
 #' @details See [aws_user_create()] for more details.
 #' This function creates a user, adds policies so the
 #' user can access their own account, and grants them an access
 #' key. Add more policies using `aws_polic*` functions
 #' @section What is magical:
-#' - Adds a `GetUser` policy to your account if doesn't exist yet
-#' - Attaches `GetUser` policy to the user created
-#' - Grants an access key
+#' - Adds a `UserInfo` policy to your account if doesn't exist yet
+#' - Attaches `UserInfo` policy to the user created
+#' - Grants an access key, copying an email template to your clipboard
 #' @family users
 #' @family magicians
 #' @return NULL invisibly. A draft email is copied to your clipboard
-#' @examplesIf interactive()
+#' @examplesIf interactive() && aws_has_creds()
 #' name <- random_user()
 #' six_user_create(name)
+#'
+#' # cleanup
+#' six_user_delete(name)
 six_user_create <- function(
-    username, path = NULL, permission_boundary = NULL,
-    tags = NULL) {
+  username,
+  path = NULL,
+  permission_boundary = NULL,
+  tags = NULL,
+  copy_to_cb = TRUE
+) {
   aws_user_create(
     path = path,
     username = username,
@@ -175,23 +202,25 @@ six_user_create <- function(
   policy_name <- "UserInfo"
   if (!aws_policy_exists(policy_name)) {
     actions <- c(
-      "iam:GetUser", "iam:ListUserPolicies",
-      "iam:ListAttachedUserPolicies", "iam:ListGroupsForUser"
+      "iam:GetUser",
+      "iam:ListUserPolicies",
+      "iam:ListAttachedUserPolicies",
+      "iam:ListGroupsForUser"
     )
     policy_doc <- aws_policy_document_create(
       aws_policy_statement(actions, "*")
     )
     aws_policy_create(policy_name, policy_doc)
-    cli_alert_info("Added policy {.strong {policy_name}} to your account")
+    cli_info("Added policy {.strong {policy_name}} to your account")
   }
   user_obj <- aws_user(username)
   if (!has_policy(user_obj, policy_name)) {
     aws_policy_attach(user_obj, policy_name)
-    cli_alert_info(
+    cli_info(
       "Added policy {.strong {policy_name}} to {.strong {username}}"
     )
   }
-  six_user_creds(username, copy_to_cp = TRUE)
+  six_user_creds(username, copy_to_cb = copy_to_cb)
 }
 
 #' Delete a user
@@ -202,9 +231,11 @@ six_user_create <- function(
 #' @details See <https://www.paws-r-sdk.com/docs/iam_delete_user/>
 #' docs for more details
 #' @family users
-#' @examples \dontrun{
-#' aws_user_delete(username = "testBlueBird")
-#' }
+#' @examplesIf interactive() && aws_has_creds()
+#' user_name <- random_user()
+#' aws_user_create(user_name)
+#' aws_user_delete(user_name)
+#' aws_user_exists(user_name)
 aws_user_delete <- function(username) {
   con_iam()$delete_user(username)
   invisible()
@@ -223,7 +254,7 @@ aws_user_delete <- function(username) {
 #' - Then deletes the user
 #' @family users
 #' @family magicians
-#' @examplesIf interactive()
+#' @examplesIf interactive() && aws_has_creds()
 #' name <- random_user()
 #' six_user_create(name)
 #' six_user_delete(name)
@@ -235,7 +266,7 @@ six_user_delete <- function(username) {
   if (!rlang::is_empty(attpols)) {
     policies <- attpols$PolicyName
     map(policies, \(policy) aws_policy_detach(user_obj, policy))
-    cli_alert_info("Polic{?y/ies} {.strong {policies}} detached")
+    cli_info("Polic{?y/ies} {.strong {policies}} detached")
   }
 
   # remove access keys
@@ -248,11 +279,11 @@ six_user_delete <- function(username) {
   if (!rlang::is_empty(user_obj$groups)) {
     groups <- user_obj$groups
     map(groups$GroupName, \(g) aws_user_remove_from_group(username, g))
-    cli_alert_info("Group{?s} {.strong {groups$GroupName}} detached")
+    cli_info("Group{?s} {.strong {groups$GroupName}} detached")
   }
 
   aws_user_delete(username)
-  cli_alert_info("{.strong {username}} deleted")
+  cli_info("{.strong {username}} deleted")
 }
 
 #' Get AWS Access Key for a user
@@ -271,7 +302,7 @@ six_user_delete <- function(username) {
 aws_user_access_key <- function(username = NULL, ...) {
   out <- con_iam()$list_access_keys(username, ...)
   if (length(out$AccessKeyMetadata) == 0) {
-    cli::cli_alert_warning("No access keys found for {.strong {username}}")
+    cli_warning("No access keys found for {.strong {username}}")
     return(invisible())
   }
   bind_rows(out$AccessKeyMetadata)
@@ -291,12 +322,10 @@ aws_user_access_key <- function(username = NULL, ...) {
 #' @details See <https://www.paws-r-sdk.com/docs/iam_delete_access_key/>
 #' docs for more details
 #' @family users
-#' @examplesIf interactive()
-#' aws_user_access_key_delete(access_key_id = "adfasdfadfadfasdf")
-#' aws_user_access_key_delete(access_key_id = "adfasdf", username = "jane")
 aws_user_access_key_delete <- function(access_key_id, username = NULL) {
   con_iam()$delete_access_key(UserName = username, AccessKeyId = access_key_id)
-  cli::cli_alert_success("Access Key ID {.strong {access_key_id}} deleted")
+  key <- ifelse(env64$redacted, env64$redact_str, access_key_id) # nolint
+  cli_success("Access Key ID {.strong {key}} deleted")
   invisible()
 }
 
@@ -310,16 +339,19 @@ aws_user_access_key_delete <- function(access_key_id, username = NULL) {
 #' <https://www.paws-r-sdk.com/docs/iam_remove_user_from_group/>
 #' docs for more details
 #' @family users
-#' @examples \dontrun{
-#' if (!aws_group_exists("testgroup3")) {
-#'   aws_group_create("testgroup3")
+#' @examplesIf interactive() && aws_has_creds()
+#' group1 <- random_string("group")
+#' if (!aws_group_exists(group1)) {
+#'   aws_group_create(group1)
 #' }
-#' if (!aws_user_exists("testBlueBird3")) {
-#'   aws_user_create("testBlueBird3")
+#' name1 <- random_user()
+#' if (!aws_user_exists(name1)) {
+#'   aws_user_create(name1)
 #' }
-#' aws_user_add_to_group("testBlueBird3", "testgroup3")
-#' aws_user_remove_from_group("testBlueBird3", "testgroup3")
-#' }
+#' aws_user_add_to_group(name1, group1)
+#' aws_group(group1) # has user name1
+#' aws_user_remove_from_group(name1, group1)
+#' aws_group(group1) # does not have user name1
 aws_user_add_to_group <- function(username, groupname) {
   con_iam()$add_user_to_group(groupname, username)
   aws_user(username)

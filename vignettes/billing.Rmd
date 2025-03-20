@@ -12,7 +12,7 @@ vignette: >
 Load libraries
 
 
-```r
+``` r
 library(sixtyfour)
 library(dplyr)
 library(ggplot2)
@@ -22,7 +22,7 @@ library(lubridate)
 Get data for the past approximately 13 months
 
 
-```r
+``` r
 start_date <- today() - months(13)
 my_data <-
   aws_billing(date_start = start_date)
@@ -31,7 +31,7 @@ my_data <-
 Simple plot of RDS spend through time
 
 
-```r
+``` r
 rds_by_day <-
   my_data %>%
   filter(
@@ -46,13 +46,13 @@ ggplot(rds_by_day, aes(date, cost)) +
   theme_grey(base_size = 16)
 ```
 
-![](figure/billing_rds-1.png)
+<img src="../man/figures/billing_rds-1.png" alt="Plot showing AWS cost by day for the RDS service. There's a big peak in early Feburary 2024, and a few smaller peaks in mid to late February."  />
 
 Plot of all types with cost greater than zero though time
 
 
 
-```r
+``` r
 all_by_day <-
   my_data %>%
   filter(id == "blended") %>%
@@ -66,4 +66,4 @@ ggplot(all_by_day, aes(date, cost)) +
   theme_grey(base_size = 16)
 ```
 
-![](figure/billing_all-1.png)
+<img src="../man/figures/billing_all-1.png" alt="Plot showing AWS cost by day for many AWS services, including CE, RDS, SEC&lt; Tax, and VPC. There's a big peak in early Feburary 2024, and steady spend in mid to late February and early March."  />

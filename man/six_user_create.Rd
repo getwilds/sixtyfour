@@ -2,9 +2,15 @@
 % Please edit documentation in R/users.R
 \name{six_user_create}
 \alias{six_user_create}
-\title{Create a user}
+\title{Create a user, magically}
 \usage{
-six_user_create(username, path = NULL, permission_boundary = NULL, tags = NULL)
+six_user_create(
+  username,
+  path = NULL,
+  permission_boundary = NULL,
+  tags = NULL,
+  copy_to_cb = TRUE
+)
 }
 \arguments{
 \item{username}{(character) A user name. required}
@@ -17,12 +23,15 @@ that is used to set the permissions boundary for the user. optional}
 
 \item{tags}{(list) A list of tags that you want to attach to the new user.
 optional}
+
+\item{copy_to_cb}{(logical) Copy to clipboard. Default: \code{FALSE}. See
+section "Clipboard" below for more details.}
 }
 \value{
 NULL invisibly. A draft email is copied to your clipboard
 }
 \description{
-Create a user
+Create a user, magically
 }
 \details{
 See \code{\link[=aws_user_create]{aws_user_create()}} for more details.
@@ -33,16 +42,19 @@ key. Add more policies using \verb{aws_polic*} functions
 \section{What is magical}{
 
 \itemize{
-\item Adds a \code{GetUser} policy to your account if doesn't exist yet
-\item Attaches \code{GetUser} policy to the user created
-\item Grants an access key
+\item Adds a \code{UserInfo} policy to your account if doesn't exist yet
+\item Attaches \code{UserInfo} policy to the user created
+\item Grants an access key, copying an email template to your clipboard
 }
 }
 
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 name <- random_user()
 six_user_create(name)
+
+# cleanup
+six_user_delete(name)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
@@ -61,6 +73,7 @@ Other users:
 Other magicians: 
 \code{\link{six_admin_setup}()},
 \code{\link{six_bucket_delete}()},
+\code{\link{six_bucket_upload}()},
 \code{\link{six_file_upload}()},
 \code{\link{six_user_delete}()}
 }

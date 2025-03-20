@@ -25,12 +25,6 @@ Delete current user's AWS Access Key
 See \url{https://www.paws-r-sdk.com/docs/iam_delete_access_key/}
 docs for more details
 }
-\examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-aws_user_access_key_delete(access_key_id = "adfasdfadfadfasdf")
-aws_user_access_key_delete(access_key_id = "adfasdf", username = "jane")
-\dontshow{\}) # examplesIf}
-}
 \seealso{
 Other users: 
 \code{\link{aws_user}()},

@@ -11,7 +11,7 @@ aws_policy_delete(name)
 we lookup the policy arn which is what's passed to the AWS API}
 }
 \value{
-invisibly returns nothing
+invisibly returns \code{NULL}
 }
 \description{
 Delete a user managed policy
@@ -42,15 +42,23 @@ policy's default version)
 }
 
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+if (aws_policy_exists("RdsAllow456")) {
+  aws_policy_delete("RdsAllow456")
+}
+
+# Create policy document
 doc <- aws_policy_document_create(
-  region = "us-east-2",
-  account_id = "1234567890",
-  resource_id = "*",
-  user = "jane_doe",
-  action = "rds-db:connect"
+  aws_policy_statement(
+    action = "rds-db:connect",
+    resource = "*"
+  )
 )
-aws_policy_create("RdsAllow456", document = doc)
+
+# Create policy
+invisible(aws_policy_create("RdsAllow456", document = doc))
+
+# Delete policy
 aws_policy_delete("RdsAllow456")
 \dontshow{\}) # examplesIf}
 }
@@ -68,6 +76,7 @@ Other policies:
 \code{\link{aws_policy_detach}()},
 \code{\link{aws_policy_exists}()},
 \code{\link{aws_policy_list_entities}()},
-\code{\link{aws_policy_list_versions}()}
+\code{\link{aws_policy_list_versions}()},
+\code{\link{aws_policy_update}()}
 }
 \concept{policies}

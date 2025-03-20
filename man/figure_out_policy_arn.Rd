@@ -6,20 +6,23 @@
 \usage{
 figure_out_policy_arn(name)
 }
+\arguments{
+\item{name}{(character) a policy name. required.}
+}
+\value{
+\code{NULL} when not found; otherwise an ARN string
+}
 \description{
 Figure out policy Arn from a name
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-# user managed, exists
-figure_out_policy_arn("MyTestPolicy")
-# user managed, doesn't exist
-figure_out_policy_arn("DoesNotExist")
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # aws managed
 figure_out_policy_arn("AmazonS3ReadOnlyAccess")
 # aws managed, job function
 figure_out_policy_arn("Billing")
 figure_out_policy_arn("DataScientist")
+# doesn't exist
+figure_out_policy_arn("DoesNotExist")
 \dontshow{\}) # examplesIf}
 }
-\keyword{internal}

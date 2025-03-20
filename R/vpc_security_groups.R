@@ -33,7 +33,7 @@ security_group_handler <- function(ids, engine) {
     return(ids)
   }
   port <- engine2port(engine) # nolint
-  ip <- ip_address() # nolint
+  ip <- .ip_address() # nolint
   sgs <- aws_vpc_security_groups()
   sgsdf <- jsonlite::fromJSON(
     jsonlite::toJSON(sgs$SecurityGroups, auto_unbox = TRUE)
@@ -135,7 +135,7 @@ security_group_handler <- function(ids, engine) {
       "Found security group {.strong {ip_df$GroupId}} ",
       "w/ access for {.strong {engine}} and your IP address {.strong {ip}}"
     ))
-    return(ip_df$GroupId)
+    ip_df$GroupId
   } else {
     sgoptions <-
       ip_df %>%
@@ -158,11 +158,11 @@ security_group_handler <- function(ids, engine) {
         "w/ access for {.strong {engine}},",
         "{.emph but} not with your IP address {.strong {ip}}"
       ))
-      return(NULL)
+      NULL
     } else {
       idtouse <- ip_df[picked, "GroupId"]
       cli::cli_alert_success("Using security group {.strong {idtouse}}")
-      return(idtouse)
+      idtouse
     }
   }
 }
@@ -172,9 +172,10 @@ security_group_handler <- function(ids, engine) {
 #' @export
 #' @param ... named parameters passed on to [describe_security_groups](
 #' https://www.paws-r-sdk.com/docs/ec2_describe_security_groups/)
-#' @return (list) list with security groups
+#' @return (list) list with security groups, see [aws_vpc_security_group()]
+#' for details
 #' @family security groups
-#' @examplesIf interactive()
+#' @examplesIf interactive() && aws_has_creds()
 #' aws_vpc_security_groups()
 #' aws_vpc_security_groups(MaxResults = 6)
 aws_vpc_security_groups <- function(...) {
@@ -203,7 +204,8 @@ aws_vpc_security_group <- function(id, ...) {
 
 #' Create a security group
 #' @export
-#' @param name (character) The name of the new secret. required
+#' @param name (character) The name of the new secret. required for
+#' `*_create` and optional for `*_delete`
 #' @param engine (character) The engine to use. default: "mariadb". required.
 #' one of: mariadb, mysql, or postgres
 #' @param description (character) The description of the secret. optional
@@ -218,13 +220,18 @@ aws_vpc_security_group <- function(id, ...) {
 #' @family security groups
 #' @examples \dontrun{
 #' # create security group
+#' grp_name1 <- random_string("vpcsecgroup")
 #' x <- aws_vpc_security_group_create(
-#'   name = "testing1",
+#'   name = grp_name1,
 #'   description = "Testing security group creation"
 #' )
-#' aws_vpc_security_group_create(name = "testing2")
+#'
+#' grp_name2 <- random_string("vpcsecgroup")
+#' aws_vpc_security_group_create(name = grp_name2)
+#'
+#' grp_name3 <- random_string("vpcsecgroup")
 #' aws_vpc_security_group_create(
-#'   name = "testing4",
+#'   name = grp_name3,
 #'   tags = list(
 #'     list(
 #'       ResourceType = "security-group",
@@ -243,6 +250,11 @@ aws_vpc_security_group <- function(id, ...) {
 #'   id = x$GroupId,
 #'   ip_permissions = ip_permissions_generator("mariadb")
 #' )
+#'
+#' # cleanup
+#' aws_vpc_security_group_delete(name = grp_name1)
+#' aws_vpc_security_group_delete(name = grp_name2)
+#' aws_vpc_security_group_delete(name = grp_name3)
 #' }
 aws_vpc_security_group_create <- function(
     name, engine = "mariadb", description = NULL,
@@ -259,6 +271,22 @@ aws_vpc_security_group_create <- function(
   )
 }
 
+#' @export
+#' @rdname aws_vpc_security_group_create
+#' @param id (character) The id of the security group. optional. provide `id`
+#' or `name`
+aws_vpc_security_group_delete <- function(id = NULL, name = NULL, ...) {
+  stop_if_not(
+    xor(!is.null(id), !is.null(name)),
+    "Provide one of id or name, not both"
+  )
+  con_ec2()$delete_security_group(
+    GroupId = id,
+    GroupName = name,
+    ...
+  )
+}
+
 engine2port <- function(engine) {
   switch(engine,
     mariadb = 3306L,
@@ -271,6 +299,7 @@ engine2port <- function(engine) {
 
 #' Ip Permissions generator
 #'
+#' @importFrom ipaddress ip_address is_ipv6
 #' @export
 #' @param engine (character) one of mariadb, mysql, or postgres
 #' @param port (character) port number. port determined from `engine`
@@ -284,23 +313,29 @@ ip_permissions_generator <- function(engine, port = NULL, description = NULL) {
   if (is.null(description)) {
     description <- glue("Access for {Sys.info()[['user']]} from sixtyfour")
   }
-  list(
+  ip <- .ip_address()
+  result <- list(
     FromPort = port,
     ToPort = port,
-    IpProtocol = protocol,
-    IpRanges = list(
-      list(
-        CidrIp = glue("{ip_address()}/32"),
-        Description = description
-      )
-    )
+    IpProtocol = protocol
   )
+  if (is_ipv6(ip_address(ip))) {
+    result$Ipv6Ranges <- list(
+      list(CidrIpv6 = glue("{ip}/128"), description = description)
+    )
+  } else {
+    result$IpRanges <- list(
+      list(CidrIp = glue("{ip}/32"), description = description)
+    )
+  }
+  result
 }
 
 #' Get your IP address using <https://ifconfig.me/ip>
-#' @return (character) ip address
+#' @return (character) ip address, either ipv4 or ipv6 depending on your
+#' machine
 #' @keywords internal
-ip_address <- function() {
+.ip_address <- function() {
   res <- curl::curl_fetch_memory("https://ifconfig.me/ip")
   rawToChar(res$content)
 }
@@ -341,26 +376,47 @@ aws_vpc_security_group_ingress <- function(id, ip_permissions = NULL, ...) {
 
 #' Modify security group rules
 #' @export
-#' @param id (character) security group id
-#' @param rules list of rules to add/modify on the security group `id`
+#' @param id (character) security group id. required
+#' @param rules list of rules to add/modify on the security group `id`.
+#' required
 #' @param ... named parameters passed on to [modify_security_group_rules](
 #' https://www.paws-r-sdk.com/docs/ec2_modify_security_group_rules/)
 #' @family security groups
-#' @examplesIf interactive()
-#' aws_vpc_sec_group_rules(
-#'   id = "someid",
+#' @return list. if successful then `list(Return=TRUE)`
+#' @examplesIf interactive() && aws_has_creds()
+#' # create a security group
+#' a_grp_name <- random_string("vpcsecgroup")
+#' x <- aws_vpc_security_group_create(name = a_grp_name)
+#' x
+#'
+#' # add an inbound rule
+#' my_rule <- aws_vpc_security_group_ingress(
+#'   id = x$GroupId,
+#'   ip_permissions = ip_permissions_generator("mariadb")
+#' )
+#' my_rule
+#'
+#' # modify the rule
+#' rule_id <- my_rule$SecurityGroupRules[[1]]$SecurityGroupRuleId
+#' fields_to_keep <- c(
+#'   "IpProtocol", "FromPort", "ToPort", "CidrIpv4",
+#'   "CidrIpv6", "PrefixListId", "Description"
+#' )
+#' rule_old <- my_rule$SecurityGroupRules[[1]]
+#' rule_new <- rule_old[fields_to_keep]
+#' rule_new$Description <- "Modified description"
+#'
+#' aws_vpc_sec_group_rules_mod(
+#'   id = x$GroupId,
 #'   rules = list(
-#'     SecurityGroupRuleId = "sgr-07de36a0521f39c8b",
-#'     SecurityGroupRule = list(
-#'       IpProtocol = "tcp",
-#'       FromPort = 22,
-#'       ToPort = 22,
-#'       CidrIpv4 = "3.3.3.3/32",
-#'       Description = "added ssh port"
-#'     )
+#'     SecurityGroupRuleId = rule_id,
+#'     SecurityGroupRule = rule_new
 #'   )
 #' )
-aws_vpc_sec_group_rules <- function(id, rules, ...) {
+#'
+#' # cleanup
+#' aws_vpc_security_group_delete(name = a_grp_name)
+aws_vpc_sec_group_rules_mod <- function(id, rules, ...) {
   con_ec2()$modify_security_group_rules(
     GroupId = id,
     SecurityGroupRules = list(rules),

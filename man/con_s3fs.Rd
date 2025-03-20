@@ -20,7 +20,7 @@ You can toggle the interface set for one of minio, localstack, aws.
 See \link{connections} for more information.
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 con <- con_s3fs()
 con
 con_s3fs()$file_copy

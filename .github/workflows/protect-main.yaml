@@ -1,0 +1,27 @@
+name: "Protect Main"
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-branch-names:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get the source branch name
+        id: get_branch_name
+        run: echo "SOURCE_BRANCH=${GITHUB_HEAD_REF}" >> $GITHUB_ENV
+
+      - name: Validate branch name
+        run: |
+          echo "Checking branch name: $SOURCE_BRANCH"
+          if [[ "$SOURCE_BRANCH" == "dev" || "$SOURCE_BRANCH" == hotfix-* ]]; then
+            echo "Source branch $SOURCE_BRANCH is allowed"
+            exit 0
+          else
+            echo "Error: Only 'dev' or branches starting with 'hotfix-' can be merged into main"
+            exit 1
+          fi

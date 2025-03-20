@@ -4,7 +4,7 @@
 #' @param x (list) a nested list, from a call to
 #' [list_policies](https://www.paws-r-sdk.com/docs/iam_list_policies/)
 #' @keywords internal
-#' @note leaves out: xxx
+#' @note leaves out some variables
 policy_list_tidy <- function(x) {
   vars <- c(
     "PolicyName", "PolicyId", "Path", "Arn", "CreateDate",
@@ -14,11 +14,24 @@ policy_list_tidy <- function(x) {
   tidy_generator(vars)(x)
 }
 
+#' Policy list versions cleanup
+#'
+#' @noRd
+#' @param x (list) a nested list, from a call to
+#' [list_policies](https://www.paws-r-sdk.com/docs/iam_list_policy_versions/)
+#' @keywords internal
+policy_list_versions_tidy <- function(x) {
+  vars <- c(
+    "VersionId", "IsDefaultVersion", "CreateDate"
+  )
+  tidy_generator(vars)(x)
+}
+
 all_policies <- memoise::memoise(function(...) {
   if (Sys.getenv("TESTING64", FALSE)) {
     return(policies_sample)
   }
-  paginate_aws_marker(con_iam()$list_policies, "Policies", ...) %>%
+  paginate_aws_marker("list_policies", "Policies", ...) %>%
     policy_list_tidy()
 })
 
@@ -45,11 +58,14 @@ all_policies <- memoise::memoise(function(...) {
 #' - IsAttachable
 #' - Description
 #' - Tags
-#' @examples \dontrun{
+#' @examplesIf aws_has_creds()
+#' # takes a while on the first execution in an R session
 #' aws_policies()
+#' @examplesIf interactive() && aws_has_creds()
+#' # faster because first call memoised the result
 #' aws_policies()
+#' # refresh=TRUE will pull from AWS
 #' aws_policies(refresh = TRUE)
-#' }
 aws_policies <- function(refresh = FALSE, ...) {
   if (refresh) memoise::forget(all_policies)
   all_policies(...)
@@ -63,10 +79,12 @@ aws_policies <- function(refresh = FALSE, ...) {
 #' @details see docs <https://www.paws-r-sdk.com/docs/iam_get_policy/>
 #' @autoglobal
 #' @family policies
-#' @examples \dontrun{
-#' aws_policy("ReadOnlyAccess")
-#' aws_policy("arn:aws:iam::aws:policy/ReadOnlyAccess")
-#' }
+#' @examplesIf aws_has_creds()
+#' # get an AWS managed policy (local = FALSE - the default)
+#' aws_policy("AmazonS3FullAccess")
+#'
+#' # get a policy by arn
+#' aws_policy("arn:aws:iam::aws:policy/AmazonS3FullAccess")
 aws_policy <- function(name, local = FALSE, path = NULL) {
   con_iam()$get_policy(as_policy_arn(name, local, path))$Policy %>%
     list(.) %>%
@@ -83,7 +101,7 @@ aws_policy_safe <- purrr::safely(aws_policy)
 #' @inheritParams as_policy_arn
 #' @return single logical, `TRUE` or `FALSE`
 #' @family policies
-#' @examplesIf interactive()
+#' @examplesIf aws_has_creds()
 #' # just the policy name
 #' aws_policy_exists("ReadOnlyAccess")
 #' # as an ARN
@@ -115,17 +133,21 @@ aws_policy_exists <- function(name) {
 #' @return a tibble with policy details
 #' @details see docs <https://www.paws-r-sdk.com/docs/iam_create_policy/>
 #' @family policies
-#' @examplesIf interactive()
-#' doc <- aws_policy_document_create(
-#'   region = "us-east-2",
-#'   account_id = "1234567890",
-#'   resource_id = "*",
-#'   user = "jane_doe",
-#'   action = "rds-db:connect"
-#' )
-#' aws_policy_create("RdsAllow123", document = doc)
-#' # cleanup
-#' aws_policy_delete("RdsAllow123")
+#' @examplesIf aws_has_creds()
+#' if (aws_policy_exists("MyPolicy123")) {
+#'   aws_policy_delete("MyPolicy123")
+#' }
+#'
+#' # Create policy document
+#' st8ment1 <- aws_policy_statement("iam:GetUser", "*")
+#' st8ment2 <- aws_policy_statement("s3:ListAllMyBuckets", "*")
+#' doc <- aws_policy_document_create(st8ment1, st8ment2)
+#'
+#' # Create policy
+#' aws_policy_create("MyPolicy123", document = doc)
+#'
+#' # cleanup - delete policy
+#' aws_policy_delete("MyPolicy123")
 aws_policy_create <- function(
     name, document, path = NULL,
     description = NULL, tags = NULL) {
@@ -135,7 +157,55 @@ aws_policy_create <- function(
     Path = path,
     Description = description,
     Tags = tags
-  )
+  ) %>% policy_list_tidy()
+}
+
+#' Update a policy
+#'
+#' @export
+#' @param arn (character) policy arn. required
+#' @param document (character) the policy document you want to use
+#' as the content for the new policy. required
+#' @param default (character) set this version as the policy's default version?
+#' optional. When this parameter is `TRUE`, the new policy version becomes the
+#' operative version. That is, it becomes the version that is in effect for
+#' the IAM users, groups, and roles that the policy is attached to.
+#' default: `FALSE`
+#' @return a tibble with policy version details:
+#' - VersionId
+#' - IsDefaultVersion
+#' - CreateDate
+#' @details see docs
+#' <https://www.paws-r-sdk.com/docs/iam_create_policy_version/>
+#' @family policies
+#' @examplesIf aws_has_creds()
+#' if (aws_policy_exists("polisee")) {
+#'   aws_policy_delete("polisee")
+#' }
+#'
+#' # Create policy document
+#' st8ment1 <- aws_policy_statement("iam:GetUser", "*")
+#' st8ment2 <- aws_policy_statement("s3:ListAllMyBuckets", "*")
+#' doc <- aws_policy_document_create(st8ment1, st8ment2)
+#'
+#' # Create policy
+#' invisible(aws_policy_create("polisee", document = doc))
+#'
+#' # Update the same policy
+#' new_doc <- aws_policy_document_create(st8ment1)
+#' arn <- as_policy_arn("polisee", local = TRUE)
+#' aws_policy_update(arn, document = new_doc, default = TRUE)
+#' aws_policy_list_versions("polisee")
+#'
+#' # cleanup - delete the policy
+#' aws_policy_delete_version("polisee", "v1")
+#' aws_policy_delete("polisee")
+aws_policy_update <- function(arn, document, default = FALSE) {
+  con_iam()$create_policy_version(
+    PolicyArn = arn,
+    PolicyDocument = document,
+    SetAsDefault = default
+  ) %>% policy_list_versions_tidy()
 }
 
 #' Delete a user managed policy
@@ -143,7 +213,7 @@ aws_policy_create <- function(
 #' @export
 #' @param name (character) a policy name. required. within the function
 #' we lookup the policy arn which is what's passed to the AWS API
-#' @return invisibly returns nothing
+#' @return invisibly returns `NULL`
 #' @section AWS managed policies:
 #' You can not delete AWS managed policies.
 #' @section Deleting process (adapted from `paws` docs):
@@ -165,33 +235,42 @@ aws_policy_create <- function(
 #' @references
 #' [delete_policy](https://www.paws-r-sdk.com/docs/iam_delete_policy/)
 #' @family policies
-#' @examplesIf interactive()
+#' @examplesIf aws_has_creds()
+#' if (aws_policy_exists("RdsAllow456")) {
+#'   aws_policy_delete("RdsAllow456")
+#' }
+#'
+#' # Create policy document
 #' doc <- aws_policy_document_create(
-#'   region = "us-east-2",
-#'   account_id = "1234567890",
-#'   resource_id = "*",
-#'   user = "jane_doe",
-#'   action = "rds-db:connect"
+#'   aws_policy_statement(
+#'     action = "rds-db:connect",
+#'     resource = "*"
+#'   )
 #' )
-#' aws_policy_create("RdsAllow456", document = doc)
+#'
+#' # Create policy
+#' invisible(aws_policy_create("RdsAllow456", document = doc))
+#'
+#' # Delete policy
 #' aws_policy_delete("RdsAllow456")
 aws_policy_delete <- function(name) {
   con_iam()$delete_policy(PolicyArn = figure_out_policy_arn(name))
+  invisible()
 }
 
 #' Figure out policy Arn from a name
 #' @importFrom purrr compact
-#' @keywords internal
-#' @examplesIf interactive()
-#' # user managed, exists
-#' figure_out_policy_arn("MyTestPolicy")
-#' # user managed, doesn't exist
-#' figure_out_policy_arn("DoesNotExist")
+#' @export
+#' @param name (character) a policy name. required.
+#' @return `NULL` when not found; otherwise an ARN string
+#' @examplesIf aws_has_creds()
 #' # aws managed
 #' figure_out_policy_arn("AmazonS3ReadOnlyAccess")
 #' # aws managed, job function
 #' figure_out_policy_arn("Billing")
 #' figure_out_policy_arn("DataScientist")
+#' # doesn't exist
+#' figure_out_policy_arn("DoesNotExist")
 figure_out_policy_arn <- function(name) {
   compact(c(
     aws_policy_safe(name, local = TRUE)$result$Arn,
@@ -209,25 +288,46 @@ figure_out_policy_arn <- function(name) {
 #' Allows (via regex) a string of characters that consists of the lowercase
 #' letter 'v' followed by one or two digits, and optionally followed by a
 #' period '.' and a string of letters and digits.
-#' @return invisibly returns nothing
+#' @return invisibly returns `NULL`
 #' @references
 #' <https://www.paws-r-sdk.com/docs/iam_delete_policy_version/>
 #' @family policies
-#' @examplesIf interactive()
+#' @examplesIf aws_has_creds()
+#' if (aws_policy_exists("RdsAllow888")) {
+#'   aws_policy_delete("RdsAllow888")
+#' }
+#'
+#' # Create policy document
 #' doc <- aws_policy_document_create(
-#'   region = "us-east-2",
-#'   account_id = "1234567890",
-#'   resource_id = "*",
-#'   user = "jane_doe",
-#'   action = "rds-db:connect"
+#'   aws_policy_statement(
+#'     action = "rds-db:connect",
+#'     resource = "*"
+#'   )
 #' )
-#' aws_policy_create("RdsAllow456", document = doc)
-#' aws_policy_delete_version("RdsAllow456", "v1")
+#'
+#' # Create policy
+#' invisible(aws_policy_create("RdsAllow888", document = doc))
+#'
+#' # Add a new version of the policy
+#' st8ment1 <- aws_policy_statement("iam:GetUser", "*")
+#' new_doc <- aws_policy_document_create(st8ment1)
+#' arn <- as_policy_arn("RdsAllow888", local = TRUE)
+#' aws_policy_update(arn, document = new_doc, defaul = TRUE)
+#'
+#' # List versions of the policy
+#' aws_policy_list_versions("RdsAllow888")
+#'
+#' # Delete a policy version
+#' aws_policy_delete_version("RdsAllow888", "v1")
+#'
+#' # Cleanup - delete  policy
+#' aws_policy_delete("RdsAllow888")
 aws_policy_delete_version <- function(name, version_id) {
   con_iam()$delete_policy_version(
     PolicyArn = figure_out_policy_arn(name),
     VersionId = version_id
   )
+  invisible()
 }
 
 #' List policy entities
@@ -246,13 +346,9 @@ aws_policy_delete_version <- function(name, version_id) {
 #' @references
 #' <https://www.paws-r-sdk.com/docs/iam_list_entities_for_policy/>
 #' @family policies
-#' @examplesIf interactive()
-#' pols <- aws_policies(Scope = "Local")
-#' for (policy in pols$PolicyName) {
-#'   cat("\n\n", policy, "\n")
-#'   print(aws_policy_list_entities(policy))
-#' }
-#' aws_policy_list_entities("S3ReadOnlyAccessS64Test22")
+#' @examplesIf interactive() && aws_has_creds()
+#' aws_policy_list_entities("AdministratorAccess")
+#' aws_policy_list_entities("AmazonRedshiftReadOnlyAccess")
 aws_policy_list_entities <- function(name, ...) {
   result <- con_iam()$list_entities_for_policy(
     PolicyArn = figure_out_policy_arn(name),
@@ -276,24 +372,21 @@ aws_policy_list_entities <- function(name, ...) {
 #' @inheritParams aws_policy_delete
 #' @inheritParams aws_policy_list_entities
 #' @return tibble with columns:
-#' - Document
 #' - VersionId
 #' - IsDefaultVersion
 #' - CreateDate
 #' @references
 #' <https://www.paws-r-sdk.com/docs/iam_list_policy_versions/>
 #' @family policies
-#' @examplesIf interactive()
-#' pols <- aws_policies()
-#' aws_policy_list_versions(pols$PolicyName[1])
+#' @examplesIf aws_has_creds()
+#' aws_policy_list_versions("AmazonS3FullAccess")
+#' aws_policy_list_versions("AmazonAppFlowFullAccess")
+#' aws_policy_list_versions("AmazonRedshiftFullAccess")
 aws_policy_list_versions <- function(name, ...) {
-  vars <- c(
-    "Document", "VersionId", "IsDefaultVersion", "CreateDate"
-  )
   con_iam()$list_policy_versions(
     PolicyArn = figure_out_policy_arn(name), ...
   )$Versions %>%
-    tidy_generator(vars)(.)
+    policy_list_versions_tidy()
 }
 
 #' Create a policy statement
@@ -308,7 +401,7 @@ aws_policy_list_versions <- function(name, ...) {
 #' @details
 #' <https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html> #nolint
 #' @return a named list
-#' @examplesIf interactive()
+#' @examples
 #' aws_policy_statement("iam:GetUser", "*")
 #' aws_policy_statement("iam:GetUser", "*", Sid = "MyStatementId")
 #' aws_policy_statement("iam:GetUser", "*",
@@ -339,7 +432,7 @@ aws_policy_statement <- function(action, resource, effect = "Allow", ...) {
 #' @param account (character) the AWS account number for the DB instance.
 #' length==1. The user must be in the same account as the account for the
 #' DB instance. by default calls [account_id()]
-#' @return a resource ARN (character)
+#' @return a resource ARN (scalar, character)
 resource_rds <- function(
     user,
     resource_id,
@@ -368,13 +461,16 @@ resource_rds <- function(
 #' - S3: <https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazons3.html> # nolint
 #' - EC2: <https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Operations.html> # nolint
 #' - IAM: <https://docs.aws.amazon.com/IAM/latest/APIReference/API_Operations.html> # nolint
-#' @examplesIf interactive()
+#' @examples
+#' library(jsonlite)
+#'
 #' st8ment1 <- aws_policy_statement("iam:GetUser", "*")
 #' st8ment2 <- aws_policy_statement("s3:ListAllMyBuckets", "*")
 #' st8ment3 <- aws_policy_statement("s3-object-lambda:List*", "*")
-#' aws_policy_document_create(st8ment1, st8ment2)
-#' aws_policy_document_create(.list = list(st8ment1, st8ment2))
-#' aws_policy_document_create(st8ment3, .list = list(st8ment1, st8ment2))
+#' aws_policy_document_create(st8ment1, st8ment2) %>% prettify()
+#' aws_policy_document_create(.list = list(st8ment1, st8ment2)) %>% prettify()
+#' aws_policy_document_create(st8ment3, .list = list(st8ment1, st8ment2)) %>%
+#'   prettify()
 #'
 #' # Policy document to give a user access to RDS
 #' resource <- "arn:aws:rds-db:us-east-2:1234567890:dbuser:db-ABCDE1212/jane"
@@ -382,8 +478,9 @@ resource_rds <- function(
 #'   action = "rds-db:connect",
 #'   resource = resource
 #' )
-#' aws_policy_document_create(st8ment_rds)
+#' aws_policy_document_create(st8ment_rds) %>% prettify()
 #'
+#' @examplesIf aws_has_creds()
 #' ### DB account = user in a database that has access to it
 #' # all DB instances & DB accounts for a AWS account and AWS Region
 #' aws_policy_document_create(
@@ -391,28 +488,28 @@ resource_rds <- function(
 #'     action = "rds-db:connect",
 #'     resource = resource_rds("*", "*")
 #'   )
-#' )
+#' ) %>% prettify()
 #' # all DB instances for a AWS account and AWS Region, single DB account
 #' aws_policy_document_create(
 #'   aws_policy_statement(
 #'     action = "rds-db:connect",
 #'     resource = resource_rds("jane_doe", "*")
 #'   )
-#' )
+#' ) %>% prettify()
 #' # single DB instasnce, single DB account
 #' aws_policy_document_create(
 #'   aws_policy_statement(
 #'     action = "rds-db:connect",
 #'     resource = resource_rds("jane_doe", "db-ABCDEFGHIJKL01234")
 #'   )
-#' )
+#' ) %>% prettify()
 #' # single DB instance, many users
 #' aws_policy_document_create(
 #'   aws_policy_statement(
 #'     action = "rds-db:connect",
 #'     resource = resource_rds(c("jane_doe", "mary_roe"), "db-ABCDEFGHIJKL01")
 #'   )
-#' )
+#' ) %>% prettify()
 aws_policy_document_create <- function(..., .list = NULL) {
   stop_if_not(
     rlang::is_list(.list) || is.null(.list),
@@ -436,9 +533,8 @@ aws_policy_document_create <- function(..., .list = NULL) {
 
 #' Convert a policy name to a policy ARN
 #'
-#' This function simply constructs a string, then checks that the
-#' ARN is valid using
-#' [get_policy](https://www.paws-r-sdk.com/docs/iam_get_policy/)
+#' This function simply constructs a string. It only makes an HTTP request
+#' if `local=TRUE` and environment variable `AWS_PROFILE` != "localstack"
 #'
 #' @export
 #' @importFrom dplyr filter pull
@@ -450,24 +546,24 @@ aws_policy_document_create <- function(..., .list = NULL) {
 #' @return a policy ARN (character)
 #' @autoglobal
 #' @family policies
-#' @examples \dontrun{
+#' @examples
 #' as_policy_arn("ReadOnlyAccess")
 #' as_policy_arn("arn:aws:iam::aws:policy/ReadOnlyAccess")
 #' as_policy_arn("AmazonRDSDataFullAccess")
-#' # as_policy_arn("Blarp")
-#' # as_policy_arn(letters)
-#' # as_policy_arn(5)
-#' as_policy_arn("MyTestPolicy", local = TRUE)
-#' # returns an arn - and if given an arn returns self
-#' as_policy_arn("MyTestPolicy", local = TRUE) %>%
-#'   as_policy_arn()
+#'
 #' # path = Job function
 #' as_policy_arn("Billing", path = "job-function")
+#'
 #' # path = Service role
 #' as_policy_arn("AWSCostAndUsageReportAutomationPolicy",
 #'   path = "service-role"
 #' )
-#' }
+#'
+#' @examplesIf interactive() && aws_has_creds()
+#' as_policy_arn("MyTestPolicy", local = TRUE)
+#' # returns an arn - and if given an arn returns self
+#' as_policy_arn("MyTestPolicy", local = TRUE) %>%
+#'   as_policy_arn()
 as_policy_arn <- function(name, local = FALSE, path = NULL) {
   stopifnot(is.character(name))
   stopifnot(is.logical(local))
@@ -502,16 +598,19 @@ call_x_method <- function(x) {
 #' @param policy (character) a policy name or ARN
 #' @family policies
 #' @return A tibble with information about policies
-#' @examples \dontrun{
-#' aws_policy("AmazonRDSDataFullAccess")
-#' aws_user() %>% aws_policy_attach("AmazonRDSDataFullAccess")
-#' aws_user()$attached_policies
-#'
-#' # aws_role("OrganizationAccountSecurityRole") %>%
-#' #  aws_policy_attach("ReadOnlyAccess")
+#' @examplesIf aws_has_creds()
+#' if (aws_user_exists("user123")) {
+#'   aws_user_delete("user123")
 #' }
+#'
+#' aws_user_create("user123")
+#' aws_policy("AmazonRDSDataFullAccess")
+#' aws_user("user123") %>% aws_policy_attach("AmazonRDSDataFullAccess")
+#' aws_user("user123")$attached_policies
+#' # cleanup
+#' six_user_delete("user123")
 aws_policy_attach <- function(.x, policy) {
-  method <- glue::glue("attach_{entity_type(.x)}_policy")
+  method <- glue("attach_{entity_type(.x)}_policy")
   con_iam()[[method]](entity_value(.x), figure_out_policy_arn(policy))
   call_x_method(.x)
 }
@@ -522,16 +621,19 @@ aws_policy_attach <- function(.x, policy) {
 #' @inheritParams aws_policy_attach
 #' @family policies
 #' @return A tibble with information about policies
-#' @examples \dontrun{
-#' aws_user() %>%
-#'   aws_policy_detach("AmazonRDSDataFullAccess")
-#' aws_user()$attached_policies
-#'
-#' # aws_role("OrganizationAccountSecurityRole") %>%
-#' #  aws_policy_detach("ReadOnlyAccess")
+#' @examplesIf aws_has_creds()
+#' if (aws_user_exists("user456")) {
+#'   aws_user_delete("user456")
 #' }
+#'
+#' aws_user_create("user456")
+#' aws_user("user456") %>% aws_policy_attach("AmazonRDSDataFullAccess")
+#' aws_user("user456") %>% aws_policy_detach("AmazonRDSDataFullAccess")
+#' aws_user("user456")$attached_policies
+#' # cleanup
+#' six_user_delete("user456")
 aws_policy_detach <- function(.x, policy) {
-  method <- glue::glue("detach_{entity_type(.x)}_policy")
+  method <- glue("detach_{entity_type(.x)}_policy")
   con_iam()[[method]](entity_value(.x), figure_out_policy_arn(policy))
   call_x_method(.x)
 }
@@ -567,7 +669,11 @@ entity_value <- function(x) {
 #' @keywords internal
 policies <- function(which, name) {
   method <- glue::glue("list_{which}_policies")
-  con_iam()[[method]](name)$PolicyNames
+  res <- con_iam()[[method]](name)$PolicyNames
+  if (is_empty(res)) {
+    res <- list()
+  }
+  bind_rows(res)
 }
 #' @importFrom dplyr bind_rows
 #' @param which (character) one of role, user, or group
@@ -576,7 +682,7 @@ policies <- function(which, name) {
 #' @noRd
 #' @keywords internal
 policies_attached <- function(which, name) {
-  method <- glue::glue("list_attached_{which}_policies")
+  method <- glue("list_attached_{which}_policies")
   res <- con_iam()[[method]](name)
   res$AttachedPolicies %>% bind_rows()
 }

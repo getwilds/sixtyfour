@@ -11,10 +11,16 @@ role_list_tidy <- function(x) {
     return(tibble())
   }
   vars <- c(
-    "RoleName", "RoleId", "Path", "Arn", "CreateDate",
-    "Description", "AssumeRolePolicyDocument"
+    "RoleName",
+    "RoleId",
+    "Path",
+    "Arn",
+    "CreateDate",
+    "Description",
+    "AssumeRolePolicyDocument"
   )
-  tidy_generator(vars)(x)
+  tidy_generator(vars)(x) %>%
+    mutate(Arn = ifelse(env64$redacted, env64$redact_str, Arn))
 }
 
 #' List roles
@@ -24,9 +30,8 @@ role_list_tidy <- function(x) {
 #' [list_users](https://www.paws-r-sdk.com/docs/iam_list_roles/) method
 #' @family roles
 #' @return A tibble with information about roles
-#' @examples \dontrun{
+#' @examplesIf interactive() && aws_has_creds()
 #' aws_roles()
-#' }
 aws_roles <- function(...) {
   paginate_aws_marker("list_roles", "Roles") %>% role_list_tidy()
 }
@@ -44,16 +49,36 @@ aws_roles <- function(...) {
 #' and `list_attached_role_policies`
 #' @autoglobal
 #' @family roles
-#' @examples \dontrun{
-#' res <- aws_role(name = "OrganizationAccountSecurityRole")
+#' @examplesIf aws_has_creds()
+#' trust_policy <- list(
+#'   Version = "2012-10-17",
+#'   Statement = list(
+#'     list(
+#'       Effect = "Allow",
+#'       Principal = list(
+#'         Service = "lambda.amazonaws.com"
+#'       ),
+#'       Action = "sts:AssumeRole"
+#'     )
+#'   )
+#' )
+#' doc <- jsonlite::toJSON(trust_policy, auto_unbox = TRUE)
+#' desc <- "Another test role"
+#' z <- aws_role_create("ALittleRole",
+#'   assume_role_policy_document = doc,
+#'   description = desc
+#' )
+#' aws_policy_attach(z, "ReadOnlyAccess")
+#' res <- aws_role(name = "ALittleRole")
 #' res
 #' res$role
 #' res$policies
 #' res$attached_policies
 #'
-#' aws_role("AWSServiceRoleForCloudTrail")
-#' aws_role("AWSServiceRoleForRedshift")
-#' }
+#' # cleanup
+#' aws_role("ALittleRole") %>%
+#'   aws_policy_detach("ReadOnlyAccess")
+#' aws_role_delete("ALittleRole")
 aws_role <- function(name) {
   df <- con_iam()$get_role(name)$Role %>%
     list(.) %>%
@@ -73,6 +98,9 @@ check_aws_role <- purrr::safely(aws_role, otherwise = FALSE)
 #' @inheritParams aws_role
 #' @return a single boolean
 #' @family roles
+#' @examplesIf aws_has_creds()
+#' aws_role_exists("AWSServiceRoleForRedshift")
+#' aws_role_exists("NotARole")
 aws_role_exists <- function(name) {
   is.null(check_aws_role(name)$error)
 }
@@ -97,8 +125,8 @@ aws_role_exists <- function(name) {
 #' @details See <https://www.paws-r-sdk.com/docs/iam_create_role/>
 #' docs for details on the parameters
 #' @family roles
-#' @examples \dontrun{
-#' role_name <- "MyRole"
+#' @examplesIf aws_has_creds()
+#' role_name <- "AMinorRole"
 #' trust_policy <- list(
 #'   Version = "2012-10-17",
 #'   Statement = list(
@@ -117,14 +145,21 @@ aws_role_exists <- function(name) {
 #'   assume_role_policy_document = doc,
 #'   description = desc
 #' )
-#' z
 #' # attach a policy
-#' z %>% aws_policy_attach("AWSLambdaBasicExecutionRole")
-#' }
+#' invisible(z %>% aws_policy_attach("AWSLambdaBasicExecutionRole"))
+#'
+#' # cleanup
+#' invisible(z %>% aws_policy_detach("AWSLambdaBasicExecutionRole"))
+#' aws_role_delete(role_name)
 aws_role_create <- function(
-    name, assume_role_policy_document, path = NULL,
-    description = NULL, max_session_duration = NULL, permission_boundary = NULL,
-    tags = NULL) {
+  name,
+  assume_role_policy_document,
+  path = NULL,
+  description = NULL,
+  max_session_duration = NULL,
+  permission_boundary = NULL,
+  tags = NULL
+) {
   con_iam()$create_role(
     Path = path,
     RoleName = name,
@@ -141,13 +176,15 @@ aws_role_create <- function(
 #'
 #' @export
 #' @inheritParams aws_role_create
-#' @return an empty list
+#' @return `NULL` invisibly
 #' @details See <https://www.paws-r-sdk.com/docs/iam_delete_role/>
 #' docs for more details
 #' @family roles
-#' @examples \dontrun{
-#' aws_role_delete(name = "MyRole")
+#' @examplesIf aws_has_creds()
+#' if (aws_role_exists(name = "MyRole")) {
+#'   aws_role_delete(name = "MyRole")
 #' }
 aws_role_delete <- function(name) {
   con_iam()$delete_role(name)
+  invisible()
 }

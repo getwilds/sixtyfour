@@ -13,7 +13,7 @@ test_that("aws_vpcs", {
   res <- aws_vpcs()
 
   expect_type(res, "list")
-  expect_named(res, c("Vpcs", "NextToken"))
+  expect_named(res, c("NextToken", "Vpcs"))
   expect_equal(length(res$Vpcs), 1)
   expect_equal(res$Vpcs[[1]]$InstanceTenancy, "default")
 })
@@ -23,7 +23,7 @@ test_that("aws_vpc", {
   res <- aws_vpc(vpclist$Vpcs[[1]]$VpcId)
 
   expect_type(res, "list")
-  expect_named(res, c("Vpcs", "NextToken"))
+  expect_named(res, c("NextToken", "Vpcs"))
   expect_equal(length(res$Vpcs), 1)
   expect_equal(res$Vpcs[[1]]$InstanceTenancy, "default")
 })
@@ -38,23 +38,22 @@ test_that("aws_vpc_security_groups", {
 
 test_that("aws_vpc_security_group", {
   purge_sec_grps()
-  aws_vpc_security_group_create(
-    name = "testing1",
+  z <- aws_vpc_security_group_create(
+    name = "testing2",
     description = "Testing security group creation"
   )
-  groups <- aws_vpc_security_groups()
-  out <- aws_vpc_security_group(groups$SecurityGroups[[1]]$GroupId)
+  out <- aws_vpc_security_group(z$GroupId)
 
   expect_type(out, "list")
   expect_length(out$SecurityGroups, 1)
-  expect_equal(out$SecurityGroups[[1]]$GroupName, "testing1")
+  expect_equal(out$SecurityGroups[[1]]$GroupName, "testing2")
 })
 
 test_that("aws_vpc_security_group_create", {
   purge_sec_grps()
   group <- aws_vpc_security_group_create(name = "atest")
   expect_type(group, "list")
-  expect_named(group, c("GroupId", "Tags"))
+  expect_named(group, c("GroupId", "Tags", "SecurityGroupArn"))
   expect_match(group$GroupId, "sg-")
   expect_length(group$Tags, 0)
 
@@ -151,6 +150,62 @@ test_that("security_group_handler", {
   expect_error(security_group_handler(NULL))
   # if `id` given, engine value not supported
   expect_error(security_group_handler(NULL, engine = "asdff"))
+})
+
+test_that("aws_vpc_sec_group_rules_mod works for ipv6 address", {
+  local_mocked_bindings(
+    .ip_address = function() {
+      as.character(ipaddress::sample_ipv6(1))
+    }
+  )
+
+  a_grp_name <- random_string("vpcsecgroup")
+  x <- aws_vpc_security_group_create(name = a_grp_name)
+
+  perms <- ip_permissions_generator("mariadb")
+
+  expect_true(
+    ipaddress::is_ipv6(
+      ipaddress::as_ip_network(perms$Ipv6Ranges[[1]]$CidrIpv6)
+    )
+  )
+
+  a_rule <- aws_vpc_security_group_ingress(
+    id = x$GroupId,
+    ip_permissions = perms
+  )
+
+  expect_type(a_rule, "list")
+  expect_named(a_rule, c("Return", "SecurityGroupRules"))
+  expect_true(a_rule$Return)
+})
+
+test_that("aws_vpc_sec_group_rules_mod works for ipv4 address", {
+  local_mocked_bindings(
+    .ip_address = function() {
+      as.character(ipaddress::sample_ipv4(1))
+    }
+  )
+
+  a_grp_name <- random_string("vpcsecgroup")
+  x <- aws_vpc_security_group_create(name = a_grp_name)
+
+  perms <- ip_permissions_generator("mariadb")
+
+  expect_true(
+    ipaddress::is_ipv4(
+      ipaddress::as_ip_network(perms$IpRanges[[1]]$CidrIp)
+    )
+  )
+
+  a_rule <- aws_vpc_security_group_ingress(
+    id = x$GroupId,
+    ip_permissions = perms
+  )
+
+  expect_type(a_rule, "list")
+  expect_named(a_rule, c("Return", "SecurityGroupRules"))
+  expect_true(a_rule$Return)
 })
 
 # cleanup

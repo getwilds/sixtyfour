@@ -29,7 +29,7 @@ docs for more details
 }
 
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 name <- random_user()
 six_user_create(name)
 six_user_delete(name)
@@ -51,6 +51,7 @@ Other users:
 Other magicians: 
 \code{\link{six_admin_setup}()},
 \code{\link{six_bucket_delete}()},
+\code{\link{six_bucket_upload}()},
 \code{\link{six_file_upload}()},
 \code{\link{six_user_create}()}
 }

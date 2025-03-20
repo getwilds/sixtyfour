@@ -20,9 +20,12 @@ See \url{https://www.paws-r-sdk.com/docs/iam_delete_user/}
 docs for more details
 }
 \examples{
-\dontrun{
-aws_user_delete(username = "testBlueBird")
-}
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+user_name <- random_user()
+aws_user_create(user_name)
+aws_user_delete(user_name)
+aws_user_exists(user_name)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other users: 

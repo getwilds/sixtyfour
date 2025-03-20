@@ -7,7 +7,7 @@ env_var <- function(env_name) {
   x <- Sys.getenv(env_name, "")
   stop_msg <- sprintf("Environment variable '%s' not found", env_name)
   if (identical(x, "")) stop(stop_msg)
-  return(x)
+  x
 }
 
 #' lifted directly from the devtools package within the file (MIT licensed):
@@ -31,6 +31,12 @@ yesno <- function(msg, .envir = parent.frame()) {
 
   utils::menu(qs[rand]) != which(rand == 1)
 }
+
+#' Get the first element of a vector
+#' @keywords internal
+#' @param x a vector
+#' @return the first element of the vector
+first <- function(x) x[1]
 
 #' Get the last element of a vector
 #' @keywords internal
@@ -193,7 +199,6 @@ paginate_aws_token <- function(fun, target, ...) {
 #' @importFrom purrr map list_rbind
 #' @importFrom dplyr mutate
 #' @importFrom tibble as_tibble
-#' @importFrom lubridate as_datetime
 #' @autoglobal
 #' @noRd
 #' @param vars (character) vector of list names to get
@@ -205,8 +210,13 @@ tidy_generator <- function(vars) {
       map(\(x) map(x, \(y) ifelse(length(y) < 1, NA, y))) %>%
       map(as_tibble) %>%
       list_rbind() %>%
-      mutate(CreateDate = as_datetime(CreateDate))
+      mutate(CreateDate = .as_datetime(CreateDate))
   }
+}
+
+# replaces lubridate::as_datetime
+.as_datetime <- function(x) {
+  as.POSIXct(x, origin = "1970-01-01 UTC", tz = "UTC")
 }
 
 is_class <- function(x, class) {
@@ -225,4 +235,17 @@ stop_if_not <- function(cond, msg, .envir = parent.frame()) {
 }
 stop_if <- function(cond, msg, .envir = parent.frame()) {
   if (cond) cli::cli_abort(msg, .envir = .envir)
+}
+
+#' Check if appropriate AWS credentials are available
+#' @export
+#' @importFrom paws.common locate_credentials
+#' @examples
+#' aws_has_creds()
+aws_has_creds <- function() {
+  res <- tryCatch(
+    paws.common::locate_credentials(),
+    error = \(e) e
+  )
+  !inherits(res, "error")
 }

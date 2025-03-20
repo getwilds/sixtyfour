@@ -2,13 +2,12 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @importFrom magrittr %>% %<>%
 #' @importFrom paws s3 iam costexplorer
 #' @importFrom s3fs s3_file_system
 #' @importFrom glue glue
 #' @importFrom jsonlite toJSON fromJSON
 #' @importFrom curl curl_fetch_memory
-#' @importFrom rlang abort is_na
+#' @importFrom rlang abort is_na is_character
 ## usethis namespace: end
 NULL
 

@@ -10,20 +10,21 @@ aws_vpc_security_groups(...)
 \item{...}{named parameters passed on to \href{https://www.paws-r-sdk.com/docs/ec2_describe_security_groups/}{describe_security_groups}}
 }
 \value{
-(list) list with security groups
+(list) list with security groups, see \code{\link[=aws_vpc_security_group]{aws_vpc_security_group()}}
+for details
 }
 \description{
 List VPC security groups
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 aws_vpc_security_groups()
 aws_vpc_security_groups(MaxResults = 6)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
 Other security groups: 
-\code{\link{aws_vpc_sec_group_rules}()},
+\code{\link{aws_vpc_sec_group_rules_mod}()},
 \code{\link{aws_vpc_security_group}()},
 \code{\link{aws_vpc_security_group_create}()},
 \code{\link{aws_vpc_security_group_ingress}()},

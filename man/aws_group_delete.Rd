@@ -10,7 +10,7 @@ aws_group_delete(name)
 \item{name}{(character) A group name. required}
 }
 \value{
-an empty list
+\code{NULL} invisibly
 }
 \description{
 Delete a group
@@ -20,15 +20,17 @@ See \url{https://www.paws-r-sdk.com/docs/iam_delete_group/}
 docs for more details
 }
 \examples{
-\dontrun{
-aws_group_delete(name = "testgroup")
-}
+\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+aws_group_create("somegroup")
+aws_group_delete("somegroup")
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other groups: 
 \code{\link{aws_group}()},
 \code{\link{aws_group_create}()},
 \code{\link{aws_group_exists}()},
-\code{\link{aws_groups}()}
+\code{\link{aws_groups}()},
+\code{\link{six_group_delete}()}
 }
 \concept{groups}

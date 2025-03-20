@@ -1,4 +1,4 @@
-url: ~
+url: https://getwilds.org/sixtyfour/
 template:
   bootstrap: 5
   light-switch: true
@@ -8,6 +8,11 @@ reference:
       High level overview of package
     contents:
       - sixtyfour
+  - title: Configuration
+    contents:
+      - aws_configure
+      - with_redacted
+      - without_verbose
   - title: High level "magical" methods
     desc: >
       Higher level functions to make your life easier
@@ -21,7 +26,9 @@ reference:
       - six_bucket_permissions
       - six_bucket_delete
       - six_file_upload
+      - six_bucket_upload
       - six_user_creds
+      - six_group_delete
       - group_policies
   - title: paws and s3fs clients
     contents:
@@ -69,10 +76,18 @@ reference:
   - title: VPC Security Groups
     contents:
       - starts_with("aws_vpc_security_group")
-      - aws_vpc_sec_group_rules
+      - aws_vpc_sec_group_rules_mod
       - ip_permissions_generator
       - aws_vpc_sg_with_ingress
-  - title: Utilities
+  - title: Random strings
     contents:
       - random_user
+      - random_role
       - random_string
+      - random_bucket
+  - title: Utilities
+    contents:
+      - aws_has_creds
+      - figure_out_policy_arn
+      - s3_actions_full
+      - s3_actions_read

@@ -11,20 +11,42 @@ vignette: >
 
 A science-focused, more humane R interface to AWS.
 
+## Installation
 
-```r
+CRAN version
+
+
+``` r
+# install.packages("pak")
+pak::pak("sixtyfour")
+```
+
+Development version
+
+
+``` r
+# install.packages("pak")
+pak::pak("getwilds/sixtyfour")
+```
+
+Load package
+
+
+``` r
 library(sixtyfour)
 ```
 
 ## Authentication
 
-To be able to use this package you'll need two AWS secrets and an AWS region in the following three environment variables:
+We leverage the package `paws` to handle AWS authentication. There are many ways to configure `paws` to authenticate with AWS - see [paws documentation](https://paws-r.github.io/developer_guide/credentials/#set-credentials).
+
+One way to authenticate is using these three environment variables:
 
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
 - `AWS_REGION`
 
-You can set these within R for the current R session like:
+You can set these three environment variables within R for the current R session like:
 
 ```
 Sys.setenv(
@@ -34,7 +56,7 @@ Sys.setenv(
 )
 ```
 
-Or set them in a variety of ways to be available across R sessions. See the [R Startup chapter][r-startup] of _What They Forgot to Teach You About R_ book for more details.
+Or set environment variables in a variety of ways to be available across R sessions. See the [R Startup chapter][r-startup] of _What They Forgot to Teach You About R_ book for more details.
 
 
 ## Package API Overview
@@ -45,217 +67,218 @@ Or set them in a variety of ways to be available across R sessions. See the [R S
 - `aws_user*`: manage AWS users
 - `aws_group*`: manage AWS groups
 - `aws_role*`: manage AWS roles
-- `aws_policy*`: manage AWS policies
+- `aws_policy*`/`aws_policies*`: manage AWS policies
 - `aws_db*`: interact with AWS database services Redshift and RDS
 - `aws_secrets*`: secrets manager
-- `aws_vpc_security*`: VPC security groups
+- `aws_vpc*`: VPC security groups
+- `con_*`: connection classes to various AWS services
+- `six_*`: magical methods
 
 ## Working with S3
 
-This vignette won't touch on all of the above parts of the package API - but instead will cover working with files as that's likely a common use case for `sixtyfour` users.
+We cover S3 in detail in another vignette (`vignette("s3")`), so we'll briefly touch on it here.
 
 ### Buckets
 
 Make a random bucket name
 
 
-```r
-random_bucket_name <- function() {
-  glue::glue("egs-{paste0(sample(letters, size = 12), collapse = '')}")
-}
-bucket <- random_bucket_name()
+``` r
+bucket <- random_bucket()
 ```
 
 Create a bucket - check if it exists first
 
 
-```r
+``` r
 exists <- aws_bucket_exists(bucket)
 
 if (!exists) {
   aws_bucket_create(bucket)
 }
-#> [1] "http://egs-tnxoekbrjcdl.s3.amazonaws.com/"
+#> [1] "http://bucket-lphnzotejwfyuxkm.s3.amazonaws.com/"
 ```
 
-Create files in a few different directories
 
-
-```r
-library(fs)
-tdir <- fs::path(tempdir(), "apples")
-fs::dir_create(tdir)
-tfiles <- replicate(n = 10, fs::file_temp(tmp_dir = tdir, ext = ".txt"))
-invisible(lapply(tfiles, function(x) write.csv(mtcars, x)))
-```
-
-Upload them to the newly created bucket
-
-
-```r
-aws_bucket_upload(path = tdir, bucket = bucket)
-#> [1] "s3://private/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T/RtmpyTGZNW/apples"
-```
-
-List objects in the bucket
-
-
-```r
-objects <- aws_bucket_list_objects(bucket)
-objects
-#> # A tibble: 10 × 8
-#>    bucket_name      key        uri    size type  owner etag  last_modified
-#>    <chr>            <chr>      <chr> <fs:> <chr> <chr> <chr> <dttm>
-#>  1 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:06
-#>  2 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:06
-#>  3 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:06
-#>  4 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:06
-#>  5 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:06
-#>  6 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:07
-#>  7 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:07
-#>  8 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:07
-#>  9 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:07
-#> 10 egs-tnxoekbrjcdl file102ee… s3:/… 1.74K file  <NA>  "\"6… 2024-03-19 23:28:07
-```
-
-Cleanup - delete the bucket.
-
-
-```r
+``` r
 aws_bucket_delete(bucket)
 ```
-
-
-```
-#> Error: BucketNotEmpty (HTTP 409). The bucket you tried to delete is not empty
-```
-
-If there's files in your bucket you can not delete it. Delete files, then delete bucket again
-
-
-```r
-aws_file_delete(objects$uri)
-aws_bucket_delete(bucket)
-```
-
-
 
 ### Files
-
-All or most of the file functions are built around accepting and returning character vectors of length one or greater. This includes the functions that take two inputs, such as a source and destination file. Rather than using the `paws` package under the hood as most functions in this package use, the file functions use `s3fs` under the hood (which is itself built on `paws`) as it's a cleaner interface to S3.
 
 First, create a bucket:
 
 
-```r
-my_bucket <- random_bucket_name()
+``` r
+my_bucket <- random_bucket()
 aws_bucket_create(my_bucket)
-#> [1] "http://egs-fzpqkyhmtxlg.s3.amazonaws.com/"
+#> [1] "http://bucket-cdzsxyjiofheptnr.s3.amazonaws.com/"
 ```
 
 Then, upload some files
 
 
-```r
+``` r
 temp_files <- replicate(n = 3, tempfile(fileext = ".txt"))
 for (i in temp_files) cat(letters, "\n", file = i)
 remote_files <- s3_path(my_bucket, basename(temp_files))
 aws_file_upload(path = temp_files, remote_path = remote_files)
-#> [1] "s3://egs-fzpqkyhmtxlg/file102ee45c0b74.txt"
-#> [2] "s3://egs-fzpqkyhmtxlg/file102ee36f3eee8.txt"
-#> [3] "s3://egs-fzpqkyhmtxlg/file102ee48c9dd87.txt"
+#> [1] "s3://bucket-cdzsxyjiofheptnr/file16cf21ea161d1.txt"
+#> [2] "s3://bucket-cdzsxyjiofheptnr/file16cf2751cf00c.txt"
+#> [3] "s3://bucket-cdzsxyjiofheptnr/file16cf23ed3dfe5.txt"
 ```
 
 List files in the bucket
 
 
-```r
+``` r
 obs <- aws_bucket_list_objects(my_bucket)
 obs
 #> # A tibble: 3 × 8
-#>   bucket_name      key         uri    size type  owner etag  last_modified
-#>   <chr>            <chr>       <chr> <fs:> <chr> <chr> <chr> <dttm>
-#> 1 egs-fzpqkyhmtxlg file102ee3… s3:/…    53 file  <NA>  "\"a… 2024-03-19 23:28:10
-#> 2 egs-fzpqkyhmtxlg file102ee4… s3:/…    53 file  <NA>  "\"a… 2024-03-19 23:28:10
-#> 3 egs-fzpqkyhmtxlg file102ee4… s3:/…    53 file  <NA>  "\"a… 2024-03-19 23:28:10
-```
-
-Fetch file attributes
-
-
-```r
-aws_file_attr(remote_files)
-#> # A tibble: 3 × 38
-#>   bucket_name    key   uri    size type  etag  last_modified       delete_marker
-#>   <chr>          <chr> <chr> <fs:> <chr> <chr> <dttm>              <lgl>
-#> 1 egs-fzpqkyhmt… file… s3:/…    53 file  "\"a… 2024-03-19 23:28:10 NA
-#> 2 egs-fzpqkyhmt… file… s3:/…    53 file  "\"a… 2024-03-19 23:28:10 NA
-#> 3 egs-fzpqkyhmt… file… s3:/…    53 file  "\"a… 2024-03-19 23:28:10 NA
-#> # ℹ 30 more variables: accept_ranges <chr>, expiration <chr>, restore <chr>,
-#> #   archive_status <chr>, checksum_crc32 <chr>, checksum_crc32_c <chr>,
-#> #   checksum_sha1 <chr>, checksum_sha256 <chr>, missing_meta <int>,
-#> #   version_id <chr>, cache_control <chr>, content_disposition <chr>,
-#> #   content_encoding <chr>, content_language <chr>, content_type <chr>,
-#> #   expires <dttm>, website_redirect_location <chr>,
-#> #   server_side_encryption <chr>, metadata <list>, …
-```
-
-Check if one or more files exist
-
-
-```r
-aws_file_exists(remote_files[1])
-#> [1] TRUE
-aws_file_exists(remote_files)
-#> [1] TRUE TRUE TRUE
-```
-
-Copy
-
-
-```r
-new_bucket <- random_bucket_name()
-aws_bucket_create(new_bucket)
-#> [1] "http://egs-gqalfwjhukzr.s3.amazonaws.com/"
-
-# add existing files to the new bucket
-aws_file_copy(remote_files, new_bucket)
-#> [1] "s3://egs-gqalfwjhukzr/file102ee45c0b74.txt"
-#> [2] "s3://egs-gqalfwjhukzr/file102ee36f3eee8.txt"
-#> [3] "s3://egs-gqalfwjhukzr/file102ee48c9dd87.txt"
-
-# create bucket that doesn't exist yet
-# the force=TRUE makes this work non-interactively
-aws_file_copy(remote_files, random_bucket_name(), force = TRUE)
-#> [1] "s3://egs-tsadhcfyrjmo/file102ee45c0b74.txt"
-#> [2] "s3://egs-tsadhcfyrjmo/file102ee36f3eee8.txt"
-#> [3] "s3://egs-tsadhcfyrjmo/file102ee48c9dd87.txt"
-```
-
-Download
-
-
-```r
-tfile <- tempfile()
-aws_file_download(remote_files[1], tfile)
-#> [1] "/var/folders/qt/fzq1m_bj2yb_7b2jz57s9q7c0000gp/T//RtmpyTGZNW/file102ee497415cd"
-readLines(tfile)
-#> [1] "a b c d e f g h i j k l m n o p q r s t u v w x y z "
-```
-
-Rename
-
-
-```r
-aws_file_exists(remote_files[1])
-#> [1] TRUE
-aws_file_rename(remote_files[1], s3_path(dirname(remote_files[1]), "myfile.txt"))
-#> [1] "s3://egs-fzpqkyhmtxlg/myfile.txt"
-aws_file_exists(remote_files[1])
-#> [1] FALSE
+#>   bucket          key   uri    size type  etag  lastmodified        storageclass
+#>   <glue>          <chr> <glu> <fs:> <chr> <chr> <dttm>              <chr>       
+#> 1 bucket-cdzsxyj… file… s3:/…    53 file  "\"a… 2025-03-20 20:52:34 STANDARD    
+#> 2 bucket-cdzsxyj… file… s3:/…    53 file  "\"a… 2025-03-20 20:52:34 STANDARD    
+#> 3 bucket-cdzsxyj… file… s3:/…    53 file  "\"a… 2025-03-20 20:52:34 STANDARD
 ```
 
 
+
+## Billing
+
+Billing is covered in the `vignette("billing")` vignette.
+
+## IAM
+
+IAM stands for Identity Access Management. IAM covers four resource types:
+
+- Users: via `aws_user*` functions
+- Groups: via `aws_group*` functions
+- Roles: via `aws_role*` functions
+- Policies: via `aws_policy*`/`aws_policies*` functions
+
+As a brief example let's create a group, a user, and a role. We'll assign the user to the group. Then clean it all up.
+
+First, create a group
+
+
+``` r
+group_name <- random_string("gr-")
+group_name
+#> gr-gmpcjatq
+aws_group_create(group_name)
+#> # A tibble: 1 × 5
+#>   GroupName   GroupId               Path  Arn   CreateDate         
+#>   <chr>       <chr>                 <chr> <chr> <dttm>             
+#> 1 gr-gmpcjatq AGPA22PL7JXXYJ5WLSESJ /     ***** 2025-03-20 20:52:35
+```
+
+Then create a user
+
+
+``` r
+name <- random_user()
+name
+#> [1] "RepellentFinale"
+aws_user_create(name)
+#> # A tibble: 1 × 6
+#>   UserName        UserId     Path  Arn   CreateDate          PasswordLastUsed
+#>   <chr>           <chr>      <chr> <chr> <dttm>              <dttm>          
+#> 1 RepellentFinale AIDA22PL7… /     ***** 2025-03-20 20:52:35 NA
+```
+
+Now add the user to the group
+
+
+``` r
+aws_user_add_to_group(name, group_name)
+#> $user
+#> # A tibble: 1 × 6
+#>   UserName        UserId     Path  Arn   CreateDate          PasswordLastUsed
+#>   <chr>           <chr>      <chr> <chr> <dttm>              <dttm>          
+#> 1 RepellentFinale AIDA22PL7… /     ***** 2025-03-20 20:52:35 NA              
+#> 
+#> $policies
+#> # A tibble: 0 × 0
+#> 
+#> $attached_policies
+#> # A tibble: 0 × 0
+#> 
+#> $groups
+#> # A tibble: 1 × 5
+#>   GroupName   GroupId               Path  Arn   CreateDate         
+#>   <chr>       <chr>                 <chr> <chr> <dttm>             
+#> 1 gr-gmpcjatq AGPA22PL7JXXYJ5WLSESJ /     ***** 2025-03-20 20:52:35
+```
+
+Now create a role
+
+
+``` r
+role_name <- random_role()
+trust_policy <- list(
+  Version = "2012-10-17",
+  Statement = list(
+    list(
+      Sid = "Statement1",
+      Effect = "Allow",
+      Principal = list(
+        Service = "lambda.amazonaws.com"
+      ),
+      Action = "sts:AssumeRole"
+    )
+  )
+)
+doc1 <- jsonlite::toJSON(trust_policy, auto_unbox = TRUE)
+aws_role_create(role_name,
+  assume_role_policy_document = doc1,
+  description = "test role A"
+)
+#> # A tibble: 1 × 7
+#>   RoleName         RoleId            Path  Arn   CreateDate          Description
+#>   <chr>            <chr>             <chr> <chr> <dttm>              <lgl>      
+#> 1 BridgedLiquidati AROA22PL7JXX5ETK… /     ***** 2025-03-20 20:52:36 NA         
+#> # ℹ 1 more variable: AssumeRolePolicyDocument <chr>
+```
+
+Finally, cleanup
+
+
+``` r
+aws_role_delete(role_name)
+six_user_delete(name)
+#> ! No access keys found for RepellentFinale
+#> ℹ Group gr-gmpcjatq detached
+#> ℹ RepellentFinale deleted
+six_group_delete(group_name)
+#> ℹ group gr-gmpcjatq deleted
+```
+
+## Databases
+
+Databases are covered in the `vignette("databases")` vignette.
+
+## Magical methods
+
+Magical methods are higher level functions to make your life easier.
+
+As an example, `six_user_create()` creates a new user, including a) creating the appropriate policy if it doesn't exist yet, b) attaching the policy to the created user, and c) creating an AWS Access Key for the user (and copy an email template to your clipboard with the details the new user needs).
+
+
+``` r
+name <- random_user()
+name
+#> [1] "GildedArchery"
+six_user_create(name)
+#> ℹ Added policy UserInfo to GildedArchery
+#> ✔ Key pair created for GildedArchery
+#> ℹ AccessKeyId: *****
+#> ℹ SecretAccessKey: *****
+#> ℹ Email template copied to your clipboard
+```
+
+
+
+There are other magical methods. See the [docs](https://getwilds.org/sixtyfour/reference/#high-level-magical-methods) and the `vignette("six")` vignette for more information.
 
 [r-startup]: https://rstats.wtf/r-startup.html
-

@@ -12,7 +12,8 @@ suggests_installed <- requireNamespace("ggplot2", quietly = TRUE)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = suggests_installed
+  eval = suggests_installed,
+  fig.path = "../man/figures/"
 )
 ```
 
@@ -36,6 +37,10 @@ my_data <-
 Simple plot of RDS spend through time
 
 ```{r billing_rds, fig.cap="", fig.width=8}
+#| fig.alt: >
+#|   Plot showing AWS cost by day for the RDS service.
+#|   There's a big peak in early Feburary 2024, and a few
+#|   smaller peaks in mid to late February.
 rds_by_day <-
   my_data %>%
   filter(
@@ -54,6 +59,11 @@ Plot of all types with cost greater than zero though time
 
 
 ```{r billing_all, fig.cap="", fig.width=8}
+#| fig.alt: >
+#|   Plot showing AWS cost by day for many AWS services,
+#|   including CE, RDS, SEC< Tax, and VPC.
+#|   There's a big peak in early Feburary 2024, and steady
+#|   spend in mid to late February and early March.
 all_by_day <-
   my_data %>%
   filter(id == "blended") %>%

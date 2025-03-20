@@ -65,7 +65,7 @@ Different filter criteria can be combined in different ways using \code{AND},
 }
 
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(lubridate)
 library(dplyr)
 
