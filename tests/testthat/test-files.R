@@ -21,7 +21,7 @@ test_that("aws_file_upload - error behavior", {
 })
 
 test_that("aws_file_upload - 1 file", {
-  bucket <- random_string("bucket")
+  bucket <- random_bucket()
   aws_bucket_create(bucket)
   res <- aws_file_upload(
     demo_rds_file,
@@ -39,7 +39,8 @@ test_that("aws_file_upload - many files", {
   for (f in the_files) cat(letters, file = f)
 
   res <- aws_file_upload(
-    the_files, s3_path("upload", basename(the_files))
+    the_files,
+    s3_path("upload", basename(the_files))
   )
 
   expect_length(res, length(the_files))
@@ -87,7 +88,8 @@ test_that("aws_file_download - many files", {
   for (f in the_files) cat(letters, "\n", file = f)
 
   res <- aws_file_upload(
-    the_files, s3_path("download", basename(the_files))
+    the_files,
+    s3_path("download", basename(the_files))
   )
 
   downloaded_files <- replicate(10, tempfile(fileext = ".txt"))
@@ -182,7 +184,7 @@ test_that("aws_file_attr", {
 test_that("aws_file_exists - error behavior", {
   expect_error(aws_file_exists())
 
-  bucket <- random_string("bucket")
+  bucket <- random_bucket()
 
   # bucket DOES NOT exist, just FALSE
   expect_false(aws_file_exists(s3_path(bucket, "TESTING123")))
@@ -195,7 +197,7 @@ test_that("aws_file_exists - error behavior", {
 })
 
 test_that("aws_file_exists", {
-  bucket <- random_string("bucket")
+  bucket <- random_bucket()
   aws_bucket_create(bucket)
 
   files <- replicate(5, tempfile(fileext = ".txt"))
@@ -221,7 +223,7 @@ test_that("aws_file_rename", {
   expect_error(aws_file_rename())
   expect_error(aws_file_rename(""))
 
-  bucket <- random_string("bucket")
+  bucket <- random_bucket()
   aws_bucket_create(bucket)
 
   aws_file_upload(links_file, s3_path(bucket, basename(links_file)))
@@ -243,12 +245,12 @@ test_that("aws_file_copy", {
   expect_error(aws_file_copy())
   expect_error(aws_file_copy(""))
 
-  bucket <- random_string("bucket")
+  bucket <- random_bucket()
   aws_bucket_create(bucket)
 
   aws_file_upload(links_file, s3_path(bucket, basename(links_file)))
 
-  bucket_2 <- random_string("bucket")
+  bucket_2 <- random_bucket()
   aws_bucket_create(bucket_2)
 
   expect_false(aws_file_exists(s3_path(bucket_2, "links.rds")))
@@ -262,7 +264,6 @@ test_that("aws_file_copy", {
   expect_type(res, "character")
   expect_equal(res, s3_path(bucket_2, "links.rds"))
 })
-
 
 
 # cleanup

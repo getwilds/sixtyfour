@@ -4,7 +4,7 @@ Sys.setenv(AWS_PROFILE = "localstack")
 buckets_empty()
 
 test_that("aws_s3_policy_doc_create", {
-  bucket <- random_string("bucket")
+  bucket <- random_bucket()
   doc <- aws_s3_policy_doc_create(
     bucket = bucket,
     action = s3_actions_read(),
@@ -45,13 +45,13 @@ test_that("six_bucket_add_user - failure behavior", {
 })
 
 test_that("six_bucket_add_user", {
-  user_name <- random_string("user")
+  user_name <- random_user()
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
     the_user <- aws_user_create(user_name)
   )
 
-  bucket_name <- random_string("bucket")
+  bucket_name <- random_bucket()
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
     aws_bucket_create(bucket_name)
@@ -61,7 +61,8 @@ test_that("six_bucket_add_user", {
     c("AWS_PROFILE" = "localstack"),
     {
       withr::with_options(
-        list(cli.default_handler = function(...) { }),
+        list(cli.default_handler = function(...) {
+        }),
         {
           user_added <- six_bucket_add_user(
             bucket = bucket_name,
@@ -99,8 +100,8 @@ test_that("six_bucket_add_user", {
 test_that("six_bucket_permissions", {
   expect_error(six_bucket_permissions("asdf"), "does not exist")
 
-  user1 <- random_string("user")
-  user2 <- random_string("user")
+  user1 <- random_user()
+  user2 <- random_user()
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
     {
@@ -109,7 +110,7 @@ test_that("six_bucket_permissions", {
     }
   )
 
-  bucket_name <- random_string("bucket")
+  bucket_name <- random_bucket()
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
     aws_bucket_create(bucket_name)
@@ -119,7 +120,8 @@ test_that("six_bucket_permissions", {
     c("AWS_PROFILE" = "localstack"),
     {
       withr::with_options(
-        list(cli.default_handler = function(...) { }),
+        list(cli.default_handler = function(...) {
+        }),
         {
           six_bucket_add_user(
             bucket = bucket_name,
@@ -149,13 +151,15 @@ test_that("six_bucket_permissions", {
     {
       if (aws_user_exists(user1)) {
         withr::with_options(
-          list(cli.default_handler = function(...) { }),
+          list(cli.default_handler = function(...) {
+          }),
           six_user_delete(user1)
         )
       }
       if (aws_user_exists(user2)) {
         withr::with_options(
-          list(cli.default_handler = function(...) { }),
+          list(cli.default_handler = function(...) {
+          }),
           six_user_delete(user2)
         )
       }
@@ -167,7 +171,7 @@ test_that("six_bucket_permissions", {
 })
 
 test_that("six_bucket_remove_user", {
-  user_name <- random_string("user")
+  user_name <- random_user()
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
     {
@@ -175,7 +179,7 @@ test_that("six_bucket_remove_user", {
     }
   )
 
-  bucket_name <- random_string("bucket")
+  bucket_name <- random_bucket()
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
     {
@@ -187,7 +191,8 @@ test_that("six_bucket_remove_user", {
     c("AWS_PROFILE" = "localstack"),
     {
       withr::with_options(
-        list(cli.default_handler = function(...) { }),
+        list(cli.default_handler = function(...) {
+        }),
         {
           six_bucket_add_user(
             bucket = bucket_name,
@@ -203,7 +208,8 @@ test_that("six_bucket_remove_user", {
     c("AWS_PROFILE" = "localstack"),
     {
       withr::with_options(
-        list(cli.default_handler = function(...) { }),
+        list(cli.default_handler = function(...) {
+        }),
         {
           user_removed <- six_bucket_remove_user(
             bucket = bucket_name,
@@ -223,7 +229,8 @@ test_that("six_bucket_remove_user", {
     {
       if (aws_user_exists(user_name)) {
         withr::with_options(
-          list(cli.default_handler = function(...) { }),
+          list(cli.default_handler = function(...) {
+          }),
           six_user_delete(user_name)
         )
       }

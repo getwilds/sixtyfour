@@ -21,6 +21,7 @@ bucket_delete <- function(bucket, force = FALSE) {
   }
   aws_bucket_delete(bucket, force = force)
 }
+set.seed(9164852)
 ```
 
 This vignette focuses on blob storage using S3. See the Getting Started vignette for basic setup if you have not done that yet.
@@ -37,10 +38,10 @@ library(sixtyfour)
 
 ## Buckets
 
-Make a random bucket name with `random_string()` from `sixtyfour`:
+Make a random bucket name with `random_bucket()` from `sixtyfour`:
 
 ```{r}
-bucket <- random_string("egs-")
+bucket <- random_bucket()
 bucket
 ```
 
@@ -106,7 +107,7 @@ All or most of the file functions are built around accepting and returning chara
 First, create a bucket:
 
 ```{r}
-my_bucket <- random_string("egs-")
+my_bucket <- random_bucket()
 aws_bucket_create(my_bucket)
 ```
 
@@ -142,7 +143,7 @@ aws_file_exists(remote_files)
 Copy files
 
 ```{r}
-new_bucket <- random_string("egs-")
+new_bucket <- random_bucket()
 aws_bucket_create(new_bucket)
 
 # add existing files to the new bucket
@@ -150,7 +151,7 @@ aws_file_copy(remote_files, new_bucket)
 
 # create bucket that doesn't exist yet
 # the force=TRUE makes this work non-interactively
-another_bucket <- random_string("egs-")
+another_bucket <- random_bucket()
 aws_file_copy(remote_files, another_bucket, force = TRUE)
 ```
 
@@ -171,7 +172,7 @@ aws_file_exists(remote_files[1])
 ```
 
 ```{r cleanup-files, echo=FALSE, results='hide'}
-these_buckets <- grep("egs-.+", aws_buckets()$bucket_name, value = TRUE)
+these_buckets <- grep("bucket-.+", aws_buckets()$bucket_name, value = TRUE)
 invisible(purrr::map(these_buckets, bucket_delete, force = TRUE))
 ```
 
@@ -193,7 +194,7 @@ An example of using one of the functions, `six_bucket_add_user()`:
 
 ```{r six-bucket-add-user}
 # create a bucket
-bucket <- random_string("egs-")
+bucket <- random_bucket()
 if (!aws_bucket_exists(bucket)) {
   aws_bucket_create(bucket)
 }
@@ -220,7 +221,7 @@ aws_bucket_delete(bucket, force = TRUE)
 There's one file function: `six_file_upload()`. An example of using it:
 
 ```{r six-file-upload}
-bucket <- random_string("egs-")
+bucket <- random_bucket()
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 six_file_upload(demo_rds_file, bucket, force = TRUE)
 

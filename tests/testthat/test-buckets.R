@@ -11,7 +11,7 @@ test_that("aws_bucket_create", {
   expect_error(aws_bucket_create(5))
   expect_error(aws_bucket_create(letters))
 
-  bucket <- random_string("bucket")
+  bucket <- random_bucket()
   expect_false(aws_bucket_exists(bucket))
   aws_bucket_create(bucket)
   expect_true(aws_bucket_exists(bucket))
@@ -22,7 +22,7 @@ test_that("aws_bucket_exists", {
   expect_error(aws_bucket_exists(5))
   expect_error(aws_bucket_exists(letters))
 
-  bucket <- random_string("bucket")
+  bucket <- random_bucket()
 
   # bucket DOES NOT exist, gives FALSE
   expect_false(aws_bucket_exists(bucket))
@@ -39,7 +39,7 @@ test_that("aws_bucket_delete", {
   expect_error(aws_bucket_delete(5))
   expect_error(aws_bucket_delete(letters))
 
-  bucket <- random_string("bucket")
+  bucket <- random_bucket()
   aws_bucket_create(bucket)
   expect_true(aws_bucket_exists(bucket))
   res <- aws_bucket_delete(bucket, force = TRUE)
@@ -51,7 +51,7 @@ test_that("aws_bucket_download", {
   expect_error(aws_bucket_download())
   expect_error(aws_bucket_download(""))
 
-  bucket <- random_string("bucket")
+  bucket <- random_bucket()
   aws_bucket_create(bucket)
 
   aws_file_upload(demo_rds_file, s3_path(bucket, basename(demo_rds_file)))
@@ -87,7 +87,7 @@ test_that("aws_bucket_list_objects", {
   expect_error(aws_bucket_list_objects())
   expect_error(aws_bucket_list_objects(5))
 
-  bucket <- random_string("bucket")
+  bucket <- random_bucket()
   aws_bucket_create(bucket)
   ffs <- list.files(file.path(system.file(), "Meta"), full.names = TRUE)
   for (f in ffs) aws_file_upload(f, s3_path(bucket, basename(f)))
@@ -102,7 +102,7 @@ test_that("aws_bucket_list_objects", {
 })
 
 test_that("aws_buckets", {
-  for (i in replicate(10, random_string("bucket"))) aws_bucket_create(i)
+  for (i in replicate(10, random_bucket())) aws_bucket_create(i)
 
   res <- aws_buckets()
 
@@ -116,7 +116,7 @@ test_that("aws_bucket_tree", {
   expect_error(aws_bucket_tree())
   expect_error(aws_bucket_tree("", 5))
 
-  bucket <- random_string("bucket")
+  bucket <- random_bucket()
   aws_bucket_create(bucket)
   ffs <- list.files(file.path(system.file(), "Meta"), full.names = TRUE)
   for (f in ffs) aws_file_upload(f, s3_path(bucket, basename(f)))
@@ -133,7 +133,7 @@ test_that("aws_bucket_tree", {
 })
 
 test_that("six_bucket_upload, single file", {
-  bucket <- random_string("bucket")
+  bucket <- random_bucket()
   demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
   res <- six_bucket_upload(path = demo_rds_file, remote = bucket, force = TRUE)
   objs <- aws_bucket_list_objects(bucket)
@@ -146,7 +146,7 @@ test_that("six_bucket_upload, single file", {
 })
 
 test_that("six_bucket_upload, mixed inputs (file and dir)", {
-  bucket <- random_string("bucket")
+  bucket <- random_bucket()
   library(fs)
   demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
   tdir <- path(path_temp(), "mytmp")
@@ -154,7 +154,8 @@ test_that("six_bucket_upload, mixed inputs (file and dir)", {
   purrr::map(letters, \(l) file_create(path(tdir, l)))
   res <- suppressMessages(
     six_bucket_upload(
-      path = c(demo_rds_file, tdir), remote = bucket,
+      path = c(demo_rds_file, tdir),
+      remote = bucket,
       force = TRUE
     )
   )
@@ -167,7 +168,7 @@ test_that("six_bucket_upload, mixed inputs (file and dir)", {
 })
 
 test_that("six_bucket_upload, remote includes key prefix change", {
-  bucket <- random_string("bucket")
+  bucket <- random_bucket()
   library(fs)
   tdir <- path(path_temp(), "atmp")
   demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
@@ -175,7 +176,8 @@ test_that("six_bucket_upload, remote includes key prefix change", {
   purrr::map(letters, \(l) file_create(path(tdir, l)))
   res <- suppressMessages(
     six_bucket_upload(
-      path = c(demo_rds_file, tdir), remote = path(bucket, "some/dir"),
+      path = c(demo_rds_file, tdir),
+      remote = path(bucket, "some", "dir"),
       force = TRUE
     )
   )

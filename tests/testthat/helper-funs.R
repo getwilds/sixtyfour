@@ -7,12 +7,6 @@ purge_secrets <- function() {
   }
 }
 
-random_string <- function(prefix, size = 8) {
-  glue::glue(
-    "{prefix}{paste0(sample(letters, size = size), collapse = '')}"
-  )
-}
-
 running_local_only_tests <- function() {
   as.logical(Sys.getenv("SIXTYFOUR_RUN_LOCAL_ONLY_TESTS", FALSE))
 }

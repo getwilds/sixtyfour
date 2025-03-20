@@ -12,9 +12,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-Sys.setenv(AWS_REGION = "us-east-1")
 library(sixtyfour)
 aws_configure(redacted = TRUE)
+set.seed(1938747)
 ```
 
 High level `sixtyfour` functions - or "magical" methods - or we can call them "six methods" after the package name `sixtyfour` - are higher level functions to make your life easier.
@@ -52,7 +52,7 @@ All of these methods have a `force` parameter that accepts `TRUE` or `FALSE`. Th
 Make a random bucket name
 
 ```{r}
-bucket1 <- random_string("bucket")
+bucket1 <- random_bucket()
 ```
 
 ### Upload to a bucket
@@ -186,7 +186,7 @@ Finally, there's a magic function to make deleting a bucket easier. For good rea
 First, create a bucket with some objects
 
 ```{r}
-bucket2 <- random_string("bucket")
+bucket2 <- random_bucket()
 aws_bucket_create(bucket2)
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 links_file <- file.path(system.file(), "Meta/links.rds")

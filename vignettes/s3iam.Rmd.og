@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
 )
 library(sixtyfour)
 aws_configure(redacted = TRUE)
+set.seed(59874612)
 ```
 
 A common use case is to manage a small group of users and their access to AWS resources. This can be done using the `sixtyfour` package, which provides a set of high-level functions to make your life easier.
@@ -74,7 +75,7 @@ user_wo_access <- six_user_create(name_user_wo, copy_to_cb = FALSE)
 Create a bucket, and put a file in it.
 
 ```{r create-bucket}
-bucket <- random_string("bucket")
+bucket <- random_bucket()
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 six_bucket_upload(path = demo_rds_file, remote = bucket, force = TRUE)
 ```

@@ -1,7 +1,7 @@
 skip_if_not(localstack_available(), "LocalStack Not Available")
 
 # create user first
-the_role <- random_string("role")
+the_role <- random_role()
 withr::with_envvar(
   c("AWS_PROFILE" = "localstack"),
   if (!aws_role_exists(the_role)) {
@@ -63,7 +63,7 @@ test_that("aws_roles", {
 })
 
 test_that("aws_role_create", {
-  create_role_role <- random_string("role")
+  create_role_role <- random_role()
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
     {

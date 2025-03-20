@@ -25,7 +25,7 @@ to upload a folder of files see \code{\link[=aws_bucket_upload]{aws_bucket_uploa
 }
 \examples{
 \dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-bucket1 <- random_string("bucket")
+bucket1 <- random_bucket()
 aws_bucket_create(bucket1)
 cat(bucket1)
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
@@ -35,7 +35,7 @@ aws_file_upload(
 )
 
 ## many files at once
-bucket2 <- random_string("bucket")
+bucket2 <- random_bucket()
 if (!aws_bucket_exists(bucket2)) {
   aws_bucket_create(bucket2)
 }
@@ -66,7 +66,7 @@ try(
 
 # Path's without file extensions behave a little weird
 ## With extension
-bucket3 <- random_string("bucket")
+bucket3 <- random_bucket()
 if (!aws_bucket_exists(bucket3)) {
   aws_bucket_create(bucket3)
 }

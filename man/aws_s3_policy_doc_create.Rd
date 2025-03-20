@@ -40,7 +40,7 @@ buckets are globally unique, so AWS figures out the region and account
 ID for you.
 }
 \examples{
-bucket <- random_string("bucket")
+bucket <- random_bucket()
 aws_s3_policy_doc_create(
   bucket = bucket,
   action = s3_actions_read(),

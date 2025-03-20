@@ -47,7 +47,7 @@ dir.create(tdir)
 tfiles <- replicate(n = 10, file_temp(tmp_dir = tdir, ext = ".txt"))
 invisible(lapply(tfiles, function(x) write.csv(mtcars, x)))
 
-bucket_name <- random_string("bucket")
+bucket_name <- random_bucket()
 if (!aws_bucket_exists(bucket_name)) aws_bucket_create(bucket_name)
 aws_bucket_upload(path = tdir, bucket = bucket_name)
 aws_bucket_list_objects(bucket_name)

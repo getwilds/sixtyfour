@@ -38,12 +38,12 @@ can be deleted cleanly
 six_bucket_delete("notabucket")
 
 # bucket exists w/o objects
-bucket <- random_string("bucket")
+bucket <- random_bucket()
 aws_bucket_create(bucket)
 six_bucket_delete(bucket, force = TRUE)
 
 # bucket exists w/ objects (files and directories with files)
-bucket <- random_string("bucket")
+bucket <- random_bucket()
 aws_bucket_create(bucket)
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 links_file <- file.path(system.file(), "Meta/links.rds")

@@ -35,19 +35,20 @@ s3_actions_full <- function() {
 #' ID for you.
 #' @return a policy document as JSON (of class `json`)
 #' @examples
-#' bucket <- random_string("bucket")
+#' bucket <- random_bucket()
 #' aws_s3_policy_doc_create(
 #'   bucket = bucket,
 #'   action = s3_actions_read(),
 #'   resource = c(bucket_arn(bucket), bucket_arn(bucket, objects = "*"))
 #' )
 aws_s3_policy_doc_create <- function(
-    bucket,
-    action,
-    resource,
-    effect = "Allow",
-    sid = NULL,
-    ...) {
+  bucket,
+  action,
+  resource,
+  effect = "Allow",
+  sid = NULL,
+  ...
+) {
   doc <- list(
     Version = "2012-10-17",
     Statement = list(
@@ -75,10 +76,7 @@ add_user_now_has <- c(
 
 #' @keywords internal
 bucket_to_policy_name <- function(bucket, permissions) {
-  perm <- switch(permissions,
-    read = "ReadOnlyAccess",
-    write = "FullAccess"
-  )
+  perm <- switch(permissions, read = "ReadOnlyAccess", write = "FullAccess")
   glue("S3{perm}{upper_camel_case(bucket)}")
 }
 
@@ -101,7 +99,8 @@ create_policy_if_missing <- function(bucket, permissions) {
   }
   mydoc <- aws_s3_policy_doc_create(
     bucket = bucket,
-    action = switch(permissions,
+    action = switch(
+      permissions,
       read = s3_actions_read(),
       write = s3_actions_full()
     ),
@@ -135,7 +134,7 @@ create_policy_if_missing <- function(bucket, permissions) {
 #' @return invisibly returns nothing
 #' @examplesIf interactive() && aws_has_creds()
 #' # create a bucket
-#' bucket <- random_string("bucket")
+#' bucket <- random_bucket()
 #' if (!aws_bucket_exists(bucket)) {
 #'   aws_bucket_create(bucket)
 #' }
@@ -203,7 +202,7 @@ six_bucket_add_user <- function(bucket, username, permissions) {
 #' your own policies that you name this function may not work.
 #' @examplesIf interactive() && aws_has_creds()
 #' # create a bucket
-#' bucket <- random_string("bucket")
+#' bucket <- random_bucket()
 #' if (!aws_bucket_exists(bucket)) {
 #'   aws_bucket_create(bucket)
 #' }
@@ -299,7 +298,7 @@ six_bucket_change_user <- function(bucket, username, permissions) {
 #' @return invisibly returns nothing
 #' @examplesIf interactive() && aws_has_creds()
 #' # create a bucket
-#' bucket <- random_string("bucket")
+#' bucket <- random_bucket()
 #' if (!aws_bucket_exists(bucket)) aws_bucket_create(bucket)
 #'
 #' # create user
@@ -352,7 +351,7 @@ six_bucket_remove_user <- function(bucket, username) {
 #' Note that users with no persmissions are not shown; see [aws_users()]
 #' @examplesIf interactive() && aws_has_creds()
 #' # create a bucket
-#' bucket <- random_string("bucket")
+#' bucket <- random_bucket()
 #' if (!aws_bucket_exists(bucket)) aws_bucket_create(bucket)
 #'
 #' # create user

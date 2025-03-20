@@ -19,7 +19,7 @@ Check if a file exists
 \examples{
 \dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(glue)
-bucket <- random_string("bucket")
+bucket <- random_bucket()
 aws_bucket_create(bucket)
 
 # upload some files
