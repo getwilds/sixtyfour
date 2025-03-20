@@ -28,6 +28,24 @@ set.seed(293748)
 
 A science-focused, more humane R interface to AWS.
 
+## Installation
+
+CRAN version
+
+```{r eval=FALSE}
+# install.packages("pak")
+pak::pak("sixtyfour")
+```
+
+Development version
+
+```{r eval=FALSE}
+# install.packages("pak")
+pak::pak("getwilds/sixtyfour")
+```
+
+Load package
+
 ```{r setup}
 library(sixtyfour)
 ```

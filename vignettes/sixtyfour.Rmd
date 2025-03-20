@@ -11,6 +11,26 @@ vignette: >
 
 A science-focused, more humane R interface to AWS.
 
+## Installation
+
+CRAN version
+
+
+``` r
+# install.packages("pak")
+pak::pak("sixtyfour")
+```
+
+Development version
+
+
+``` r
+# install.packages("pak")
+pak::pak("getwilds/sixtyfour")
+```
+
+Load package
+
 
 ``` r
 library(sixtyfour)
@@ -103,9 +123,9 @@ temp_files <- replicate(n = 3, tempfile(fileext = ".txt"))
 for (i in temp_files) cat(letters, "\n", file = i)
 remote_files <- s3_path(my_bucket, basename(temp_files))
 aws_file_upload(path = temp_files, remote_path = remote_files)
-#> [1] "s3://bucket-cdzsxyjiofheptnr/file4602690d8946.txt"
-#> [2] "s3://bucket-cdzsxyjiofheptnr/file460277af888b.txt"
-#> [3] "s3://bucket-cdzsxyjiofheptnr/file4602252d9b10.txt"
+#> [1] "s3://bucket-cdzsxyjiofheptnr/file16cf21ea161d1.txt"
+#> [2] "s3://bucket-cdzsxyjiofheptnr/file16cf2751cf00c.txt"
+#> [3] "s3://bucket-cdzsxyjiofheptnr/file16cf23ed3dfe5.txt"
 ```
 
 List files in the bucket
@@ -117,9 +137,9 @@ obs
 #> # A tibble: 3 × 8
 #>   bucket          key   uri    size type  etag  lastmodified        storageclass
 #>   <glue>          <chr> <glu> <fs:> <chr> <chr> <dttm>              <chr>       
-#> 1 bucket-cdzsxyj… file… s3:/…    53 file  "\"a… 2025-03-12 22:37:56 STANDARD    
-#> 2 bucket-cdzsxyj… file… s3:/…    53 file  "\"a… 2025-03-12 22:37:56 STANDARD    
-#> 3 bucket-cdzsxyj… file… s3:/…    53 file  "\"a… 2025-03-12 22:37:56 STANDARD
+#> 1 bucket-cdzsxyj… file… s3:/…    53 file  "\"a… 2025-03-20 20:52:34 STANDARD    
+#> 2 bucket-cdzsxyj… file… s3:/…    53 file  "\"a… 2025-03-20 20:52:34 STANDARD    
+#> 3 bucket-cdzsxyj… file… s3:/…    53 file  "\"a… 2025-03-20 20:52:34 STANDARD
 ```
 
 
@@ -150,7 +170,7 @@ aws_group_create(group_name)
 #> # A tibble: 1 × 5
 #>   GroupName   GroupId               Path  Arn   CreateDate         
 #>   <chr>       <chr>                 <chr> <chr> <dttm>             
-#> 1 gr-gmpcjatq AGPA22PL7JXXVUJ3JBAZV /     ***** 2025-03-12 22:37:57
+#> 1 gr-gmpcjatq AGPA22PL7JXXYJ5WLSESJ /     ***** 2025-03-20 20:52:35
 ```
 
 Then create a user
@@ -164,7 +184,7 @@ aws_user_create(name)
 #> # A tibble: 1 × 6
 #>   UserName        UserId     Path  Arn   CreateDate          PasswordLastUsed
 #>   <chr>           <chr>      <chr> <chr> <dttm>              <dttm>          
-#> 1 RepellentFinale AIDA22PL7… /     ***** 2025-03-12 22:37:57 NA
+#> 1 RepellentFinale AIDA22PL7… /     ***** 2025-03-20 20:52:35 NA
 ```
 
 Now add the user to the group
@@ -176,7 +196,7 @@ aws_user_add_to_group(name, group_name)
 #> # A tibble: 1 × 6
 #>   UserName        UserId     Path  Arn   CreateDate          PasswordLastUsed
 #>   <chr>           <chr>      <chr> <chr> <dttm>              <dttm>          
-#> 1 RepellentFinale AIDA22PL7… /     ***** 2025-03-12 22:37:57 NA              
+#> 1 RepellentFinale AIDA22PL7… /     ***** 2025-03-20 20:52:35 NA              
 #> 
 #> $policies
 #> # A tibble: 0 × 0
@@ -188,7 +208,7 @@ aws_user_add_to_group(name, group_name)
 #> # A tibble: 1 × 5
 #>   GroupName   GroupId               Path  Arn   CreateDate         
 #>   <chr>       <chr>                 <chr> <chr> <dttm>             
-#> 1 gr-gmpcjatq AGPA22PL7JXXVUJ3JBAZV /     ***** 2025-03-12 22:37:57
+#> 1 gr-gmpcjatq AGPA22PL7JXXYJ5WLSESJ /     ***** 2025-03-20 20:52:35
 ```
 
 Now create a role
@@ -217,7 +237,7 @@ aws_role_create(role_name,
 #> # A tibble: 1 × 7
 #>   RoleName         RoleId            Path  Arn   CreateDate          Description
 #>   <chr>            <chr>             <chr> <chr> <dttm>              <lgl>      
-#> 1 BridgedLiquidati AROA22PL7JXXYRQB… /     ***** 2025-03-12 22:37:58 NA         
+#> 1 BridgedLiquidati AROA22PL7JXX5ETK… /     ***** 2025-03-20 20:52:36 NA         
 #> # ℹ 1 more variable: AssumeRolePolicyDocument <chr>
 ```
 

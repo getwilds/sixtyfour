@@ -25,7 +25,7 @@ The function `aws_user_create()` creates a new user. However, there's some basic
 
 To create a smoother user experience `six_user_create()` creates a new user, including a) creating the appropriate policies if they don't exist yet, b) attaching the policies to the created user, and c) creating an AWS Access Key for the user (and copy an email template to your clipboard with the details the new user needs).
 
-## Installation
+## Load sixtyfour
 
 ```{r setup}
 library(sixtyfour)

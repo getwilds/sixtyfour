@@ -12,6 +12,14 @@ A science-focused, more humane R interface to AWS.
 
 ## Installation
 
+CRAN version
+
+
+``` r
+# install.packages("pak")
+pak::pak("sixtyfour")
+```
+
 Development version
 
 
@@ -42,15 +50,9 @@ Please note that the sixtyfour project is released with a [Contributor Code of C
 
 ## Roadmap
 
-For the next release:
-
-- Support for row level security in PostgreSQL and Redshift (via `tablemanners` package) ([#75](https://github.com/getwilds/sixtyfour/issues/75)) - for this package, the change may only be documentation on how to use `tablemanners` with `sixtyfour`
-- Cookbook docs based around common usage patterns ([#27](https://github.com/getwilds/sixtyfour/issues/27))
-- Finish magic function `six_bucket_upload` ([#67](https://github.com/getwilds/sixtyfour/issues/67))
-- Send to CRAN ([#68](https://github.com/getwilds/sixtyfour/issues/68))
+See the next release ([v0.3](https://github.com/getwilds/sixtyfour/milestone/3)).
 
 
 [paws]: https://www.paws-r-sdk.com/
 [s3fs]: https://dyfanjones.github.io/s3fs/
-[minio]: https://min.io/
 [vigncontrib]: http://getwilds.org/sixtyfour/articles/contributing.html

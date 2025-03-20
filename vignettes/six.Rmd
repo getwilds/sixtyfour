@@ -17,7 +17,7 @@ The function `aws_user_create()` creates a new user. However, there's some basic
 
 To create a smoother user experience `six_user_create()` creates a new user, including a) creating the appropriate policies if they don't exist yet, b) attaching the policies to the created user, and c) creating an AWS Access Key for the user (and copy an email template to your clipboard with the details the new user needs).
 
-## Installation
+## Load sixtyfour
 
 
 ``` r
@@ -102,18 +102,18 @@ six_bucket_upload(path = c(demo_rds_file, tdir), remote = bucket1)
 
 ```
 #>  [1] "s3://bucket-yiqxfbrczesdmuwo/demo.rds"
-#>  [2] "s3://bucket-yiqxfbrczesdmuwo/mytmp/a" 
-#>  [3] "s3://bucket-yiqxfbrczesdmuwo/mytmp/b" 
-#>  [4] "s3://bucket-yiqxfbrczesdmuwo/mytmp/c" 
-#>  [5] "s3://bucket-yiqxfbrczesdmuwo/mytmp/d" 
-#>  [6] "s3://bucket-yiqxfbrczesdmuwo/mytmp/e" 
-#>  [7] "s3://bucket-yiqxfbrczesdmuwo/mytmp/f" 
-#>  [8] "s3://bucket-yiqxfbrczesdmuwo/mytmp/g" 
-#>  [9] "s3://bucket-yiqxfbrczesdmuwo/mytmp/h" 
-#> [10] "s3://bucket-yiqxfbrczesdmuwo/mytmp/i" 
-#> [11] "s3://bucket-yiqxfbrczesdmuwo/mytmp/j" 
-#> [12] "s3://bucket-yiqxfbrczesdmuwo/mytmp/k" 
-#> [13] "s3://bucket-yiqxfbrczesdmuwo/mytmp/l" 
+#>  [2] "s3://bucket-yiqxfbrczesdmuwo/mytmp/a"
+#>  [3] "s3://bucket-yiqxfbrczesdmuwo/mytmp/b"
+#>  [4] "s3://bucket-yiqxfbrczesdmuwo/mytmp/c"
+#>  [5] "s3://bucket-yiqxfbrczesdmuwo/mytmp/d"
+#>  [6] "s3://bucket-yiqxfbrczesdmuwo/mytmp/e"
+#>  [7] "s3://bucket-yiqxfbrczesdmuwo/mytmp/f"
+#>  [8] "s3://bucket-yiqxfbrczesdmuwo/mytmp/g"
+#>  [9] "s3://bucket-yiqxfbrczesdmuwo/mytmp/h"
+#> [10] "s3://bucket-yiqxfbrczesdmuwo/mytmp/i"
+#> [11] "s3://bucket-yiqxfbrczesdmuwo/mytmp/j"
+#> [12] "s3://bucket-yiqxfbrczesdmuwo/mytmp/k"
+#> [13] "s3://bucket-yiqxfbrczesdmuwo/mytmp/l"
 #> [14] "s3://bucket-yiqxfbrczesdmuwo/mytmp/m"
 ```
 
@@ -145,7 +145,7 @@ user1 <- random_user()
 aws_user_create(user1)
 #> # A tibble: 1 × 6
 #>   UserName         UserId    Path  Arn   CreateDate          PasswordLastUsed
-#>   <chr>            <chr>     <chr> <chr> <dttm>              <dttm>          
+#>   <chr>            <chr>     <chr> <chr> <dttm>              <dttm>
 #> 1 CandiedMeasureme AIDA22PL… /     ***** 2025-03-12 22:41:35 NA
 ```
 
@@ -174,7 +174,7 @@ six_bucket_permissions(bucket1)
 ```
 #> # A tibble: 1 × 4
 #>   user             permissions policy_read                          policy_admin
-#>   <chr>            <chr>       <chr>                                <chr>       
+#>   <chr>            <chr>       <chr>                                <chr>
 #> 1 CandiedMeasureme read        S3ReadOnlyAccessBucketyiqxfbrczesdm… <NA>
 ```
 
@@ -194,7 +194,7 @@ six_bucket_permissions(bucket1)
 ```
 #> # A tibble: 1 × 4
 #>   user             permissions policy_read                          policy_admin
-#>   <chr>            <chr>       <chr>                                <chr>       
+#>   <chr>            <chr>       <chr>                                <chr>
 #> 1 CandiedMeasureme read        S3ReadOnlyAccessBucketyiqxfbrczesdm… <NA>
 ```
 
@@ -220,7 +220,7 @@ six_bucket_permissions(bucket1)
 ```
 #> # A tibble: 1 × 4
 #>   user             permissions policy_write                       policy_admin
-#>   <chr>            <chr>       <chr>                              <chr>       
+#>   <chr>            <chr>       <chr>                              <chr>
 #> 1 CandiedMeasureme write       S3FullAccessBucketyiqxfbrczesdmuwo <NA>
 ```
 
@@ -253,13 +253,13 @@ aws_file_upload(
   c(demo_rds_file, links_file),
   s3_path(bucket2, c(basename(demo_rds_file), basename(links_file)))
 )
-#> [1] "s3://bucket-vgbwzxqafyoudnpc/demo.rds" 
+#> [1] "s3://bucket-vgbwzxqafyoudnpc/demo.rds"
 #> [2] "s3://bucket-vgbwzxqafyoudnpc/links.rds"
 aws_bucket_list_objects(bucket2)
 #> # A tibble: 2 × 8
 #>   bucket         key   uri     size type  etag  lastmodified        storageclass
-#>   <glue>         <chr> <glu> <fs::> <chr> <chr> <dttm>              <chr>       
-#> 1 bucket-vgbwzx… demo… s3:/…    256 file  "\"7… 2025-03-12 22:42:11 STANDARD    
+#>   <glue>         <chr> <glu> <fs::> <chr> <chr> <dttm>              <chr>
+#> 1 bucket-vgbwzx… demo… s3:/…    256 file  "\"7… 2025-03-12 22:42:11 STANDARD
 #> 2 bucket-vgbwzx… link… s3:/…  13.2K file  "\"0… 2025-03-12 22:42:11 STANDARD
 ```
 
@@ -346,8 +346,3 @@ six_user_delete(user2)
 #> ✔ Access Key ID ***** deleted
 #> ℹ VanillaFries deleted
 ```
-
-
-
-
-
