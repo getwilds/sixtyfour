@@ -1,6 +1,6 @@
 Package: sixtyfour
 Title: Humane Interface to AWS
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: c(
     person("Sean", "Kross", role = "aut"),
     person("Scott", "Chamberlain", , "sachamber@fredhutch.org", role = c("aut", "cre"),
