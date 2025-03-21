@@ -2,8 +2,15 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
+  auth: auth.html
   billing: billing.html
   contributing: contributing.html
   databases: databases.html
+  s3: s3.html
+  s3iam: s3iam.html
+  six: six.html
   sixtyfour: sixtyfour.html
-last_built: 2025-02-20T23:49Z
+last_built: 2025-03-21T16:10Z
+urls:
+  reference: https://getwilds.org/sixtyfour/reference
+  article: https://getwilds.org/sixtyfour/articles

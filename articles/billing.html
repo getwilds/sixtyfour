@@ -6,6 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Explore Billing Data • sixtyfour</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -20,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sixtyfour</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,9 +40,13 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/billing.html">Explore Billing Data</a></li>
+<li><a class="dropdown-item" href="../articles/auth.html">Managing AWS Auth</a></li>
+    <li><a class="dropdown-item" href="../articles/billing.html">Explore Billing Data</a></li>
     <li><a class="dropdown-item" href="../articles/contributing.html">Contributing</a></li>
     <li><a class="dropdown-item" href="../articles/databases.html">Databases</a></li>
+    <li><a class="dropdown-item" href="../articles/s3.html">S3</a></li>
+    <li><a class="dropdown-item" href="../articles/s3iam.html">Managing buckets in a small group of users</a></li>
+    <li><a class="dropdown-item" href="../articles/six.html">High level six functions</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -101,7 +111,7 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_breaks <span class="op">=</span> <span class="st">"10 days"</span>, date_labels <span class="op">=</span>  <span class="st">"%b %d"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_grey</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figure%2Fbilling_rds-1.png"></p>
+<p><img src="../reference/figures/billing_rds-1.png" alt="Plot showing AWS cost by day for the RDS service. There's a big peak in early Feburary 2024, and a few smaller peaks in mid to late February."></p>
 <p>Plot of all types with cost greater than zero though time</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">all_by_day</span> <span class="op">&lt;-</span></span>
@@ -115,14 +125,14 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">acronym</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_breaks <span class="op">=</span> <span class="st">"10 days"</span>, date_labels <span class="op">=</span>  <span class="st">"%b %d"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_grey</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
-<p><img src="figure%2Fbilling_all-1.png"></p>
+<p><img src="../reference/figures/billing_all-1.png" alt="Plot showing AWS cost by day for many AWS services, including CE, RDS, SEC&lt; Tax, and VPC. There's a big peak in early Feburary 2024, and steady spend in mid to late February and early March."></p>
   </main>
 </div>
 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Sean Kross, Scott Chamberlain.</p>
+  <p>Developed by Sean Kross, Scott Chamberlain, Fred Hutchinson Cancer Center.</p>
 </div>
 
 <div class="pkgdown-footer-right">
