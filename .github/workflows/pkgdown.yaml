@@ -1,4 +1,5 @@
-# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+name: pkgdown
+
 on:
   push:
     branches: [main]
@@ -7,8 +8,6 @@ on:
   release:
     types: [published]
   workflow_dispatch:
-
-name: pkgdown
 
 jobs:
   delete-bot-comments:
@@ -25,22 +24,26 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
+            if (context.issue.number) {
+              const { data: comments } = await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+              });
 
-            const botUsername = 'github-actions[bot]';
-            for (const comment of comments) {
-              if (comment.user.login === botUsername) {
-                console.log(`Deleting comment ${comment.id}`);
-                await github.rest.issues.deleteComment({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  comment_id: comment.id
-                });
+              const botUsername = 'github-actions[bot]';
+              for (const comment of comments) {
+                if (comment.user.login === botUsername) {
+                  console.log(`Deleting comment ${comment.id}`);
+                  await github.rest.issues.deleteComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    comment_id: comment.id
+                  });
+                }
               }
+            } else {
+              console.log('an issue number is not defined, skipping delete bot comments');
             }
 
   pkgdown:
