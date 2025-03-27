@@ -23,13 +23,6 @@ go into either a json string or raw version of the json string}
 \description{
 Construct a database secret string or raw version of it
 }
-\examples{
-\dontrun{
-construct_db_secret("redshift", dbname = "hello", port = 5439)
-construct_db_secret("mariadb", dbname = "world", port = 3306)
-construct_db_secret("postgresql", dbname = "bears", port = 5432, as = "raw")
-}
-}
 \references{
 \url{https://docs.aws.amazon.com/secretsmanager/latest/userguide/reference_secret_json_structure.html} # nolint
 }

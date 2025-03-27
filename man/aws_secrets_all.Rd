@@ -13,7 +13,7 @@ aws_secrets_all()
 Get all secret values
 }
 \examples{
-\dontrun{
+\dontshow{if (aws_has_creds() && interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 aws_secrets_all()
-}
+\dontshow{\}) # examplesIf}
 }
