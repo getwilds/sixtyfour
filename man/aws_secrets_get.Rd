@@ -28,13 +28,26 @@ aws_secrets_get(id, ...)
 Get a secret
 }
 \examples{
-\dontrun{
+\dontshow{if (aws_has_creds() && interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+try({
+# Create a secret
+secret <- random_string("secret-", size = 16)
+aws_secrets_create(
+  name = secret,
+  secret = '{"username":"jane","password":"cat"}',
+  description = "A string"
+)
+
+aws_secrets_get(secret)
+
 # Does exist
 aws_secrets_get(id = "MyTestDatabaseSecret")
 
 # Does not exist
-# aws_secrets_get(id = "DoesntExist")
-#> Error: ResourceNotFoundException (HTTP 400). Secrets Manager
-#>   can't find the specified secret.
-}
+try(aws_secrets_get(id = "DoesntExist"))
+
+# Cleanup
+aws_secrets_delete(secret, ForceDeleteWithoutRecovery = TRUE)
+})
+\dontshow{\}) # examplesIf}
 }

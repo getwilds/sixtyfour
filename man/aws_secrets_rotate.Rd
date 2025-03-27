@@ -33,13 +33,23 @@ Note that we autogenerate a random UUID to pass to the
 \code{ClientRequestToken} parameter of the \code{paws} function used internally
 }
 \examples{
-\dontrun{
-aws_secrets_rotate(id = "MyTestDatabaseSecret")
-aws_secrets_rotate(id = "MyTestDatabaseSecret", rules = list(
-  Duration = "2h",
-  ScheduleExpression = "cron(0 16 1,15 * ? *)"
-))
-}
+\dontshow{if (aws_has_creds() && interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+try({
+# Create a secret
+secret <- random_string("secret-", size = 16)
+aws_secrets_create(
+  name = secret,
+  secret = '{"username":"billy","password":"willy"}',
+  description = "A string"
+)
+
+# Rotate
+try(aws_secrets_rotate(id = secret))
+
+# Cleanup
+aws_secrets_delete(secret, ForceDeleteWithoutRecovery = TRUE)
+})
+\dontshow{\}) # examplesIf}
 }
 \references{
 \url{https://www.paws-r-sdk.com/docs/secretsmanager_rotate_secret/}

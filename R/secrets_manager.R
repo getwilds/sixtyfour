@@ -4,9 +4,8 @@
 #' @note see <https://www.paws-r-sdk.com/docs/secretsmanager_list_secrets/>
 #' for available parameters
 #' @return (list) list with secrets
-#' @examples \dontrun{
+#' @examplesIf aws_has_creds() && interactive()
 #' aws_secrets_list()
-#' }
 aws_secrets_list <- function(...) {
   con_sm()$list_secrets(...)
 }
@@ -16,9 +15,8 @@ aws_secrets_list <- function(...) {
 #' @export
 #' @return (tbl) with secrets
 #' @autoglobal
-#' @examples \dontrun{
+#' @examplesIf aws_has_creds() && interactive()
 #' aws_secrets_all()
-#' }
 aws_secrets_all <- function() {
   tmp <- paginate_aws_token("list_secrets", "SecretList") %>%
     purrr::map(function(x) aws_secrets_get(x$Name))
@@ -46,7 +44,7 @@ aws_secrets_all <- function() {
 
 check_secret <- function(secret) {
   if (!inherits(secret, c("raw", "character"))) {
-    stop("`secret` must be of class character or raw", call. = FALSE)
+    cli_abort("{.code secret} must be of class character or raw")
   }
 }
 
@@ -55,10 +53,9 @@ check_secret <- function(secret) {
 #' @export
 #' @param ... named parameters passed on to `get_random_password`
 #' <https://www.paws-r-sdk.com/docs/secretsmanager_get_random_password/>
-#' @examples \dontrun{
+#' @examplesIf aws_has_creds() && interactive()
 #' aws_secrets_pwd()
 #' aws_secrets_pwd(ExcludeNumbers = TRUE)
-#' }
 aws_secrets_pwd <- function(...) {
   con_sm()$get_random_password(
     PasswordLength = 40L,
@@ -94,21 +91,30 @@ aws_secrets_pwd <- function(...) {
 #' This function creates a new secret. See [aws_secrets_update()] to
 #' update an existing secret. This function fails if you call it with
 #' an existing secret with the same name or ARN
-#' @examples \dontrun{
+#' @examplesIf aws_has_creds() && interactive()
+#' try({
 #' # Text secret
-#' x <- aws_secrets_create(
-#'   name = "MyTestDatabaseSecret",
+#' secret1 <- random_string("secret-", size = 16)
+#' aws_secrets_create(
+#'   name = secret1,
 #'   secret = '{"username":"david","password":"EXAMPLE-PASSWORD"}',
 #'   description = "My test database secret as a string"
 #' )
+#' aws_secrets_get(secret1)$SecretString
 #'
 #' # Raw secret
-#' x <- aws_secrets_create(
-#'   name = "MyRawDatabaseSecret",
+#' secret2 <- random_string("secret-", size = 16)
+#' aws_secrets_create(
+#'   name = secret2,
 #'   secret = charToRaw('{"username":"david","password":"EXAMPLE-PASSWORD"}'),
 #'   description = "My test database secret as raw"
 #' )
-#' }
+#' aws_secrets_get(secret2)$SecretBinary
+#'
+#' # Cleanup
+#' aws_secrets_delete(secret1, ForceDeleteWithoutRecovery = TRUE)
+#' aws_secrets_delete(secret2, ForceDeleteWithoutRecovery = TRUE)
+#' })
 aws_secrets_create <- function(name, secret, description = NULL, ...) {
   check_secret(secret)
   secret_str <- secret_raw <- NULL
@@ -119,7 +125,8 @@ aws_secrets_create <- function(name, secret, description = NULL, ...) {
     ClientRequestToken = uuid::UUIDgenerate(),
     Description = description,
     SecretBinary = secret_raw,
-    SecretString = secret_str, ...
+    SecretString = secret_str,
+    ...
   )
 }
 
@@ -137,24 +144,29 @@ aws_secrets_create <- function(name, secret, description = NULL, ...) {
 #' @autoglobal
 #' @details Note that we autogenerate a random UUID to pass to the
 #' `ClientRequestToken` parameter of the `paws` function used internally
-#' @examples \dontrun{
+#' @examplesIf aws_has_creds() && interactive()
+#' try({
 #' # Create a secret
+#' secret <- random_string("secret-", size = 16)
 #' aws_secrets_create(
-#'   name = "TheSecret",
-#'   secret = '{"username":"jane","password":"cat"}',
+#'   name = secret,
+#'   secret = '{"username":"debby","password":"kitty"}',
 #'   description = "A string"
 #' )
 #'
-#' aws_secrets_get("TheSecret")
+#' aws_secrets_get(secret)
 #'
 #' # Update the secret
 #' aws_secrets_update(
-#'   id = "TheSecret",
-#'   secret = '{"username":"jane","password":"kitten"}'
+#'   id = secret,
+#'   secret = '{"username":"debby","password":"kitten"}'
 #' )
 #'
-#' aws_secrets_get("TheSecret")
-#' }
+#' aws_secrets_get(secret)
+#'
+#' # Cleanup
+#' aws_secrets_delete(secret, ForceDeleteWithoutRecovery = TRUE)
+#' })
 aws_secrets_update <- function(id, secret, ...) {
   check_secret(secret)
   secret_str <- secret_raw <- NULL
@@ -164,7 +176,8 @@ aws_secrets_update <- function(id, secret, ...) {
     SecretId = id,
     ClientRequestToken = uuid::UUIDgenerate(),
     SecretBinary = secret_raw,
-    SecretString = secret_str, ...
+    SecretString = secret_str,
+    ...
   )
 }
 
@@ -181,15 +194,27 @@ aws_secrets_update <- function(id, secret, ...) {
 #' - SecretString
 #' - VersionStages
 #' - CreatedDate
-#' @examples \dontrun{
+#' @examplesIf aws_has_creds() && interactive()
+#' try({
+#' # Create a secret
+#' secret <- random_string("secret-", size = 16)
+#' aws_secrets_create(
+#'   name = secret,
+#'   secret = '{"username":"jane","password":"cat"}',
+#'   description = "A string"
+#' )
+#'
+#' aws_secrets_get(secret)
+#'
 #' # Does exist
 #' aws_secrets_get(id = "MyTestDatabaseSecret")
 #'
 #' # Does not exist
-#' # aws_secrets_get(id = "DoesntExist")
-#' #> Error: ResourceNotFoundException (HTTP 400). Secrets Manager
-#' #>   can't find the specified secret.
-#' }
+#' try(aws_secrets_get(id = "DoesntExist"))
+#'
+#' # Cleanup
+#' aws_secrets_delete(secret, ForceDeleteWithoutRecovery = TRUE)
+#' })
 aws_secrets_get <- function(id, ...) {
   con_sm()$get_secret_value(SecretId = id, ...)
 }
@@ -203,15 +228,19 @@ aws_secrets_get <- function(id, ...) {
 #' - ARN
 #' - Name
 #' - DeletionDate
-#' @examples \dontrun{
-#' # Does exist
-#' aws_secrets_delete(id = "MyTestDatabaseSecret")
+#' @examplesIf aws_has_creds() && interactive()
+#' try({
+#' # Create a secret
+#' secret <- random_string("secret-", size = 16)
+#' aws_secrets_create(
+#'   name = secret,
+#'   secret = '{"username":"jill","password":"cow"}',
+#'   description = "The fox jumped over the cow"
+#' )
 #'
-#' # Does not exist
-#' # aws_secrets_get(id = "DoesntExist")
-#' #> Error: ResourceNotFoundException (HTTP 400). Secrets Manager
-#' #>   can't find the specified secret.
-#' }
+#' # Delete a secret
+#' aws_secrets_delete(id = secret, ForceDeleteWithoutRecovery = TRUE)
+#' })
 aws_secrets_delete <- function(id, ...) {
   con_sm()$delete_secret(SecretId = id, ...)
 }
@@ -231,21 +260,33 @@ aws_secrets_delete <- function(id, ...) {
 #' - ARN
 #' - Name
 #' - VersionId
-#' @examples \dontrun{
-#' aws_secrets_rotate(id = "MyTestDatabaseSecret")
-#' aws_secrets_rotate(id = "MyTestDatabaseSecret", rules = list(
-#'   Duration = "2h",
-#'   ScheduleExpression = "cron(0 16 1,15 * ? *)"
-#' ))
-#' }
+#' @examplesIf aws_has_creds() && interactive()
+#' try({
+#' # Create a secret
+#' secret <- random_string("secret-", size = 16)
+#' aws_secrets_create(
+#'   name = secret,
+#'   secret = '{"username":"billy","password":"willy"}',
+#'   description = "A string"
+#' )
+#'
+#' # Rotate
+#' try(aws_secrets_rotate(id = secret))
+#'
+#' # Cleanup
+#' aws_secrets_delete(secret, ForceDeleteWithoutRecovery = TRUE)
+#' })
 aws_secrets_rotate <- function(
-    id, lambda_arn = NULL, rules = NULL,
-    immediately = TRUE) {
+  id,
+  lambda_arn = NULL,
+  rules = NULL,
+  immediately = TRUE
+) {
   con_sm()$rotate_secret(
     SecretId = id,
     ClientRequestToken = uuid::UUIDgenerate(),
-    RotationLambdaARN = secret_raw,
-    RotationRules = secret_str,
+    RotationLambdaARN = lambda_arn,
+    RotationRules = rules,
     RotateImmediately = immediately
   )
 }
@@ -258,14 +299,15 @@ aws_secrets_rotate <- function(
 #' @keywords internal
 #' @references
 #' <https://docs.aws.amazon.com/secretsmanager/latest/userguide/reference_secret_json_structure.html> # nolint
-#' @examples \dontrun{
-#' construct_db_secret("redshift", dbname = "hello", port = 5439)
-#' construct_db_secret("mariadb", dbname = "world", port = 3306)
-#' construct_db_secret("postgresql", dbname = "bears", port = 5432, as = "raw")
-#' }
 construct_db_secret <- function(
-    engine, host = "", username = "",
-    password = "", dbname = "", port = "", as = "string") {
+  engine,
+  host = "",
+  username = "",
+  password = "",
+  dbname = "",
+  port = "",
+  as = "string"
+) {
   dat <- list(
     "engine" = engine,
     "host" = host,
@@ -275,9 +317,10 @@ construct_db_secret <- function(
     "port" = port
   )
   json_dat <- jsonlite::toJSON(dat, auto_unbox = TRUE)
-  switch(as,
+  switch(
+    as,
     string = as.character(json_dat),
     raw = charToRaw(json_dat),
-    stop("`as` must be one of 'string' or 'raw'", call. = FALSE)
+    cli_abort("{.code as} must be one of 'string' or 'raw'")
   )
 }

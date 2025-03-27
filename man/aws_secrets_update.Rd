@@ -34,22 +34,28 @@ Note that we autogenerate a random UUID to pass to the
 \code{ClientRequestToken} parameter of the \code{paws} function used internally
 }
 \examples{
-\dontrun{
+\dontshow{if (aws_has_creds() && interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+try({
 # Create a secret
+secret <- random_string("secret-", size = 16)
 aws_secrets_create(
-  name = "TheSecret",
-  secret = '{"username":"jane","password":"cat"}',
+  name = secret,
+  secret = '{"username":"debby","password":"kitty"}',
   description = "A string"
 )
 
-aws_secrets_get("TheSecret")
+aws_secrets_get(secret)
 
 # Update the secret
 aws_secrets_update(
-  id = "TheSecret",
-  secret = '{"username":"jane","password":"kitten"}'
+  id = secret,
+  secret = '{"username":"debby","password":"kitten"}'
 )
 
-aws_secrets_get("TheSecret")
-}
+aws_secrets_get(secret)
+
+# Cleanup
+aws_secrets_delete(secret, ForceDeleteWithoutRecovery = TRUE)
+})
+\dontshow{\}) # examplesIf}
 }
