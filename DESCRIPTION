@@ -8,11 +8,11 @@ Authors@R: c(
     person("Fred Hutchinson Cancer Center", , , "wilds@fredhutch.org", role = "fnd",
            comment = c(ROR = "007ps6h72"))
   )
-Description: An opinionated interface to Amazon Web Services, with functions for
-    interacting with 'IAM' (Identity and Access Management), S3 (Simple Storage Service),
-    RDS (Relational Data Service), Redshift, and Billing. Lower level functions
-    (`aws_` prefix) are for do it yourself workflows, while higher level functions
-    (`six_` prefix) automate common tasks.
+Description: An opinionated interface to Amazon Web Services <https://aws.amazon.com>, 
+    with functions for interacting with 'IAM' (Identity and Access Management),
+    S3 (Simple Storage Service), RDS (Relational Data Service), Redshift, and Billing.
+    Lower level functions (`aws_` prefix) are for do it yourself workflows, while
+    higher level functions (`six_` prefix) automate common tasks.
 URL: https://github.com/getwilds/sixtyfour, https://getwilds.org/sixtyfour/
 BugReports: https://github.com/getwilds/sixtyfour/issues
 License: MIT + file LICENSE
