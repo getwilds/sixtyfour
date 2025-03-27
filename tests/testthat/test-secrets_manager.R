@@ -42,10 +42,18 @@ test_that("aws_secrets_get", {
   res <- aws_secrets_get(secret_name_thename)
 
   expect_type(res, "list")
-  expect_named(res, c(
-    "ARN", "Name", "VersionId", "SecretBinary",
-    "SecretString", "VersionStages", "CreatedDate"
-  ))
+  expect_named(
+    res,
+    c(
+      "ARN",
+      "Name",
+      "VersionId",
+      "SecretBinary",
+      "SecretString",
+      "VersionStages",
+      "CreatedDate"
+    )
+  )
   expect_equal(res$Name, secret_name_thename)
   expect_match(res$ARN, "arn:aws")
   expect_equal(res$SecretString, the_secret)
@@ -61,10 +69,18 @@ test_that("aws_secrets_get", {
   res <- aws_secrets_get(x$ARN)
 
   expect_type(res, "list")
-  expect_named(res, c(
-    "ARN", "Name", "VersionId", "SecretBinary",
-    "SecretString", "VersionStages", "CreatedDate"
-  ))
+  expect_named(
+    res,
+    c(
+      "ARN",
+      "Name",
+      "VersionId",
+      "SecretBinary",
+      "SecretString",
+      "VersionStages",
+      "CreatedDate"
+    )
+  )
   expect_equal(res$Name, secret_name_arn)
   expect_match(res$ARN, "arn:aws")
   expect_equal(res$SecretString, the_secret)
@@ -87,6 +103,35 @@ test_that("aws_secrets_all", {
   expect_type(x, "list")
   expect_equal(NROW(x), 1)
 })
+
+test_that("construct_db_secret", {
+  secret_redshift <- construct_db_secret(
+    "redshift",
+    dbname = "hello",
+    port = 5439
+  )
+  secret_mariadb <- construct_db_secret(
+    "mariadb",
+    dbname = "world",
+    port = 3306
+  )
+  secret_postgresql_raw <- construct_db_secret(
+    "postgresql",
+    dbname = "bears",
+    port = 5432,
+    as = "raw"
+  )
+
+  expect_type(secret_redshift, "character")
+  expect_match(secret_redshift, "5439")
+
+  expect_type(secret_mariadb, "character")
+  expect_match(secret_mariadb, "3306")
+
+  expect_type(secret_postgresql_raw, "raw")
+  expect_match(rawToChar(secret_postgresql_raw), "5432")
+})
+
 
 # cleanup
 purge_secrets()

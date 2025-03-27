@@ -14,8 +14,8 @@ aws_secrets_pwd(...)
 Get a random password
 }
 \examples{
-\dontrun{
+\dontshow{if (aws_has_creds() && interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 aws_secrets_pwd()
 aws_secrets_pwd(ExcludeNumbers = TRUE)
-}
+\dontshow{\}) # examplesIf}
 }

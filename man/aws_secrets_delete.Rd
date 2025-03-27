@@ -24,13 +24,18 @@ aws_secrets_delete(id, ...)
 Delete a secret
 }
 \examples{
-\dontrun{
-# Does exist
-aws_secrets_delete(id = "MyTestDatabaseSecret")
+\dontshow{if (aws_has_creds() && interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+try({
+# Create a secret
+secret <- random_string("secret-", size = 16)
+aws_secrets_create(
+  name = secret,
+  secret = '{"username":"jill","password":"cow"}',
+  description = "The fox jumped over the cow"
+)
 
-# Does not exist
-# aws_secrets_get(id = "DoesntExist")
-#> Error: ResourceNotFoundException (HTTP 400). Secrets Manager
-#>   can't find the specified secret.
-}
+# Delete a secret
+aws_secrets_delete(id = secret, ForceDeleteWithoutRecovery = TRUE)
+})
+\dontshow{\}) # examplesIf}
 }

@@ -43,19 +43,29 @@ update an existing secret. This function fails if you call it with
 an existing secret with the same name or ARN
 }
 \examples{
-\dontrun{
+\dontshow{if (aws_has_creds() && interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+try({
 # Text secret
-x <- aws_secrets_create(
-  name = "MyTestDatabaseSecret",
+secret1 <- random_string("secret-", size = 16)
+aws_secrets_create(
+  name = secret1,
   secret = '{"username":"david","password":"EXAMPLE-PASSWORD"}',
   description = "My test database secret as a string"
 )
+aws_secrets_get(secret1)$SecretString
 
 # Raw secret
-x <- aws_secrets_create(
-  name = "MyRawDatabaseSecret",
+secret2 <- random_string("secret-", size = 16)
+aws_secrets_create(
+  name = secret2,
   secret = charToRaw('{"username":"david","password":"EXAMPLE-PASSWORD"}'),
   description = "My test database secret as raw"
 )
-}
+aws_secrets_get(secret2)$SecretBinary
+
+# Cleanup
+aws_secrets_delete(secret1, ForceDeleteWithoutRecovery = TRUE)
+aws_secrets_delete(secret2, ForceDeleteWithoutRecovery = TRUE)
+})
+\dontshow{\}) # examplesIf}
 }

@@ -32,8 +32,6 @@ utils::globalVariables(c(
   "group", # <permissions_groups>
   "arn", # <aws_secrets_all>
   "created_date", # <aws_secrets_all>
-  "secret_raw", # <aws_secrets_rotate>
-  "secret_str", # <aws_secrets_rotate>
   "name", # <ui_fetch_secret>
   "PasswordLastUsed", # <user_list_tidy>
   "Arn", # <user_list_tidy>
