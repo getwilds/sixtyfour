@@ -12,7 +12,14 @@
 
 ---
 
-This is the first release to CRAN.
+This is a re-submissions of the first release to CRAN.
+
+Acronyms:
+- AWS: Amazon Web Services
+- IAM: Identity and Access Management
+- S3: Simple Storage Service
+- RDS: Relational Database Service
+- Redshift: A managed PostgreSQL database service from AWS
 
 Thanks!
 Scott Chamberlain
