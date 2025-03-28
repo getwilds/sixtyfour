@@ -17,12 +17,21 @@ env_var <- function(env_name) {
 #' @keywords internal
 yesno <- function(msg, .envir = parent.frame()) {
   yeses <- c(
-    "Yes", "Definitely", "For sure", "Yup",
-    "Yeah", "Of course", "Absolutely"
+    "Yes",
+    "Definitely",
+    "For sure",
+    "Yup",
+    "Yeah",
+    "Of course",
+    "Absolutely"
   )
   nos <- c(
-    "No way", "Not yet", "I forget", "No",
-    "Nope", "Uhhhh... Maybe?"
+    "No way",
+    "Not yet",
+    "I forget",
+    "No",
+    "Nope",
+    "Uhhhh... Maybe?"
   )
 
   cli::cli_inform(msg, .envir = .envir)
@@ -80,14 +89,17 @@ path_s3_parse <- function(paths) {
   stopifnot("One or more paths are not s3 paths" = all(grepl("^s3://", paths)))
   paths <- gsub("s3://", "", paths)
   paths <- strsplit(paths, "/")
-  Map(function(x) {
-    if (length(x) > 2) {
-      x <- c(x[1], paste(x[-c(1, length(x))], collapse = "/"), last(x))
-      as.list(stats::setNames(x, list_names))
-    } else {
-      as.list(stats::setNames(c(x[1], "", last(x)), list_names))
-    }
-  }, paths)
+  Map(
+    function(x) {
+      if (length(x) > 2) {
+        x <- c(x[1], paste(x[-c(1, length(x))], collapse = "/"), last(x))
+        as.list(stats::setNames(x, list_names))
+      } else {
+        as.list(stats::setNames(c(x[1], "", last(x)), list_names))
+      }
+    },
+    paths
+  )
 }
 
 #' Build s3 paths
@@ -107,7 +119,8 @@ path_s3_build <- function(x) {
     path <- if (nzchar(w$path)) paste0(w$path, "/") else ""
     prefix <- if (grepl("s3://", w$bucket)) "" else "s3://"
     glue::glue("{prefix}{w$bucket}/{path}{w$file}")
-  }) %>% as.character()
+  }) %>%
+    as.character()
 }
 
 #' Convert a s3 like path to a single format
@@ -224,9 +237,7 @@ is_class <- function(x, class) {
     return(invisible())
   }
   if (!inherits(x, class)) {
-    stop(glue("`{substitute(x)}` should be class {class}"),
-      call. = FALSE
-    )
+    stop(glue("`{substitute(x)}` should be class {class}"), call. = FALSE)
   }
 }
 
@@ -240,6 +251,7 @@ stop_if <- function(cond, msg, .envir = parent.frame()) {
 #' Check if appropriate AWS credentials are available
 #' @export
 #' @importFrom paws.common locate_credentials
+#' @return single boolean
 #' @examples
 #' aws_has_creds()
 aws_has_creds <- function() {

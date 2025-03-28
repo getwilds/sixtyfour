@@ -12,6 +12,7 @@ env64 <- rlang::env()
 #' only to `cli::cli_alert_info()`, `cli::cli_alert_warning()`, and
 #' `cli::cli_alert_success()` functions that are used throughout this package.
 #' There's still a few places where `verbose` may not be respected.
+#' @return S3 class `aws_settings`
 #' @section What is Redacted:
 #' What's redacted is currently hard-coded in the package. There's only
 #' certain functions and certain elements in the output of those functions
@@ -55,6 +56,7 @@ print.aws_settings <- function(x, ...) {
 #' @importFrom rlang env_poke
 #' @importFrom withr defer
 #' @param code (expression) Code to run without verbose output.
+#' @return The results of the evaluation of the code argument
 without_verbose <- function(code) {
   rlang::env_poke(env64, "verbose", FALSE)
   withr::defer(rlang::env_poke(env64, "verbose", TRUE))
@@ -64,6 +66,7 @@ without_verbose <- function(code) {
 #' With secrets redacted
 #' @export
 #' @param code (expression) Code to run with secrets redacted
+#' @return The results of the evaluation of the code argument
 with_redacted <- function(code) {
   rlang::env_poke(env64, "redacted", TRUE)
   withr::defer(rlang::env_poke(env64, "redacted", FALSE))

@@ -19,6 +19,9 @@ only to \code{cli::cli_alert_info()}, \code{cli::cli_alert_warning()}, and
 \code{cli::cli_alert_success()} functions that are used throughout this package.
 There's still a few places where \code{verbose} may not be respected.}
 }
+\value{
+S3 class \code{aws_settings}
+}
 \description{
 Configure sixtyfour settings
 }
