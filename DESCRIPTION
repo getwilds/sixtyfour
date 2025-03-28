@@ -10,7 +10,7 @@ Authors@R: c(
   )
 Description: An opinionated interface to Amazon Web Services <https://aws.amazon.com>, 
     with functions for interacting with 'IAM' (Identity and Access Management),
-    S3 (Simple Storage Service), RDS (Relational Data Service), Redshift, and Billing.
+    'S3' (Simple Storage Service), 'RDS' (Relational Data Service), Redshift, and Billing.
     Lower level functions (`aws_` prefix) are for do it yourself workflows, while
     higher level functions (`six_` prefix) automate common tasks.
 URL: https://github.com/getwilds/sixtyfour, https://getwilds.org/sixtyfour/
