@@ -16,24 +16,4 @@ and file
 \description{
 Parse s3 paths
 }
-\examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-path_s3_parse("s3://s64-test-2/DESCRIPTION")
-path_s3_parse("s3://s64-test-2/some/other/path/things.csv")
-paths <- c(
-  "s3://s64-test-2/DESCRIPTION",
-  "s3://s64-test-2/stuff.txt",
-  "s3://s64-test-2/some/other/path/things.csv"
-)
-path_s3_parse(paths)
-
-# if a path is not an s3 path
-paths <- c(
-  "s3://s64-test-2/DESCRIPTION",
-  "s3://s64-test-2/stuff.txt",
-  "s64-test-2/some/other/path/things.csv"
-)
-path_s3_parse(paths)
-\dontshow{\}) # examplesIf}
-}
 \keyword{internal}

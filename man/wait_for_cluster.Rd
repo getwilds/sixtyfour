@@ -22,9 +22,4 @@ loop completes
 \description{
 Wait for a Redshift cluster to have a certain status
 }
-\examples{
-\dontrun{
-wait_for_cluster(id = "scotts-test-cluster-456")
-}
-}
 \keyword{internal}
