@@ -6,6 +6,9 @@
 \usage{
 aws_has_creds()
 }
+\value{
+single boolean
+}
 \description{
 Check if appropriate AWS credentials are available
 }

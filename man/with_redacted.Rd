@@ -9,6 +9,9 @@ with_redacted(code)
 \arguments{
 \item{code}{(expression) Code to run with secrets redacted}
 }
+\value{
+The results of the evaluation of the code argument
+}
 \description{
 With secrets redacted
 }

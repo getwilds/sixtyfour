@@ -9,6 +9,9 @@ without_verbose(code)
 \arguments{
 \item{code}{(expression) Code to run without verbose output.}
 }
+\value{
+The results of the evaluation of the code argument
+}
 \description{
 Without verbose output
 }

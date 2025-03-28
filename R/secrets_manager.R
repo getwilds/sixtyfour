@@ -53,6 +53,8 @@ check_secret <- function(secret) {
 #' @export
 #' @param ... named parameters passed on to `get_random_password`
 #' <https://www.paws-r-sdk.com/docs/secretsmanager_get_random_password/>
+#' @details The parameter `PasswordLength` is hard coded to `40L`
+#' @return a single string, of length 40
 #' @examplesIf aws_has_creds() && interactive()
 #' aws_secrets_pwd()
 #' aws_secrets_pwd(ExcludeNumbers = TRUE)
