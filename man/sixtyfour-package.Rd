@@ -6,7 +6,7 @@
 \alias{sixtyfour-package}
 \title{sixtyfour: Humane Interface to Amazon Web Services}
 \description{
-An opinionated interface to Amazon Web Services \url{https://aws.amazon.com}, with functions for interacting with 'IAM' (Identity and Access Management), S3 (Simple Storage Service), RDS (Relational Data Service), Redshift, and Billing. Lower level functions (`aws_` prefix) are for do it yourself workflows, while higher level functions (`six_` prefix) automate common tasks.
+An opinionated interface to Amazon Web Services \url{https://aws.amazon.com}, with functions for interacting with 'IAM' (Identity and Access Management), 'S3' (Simple Storage Service), 'RDS' (Relational Data Service), Redshift, and Billing. Lower level functions ('aws_' prefix) are for do it yourself workflows, while higher level functions ('six_' prefix) automate common tasks.
 }
 \seealso{
 Useful links:
