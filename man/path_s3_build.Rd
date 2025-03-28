@@ -12,15 +12,4 @@ path_s3_build(x)
 \description{
 Build s3 paths
 }
-\examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-paths <- c(
-  "s3://s64-test-2/DESCRIPTION",
-  "s3://s64-test-2/stuff.txt",
-  "s3://s64-test-2/some/other/path/things.csv"
-)
-x <- path_s3_parse(paths)
-path_s3_build(x)
-\dontshow{\}) # examplesIf}
-}
 \keyword{internal}

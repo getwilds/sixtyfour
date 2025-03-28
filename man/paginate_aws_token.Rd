@@ -17,12 +17,4 @@ itself}
 \description{
 Paginate over list_* methods with NextToken
 }
-\examples{
-\dontrun{
-paginate_aws_token(
-  fun = con_sm()$list_secrets,
-  target = "SecretList"
-)
-}
-}
 \keyword{internal}
