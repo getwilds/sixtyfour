@@ -22,12 +22,12 @@ con_s3fs <- function() {
     )
   } else if (profile == "localstack") {
     con <- s3fs::s3_file_system(
-      aws_access_key_id =
-        Sys.getenv("LOCALSTACK_KEY", LOCALSTACK_KEY),
-      aws_secret_access_key =
-        Sys.getenv("LOCALSTACK_SECRET", LOCALSTACK_SECRET),
-      endpoint =
-        Sys.getenv("LOCALSTACK_ENDPOINT", LOCALSTACK_ENDPOINT),
+      aws_access_key_id = Sys.getenv("LOCALSTACK_KEY", LOCALSTACK_KEY),
+      aws_secret_access_key = Sys.getenv(
+        "LOCALSTACK_SECRET",
+        LOCALSTACK_SECRET
+      ),
+      endpoint = Sys.getenv("LOCALSTACK_ENDPOINT", LOCALSTACK_ENDPOINT),
       refresh = TRUE
     )
   } else {
@@ -64,10 +64,11 @@ con_factory <- function(service) {
       con <- svc(
         credentials = list(
           creds = list(
-            access_key_id =
-              Sys.getenv("LOCALSTACK_KEY", LOCALSTACK_KEY),
-            secret_access_key =
-              Sys.getenv("LOCALSTACK_SECRET", LOCALSTACK_SECRET)
+            access_key_id = Sys.getenv("LOCALSTACK_KEY", LOCALSTACK_KEY),
+            secret_access_key = Sys.getenv(
+              "LOCALSTACK_SECRET",
+              LOCALSTACK_SECRET
+            )
           )
         ),
         endpoint = Sys.getenv("LOCALSTACK_ENDPOINT", LOCALSTACK_ENDPOINT)
@@ -80,7 +81,8 @@ con_factory <- function(service) {
 }
 
 as_64_con <- function(con, service, profile) {
-  structure(con,
+  structure(
+    con,
     class = "sixtyfour_client",
     service = service,
     profile = profile

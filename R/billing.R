@@ -139,9 +139,10 @@
 #'   )
 #' )
 aws_billing <- function(
-    date_start,
-    date_end = as.character(Sys.Date()),
-    filter = NULL) {
+  date_start,
+  date_end = as.character(Sys.Date()),
+  filter = NULL
+) {
   bind_rows(
     unblended = rename(
       billing_unblended(date_start, date_end, filter = filter),
@@ -152,7 +153,8 @@ aws_billing <- function(
       cost = BlendedCost
     ),
     .id = "id"
-  ) %>% rename_with(tolower)
+  ) %>%
+    rename_with(tolower)
 }
 
 #' function factory to create functions for both blended and unblended data
@@ -225,12 +227,16 @@ billing_blended <- billing_factory("BlendedCost")
 #' library(lubridate)
 #' aws_billing_raw(date_start = today() - days(3), metrics = "BlendedCost")
 aws_billing_raw <- function(
-    date_start, metrics, granularity = "daily",
-    filter = NULL, group_by = NULL, date_end = as.character(Sys.Date())) {
+  date_start,
+  metrics,
+  granularity = "daily",
+  filter = NULL,
+  group_by = NULL,
+  date_end = as.character(Sys.Date())
+) {
   grans <- c("hourly", "daily", "monthly")
   stopifnot(
-    "`granularity` must be one of hourly/daily/monthly" =
-      granularity %in% grans
+    "`granularity` must be one of hourly/daily/monthly" = granularity %in% grans
   )
   con_ce()$get_cost_and_usage(
     TimePeriod = list(Start = date_start, End = date_end),

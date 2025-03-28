@@ -7,9 +7,17 @@
 #' @note leaves out some variables
 policy_list_tidy <- function(x) {
   vars <- c(
-    "PolicyName", "PolicyId", "Path", "Arn", "CreateDate",
-    "UpdateDate", "AttachmentCount", "PermissionsBoundaryUsageCount",
-    "IsAttachable", "Description", "Tags"
+    "PolicyName",
+    "PolicyId",
+    "Path",
+    "Arn",
+    "CreateDate",
+    "UpdateDate",
+    "AttachmentCount",
+    "PermissionsBoundaryUsageCount",
+    "IsAttachable",
+    "Description",
+    "Tags"
   )
   tidy_generator(vars)(x)
 }
@@ -22,7 +30,9 @@ policy_list_tidy <- function(x) {
 #' @keywords internal
 policy_list_versions_tidy <- function(x) {
   vars <- c(
-    "VersionId", "IsDefaultVersion", "CreateDate"
+    "VersionId",
+    "IsDefaultVersion",
+    "CreateDate"
   )
   tidy_generator(vars)(x)
 }
@@ -149,15 +159,20 @@ aws_policy_exists <- function(name) {
 #' # cleanup - delete policy
 #' aws_policy_delete("MyPolicy123")
 aws_policy_create <- function(
-    name, document, path = NULL,
-    description = NULL, tags = NULL) {
+  name,
+  document,
+  path = NULL,
+  description = NULL,
+  tags = NULL
+) {
   con_iam()$create_policy(
     PolicyName = name,
     PolicyDocument = document,
     Path = path,
     Description = description,
     Tags = tags
-  ) %>% policy_list_tidy()
+  ) %>%
+    policy_list_tidy()
 }
 
 #' Update a policy
@@ -205,7 +220,8 @@ aws_policy_update <- function(arn, document, default = FALSE) {
     PolicyArn = arn,
     PolicyDocument = document,
     SetAsDefault = default
-  ) %>% policy_list_versions_tidy()
+  ) %>%
+    policy_list_versions_tidy()
 }
 
 #' Delete a user managed policy
@@ -384,7 +400,8 @@ aws_policy_list_entities <- function(name, ...) {
 #' aws_policy_list_versions("AmazonRedshiftFullAccess")
 aws_policy_list_versions <- function(name, ...) {
   con_iam()$list_policy_versions(
-    PolicyArn = figure_out_policy_arn(name), ...
+    PolicyArn = figure_out_policy_arn(name),
+    ...
   )$Versions %>%
     policy_list_versions_tidy()
 }
@@ -434,10 +451,11 @@ aws_policy_statement <- function(action, resource, effect = "Allow", ...) {
 #' DB instance. by default calls [account_id()]
 #' @return a resource ARN (scalar, character)
 resource_rds <- function(
-    user,
-    resource_id,
-    region = Sys.getenv("AWS_REGION"),
-    account = account_id()) {
+  user,
+  resource_id,
+  region = Sys.getenv("AWS_REGION"),
+  account = account_id()
+) {
   glue(
     "arn:aws:rds-db:{region}:{account}:dbuser:{resource_id}/{user}"
   )
@@ -582,7 +600,8 @@ as_policy_arn <- function(name, local = FALSE, path = NULL) {
 }
 
 call_x_method <- function(x) {
-  fun <- switch(entity_type(x),
+  fun <- switch(
+    entity_type(x),
     user = aws_user,
     role = aws_role,
     group = aws_group

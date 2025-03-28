@@ -56,9 +56,7 @@ security_group_handler <- function(ids, engine) {
       "Creating security group with access for ",
       "{.strong {engine}} and port {.strong {port}}"
     ))
-    trysg <- tryCatch(aws_vpc_sg_with_ingress(engine),
-      error = function(e) e
-    )
+    trysg <- tryCatch(aws_vpc_sg_with_ingress(engine), error = function(e) e)
     if (rlang::is_error(trysg)) {
       cli::cli_alert_danger(c(
         "An error occurred while creating the security group; ",
@@ -91,10 +89,13 @@ security_group_handler <- function(ids, engine) {
       ) %>%
       as.character()
 
-    picked <- picker(c(
-      glue("We found {length(pick_sg_options)} security groups"),
-      "Which security group do you want to use?"
-    ), pick_sg_options)
+    picked <- picker(
+      c(
+        glue("We found {length(pick_sg_options)} security groups"),
+        "Which security group do you want to use?"
+      ),
+      pick_sg_options
+    )
 
     if (picked == 0) {
       cli::cli_alert_danger(
@@ -147,10 +148,13 @@ security_group_handler <- function(ids, engine) {
       ) %>%
       as.character()
 
-    picked <- picker(c(
-      glue("We found {length(sgoptions)} matching security groups"),
-      "Which security group do you want to use?"
-    ), sgoptions)
+    picked <- picker(
+      c(
+        glue("We found {length(sgoptions)} matching security groups"),
+        "Which security group do you want to use?"
+      ),
+      sgoptions
+    )
 
     if (picked == 0) {
       cli::cli_alert_danger(c(
@@ -257,8 +261,13 @@ aws_vpc_security_group <- function(id, ...) {
 #' aws_vpc_security_group_delete(name = grp_name3)
 #' }
 aws_vpc_security_group_create <- function(
-    name, engine = "mariadb", description = NULL,
-    vpc_id = NULL, tags = NULL, ...) {
+  name,
+  engine = "mariadb",
+  description = NULL,
+  vpc_id = NULL,
+  tags = NULL,
+  ...
+) {
   if (is.null(description)) {
     description <- glue("Access to {engine}")
   }
@@ -288,7 +297,8 @@ aws_vpc_security_group_delete <- function(id = NULL, name = NULL, ...) {
 }
 
 engine2port <- function(engine) {
-  switch(engine,
+  switch(
+    engine,
     mariadb = 3306L,
     mysql = 3306L,
     postgres = 5432L,

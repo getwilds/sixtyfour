@@ -18,7 +18,8 @@ info <- function(id, fun, see_fun = "") {
 }
 
 which_driver <- function(engine) {
-  switch(engine,
+  switch(
+    engine,
     "mariadb" = {
       check_for_pkg("RMariaDB")
       RMariaDB::MariaDB()

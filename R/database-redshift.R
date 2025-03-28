@@ -31,8 +31,15 @@
 #' library(dplyr)
 #' tbl(con_rshift, "mtcars")
 #' }
-aws_db_redshift_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
-                                dbname = NULL, ...) {
+aws_db_redshift_con <- function(
+  user,
+  pwd,
+  id = NULL,
+  host = NULL,
+  port = NULL,
+  dbname = NULL,
+  ...
+) {
   check_for_pkg("DBI")
   check_for_pkg("RPostgres")
 
@@ -98,13 +105,26 @@ aws_db_redshift_con <- function(user, pwd, id = NULL, host = NULL, port = NULL,
 #' @return returns `NULL`, this function called for the side effect of
 #' creating an Redshift instance
 aws_db_redshift_create <-
-  function(id, user, pwd, dbname = "dev", cluster_type = "multi-node",
-           node_type = "dc2.large", number_nodes = 2,
-           security_group_ids = NULL, wait = TRUE, verbose = TRUE, ...) {
+  function(
+    id,
+    user,
+    pwd,
+    dbname = "dev",
+    cluster_type = "multi-node",
+    node_type = "dc2.large",
+    number_nodes = 2,
+    security_group_ids = NULL,
+    wait = TRUE,
+    verbose = TRUE,
+    ...
+  ) {
     con_redshift()$create_cluster(
-      DBName = dbname, ClusterIdentifier = id,
-      ClusterType = cluster_type, NodeType = node_type,
-      MasterUsername = user, MasterUserPassword = pwd,
+      DBName = dbname,
+      ClusterIdentifier = id,
+      ClusterType = cluster_type,
+      NodeType = node_type,
+      MasterUsername = user,
+      MasterUserPassword = pwd,
       NumberOfNodes = number_nodes,
       VpcSecurityGroupIds = security_group_ids,
       ...
