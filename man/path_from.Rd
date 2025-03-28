@@ -6,6 +6,9 @@
 \usage{
 path_from(path, from)
 }
+\value{
+a single file path of class \code{fs_path}/\code{character}
+}
 \description{
 Get file path starting at a certain path component
 }

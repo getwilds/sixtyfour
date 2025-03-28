@@ -10,8 +10,14 @@ aws_secrets_pwd(...)
 \item{...}{named parameters passed on to \code{get_random_password}
 \url{https://www.paws-r-sdk.com/docs/secretsmanager_get_random_password/}}
 }
+\value{
+a single string, of length 40
+}
 \description{
 Get a random password
+}
+\details{
+The parameter \code{PasswordLength} is hard coded to \code{40L}
 }
 \examples{
 \dontshow{if (aws_has_creds() && interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

@@ -13,6 +13,9 @@ aws_bucket_download(bucket, dest_path, ...)
 
 \item{...}{named parameters passed on to \code{\link[s3fs:download]{s3fs::s3_dir_download()}}}
 }
+\value{
+path (character) to downloaded file(s)/directory
+}
 \description{
 Download an S3 bucket
 }

@@ -29,6 +29,9 @@ those you used to create the cluster with \code{\link[=aws_db_redshift_create]{a
 \item{engine}{(character) The engine to use. optional if \code{user}, \code{pwd}, and
 \code{id} are supplied - otherwise required}
 }
+\value{
+an S4 object that inherits from \code{DBIConnection}
+}
 \description{
 Supports: MariaDB, MySQL, and Postgres
 }

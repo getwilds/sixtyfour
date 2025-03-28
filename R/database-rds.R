@@ -12,6 +12,7 @@
 #' If the `engine` you've chosen for your RDS instance is not supported
 #' with this function, you can likely connect to it on your own
 #' @family database
+#' @return an S4 object that inherits from `DBIConnection`
 #' @examples \dontrun{
 #' con_rds <- aws_db_rds_con("<define all params here>")
 #' con_rds
@@ -27,8 +28,15 @@
 #' tbl(con_rds, "mtcars")
 #' }
 aws_db_rds_con <- function(
-    user = NULL, pwd = NULL, id = NULL, host = NULL,
-    port = NULL, dbname = NULL, engine = NULL, ...) {
+  user = NULL,
+  pwd = NULL,
+  id = NULL,
+  host = NULL,
+  port = NULL,
+  dbname = NULL,
+  engine = NULL,
+  ...
+) {
   check_for_pkg("DBI")
   is_class(engine, "character")
 
@@ -40,7 +48,8 @@ aws_db_rds_con <- function(
     engine <- con_info$engine
   }
   if (any(vapply(list(host, port, dbname, engine), is.null, logical(1)))) {
-    stop("`host`, `port`, `dbname`, and `engine` can not be NULL",
+    stop(
+      "`host`, `port`, `dbname`, and `engine` can not be NULL",
       call. = FALSE
     )
   }
@@ -113,11 +122,22 @@ aws_db_rds_con <- function(
 #' @return returns `NULL`, this function called for the side effect of
 #' creating an RDS instance
 aws_db_rds_create <-
-  function(id, class, user = NULL, pwd = NULL, dbname = "dev",
-           engine = "mariadb", storage = 20,
-           storage_encrypted = TRUE, security_group_ids = NULL,
-           wait = TRUE, verbose = TRUE, aws_secrets = TRUE,
-           iam_database_auth = FALSE, ...) {
+  function(
+    id,
+    class,
+    user = NULL,
+    pwd = NULL,
+    dbname = "dev",
+    engine = "mariadb",
+    storage = 20,
+    storage_encrypted = TRUE,
+    security_group_ids = NULL,
+    wait = TRUE,
+    verbose = TRUE,
+    aws_secrets = TRUE,
+    iam_database_auth = FALSE,
+    ...
+  ) {
     if (is.null(user)) {
       user <- random_user()
       if (verbose) {
@@ -132,10 +152,13 @@ aws_db_rds_create <-
     }
     security_group_ids <- security_group_handler(security_group_ids, engine)
     con_rds()$create_db_instance(
-      DBName = dbname, DBInstanceIdentifier = id,
-      Engine = engine, DBInstanceClass = class,
+      DBName = dbname,
+      DBInstanceIdentifier = id,
+      Engine = engine,
+      DBInstanceClass = class,
       AllocatedStorage = storage,
-      MasterUsername = user, MasterUserPassword = pwd,
+      MasterUsername = user,
+      MasterUserPassword = pwd,
       VpcSecurityGroupIds = security_group_ids,
       StorageEncrypted = storage_encrypted,
       EnableIAMDatabaseAuthentication = iam_database_auth,

@@ -202,6 +202,7 @@ six_bucket_delete <- function(bucket, force = FALSE, ...) {
 #' @note Requires the env var `AWS_REGION`. This function prompts you to make
 #' sure that you want to delete the bucket.
 #' @family buckets
+#' @return path (character) to downloaded file(s)/directory
 #' @examplesIf aws_has_creds()
 #' bucket <- random_bucket()
 #' aws_bucket_create(bucket = bucket)
@@ -285,6 +286,7 @@ bucket_name <- function(x) {
 #' @importFrom fs path_join path_split
 #' @export
 #' @keywords internal
+#' @return a single file path of class `fs_path`/`character`
 #' @examples
 #' path_from(path = "Rtmpxsqth0/apples/mcintosh/orange.csv", from = "apples")
 path_from <- function(path, from) {
