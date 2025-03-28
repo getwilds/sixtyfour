@@ -130,7 +130,8 @@ test_that("aws_user_access_key", {
   withr::with_envvar(
     c("AWS_PROFILE" = "localstack"),
     withr::with_options(
-      list(cli.default_handler = function(...) { }),
+      list(cli.default_handler = function(...) {
+      }),
       keys <- aws_user_access_key(key_user)
     )
   )

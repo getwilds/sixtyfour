@@ -45,7 +45,8 @@ test_that("aws_policy_list_entities", {
     c("AWS_PROFILE" = "localstack"),
     {
       withr::with_options(
-        list(cli.default_handler = function(...) { }),
+        list(cli.default_handler = function(...) {
+        }),
         six_user_delete(user)
       )
       aws_policy_delete(test_policy_name)
