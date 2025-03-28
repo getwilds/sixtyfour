@@ -38,9 +38,6 @@ wait_until <- function(fun, message) {
 #' @return nothing, exits if there's an error, or if the while
 #' loop completes
 #' @keywords internal
-#' @examples \dontrun{
-#' wait_for_cluster(id = "scotts-test-cluster-456")
-#' }
 wait_for_cluster <- wait_until(
   aws_db_cluster_status,
   "Redshift cluster initializing"
@@ -52,9 +49,6 @@ wait_for_cluster <- wait_until(
 #' @return nothing, exits if there's an error, or if the while
 #' loop completes
 #' @keywords internal
-#' @examples \dontrun{
-#' wait_for_instance(id = "scotts-test-cluster-456")
-#' }
 wait_for_instance <- wait_until(
   aws_db_instance_status,
   "RDS instance initializing"

@@ -22,9 +22,4 @@ loop completes
 \description{
 Wait for an RDS instance to have a certain status
 }
-\examples{
-\dontrun{
-wait_for_instance(id = "scotts-test-cluster-456")
-}
-}
 \keyword{internal}
