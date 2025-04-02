@@ -3,9 +3,11 @@
 # sixtyfour
 
 <!-- badges: start -->
-[![Project Status: Prototype – Useable, some support, open to feedback, unstable API.](https://getwilds.org/badges/badges/prototype.svg)](https://getwilds.org/badges/#prototype)
+[![Project Status: Stable – Useable, full support, open to feedback, stable API.](https://getwilds.org/badges/badges/stable.svg)](https://getwilds.org/badges/#stable)
 [![R-CMD-check](https://github.com/getwilds/sixtyfour/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/getwilds/sixtyfour/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/getwilds/sixtyfour/branch/main/graph/badge.svg)](https://app.codecov.io/gh/getwilds/sixtyfour)
+[![cran version](https://www.r-pkg.org/badges/version/sixtyfour)](https://cran.r-project.org/package=sixtyfour)
+[![cran checks](https://badges.cranchecks.info/worst/sixtyfour.svg)](https://CRAN.R-project.org/package=sixtyfour)
 <!-- badges: end -->
 
 A science-focused, more humane R interface to AWS.
