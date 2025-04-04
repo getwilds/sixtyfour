@@ -67,10 +67,10 @@ handle_no_matching_port_groups <- function(engine) {
       "An error occurred while creating the security group; ",
       "please use paramater {.strong security_group_ids}"
     ))
-    return(NULL)
+    NULL
   } else {
     cli::cli_alert_success("Using security group {.strong {trysg}}")
-    return(trysg)
+    trysg
   }
 }
 
@@ -105,7 +105,7 @@ handle_no_matching_ip_groups <- function(df, engine, ip) {
   }
 
   picked_id <- df[picked, "GroupId"]
-  return(add_ip_to_security_group(picked_id, engine, ip))
+  add_ip_to_security_group(picked_id, engine, ip)
 }
 
 add_ip_to_security_group <- function(security_group_id, engine, ip) {
@@ -129,10 +129,10 @@ add_ip_to_security_group <- function(security_group_id, engine, ip) {
       "An error occurred while creating the security group; ",
       "please use paramater {.strong security_group_ids}"
     ))
-    return(NULL)
+    NULL
   } else {
     cli::cli_alert_success("Using security group {.strong {security_group_id}}")
-    return(security_group_id)
+    security_group_id
   }
 }
 
