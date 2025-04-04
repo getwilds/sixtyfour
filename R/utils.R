@@ -41,6 +41,11 @@ yesno <- function(msg, .envir = parent.frame()) {
   utils::menu(qs[rand]) != which(rand == 1)
 }
 
+picker <- function(msg, choices, .envir = parent.frame()) {
+  cli::cli_inform(msg, .envir = .envir)
+  utils::menu(choices)
+}
+
 #' Get the first element of a vector
 #' @keywords internal
 #' @param x a vector
