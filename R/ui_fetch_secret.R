@@ -42,15 +42,12 @@ ui_fetch_secret <- function(
   if (NROW(new_secrets_df) == 0) {
     stop("No secrets found", call. = FALSE)
   }
-  dboptions <-
-    new_secrets_df %>%
-    glue::glue_data(
-      "Secret name: {name}\n",
-      "   Engine: {engine}\n",
-      "   Host: {host}",
-      .trim = FALSE
-    ) %>%
-    as.character()
+  dboptions <- make_pick_options(
+    new_secrets_df,
+    "Secret name: {name}\n",
+    "   Engine: {engine}\n",
+    "   Host: {host}"
+  )
 
   # if any db secrets found in their secrets manager, prompt user
   picked <- picker(
@@ -71,9 +68,4 @@ ui_fetch_secret <- function(
   }
 
   list(user = user, password = password)
-}
-
-picker <- function(msg, choices, .envir = parent.frame()) {
-  cli::cli_inform(msg, .envir = .envir)
-  utils::menu(choices)
 }

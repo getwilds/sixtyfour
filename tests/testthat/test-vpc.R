@@ -140,18 +140,6 @@ test_that("aws_vpc_sg_with_ingress", {
   expect_match(out_mysql$SecurityGroups[[1]]$GroupName, "mysql-")
 })
 
-test_that("security_group_handler", {
-  # missing `id` param
-  expect_error(security_group_handler())
-  # if `id` given and not `NULL`, returns itself
-  an_id <- 123
-  expect_equal(security_group_handler(an_id), an_id)
-  # if `id` given and IS `NULL`, errors b/c `engine` missing
-  expect_error(security_group_handler(NULL))
-  # if `id` given, engine value not supported
-  expect_error(security_group_handler(NULL, engine = "asdff"))
-})
-
 test_that("aws_vpc_sec_group_rules_mod works for ipv6 address", {
   local_mocked_bindings(
     .ip_address = function() {

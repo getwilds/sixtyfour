@@ -12,6 +12,7 @@ aws_secrets_list <- function(...) {
 
 #' Get all secret values
 #' @importFrom dplyr relocate last_col
+#' @importFrom rlang %||%
 #' @export
 #' @return (tbl) with secrets
 #' @autoglobal
@@ -25,19 +26,29 @@ aws_secrets_all <- function() {
   }
   new_secrets <- list()
   for (i in seq_along(tmp)) {
+    sec_str <- tmp[[i]]$SecretString
     new_secrets[[i]] <- c(
       list(
         name = tmp[[i]]$Name,
         arn = tmp[[i]]$ARN,
         created_date = tmp[[i]]$CreatedDate
       ),
-      jsonlite::fromJSON(tmp[[i]]$SecretString)
+      if (length(sec_str)) {
+        jsonlite::fromJSON(sec_str)
+      } else {
+        sec_str
+      }
     )
   }
   # make all zero length elements class character
   new_secrets <- map(new_secrets, \(w) {
     map(w, \(x) ifelse(length(x) == 0, character(), x))
   })
+  for (i in seq_along(new_secrets)) {
+    new_secrets[[i]]$port <- as.character(
+      new_secrets[[i]]$port %||% NA_character_
+    )
+  }
   bind_rows(new_secrets) %>%
     relocate(arn, created_date, .after = last_col())
 }

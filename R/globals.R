@@ -32,10 +32,11 @@ utils::globalVariables(c(
   "group", # <permissions_groups>
   "arn", # <aws_secrets_all>
   "created_date", # <aws_secrets_all>
+  "IpPermissions", # <filter_security_groups_by_port>
+  "IpPermissions", # <filter_security_groups_by_ip>
   "name", # <ui_fetch_secret>
   "PasswordLastUsed", # <user_list_tidy>
   "Arn", # <user_list_tidy>
   "CreateDate", # <tidy_generator>
-  "IpPermissions", # <security_group_handler>
   NULL
 ))
