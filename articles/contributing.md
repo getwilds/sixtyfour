@@ -1,0 +1,223 @@
+# Contributing
+
+## General guidelines
+
+This article outlines how to propose a change to `sixtyfour`. For more
+information about contributing to this, and other WILDS projects, please
+see the [**WILDS Contributing Guide**](https://getwilds.org/guide/).
+
+### Fixing typos/docs changes
+
+You can fix typos, spelling mistakes, or grammatical errors in the
+documentation directly using the GitHub web interface, as long as the
+changes are made in the *source* file.
+
+### Bigger changes
+
+If you want to make a bigger change, it’s a good idea to first file an
+issue and make sure someone from the team agrees that it’s needed.
+
+If you’ve found a bug, please file an issue that illustrates the bug
+with a minimal reproducible example using
+[reprex](https://www.tidyverse.org/help/#reprex).
+
+Note that this package has a `Makefile` in the root of the repository -
+see the targets in the `Makefile` for various package maintenance tasks.
+
+### Git Flow
+
+This package follows [Git
+Flow](https://nvie.com/posts/a-successful-git-branching-model/). In
+brief, there’s two main branches: `main` and `dev`. `main` is considered
+to be more or less “production-ready” and at any given time should be
+associated with the most recent release. The `dev` branch has the most
+recent state of the in development code for the package. When `dev`
+reaches a state where we’re ready for a release, we’ll merge `dev` back
+to `main` and cut a release. When you make a feature branch, please
+branch off of `dev`.
+
+#### Pull request process
+
+- Fork the package and clone onto your computer
+- Checkout the `dev` branch
+- Create a Git branch off of `dev` for your pull request (PR)
+- Make your changes, commit to git, and then create a pull request
+  against `dev`.
+  - The title of your PR should briefly describe the change.
+  - The body of your PR should contain `Fixes #issue-number`.
+- For user-facing changes, add a bullet to the `NEWS.md` file.
+
+#### Code style
+
+- New/edited code should follow the [WILDS style
+  guide](https://getwilds.org/guide/style.html).
+
+## Testing
+
+We strive to have all tests that do HTTP requests do so against
+resources that are not actual AWS accounts given the drawbacks with
+using real accounts, e.g., setting them up can be difficult at some
+organizations; forgotten resources can be expensive; accidentally making
+unwated changes to an account, etc.
+
+We use two tools to replace real AWS accounts: Minio, Localstack.
+
+### Minio
+
+We use [Minio](https://min.io/) for testing two sets of functions in
+this package for interacting with S3:
+
+- tests in `test-buckets.R`
+- tests in `test-files.R`
+
+#### Local
+
+`sixtyfour` tests that use Minio will just be skipped if you don’t have
+Minio running.
+
+To use Minio, first install it for your platform:
+[MacOS](https://min.io/docs/minio/macos/index.html),
+[Windows](https://min.io/docs/minio/windows/index.html),
+[Linux](https://min.io/docs/minio/linux/index.html).
+
+Next, start Minio. Within this package is a make target `minio_start`
+for starting Minio locally; it should only work on Linux and MacOS
+platforms.
+
+Upon starting Minio it will display URLs for both the Minio API and
+WebUI - and your username/password to login to the WebUI. You can open
+up the WebUI as a nice visual dashboard of what’s going on.
+
+#### GitHub Actions
+
+The `R-CMD-check` workflow in `.github/workflows/` includes spinning up
+Minio for running unit tests - but only on Linux; tests that require
+Minio are skipped on MacOS and WIndows platforms on GitHub Actions.
+
+#### Minio Details
+
+The following information (collapsed) is for those who want to know more
+about the minio setup, and may want to tweak it or add minio setup to
+other tests.
+
+Expand for details
+
+- `tests/testthat/helper-minio.R` has helper functions for Minio.
+  `bucket_delete` and `buckets_empty` make it easier to do cleanup in
+  tests. The `minio_available` function is to be used inside
+  `skip_if_not` to skip the tests in the file if Minio is not available,
+  like: `skip_if_not(minio_available(), "Minio Not Available")`
+- At the top of any file that uses Minio, setup the interfaces to Minio
+  like:
+
+``` r
+
+Sys.setenv(AWS_PROFILE = "minio")
+```
+
+- And unset at the bottom of the file to cleanup:
+
+``` r
+
+Sys.unsetenv("AWS_PROFILE")
+```
+
+Internally we grab client objects for `paws` and `s3fs` as needed and
+use `AWS_PROFILE` env var to toggle on/off using Minio.
+
+For Minio we use the default credentials:
+
+- Access key id: `minioadmin` (override with env var `MINIO_USER`)
+- Secret access key: `minioadmin` (override with env var `MINIO_PWD`)
+- Endpoint: `http://127.0.0.1:9000` (override with env var
+  `MINIO_ENDPOINT`)
+
+You can override these defaults by setting the env vars above to your
+own values.
+
+### Localstack
+
+We use [Localstack](https://www.localstack.cloud/) for testing some
+functions in this package:
+
+- tests in `test-groups.R`
+- tests in `test-policies.R`
+- tests in `test-roles.R`
+- tests in `test-s3.R`
+- tests in `test-secrets_manager.R`
+- tests in `test-users.R`
+- tests in `test-vpc.R`
+
+#### Local
+
+`sixtyfour` tests that use Localstack will just be skipped if you don’t
+have Localstack running.
+
+To use Localstack, first install it for your platform
+<https://docs.localstack.cloud/getting-started/installation/>.
+
+Next, start Localstack. Within this package is a make target
+`localstack_start` for starting Localstack locally. That make target
+should only work on Linux and MacOS platforms.
+
+For a GUI interface to the locally running localstack you can install
+the Desktop client - which isn’t very good - at
+<https://docs.localstack.cloud/getting-started/installation/#localstack-desktop>.
+Better yet, login to the cloud Localstack site and you can interface
+with your locally running Localstack in the better interface there.
+Login at <https://app.localstack.cloud/>.
+
+#### GitHub Actions
+
+The `R-CMD-check` workflow in `.github/workflows/` includes spinning up
+Localstack for running unit tests - but only on Linux; tests that
+require Localstack are skipped on MacOS and WIndows platforms on GitHub
+Actions.
+
+#### Localstack Details
+
+The following (collapsed) bullets list information for those who want to
+know more about the Localstack setup, and that may want to tweak it or
+add Localstack setup to other tests.
+
+Expand for details
+
+- `tests/testthat/helper-localstack.R` has helper functions for
+  Localstack. The `localstack_available` function is to be used inside
+  `skip_if_not` to skip the tests in the file if Localstack is not
+  available, like:
+  `skip_if_not(localstack_available(), "Localstack Not Available")`
+- At the top of any file that uses Localstack, setup the interfaces to
+  Localstack like:
+
+``` r
+
+Sys.setenv(AWS_PROFILE = "localstack")
+```
+
+- And unset at the bottom of the file to cleanup:
+
+``` r
+
+Sys.unsetenv("AWS_PROFILE")
+```
+
+Internally we grab client objects for `paws` and `s3fs` as needed and
+use `AWS_PROFILE` env var to toggle on/off using Localstack.
+
+For Localstack we use the default credentials:
+
+- Access key id: `NOTAREALKEY` (override with env var `LOCALSTACK_KEY`)
+- Secret access key: `AREALLYFAKETOKEN` (override with env var
+  `LOCALSTACK_SECRET`)
+- Endpoint: `http://localhost.localstack.cloud:4566` (override with env
+  var `LOCALSTACK_ENDPOINT`)
+
+You can override these defaults by setting the env vars above to your
+own values.
+
+## Code of Conduct
+
+Please note that this project is released with a [Contributor Code of
+Conduct](https://getwilds.org/sixtyfour/CODE_OF_CONDUCT.html). By
+contributing to this project you agree to abide by its terms.

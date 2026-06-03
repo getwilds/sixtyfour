@@ -1,0 +1,288 @@
+# Package index
+
+## sixtyfour
+
+High level overview of package
+
+- [`sixtyfour`](https://getwilds.org/sixtyfour/reference/sixtyfour-package.md)
+  [`sixtyfour-package`](https://getwilds.org/sixtyfour/reference/sixtyfour-package.md)
+  : sixtyfour: Humane Interface to Amazon Web Services
+
+## Configuration
+
+- [`aws_configure()`](https://getwilds.org/sixtyfour/reference/aws_configure.md)
+  : Configure sixtyfour settings
+- [`with_redacted()`](https://getwilds.org/sixtyfour/reference/with_redacted.md)
+  : With secrets redacted
+- [`without_verbose()`](https://getwilds.org/sixtyfour/reference/without_verbose.md)
+  : Without verbose output
+
+## High level “magical” methods
+
+Higher level functions to make your life easier
+
+- [`six_user_create()`](https://getwilds.org/sixtyfour/reference/six_user_create.md)
+  : Create a user, magically
+- [`six_user_delete()`](https://getwilds.org/sixtyfour/reference/six_user_delete.md)
+  : Delete a user
+- [`six_admin_setup()`](https://getwilds.org/sixtyfour/reference/six_admin_setup.md)
+  : AWS account setup for administrators
+- [`six_bucket_add_user()`](https://getwilds.org/sixtyfour/reference/six_bucket_add_user.md)
+  : Add a user to a bucket
+- [`six_bucket_change_user()`](https://getwilds.org/sixtyfour/reference/six_bucket_change_user.md)
+  : Change user permissions for a bucket
+- [`six_bucket_remove_user()`](https://getwilds.org/sixtyfour/reference/six_bucket_remove_user.md)
+  : Remove a user from a bucket
+- [`six_bucket_permissions()`](https://getwilds.org/sixtyfour/reference/six_bucket_permissions.md)
+  : Get permissions for a bucket
+- [`six_bucket_delete()`](https://getwilds.org/sixtyfour/reference/six_bucket_delete.md)
+  : Delete an S3 bucket
+- [`six_file_upload()`](https://getwilds.org/sixtyfour/reference/six_file_upload.md)
+  : Magically upload a file
+- [`six_bucket_upload()`](https://getwilds.org/sixtyfour/reference/six_bucket_upload.md)
+  : Magically upload a mix of files and directories into a bucket
+- [`six_user_creds()`](https://getwilds.org/sixtyfour/reference/six_user_creds.md)
+  : Create access keys for a user
+- [`six_group_delete()`](https://getwilds.org/sixtyfour/reference/six_group_delete.md)
+  : Delete a group, magically
+- [`group_policies()`](https://getwilds.org/sixtyfour/reference/group_policies.md)
+  : Preset group policies
+
+## paws and s3fs clients
+
+- [`con_iam()`](https://getwilds.org/sixtyfour/reference/con_iam.md)
+  [`con_s3()`](https://getwilds.org/sixtyfour/reference/con_iam.md)
+  [`con_sm()`](https://getwilds.org/sixtyfour/reference/con_iam.md)
+  [`con_ec2()`](https://getwilds.org/sixtyfour/reference/con_iam.md)
+  [`con_rds()`](https://getwilds.org/sixtyfour/reference/con_iam.md)
+  [`con_redshift()`](https://getwilds.org/sixtyfour/reference/con_iam.md)
+  [`con_ce()`](https://getwilds.org/sixtyfour/reference/con_iam.md) :
+
+  Get a `paws` client for a service
+
+- [`con_s3fs()`](https://getwilds.org/sixtyfour/reference/con_s3fs.md) :
+  s3fs connection
+
+## Billing
+
+- [`aws_billing()`](https://getwilds.org/sixtyfour/reference/aws_billing.md)
+  : Fetch billing data - with some internal munging for ease of use
+- [`aws_billing_raw()`](https://getwilds.org/sixtyfour/reference/aws_billing_raw.md)
+  : Fetch billing data - rawest form
+
+## Files
+
+All file functions are vectorized. That is, you can pass in 1 or more
+local or s3 remote paths to the file functions.
+
+- [`aws_file_attr()`](https://getwilds.org/sixtyfour/reference/aws_file_attr.md)
+  : File attributes
+- [`aws_file_copy()`](https://getwilds.org/sixtyfour/reference/aws_file_copy.md)
+  : Copy files between buckets
+- [`aws_file_delete()`](https://getwilds.org/sixtyfour/reference/aws_file_delete.md)
+  : Delete a file
+- [`aws_file_download()`](https://getwilds.org/sixtyfour/reference/aws_file_download.md)
+  : Download a file
+- [`aws_file_exists()`](https://getwilds.org/sixtyfour/reference/aws_file_exists.md)
+  : Check if a file exists
+- [`aws_file_rename()`](https://getwilds.org/sixtyfour/reference/aws_file_rename.md)
+  : Rename remote files
+- [`aws_file_upload()`](https://getwilds.org/sixtyfour/reference/aws_file_upload.md)
+  : Upload a file
+- [`service_map`](https://getwilds.org/sixtyfour/reference/service_map.md)
+  : Mapping of full names of AWS services to acronyms
+
+## Buckets
+
+All bucket functions are NOT vectorized.
+
+- [`aws_bucket_create()`](https://getwilds.org/sixtyfour/reference/aws_bucket_create.md)
+  : Create an S3 bucket
+- [`aws_bucket_delete()`](https://getwilds.org/sixtyfour/reference/aws_bucket_delete.md)
+  : Delete an S3 bucket
+- [`aws_bucket_download()`](https://getwilds.org/sixtyfour/reference/aws_bucket_download.md)
+  : Download an S3 bucket
+- [`aws_bucket_exists()`](https://getwilds.org/sixtyfour/reference/aws_bucket_exists.md)
+  : Check if an S3 bucket exists
+- [`aws_bucket_list_objects()`](https://getwilds.org/sixtyfour/reference/aws_bucket_list_objects.md)
+  : List objects in an S3 bucket
+- [`aws_bucket_tree()`](https://getwilds.org/sixtyfour/reference/aws_bucket_tree.md)
+  : Print a tree of the objects in a bucket
+- [`aws_bucket_upload()`](https://getwilds.org/sixtyfour/reference/aws_bucket_upload.md)
+  : Upload a folder of files to create an S3 bucket
+- [`aws_buckets()`](https://getwilds.org/sixtyfour/reference/aws_buckets.md)
+  : List S3 buckets
+- [`aws_s3_policy_doc_create()`](https://getwilds.org/sixtyfour/reference/aws_s3_policy_doc_create.md)
+  : Create a policy document for an S3 bucket
+- [`bucket_arn()`](https://getwilds.org/sixtyfour/reference/bucket_arn.md)
+  : Get bucket ARN
+
+## Users
+
+- [`aws_user()`](https://getwilds.org/sixtyfour/reference/aws_user.md) :
+  Get a user
+- [`aws_user_access_key()`](https://getwilds.org/sixtyfour/reference/aws_user_access_key.md)
+  : Get AWS Access Key for a user
+- [`aws_user_access_key_delete()`](https://getwilds.org/sixtyfour/reference/aws_user_access_key_delete.md)
+  : Delete current user's AWS Access Key
+- [`aws_user_add_to_group()`](https://getwilds.org/sixtyfour/reference/aws_user_add_to_group.md)
+  [`aws_user_remove_from_group()`](https://getwilds.org/sixtyfour/reference/aws_user_add_to_group.md)
+  : Add or remove a user to/from a group
+- [`aws_user_create()`](https://getwilds.org/sixtyfour/reference/aws_user_create.md)
+  : Create a user
+- [`aws_user_current()`](https://getwilds.org/sixtyfour/reference/aws_user_current.md)
+  : Get the current logged-in username as a string
+- [`aws_user_delete()`](https://getwilds.org/sixtyfour/reference/aws_user_delete.md)
+  : Delete a user
+- [`aws_user_exists()`](https://getwilds.org/sixtyfour/reference/aws_user_exists.md)
+  : Check if a user exists
+- [`aws_users()`](https://getwilds.org/sixtyfour/reference/aws_users.md)
+  : List Users
+
+## Database
+
+- [`aws_db_cluster_status()`](https://getwilds.org/sixtyfour/reference/aws_db_cluster_status.md)
+  : Get cluster status
+- [`aws_db_instance_status()`](https://getwilds.org/sixtyfour/reference/aws_db_instance_status.md)
+  : Get instance status
+- [`aws_db_rds_con()`](https://getwilds.org/sixtyfour/reference/aws_db_rds_con.md)
+  : Get a database connection to Amazon RDS
+- [`aws_db_rds_create()`](https://getwilds.org/sixtyfour/reference/aws_db_rds_create.md)
+  : Create an RDS cluster
+- [`aws_db_rds_list()`](https://getwilds.org/sixtyfour/reference/aws_db_rds_list.md)
+  : Get information for all RDS instances
+- [`aws_db_redshift_con()`](https://getwilds.org/sixtyfour/reference/aws_db_redshift_con.md)
+  : Get a database connection to Amazon Redshift
+- [`aws_db_redshift_create()`](https://getwilds.org/sixtyfour/reference/aws_db_redshift_create.md)
+  : Create a Redshift cluster
+
+## Groups
+
+- [`aws_group()`](https://getwilds.org/sixtyfour/reference/aws_group.md)
+  : Get a group
+- [`aws_group_create()`](https://getwilds.org/sixtyfour/reference/aws_group_create.md)
+  : Create a group
+- [`aws_group_delete()`](https://getwilds.org/sixtyfour/reference/aws_group_delete.md)
+  : Delete a group
+- [`aws_group_exists()`](https://getwilds.org/sixtyfour/reference/aws_group_exists.md)
+  : Check if a group exists
+- [`aws_groups()`](https://getwilds.org/sixtyfour/reference/aws_groups.md)
+  : List all groups or groups for a single user
+
+## Roles
+
+- [`aws_role()`](https://getwilds.org/sixtyfour/reference/aws_role.md) :
+  Get a role
+- [`aws_role_create()`](https://getwilds.org/sixtyfour/reference/aws_role_create.md)
+  : Create a role
+- [`aws_role_delete()`](https://getwilds.org/sixtyfour/reference/aws_role_delete.md)
+  : Delete a role
+- [`aws_role_exists()`](https://getwilds.org/sixtyfour/reference/aws_role_exists.md)
+  : Check if a role exists
+- [`aws_roles()`](https://getwilds.org/sixtyfour/reference/aws_roles.md)
+  : List roles
+
+## Policies
+
+- [`aws_policies()`](https://getwilds.org/sixtyfour/reference/aws_policies.md)
+  : List policies
+- [`aws_policy()`](https://getwilds.org/sixtyfour/reference/aws_policy.md)
+  : Get a policy
+- [`aws_policy_attach()`](https://getwilds.org/sixtyfour/reference/aws_policy_attach.md)
+  : Attach a policy to a user, group, or role
+- [`aws_policy_create()`](https://getwilds.org/sixtyfour/reference/aws_policy_create.md)
+  : Create a policy
+- [`aws_policy_delete()`](https://getwilds.org/sixtyfour/reference/aws_policy_delete.md)
+  : Delete a user managed policy
+- [`aws_policy_delete_version()`](https://getwilds.org/sixtyfour/reference/aws_policy_delete_version.md)
+  : Delete a policy version
+- [`aws_policy_detach()`](https://getwilds.org/sixtyfour/reference/aws_policy_detach.md)
+  : Detach a policy from a user, group, or role
+- [`aws_policy_document_create()`](https://getwilds.org/sixtyfour/reference/aws_policy_document_create.md)
+  : Create a policy document
+- [`aws_policy_exists()`](https://getwilds.org/sixtyfour/reference/aws_policy_exists.md)
+  : Check if a policy exists
+- [`aws_policy_list_entities()`](https://getwilds.org/sixtyfour/reference/aws_policy_list_entities.md)
+  : List policy entities
+- [`aws_policy_list_versions()`](https://getwilds.org/sixtyfour/reference/aws_policy_list_versions.md)
+  : List policy versions
+- [`aws_policy_statement()`](https://getwilds.org/sixtyfour/reference/aws_policy_statement.md)
+  : Create a policy statement
+- [`aws_policy_update()`](https://getwilds.org/sixtyfour/reference/aws_policy_update.md)
+  : Update a policy
+- [`as_policy_arn()`](https://getwilds.org/sixtyfour/reference/as_policy_arn.md)
+  : Convert a policy name to a policy ARN
+- [`resource_rds()`](https://getwilds.org/sixtyfour/reference/resource_rds.md)
+  : Create a resource string for a policy statement for RDS
+
+## Secrets manager
+
+- [`aws_secrets_all()`](https://getwilds.org/sixtyfour/reference/aws_secrets_all.md)
+  : Get all secret values
+- [`aws_secrets_create()`](https://getwilds.org/sixtyfour/reference/aws_secrets_create.md)
+  : Create a secret
+- [`aws_secrets_delete()`](https://getwilds.org/sixtyfour/reference/aws_secrets_delete.md)
+  : Delete a secret
+- [`aws_secrets_get()`](https://getwilds.org/sixtyfour/reference/aws_secrets_get.md)
+  : Get a secret
+- [`aws_secrets_list()`](https://getwilds.org/sixtyfour/reference/aws_secrets_list.md)
+  : List secrets
+- [`aws_secrets_pwd()`](https://getwilds.org/sixtyfour/reference/aws_secrets_pwd.md)
+  : Get a random password
+- [`aws_secrets_rotate()`](https://getwilds.org/sixtyfour/reference/aws_secrets_rotate.md)
+  : Rotate a secret
+- [`aws_secrets_update()`](https://getwilds.org/sixtyfour/reference/aws_secrets_update.md)
+  : Update a secret
+
+## VPCs
+
+- [`aws_vpc()`](https://getwilds.org/sixtyfour/reference/aws_vpc.md) :
+  Get a VPC by id
+- [`aws_vpcs()`](https://getwilds.org/sixtyfour/reference/aws_vpcs.md) :
+  List VPCs
+
+## VPC Security Groups
+
+- [`aws_vpc_security_group()`](https://getwilds.org/sixtyfour/reference/aws_vpc_security_group.md)
+  : Get a security group by ID
+- [`aws_vpc_security_group_create()`](https://getwilds.org/sixtyfour/reference/aws_vpc_security_group_create.md)
+  [`aws_vpc_security_group_delete()`](https://getwilds.org/sixtyfour/reference/aws_vpc_security_group_create.md)
+  : Create a security group
+- [`aws_vpc_security_group_ingress()`](https://getwilds.org/sixtyfour/reference/aws_vpc_security_group_ingress.md)
+  : Authorize Security Group Ingress
+- [`aws_vpc_security_groups()`](https://getwilds.org/sixtyfour/reference/aws_vpc_security_groups.md)
+  : List VPC security groups
+- [`aws_vpc_sec_group_rules_mod()`](https://getwilds.org/sixtyfour/reference/aws_vpc_sec_group_rules_mod.md)
+  : Modify security group rules
+- [`ip_permissions_generator()`](https://getwilds.org/sixtyfour/reference/ip_permissions_generator.md)
+  : Ip Permissions generator
+- [`aws_vpc_sg_with_ingress()`](https://getwilds.org/sixtyfour/reference/aws_vpc_sg_with_ingress.md)
+  : Get a security group with one ingress rule based on the engine
+
+## Random strings
+
+- [`random_string()`](https://getwilds.org/sixtyfour/reference/random_string.md)
+  [`random_bucket()`](https://getwilds.org/sixtyfour/reference/random_string.md)
+  [`random_user()`](https://getwilds.org/sixtyfour/reference/random_string.md)
+  [`random_role()`](https://getwilds.org/sixtyfour/reference/random_string.md)
+  : Get a random string, bucket name, user name or role name
+
+## Utilities
+
+- [`aws_has_creds()`](https://getwilds.org/sixtyfour/reference/aws_has_creds.md)
+  : Check if appropriate AWS credentials are available
+
+- [`figure_out_policy_arn()`](https://getwilds.org/sixtyfour/reference/figure_out_policy_arn.md)
+  : Figure out policy Arn from a name
+
+- [`s3_actions_full()`](https://getwilds.org/sixtyfour/reference/s3_actions_full.md)
+  :
+
+  S3 actions for full access (read and write), from the AWS managed
+  policy `AmazonS3FullAccess`
+
+- [`s3_actions_read()`](https://getwilds.org/sixtyfour/reference/s3_actions_read.md)
+  :
+
+  S3 actions for reading, from the AWS managed policy
+  `AmazonS3ReadOnlyAccess`

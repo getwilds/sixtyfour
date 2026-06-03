@@ -1,0 +1,289 @@
+# Getting Started
+
+A science-focused, more humane R interface to AWS.
+
+## Installation
+
+CRAN version
+
+``` r
+
+# install.packages("pak")
+pak::pak("sixtyfour")
+```
+
+Development version
+
+``` r
+
+# install.packages("pak")
+pak::pak("getwilds/sixtyfour")
+```
+
+Load package
+
+``` r
+
+library(sixtyfour)
+```
+
+## Authentication
+
+We leverage the package `paws` to handle AWS authentication. There are
+many ways to configure `paws` to authenticate with AWS - see [paws
+documentation](https://paws-r.github.io/developer_guide/credentials/#set-credentials).
+
+One way to authenticate is using these three environment variables:
+
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_REGION`
+
+You can set these three environment variables within R for the current R
+session like:
+
+    Sys.setenv(
+      AWS_ACCESS_KEY_ID = "",
+      AWS_SECRET_ACCESS_KEY = "",
+      AWS_REGION = "us-west-2"
+    )
+
+Or set environment variables in a variety of ways to be available across
+R sessions. See the [R Startup
+chapter](https://rstats.wtf/r-startup.html) of *What They Forgot to
+Teach You About R* book for more details.
+
+## Package API Overview
+
+- `aws_billing*`: manage AWS billing details
+- `aws_bucket*`: manage S3 buckets
+- `aws_file_*`: manage files in S3 buckets
+- `aws_user*`: manage AWS users
+- `aws_group*`: manage AWS groups
+- `aws_role*`: manage AWS roles
+- `aws_policy*`/`aws_policies*`: manage AWS policies
+- `aws_db*`: interact with AWS database services Redshift and RDS
+- `aws_secrets*`: secrets manager
+- `aws_vpc*`: VPC security groups
+- `con_*`: connection classes to various AWS services
+- `six_*`: magical methods
+
+## Working with S3
+
+We cover S3 in detail in another vignette
+([`vignette("s3")`](https://getwilds.org/sixtyfour/articles/s3.md)), so
+we’ll briefly touch on it here.
+
+### Buckets
+
+Make a random bucket name
+
+``` r
+
+bucket <- random_bucket()
+```
+
+Create a bucket - check if it exists first
+
+``` r
+
+exists <- aws_bucket_exists(bucket)
+
+if (!exists) {
+  aws_bucket_create(bucket)
+}
+#> [1] "http://bucket-lphnzotejwfyuxkm.s3.amazonaws.com/"
+```
+
+``` r
+
+aws_bucket_delete(bucket)
+```
+
+### Files
+
+First, create a bucket:
+
+``` r
+
+my_bucket <- random_bucket()
+aws_bucket_create(my_bucket)
+#> [1] "http://bucket-cdzsxyjiofheptnr.s3.amazonaws.com/"
+```
+
+Then, upload some files
+
+``` r
+
+temp_files <- replicate(n = 3, tempfile(fileext = ".txt"))
+for (i in temp_files) cat(letters, "\n", file = i)
+remote_files <- s3_path(my_bucket, basename(temp_files))
+aws_file_upload(path = temp_files, remote_path = remote_files)
+#> [1] "s3://bucket-cdzsxyjiofheptnr/file16cf21ea161d1.txt"
+#> [2] "s3://bucket-cdzsxyjiofheptnr/file16cf2751cf00c.txt"
+#> [3] "s3://bucket-cdzsxyjiofheptnr/file16cf23ed3dfe5.txt"
+```
+
+List files in the bucket
+
+``` r
+
+obs <- aws_bucket_list_objects(my_bucket)
+obs
+#> # A tibble: 3 × 8
+#>   bucket          key   uri    size type  etag  lastmodified        storageclass
+#>   <glue>          <chr> <glu> <fs:> <chr> <chr> <dttm>              <chr>       
+#> 1 bucket-cdzsxyj… file… s3:/…    53 file  "\"a… 2025-03-20 20:52:34 STANDARD    
+#> 2 bucket-cdzsxyj… file… s3:/…    53 file  "\"a… 2025-03-20 20:52:34 STANDARD    
+#> 3 bucket-cdzsxyj… file… s3:/…    53 file  "\"a… 2025-03-20 20:52:34 STANDARD
+```
+
+## Billing
+
+Billing is covered in the
+[`vignette("billing")`](https://getwilds.org/sixtyfour/articles/billing.md)
+vignette.
+
+## IAM
+
+IAM stands for Identity Access Management. IAM covers four resource
+types:
+
+- Users: via `aws_user*` functions
+- Groups: via `aws_group*` functions
+- Roles: via `aws_role*` functions
+- Policies: via `aws_policy*`/`aws_policies*` functions
+
+As a brief example let’s create a group, a user, and a role. We’ll
+assign the user to the group. Then clean it all up.
+
+First, create a group
+
+``` r
+
+group_name <- random_string("gr-")
+group_name
+#> gr-gmpcjatq
+aws_group_create(group_name)
+#> # A tibble: 1 × 5
+#>   GroupName   GroupId               Path  Arn   CreateDate         
+#>   <chr>       <chr>                 <chr> <chr> <dttm>             
+#> 1 gr-gmpcjatq AGPA22PL7JXXYJ5WLSESJ /     ***** 2025-03-20 20:52:35
+```
+
+Then create a user
+
+``` r
+
+name <- random_user()
+name
+#> [1] "RepellentFinale"
+aws_user_create(name)
+#> # A tibble: 1 × 6
+#>   UserName        UserId     Path  Arn   CreateDate          PasswordLastUsed
+#>   <chr>           <chr>      <chr> <chr> <dttm>              <dttm>          
+#> 1 RepellentFinale AIDA22PL7… /     ***** 2025-03-20 20:52:35 NA
+```
+
+Now add the user to the group
+
+``` r
+
+aws_user_add_to_group(name, group_name)
+#> $user
+#> # A tibble: 1 × 6
+#>   UserName        UserId     Path  Arn   CreateDate          PasswordLastUsed
+#>   <chr>           <chr>      <chr> <chr> <dttm>              <dttm>          
+#> 1 RepellentFinale AIDA22PL7… /     ***** 2025-03-20 20:52:35 NA              
+#> 
+#> $policies
+#> # A tibble: 0 × 0
+#> 
+#> $attached_policies
+#> # A tibble: 0 × 0
+#> 
+#> $groups
+#> # A tibble: 1 × 5
+#>   GroupName   GroupId               Path  Arn   CreateDate         
+#>   <chr>       <chr>                 <chr> <chr> <dttm>             
+#> 1 gr-gmpcjatq AGPA22PL7JXXYJ5WLSESJ /     ***** 2025-03-20 20:52:35
+```
+
+Now create a role
+
+``` r
+
+role_name <- random_role()
+trust_policy <- list(
+  Version = "2012-10-17",
+  Statement = list(
+    list(
+      Sid = "Statement1",
+      Effect = "Allow",
+      Principal = list(
+        Service = "lambda.amazonaws.com"
+      ),
+      Action = "sts:AssumeRole"
+    )
+  )
+)
+doc1 <- jsonlite::toJSON(trust_policy, auto_unbox = TRUE)
+aws_role_create(role_name,
+  assume_role_policy_document = doc1,
+  description = "test role A"
+)
+#> # A tibble: 1 × 7
+#>   RoleName         RoleId            Path  Arn   CreateDate          Description
+#>   <chr>            <chr>             <chr> <chr> <dttm>              <lgl>      
+#> 1 BridgedLiquidati AROA22PL7JXX5ETK… /     ***** 2025-03-20 20:52:36 NA         
+#> # ℹ 1 more variable: AssumeRolePolicyDocument <chr>
+```
+
+Finally, cleanup
+
+``` r
+
+aws_role_delete(role_name)
+six_user_delete(name)
+#> ! No access keys found for RepellentFinale
+#> ℹ Group gr-gmpcjatq detached
+#> ℹ RepellentFinale deleted
+six_group_delete(group_name)
+#> ℹ group gr-gmpcjatq deleted
+```
+
+## Databases
+
+Databases are covered in the
+[`vignette("databases")`](https://getwilds.org/sixtyfour/articles/databases.md)
+vignette.
+
+## Magical methods
+
+Magical methods are higher level functions to make your life easier.
+
+As an example,
+[`six_user_create()`](https://getwilds.org/sixtyfour/reference/six_user_create.md)
+creates a new user, including a) creating the appropriate policy if it
+doesn’t exist yet, b) attaching the policy to the created user, and c)
+creating an AWS Access Key for the user (and copy an email template to
+your clipboard with the details the new user needs).
+
+``` r
+
+name <- random_user()
+name
+#> [1] "GildedArchery"
+six_user_create(name)
+#> ℹ Added policy UserInfo to GildedArchery
+#> ✔ Key pair created for GildedArchery
+#> ℹ AccessKeyId: *****
+#> ℹ SecretAccessKey: *****
+#> ℹ Email template copied to your clipboard
+```
+
+There are other magical methods. See the
+[docs](https://getwilds.org/sixtyfour/reference/#high-level-magical-methods)
+and the
+[`vignette("six")`](https://getwilds.org/sixtyfour/articles/six.md)
+vignette for more information.
