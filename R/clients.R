@@ -73,6 +73,17 @@ con_factory <- function(service) {
         ),
         endpoint = Sys.getenv("LOCALSTACK_ENDPOINT", LOCALSTACK_ENDPOINT)
       )
+    } else if (profile == "mockoon") {
+      con <- svc(
+        credentials = list(
+          creds = list(
+            access_key_id = "fake-1",
+            secret_access_key = "fake-2"
+          )
+        ),
+        endpoint = "http://localhost:3000",
+        region = "us-east-1"
+      )
     } else {
       con <- svc(region = NULL)
     }
