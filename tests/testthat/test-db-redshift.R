@@ -1,3 +1,5 @@
+skip("skip until we can either mock this or use real AWS")
+
 test_that("aws_db_redshift_create", {
   skip_if_not(aws_has_creds())
   vcr::use_cassette("aws_db_redshift_create", {

@@ -1,3 +1,5 @@
+skip("skip until we can either mock this or use real AWS")
+
 test_that("aws_db_rds_create", {
   skip_on_ci()
   skip_if_not(running_local_only_tests())
