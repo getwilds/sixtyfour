@@ -45,10 +45,10 @@ Imports:
     curl,
     tidyr,
     clipr,
-    withr,
     ipaddress
 Suggests:
     knitr,
+    withr,
     rmarkdown,
     roxyglobals,
     DBI,
