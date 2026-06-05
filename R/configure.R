@@ -54,7 +54,6 @@ print.aws_settings <- function(x, ...) {
 #' Without verbose output
 #' @export
 #' @importFrom rlang env_poke
-#' @importFrom withr defer
 #' @param code (expression) Code to run without verbose output.
 #' @return The results of the evaluation of the code argument
 without_verbose <- function(code) {
