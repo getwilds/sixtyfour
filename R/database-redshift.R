@@ -14,7 +14,7 @@
 #' [RPostgres](https://rpostgres.r-dbi.org/)
 #'
 #' You can manage Redshift programatically via
-#' [paws::redshift](https://www.paws-r-sdk.com/docs/redshift/)
+#' [paws.database::redshift](https://www.paws-r-sdk.com/docs/redshift/)
 #' @family database
 #' @return an object of class `RedshiftConnection`
 #' @examples \dontrun{
@@ -70,7 +70,6 @@ aws_db_redshift_con <- function(
 #' Create a Redshift cluster
 #'
 #' @export
-#' @importFrom paws redshift
 #' @param id (character) Cluster identifier. Use this identifier to refer to
 #' the cluster for any subsequent cluster operations such as deleting or
 #' modifying. The identifier also appears in the Amazon Redshift console.
