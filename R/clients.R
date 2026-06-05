@@ -41,14 +41,29 @@ con_s3fs <- function() {
   as_64_con(con, "s3", profile)
 }
 
+svc_mapper <- list(
+  s3 = "paws.storage",
+  ec2 = "paws.compute",
+  rds = "paws.database",
+  redshift = "paws.database",
+  costexplorer = "paws.cost.management",
+  iam = "paws.security.identity",
+  secretsmanager = "paws.security.identity"
+)
+
 #' `paws` connection factory
 #' @param service (character) any service supported by \pkg{paws}
 #' @return a function for returning the client for the service in
 #' the `service` parameter
 #' @keywords internal
+#' @importFrom paws.security.identity iam secretsmanager
+#' @importFrom paws.storage s3
+#' @importFrom paws.compute ec2
+#' @importFrom paws.database rds redshift
+#' @importFrom paws.cost.management costexplorer
 con_factory <- function(service) {
   function() {
-    svc <- utils::getFromNamespace(service, ns = "paws")
+    svc <- utils::getFromNamespace(service, ns = svc_mapper[[service]])
     profile <- Sys.getenv("AWS_PROFILE", "aws")
     if (profile == "minio") {
       con <- svc(

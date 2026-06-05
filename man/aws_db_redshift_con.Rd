@@ -36,7 +36,7 @@ The connection returned is created using
 \href{https://rpostgres.r-dbi.org/}{RPostgres}
 
 You can manage Redshift programatically via
-\href{https://www.paws-r-sdk.com/docs/redshift/}{paws::redshift}
+\href{https://www.paws-r-sdk.com/docs/redshift/}{paws.database::redshift}
 }
 \examples{
 \dontrun{
