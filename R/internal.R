@@ -10,7 +10,7 @@ account_id <- memoise::memoise(function() {
   if (Sys.getenv("AWS_PROFILE") == "localstack") {
     return("000000000000")
   }
-  paws::sts()$get_caller_identity()$Account
+  paws.security.identity::sts()$get_caller_identity()$Account
 })
 
 #' Get bucket region

@@ -70,7 +70,6 @@ aws_db_rds_con <- function(
 #' Create an RDS cluster
 #'
 #' @export
-#' @importFrom paws rds
 #' @param id (character) required. instance identifier. The identifier for
 #' this DB instance. This parameter is stored as a lowercase string.
 #' Constraints: must contain from 1 to 63 letters, numbers, or hyphens; first
