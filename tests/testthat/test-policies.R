@@ -66,7 +66,7 @@ test_that("aws_policy", {
 
   expect_s3_class(res_arn, "tbl")
   expect_true("PolicyName" %in% names(res_arn))
-  expect_true(is.na(res_arn$IsAttachable))
+  expect_true(res_arn$IsAttachable)
   expect_true(is.na(res_arn$Description))
 
   expect_identical(res_name, res_arn)
