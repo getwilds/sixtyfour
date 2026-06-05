@@ -167,7 +167,9 @@ aws_db_rds_create <-
       wait_for_instance(id)
     }
     if (aws_secrets) {
-      if (verbose) cli::cli_alert_info("Uploading user/pwd to secrets manager")
+      if (verbose) {
+        cli::cli_alert_info("Uploading user/pwd to secrets manager")
+      }
       x <- instance_con_info(id)
       aws_secrets_create(
         name = paste0(id, random_db_id_str()),
@@ -181,7 +183,9 @@ aws_db_rds_create <-
         )
       )
     }
-    if (verbose) info(id, instance_con_info, "aws_db_rds_con")
+    if (verbose) {
+      info(id, instance_con_info, "aws_db_rds_con")
+    }
     invisible()
   }
 
@@ -244,7 +248,9 @@ aws_db_rds_list <- function() {
 instance_con_info <- function(id) {
   deets <- instance_details()$DBInstances
   z <- keep(deets, \(x) x$DBInstanceIdentifier == id)
-  if (!length(z)) rlang::abort(glue("Instance identifier {id} not found"))
+  if (!length(z)) {
+    rlang::abort(glue("Instance identifier {id} not found"))
+  }
   z <- z[[1]]
   list(
     host = z$Endpoint$Address,

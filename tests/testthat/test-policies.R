@@ -8,7 +8,9 @@ withr::with_envvar(
     st8ment2 <- aws_policy_statement("s3:ListAllMyBuckets", "*")
     doc <- aws_policy_document_create(st8ment1, st8ment2)
     test_policy_name <- random_string("policy")
-    if (aws_policy_exists(test_policy_name)) aws_policy_delete(test_policy_name)
+    if (aws_policy_exists(test_policy_name)) {
+      aws_policy_delete(test_policy_name)
+    }
     aws_policy_create(test_policy_name, document = doc)
   }
 )
@@ -45,8 +47,7 @@ test_that("aws_policy_list_entities", {
     c("AWS_PROFILE" = "localstack"),
     {
       withr::with_options(
-        list(cli.default_handler = function(...) {
-        }),
+        list(cli.default_handler = function(...) {}),
         six_user_delete(user)
       )
       aws_policy_delete(test_policy_name)
