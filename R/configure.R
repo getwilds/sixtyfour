@@ -58,6 +58,7 @@ print.aws_settings <- function(x, ...) {
 #' @param code (expression) Code to run without verbose output.
 #' @return The results of the evaluation of the code argument
 without_verbose <- function(code) {
+  rlang::check_installed("withr")
   rlang::env_poke(env64, "verbose", FALSE)
   withr::defer(rlang::env_poke(env64, "verbose", TRUE))
   force(code)
@@ -68,6 +69,7 @@ without_verbose <- function(code) {
 #' @param code (expression) Code to run with secrets redacted
 #' @return The results of the evaluation of the code argument
 with_redacted <- function(code) {
+  rlang::check_installed("withr")
   rlang::env_poke(env64, "redacted", TRUE)
   withr::defer(rlang::env_poke(env64, "redacted", FALSE))
   force(code)
