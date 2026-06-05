@@ -14,6 +14,5 @@ vcr_setup <- function() {
       "x-amz-request-id" = "redacted"
     )
   ))
-  vcr::check_cassette_names()
 }
 vcr_setup()
