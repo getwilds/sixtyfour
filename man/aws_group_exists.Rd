@@ -20,7 +20,7 @@ uses \code{aws_group} internally. see docs
 \url{https://www.paws-r-sdk.com/docs/iam_get_group/}
 }
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 aws_group_create("apples")
 aws_group_exists("apples")
 aws_group_exists("doesnotexist")
@@ -29,11 +29,11 @@ aws_group_delete("apples")
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other groups: 
-\code{\link{aws_group}()},
-\code{\link{aws_group_create}()},
-\code{\link{aws_group_delete}()},
-\code{\link{aws_groups}()},
-\code{\link{six_group_delete}()}
+Other groups:
+\code{\link[=aws_group]{aws_group()}},
+\code{\link[=aws_group_create]{aws_group_create()}},
+\code{\link[=aws_group_delete]{aws_group_delete()}},
+\code{\link[=aws_groups]{aws_groups()}},
+\code{\link[=six_group_delete]{six_group_delete()}}
 }
 \concept{groups}

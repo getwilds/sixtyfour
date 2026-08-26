@@ -17,7 +17,7 @@ vector of booleans (\code{TRUE} or \code{FALSE}), length matches
 Check if a file exists
 }
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 library(glue)
 bucket <- random_bucket()
 aws_bucket_create(bucket)
@@ -39,13 +39,13 @@ six_bucket_delete(bucket, force = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other files: 
-\code{\link{aws_file_attr}()},
-\code{\link{aws_file_copy}()},
-\code{\link{aws_file_delete}()},
-\code{\link{aws_file_download}()},
-\code{\link{aws_file_rename}()},
-\code{\link{aws_file_upload}()},
-\code{\link{six_file_upload}()}
+Other files:
+\code{\link[=aws_file_attr]{aws_file_attr()}},
+\code{\link[=aws_file_copy]{aws_file_copy()}},
+\code{\link[=aws_file_delete]{aws_file_delete()}},
+\code{\link[=aws_file_download]{aws_file_download()}},
+\code{\link[=aws_file_rename]{aws_file_rename()}},
+\code{\link[=aws_file_upload]{aws_file_upload()}},
+\code{\link[=six_file_upload]{six_file_upload()}}
 }
 \concept{files}

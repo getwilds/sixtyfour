@@ -34,7 +34,7 @@ Note that we autogenerate a random UUID to pass to the
 \code{ClientRequestToken} parameter of the \code{paws} function used internally
 }
 \examples{
-\dontshow{if (aws_has_creds() && interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds() && interactive()) withAutoprint(\{ # examplesIf}
 try({
 # Create a secret
 secret <- random_string("secret-", size = 16)

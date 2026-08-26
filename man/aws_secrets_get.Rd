@@ -28,7 +28,7 @@ aws_secrets_get(id, ...)
 Get a secret
 }
 \examples{
-\dontshow{if (aws_has_creds() && interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds() && interactive()) withAutoprint(\{ # examplesIf}
 try({
 # Create a secret
 secret <- random_string("secret-", size = 16)

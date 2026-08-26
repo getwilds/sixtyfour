@@ -49,7 +49,7 @@ key. Add more policies using \verb{aws_polic*} functions
 }
 
 \examples{
-\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) withAutoprint(\{ # examplesIf}
 name <- random_user()
 six_user_create(name)
 
@@ -58,24 +58,24 @@ six_user_delete(name)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other users: 
-\code{\link{aws_user}()},
-\code{\link{aws_user_access_key}()},
-\code{\link{aws_user_access_key_delete}()},
-\code{\link{aws_user_add_to_group}()},
-\code{\link{aws_user_create}()},
-\code{\link{aws_user_current}()},
-\code{\link{aws_user_delete}()},
-\code{\link{aws_user_exists}()},
-\code{\link{aws_users}()},
-\code{\link{six_user_delete}()}
+Other users:
+\code{\link[=aws_user]{aws_user()}},
+\code{\link[=aws_user_access_key]{aws_user_access_key()}},
+\code{\link[=aws_user_access_key_delete]{aws_user_access_key_delete()}},
+\code{\link[=aws_user_add_to_group]{aws_user_add_to_group()}},
+\code{\link[=aws_user_create]{aws_user_create()}},
+\code{\link[=aws_user_current]{aws_user_current()}},
+\code{\link[=aws_user_delete]{aws_user_delete()}},
+\code{\link[=aws_user_exists]{aws_user_exists()}},
+\code{\link[=aws_users]{aws_users()}},
+\code{\link[=six_user_delete]{six_user_delete()}}
 
-Other magicians: 
-\code{\link{six_admin_setup}()},
-\code{\link{six_bucket_delete}()},
-\code{\link{six_bucket_upload}()},
-\code{\link{six_file_upload}()},
-\code{\link{six_user_delete}()}
+Other magicians:
+\code{\link[=six_admin_setup]{six_admin_setup()}},
+\code{\link[=six_bucket_delete]{six_bucket_delete()}},
+\code{\link[=six_bucket_upload]{six_bucket_upload()}},
+\code{\link[=six_file_upload]{six_file_upload()}},
+\code{\link[=six_user_delete]{six_user_delete()}}
 }
 \concept{magicians}
 \concept{users}

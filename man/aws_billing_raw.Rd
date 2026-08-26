@@ -42,13 +42,13 @@ list with slots for:
 Fetch billing data - rawest form
 }
 \examples{
-\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) withAutoprint(\{ # examplesIf}
 library(lubridate)
 aws_billing_raw(date_start = today() - days(3), metrics = "BlendedCost")
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other billing: 
-\code{\link{aws_billing}()}
+Other billing:
+\code{\link[=aws_billing]{aws_billing()}}
 }
 \concept{billing}

@@ -16,7 +16,7 @@ aws_vpcs(...)
 List VPCs
 }
 \examples{
-\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) withAutoprint(\{ # examplesIf}
 aws_vpcs()
 aws_vpcs(MaxResults = 6)
 \dontshow{\}) # examplesIf}

@@ -26,7 +26,7 @@ also includes policies and attached policies by calling \code{list_role_policies
 and \code{list_attached_role_policies}
 }
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 trust_policy <- list(
   Version = "2012-10-17",
   Statement = list(
@@ -59,10 +59,10 @@ aws_role_delete("ALittleRole")
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other roles: 
-\code{\link{aws_role_create}()},
-\code{\link{aws_role_delete}()},
-\code{\link{aws_role_exists}()},
-\code{\link{aws_roles}()}
+Other roles:
+\code{\link[=aws_role_create]{aws_role_create()}},
+\code{\link[=aws_role_delete]{aws_role_delete()}},
+\code{\link[=aws_role_exists]{aws_role_exists()}},
+\code{\link[=aws_roles]{aws_roles()}}
 }
 \concept{roles}

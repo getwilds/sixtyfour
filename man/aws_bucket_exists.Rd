@@ -20,7 +20,7 @@ internally uses
 \href{https://www.paws-r-sdk.com/docs/s3_head_bucket/}{head_bucket}
 }
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 bucket1 <- random_bucket()
 aws_bucket_create(bucket1)
 
@@ -34,15 +34,15 @@ six_bucket_delete(bucket1, force = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other buckets: 
-\code{\link{aws_bucket_create}()},
-\code{\link{aws_bucket_delete}()},
-\code{\link{aws_bucket_download}()},
-\code{\link{aws_bucket_list_objects}()},
-\code{\link{aws_bucket_tree}()},
-\code{\link{aws_bucket_upload}()},
-\code{\link{aws_buckets}()},
-\code{\link{six_bucket_delete}()},
-\code{\link{six_bucket_upload}()}
+Other buckets:
+\code{\link[=aws_bucket_create]{aws_bucket_create()}},
+\code{\link[=aws_bucket_delete]{aws_bucket_delete()}},
+\code{\link[=aws_bucket_download]{aws_bucket_download()}},
+\code{\link[=aws_bucket_list_objects]{aws_bucket_list_objects()}},
+\code{\link[=aws_bucket_tree]{aws_bucket_tree()}},
+\code{\link[=aws_bucket_upload]{aws_bucket_upload()}},
+\code{\link[=aws_buckets]{aws_buckets()}},
+\code{\link[=six_bucket_delete]{six_bucket_delete()}},
+\code{\link[=six_bucket_upload]{six_bucket_upload()}}
 }
 \concept{buckets}

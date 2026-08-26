@@ -20,17 +20,17 @@ See \url{https://www.paws-r-sdk.com/docs/iam_delete_role/}
 docs for more details
 }
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 if (aws_role_exists(name = "MyRole")) {
   aws_role_delete(name = "MyRole")
 }
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other roles: 
-\code{\link{aws_role}()},
-\code{\link{aws_role_create}()},
-\code{\link{aws_role_exists}()},
-\code{\link{aws_roles}()}
+Other roles:
+\code{\link[=aws_role]{aws_role()}},
+\code{\link[=aws_role_create]{aws_role_create()}},
+\code{\link[=aws_role_exists]{aws_role_exists()}},
+\code{\link[=aws_roles]{aws_roles()}}
 }
 \concept{roles}

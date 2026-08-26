@@ -17,15 +17,15 @@ A tibble with information about roles
 List roles
 }
 \examples{
-\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) withAutoprint(\{ # examplesIf}
 aws_roles()
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other roles: 
-\code{\link{aws_role}()},
-\code{\link{aws_role_create}()},
-\code{\link{aws_role_delete}()},
-\code{\link{aws_role_exists}()}
+Other roles:
+\code{\link[=aws_role]{aws_role()}},
+\code{\link[=aws_role_create]{aws_role_create()}},
+\code{\link[=aws_role_delete]{aws_role_delete()}},
+\code{\link[=aws_role_exists]{aws_role_exists()}}
 }
 \concept{roles}

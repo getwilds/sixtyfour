@@ -20,22 +20,22 @@ uses \code{\link[=aws_user]{aws_user()}} internally. see docs
 \url{https://www.paws-r-sdk.com/docs/iam_get_user/}
 }
 \examples{
-\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) withAutoprint(\{ # examplesIf}
 aws_user_exists(aws_user_current())
 aws_user_exists("doesnotexist")
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other users: 
-\code{\link{aws_user}()},
-\code{\link{aws_user_access_key}()},
-\code{\link{aws_user_access_key_delete}()},
-\code{\link{aws_user_add_to_group}()},
-\code{\link{aws_user_create}()},
-\code{\link{aws_user_current}()},
-\code{\link{aws_user_delete}()},
-\code{\link{aws_users}()},
-\code{\link{six_user_create}()},
-\code{\link{six_user_delete}()}
+Other users:
+\code{\link[=aws_user]{aws_user()}},
+\code{\link[=aws_user_access_key]{aws_user_access_key()}},
+\code{\link[=aws_user_access_key_delete]{aws_user_access_key_delete()}},
+\code{\link[=aws_user_add_to_group]{aws_user_add_to_group()}},
+\code{\link[=aws_user_create]{aws_user_create()}},
+\code{\link[=aws_user_current]{aws_user_current()}},
+\code{\link[=aws_user_delete]{aws_user_delete()}},
+\code{\link[=aws_users]{aws_users()}},
+\code{\link[=six_user_create]{six_user_create()}},
+\code{\link[=six_user_delete]{six_user_delete()}}
 }
 \concept{users}

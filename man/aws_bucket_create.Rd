@@ -22,7 +22,7 @@ Create an S3 bucket
 Requires the env var \code{AWS_REGION}
 }
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 bucket2 <- random_bucket()
 aws_bucket_create(bucket2)
 
@@ -31,15 +31,15 @@ six_bucket_delete(bucket2, force = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other buckets: 
-\code{\link{aws_bucket_delete}()},
-\code{\link{aws_bucket_download}()},
-\code{\link{aws_bucket_exists}()},
-\code{\link{aws_bucket_list_objects}()},
-\code{\link{aws_bucket_tree}()},
-\code{\link{aws_bucket_upload}()},
-\code{\link{aws_buckets}()},
-\code{\link{six_bucket_delete}()},
-\code{\link{six_bucket_upload}()}
+Other buckets:
+\code{\link[=aws_bucket_delete]{aws_bucket_delete()}},
+\code{\link[=aws_bucket_download]{aws_bucket_download()}},
+\code{\link[=aws_bucket_exists]{aws_bucket_exists()}},
+\code{\link[=aws_bucket_list_objects]{aws_bucket_list_objects()}},
+\code{\link[=aws_bucket_tree]{aws_bucket_tree()}},
+\code{\link[=aws_bucket_upload]{aws_bucket_upload()}},
+\code{\link[=aws_buckets]{aws_buckets()}},
+\code{\link[=six_bucket_delete]{six_bucket_delete()}},
+\code{\link[=six_bucket_upload]{six_bucket_upload()}}
 }
 \concept{buckets}
