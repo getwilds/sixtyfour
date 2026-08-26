@@ -20,7 +20,7 @@ see \url{https://www.paws-r-sdk.com/docs/secretsmanager_list_secrets/}
 for available parameters
 }
 \examples{
-\dontshow{if (aws_has_creds() && interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds() && interactive()) withAutoprint(\{ # examplesIf}
 aws_secrets_list()
 \dontshow{\}) # examplesIf}
 }

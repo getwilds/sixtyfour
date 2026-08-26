@@ -21,7 +21,7 @@ list. if successful then \code{list(Return=TRUE)}
 Modify security group rules
 }
 \examples{
-\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) withAutoprint(\{ # examplesIf}
 # create a security group
 a_grp_name <- random_string("vpcsecgroup")
 x <- aws_vpc_security_group_create(name = a_grp_name)
@@ -57,11 +57,11 @@ aws_vpc_security_group_delete(name = a_grp_name)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other security groups: 
-\code{\link{aws_vpc_security_group}()},
-\code{\link{aws_vpc_security_group_create}()},
-\code{\link{aws_vpc_security_group_ingress}()},
-\code{\link{aws_vpc_security_groups}()},
-\code{\link{aws_vpc_sg_with_ingress}()}
+Other security groups:
+\code{\link[=aws_vpc_security_group]{aws_vpc_security_group()}},
+\code{\link[=aws_vpc_security_group_create]{aws_vpc_security_group_create()}},
+\code{\link[=aws_vpc_security_group_ingress]{aws_vpc_security_group_ingress()}},
+\code{\link[=aws_vpc_security_groups]{aws_vpc_security_groups()}},
+\code{\link[=aws_vpc_sg_with_ingress]{aws_vpc_sg_with_ingress()}}
 }
 \concept{security groups}

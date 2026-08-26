@@ -42,7 +42,7 @@ pass in many file paths
 }
 
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 bucket1 <- random_bucket()
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
 six_file_upload(demo_rds_file, bucket1, force = TRUE)
@@ -61,7 +61,7 @@ try(
 # Cleanup
 six_bucket_delete(bucket1, force = TRUE)
 \dontshow{\}) # examplesIf}
-\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) withAutoprint(\{ # examplesIf}
 # requires user interaction with prompts ...
 bucket2 <- random_bucket()
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
@@ -84,21 +84,21 @@ six_bucket_delete(not_a_bucket, force = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other files: 
-\code{\link{aws_file_attr}()},
-\code{\link{aws_file_copy}()},
-\code{\link{aws_file_delete}()},
-\code{\link{aws_file_download}()},
-\code{\link{aws_file_exists}()},
-\code{\link{aws_file_rename}()},
-\code{\link{aws_file_upload}()}
+Other files:
+\code{\link[=aws_file_attr]{aws_file_attr()}},
+\code{\link[=aws_file_copy]{aws_file_copy()}},
+\code{\link[=aws_file_delete]{aws_file_delete()}},
+\code{\link[=aws_file_download]{aws_file_download()}},
+\code{\link[=aws_file_exists]{aws_file_exists()}},
+\code{\link[=aws_file_rename]{aws_file_rename()}},
+\code{\link[=aws_file_upload]{aws_file_upload()}}
 
-Other magicians: 
-\code{\link{six_admin_setup}()},
-\code{\link{six_bucket_delete}()},
-\code{\link{six_bucket_upload}()},
-\code{\link{six_user_create}()},
-\code{\link{six_user_delete}()}
+Other magicians:
+\code{\link[=six_admin_setup]{six_admin_setup()}},
+\code{\link[=six_bucket_delete]{six_bucket_delete()}},
+\code{\link[=six_bucket_upload]{six_bucket_upload()}},
+\code{\link[=six_user_create]{six_user_create()}},
+\code{\link[=six_user_delete]{six_user_delete()}}
 }
 \concept{files}
 \concept{magicians}

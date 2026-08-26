@@ -15,17 +15,17 @@ an empty tibble if no instances found
 Get information for all RDS instances
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 aws_db_rds_list()
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other database: 
-\code{\link{aws_db_cluster_status}()},
-\code{\link{aws_db_instance_status}()},
-\code{\link{aws_db_rds_con}()},
-\code{\link{aws_db_rds_create}()},
-\code{\link{aws_db_redshift_con}()},
-\code{\link{aws_db_redshift_create}()}
+Other database:
+\code{\link[=aws_db_cluster_status]{aws_db_cluster_status()}},
+\code{\link[=aws_db_instance_status]{aws_db_instance_status()}},
+\code{\link[=aws_db_rds_con]{aws_db_rds_con()}},
+\code{\link[=aws_db_rds_create]{aws_db_rds_create()}},
+\code{\link[=aws_db_redshift_con]{aws_db_redshift_con()}},
+\code{\link[=aws_db_redshift_create]{aws_db_redshift_create()}}
 }
 \concept{database}

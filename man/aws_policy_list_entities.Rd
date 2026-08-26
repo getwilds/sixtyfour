@@ -27,7 +27,7 @@ Zero row tibble if there are no entities
 List policy entities
 }
 \examples{
-\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) withAutoprint(\{ # examplesIf}
 aws_policy_list_entities("AdministratorAccess")
 aws_policy_list_entities("AmazonRedshiftReadOnlyAccess")
 \dontshow{\}) # examplesIf}
@@ -36,17 +36,17 @@ aws_policy_list_entities("AmazonRedshiftReadOnlyAccess")
 \url{https://www.paws-r-sdk.com/docs/iam_list_entities_for_policy/}
 }
 \seealso{
-Other policies: 
-\code{\link{as_policy_arn}()},
-\code{\link{aws_policies}()},
-\code{\link{aws_policy}()},
-\code{\link{aws_policy_attach}()},
-\code{\link{aws_policy_create}()},
-\code{\link{aws_policy_delete}()},
-\code{\link{aws_policy_delete_version}()},
-\code{\link{aws_policy_detach}()},
-\code{\link{aws_policy_exists}()},
-\code{\link{aws_policy_list_versions}()},
-\code{\link{aws_policy_update}()}
+Other policies:
+\code{\link[=as_policy_arn]{as_policy_arn()}},
+\code{\link[=aws_policies]{aws_policies()}},
+\code{\link[=aws_policy]{aws_policy()}},
+\code{\link[=aws_policy_attach]{aws_policy_attach()}},
+\code{\link[=aws_policy_create]{aws_policy_create()}},
+\code{\link[=aws_policy_delete]{aws_policy_delete()}},
+\code{\link[=aws_policy_delete_version]{aws_policy_delete_version()}},
+\code{\link[=aws_policy_detach]{aws_policy_detach()}},
+\code{\link[=aws_policy_exists]{aws_policy_exists()}},
+\code{\link[=aws_policy_list_versions]{aws_policy_list_versions()}},
+\code{\link[=aws_policy_update]{aws_policy_update()}}
 }
 \concept{policies}

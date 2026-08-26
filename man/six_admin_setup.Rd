@@ -28,11 +28,11 @@ AWS account setup for administrators
 }
 
 \seealso{
-Other magicians: 
-\code{\link{six_bucket_delete}()},
-\code{\link{six_bucket_upload}()},
-\code{\link{six_file_upload}()},
-\code{\link{six_user_create}()},
-\code{\link{six_user_delete}()}
+Other magicians:
+\code{\link[=six_bucket_delete]{six_bucket_delete()}},
+\code{\link[=six_bucket_upload]{six_bucket_upload()}},
+\code{\link[=six_file_upload]{six_file_upload()}},
+\code{\link[=six_user_create]{six_user_create()}},
+\code{\link[=six_user_delete]{six_user_delete()}}
 }
 \concept{magicians}

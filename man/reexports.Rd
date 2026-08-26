@@ -12,8 +12,8 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{dplyr}{\code{\link[dplyr:reexports]{\%>\%}}}
+  \item{dplyr}{\code{\link[dplyr:\%>\%]{\%>\%}}}
 
-  \item{s3fs}{\code{\link[s3fs:path]{s3_path}}}
+  \item{s3fs}{\code{\link[s3fs:s3_path]{s3_path()}}}
 }}
 

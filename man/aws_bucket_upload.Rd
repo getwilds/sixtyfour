@@ -24,7 +24,7 @@ multipart}
 default: \code{FALSE}. Should only be set to \code{TRUE} when required for
 non-interactive use.}
 
-\item{...}{named parameters passed on to \code{\link[s3fs:upload]{s3fs::s3_dir_upload()}}}
+\item{...}{named parameters passed on to \code{\link[s3fs:s3_dir_upload]{s3fs::s3_dir_upload()}}}
 }
 \value{
 the s3 format path of the bucket uploaded to
@@ -40,7 +40,7 @@ Requires the env var \code{AWS_REGION}. This function prompts you to make
 sure that you want to delete the bucket.
 }
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 library(fs)
 tdir <- path(tempdir(), "apples")
 dir.create(tdir)
@@ -61,15 +61,15 @@ aws_bucket_exists(bucket_name)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other buckets: 
-\code{\link{aws_bucket_create}()},
-\code{\link{aws_bucket_delete}()},
-\code{\link{aws_bucket_download}()},
-\code{\link{aws_bucket_exists}()},
-\code{\link{aws_bucket_list_objects}()},
-\code{\link{aws_bucket_tree}()},
-\code{\link{aws_buckets}()},
-\code{\link{six_bucket_delete}()},
-\code{\link{six_bucket_upload}()}
+Other buckets:
+\code{\link[=aws_bucket_create]{aws_bucket_create()}},
+\code{\link[=aws_bucket_delete]{aws_bucket_delete()}},
+\code{\link[=aws_bucket_download]{aws_bucket_download()}},
+\code{\link[=aws_bucket_exists]{aws_bucket_exists()}},
+\code{\link[=aws_bucket_list_objects]{aws_bucket_list_objects()}},
+\code{\link[=aws_bucket_tree]{aws_bucket_tree()}},
+\code{\link[=aws_buckets]{aws_buckets()}},
+\code{\link[=six_bucket_delete]{six_bucket_delete()}},
+\code{\link[=six_bucket_upload]{six_bucket_upload()}}
 }
 \concept{buckets}

@@ -17,10 +17,10 @@ of \code{remote_path}
 File attributes
 }
 \note{
-uses \code{\link[s3fs:info]{s3fs::s3_file_info()}} internally
+uses \code{\link[s3fs:s3_file_info]{s3fs::s3_file_info()}} internally
 }
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 library(glue)
 bucket <- random_bucket()
 if (!aws_bucket_exists(bucket)) {
@@ -46,13 +46,13 @@ six_bucket_delete(bucket, force = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other files: 
-\code{\link{aws_file_copy}()},
-\code{\link{aws_file_delete}()},
-\code{\link{aws_file_download}()},
-\code{\link{aws_file_exists}()},
-\code{\link{aws_file_rename}()},
-\code{\link{aws_file_upload}()},
-\code{\link{six_file_upload}()}
+Other files:
+\code{\link[=aws_file_copy]{aws_file_copy()}},
+\code{\link[=aws_file_delete]{aws_file_delete()}},
+\code{\link[=aws_file_download]{aws_file_download()}},
+\code{\link[=aws_file_exists]{aws_file_exists()}},
+\code{\link[=aws_file_rename]{aws_file_rename()}},
+\code{\link[=aws_file_upload]{aws_file_upload()}},
+\code{\link[=six_file_upload]{six_file_upload()}}
 }
 \concept{files}

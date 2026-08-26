@@ -46,7 +46,7 @@ See \url{https://www.paws-r-sdk.com/docs/iam_create_role/}
 docs for details on the parameters
 }
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 role_name <- "AMinorRole"
 trust_policy <- list(
   Version = "2012-10-17",
@@ -75,10 +75,10 @@ aws_role_delete(role_name)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other roles: 
-\code{\link{aws_role}()},
-\code{\link{aws_role_delete}()},
-\code{\link{aws_role_exists}()},
-\code{\link{aws_roles}()}
+Other roles:
+\code{\link[=aws_role]{aws_role()}},
+\code{\link[=aws_role_delete]{aws_role_delete()}},
+\code{\link[=aws_role_exists]{aws_role_exists()}},
+\code{\link[=aws_roles]{aws_roles()}}
 }
 \concept{roles}

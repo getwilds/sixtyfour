@@ -20,17 +20,17 @@ See \url{https://www.paws-r-sdk.com/docs/iam_delete_group/}
 docs for more details
 }
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 aws_group_create("somegroup")
 aws_group_delete("somegroup")
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other groups: 
-\code{\link{aws_group}()},
-\code{\link{aws_group_create}()},
-\code{\link{aws_group_exists}()},
-\code{\link{aws_groups}()},
-\code{\link{six_group_delete}()}
+Other groups:
+\code{\link[=aws_group]{aws_group()}},
+\code{\link[=aws_group_create]{aws_group_create()}},
+\code{\link[=aws_group_exists]{aws_group_exists()}},
+\code{\link[=aws_groups]{aws_groups()}},
+\code{\link[=six_group_delete]{six_group_delete()}}
 }
 \concept{groups}

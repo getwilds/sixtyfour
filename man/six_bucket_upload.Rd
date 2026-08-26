@@ -41,7 +41,7 @@ structure in the S3 bucket
 }
 
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 # single file, single remote path
 bucket1 <- random_bucket()
 demo_rds_file <- file.path(system.file(), "Meta/demo.rds")
@@ -78,23 +78,23 @@ six_bucket_delete(bucket3, force = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other buckets: 
-\code{\link{aws_bucket_create}()},
-\code{\link{aws_bucket_delete}()},
-\code{\link{aws_bucket_download}()},
-\code{\link{aws_bucket_exists}()},
-\code{\link{aws_bucket_list_objects}()},
-\code{\link{aws_bucket_tree}()},
-\code{\link{aws_bucket_upload}()},
-\code{\link{aws_buckets}()},
-\code{\link{six_bucket_delete}()}
+Other buckets:
+\code{\link[=aws_bucket_create]{aws_bucket_create()}},
+\code{\link[=aws_bucket_delete]{aws_bucket_delete()}},
+\code{\link[=aws_bucket_download]{aws_bucket_download()}},
+\code{\link[=aws_bucket_exists]{aws_bucket_exists()}},
+\code{\link[=aws_bucket_list_objects]{aws_bucket_list_objects()}},
+\code{\link[=aws_bucket_tree]{aws_bucket_tree()}},
+\code{\link[=aws_bucket_upload]{aws_bucket_upload()}},
+\code{\link[=aws_buckets]{aws_buckets()}},
+\code{\link[=six_bucket_delete]{six_bucket_delete()}}
 
-Other magicians: 
-\code{\link{six_admin_setup}()},
-\code{\link{six_bucket_delete}()},
-\code{\link{six_file_upload}()},
-\code{\link{six_user_create}()},
-\code{\link{six_user_delete}()}
+Other magicians:
+\code{\link[=six_admin_setup]{six_admin_setup()}},
+\code{\link[=six_bucket_delete]{six_bucket_delete()}},
+\code{\link[=six_file_upload]{six_file_upload()}},
+\code{\link[=six_user_create]{six_user_create()}},
+\code{\link[=six_user_delete]{six_user_delete()}}
 }
 \concept{buckets}
 \concept{magicians}

@@ -54,7 +54,7 @@ st8ment_rds <- aws_policy_statement(
 )
 aws_policy_document_create(st8ment_rds) \%>\% prettify()
 
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 ### DB account = user in a database that has access to it
 # all DB instances & DB accounts for a AWS account and AWS Region
 aws_policy_document_create(

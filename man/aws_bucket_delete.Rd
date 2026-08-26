@@ -27,7 +27,7 @@ Requires the env var \code{AWS_REGION}. This function prompts you to make
 sure that you want to delete the bucket.
 }
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 bucket_name <- random_bucket()
 if (!aws_bucket_exists(bucket_name)) {
   aws_bucket_create(bucket = bucket_name)
@@ -38,15 +38,15 @@ if (!aws_bucket_exists(bucket_name)) {
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other buckets: 
-\code{\link{aws_bucket_create}()},
-\code{\link{aws_bucket_download}()},
-\code{\link{aws_bucket_exists}()},
-\code{\link{aws_bucket_list_objects}()},
-\code{\link{aws_bucket_tree}()},
-\code{\link{aws_bucket_upload}()},
-\code{\link{aws_buckets}()},
-\code{\link{six_bucket_delete}()},
-\code{\link{six_bucket_upload}()}
+Other buckets:
+\code{\link[=aws_bucket_create]{aws_bucket_create()}},
+\code{\link[=aws_bucket_download]{aws_bucket_download()}},
+\code{\link[=aws_bucket_exists]{aws_bucket_exists()}},
+\code{\link[=aws_bucket_list_objects]{aws_bucket_list_objects()}},
+\code{\link[=aws_bucket_tree]{aws_bucket_tree()}},
+\code{\link[=aws_bucket_upload]{aws_bucket_upload()}},
+\code{\link[=aws_buckets]{aws_buckets()}},
+\code{\link[=six_bucket_delete]{six_bucket_delete()}},
+\code{\link[=six_bucket_upload]{six_bucket_upload()}}
 }
 \concept{buckets}

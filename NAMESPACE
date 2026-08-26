@@ -118,76 +118,100 @@ export(six_user_creds)
 export(six_user_delete)
 export(with_redacted)
 export(without_verbose)
-importFrom(cli,cli_abort)
-importFrom(cli,cli_alert_info)
-importFrom(cli,cli_alert_success)
-importFrom(cli,cli_alert_warning)
-importFrom(cli,cli_inform)
-importFrom(cli,cli_progress_bar)
-importFrom(cli,cli_progress_update)
-importFrom(cli,pb_spin)
+importFrom(cli,
+  cli_abort,
+  cli_alert_info,
+  cli_alert_success,
+  cli_alert_warning,
+  cli_inform,
+  cli_progress_bar,
+  cli_progress_update,
+  pb_spin
+)
 importFrom(clipr,write_clip)
-importFrom(curl,curl_fetch_memory)
-importFrom(curl,curl_unescape)
-importFrom(dplyr,"%>%")
-importFrom(dplyr,bind_rows)
-importFrom(dplyr,case_match)
-importFrom(dplyr,case_when)
-importFrom(dplyr,coalesce)
-importFrom(dplyr,distinct)
-importFrom(dplyr,filter)
-importFrom(dplyr,group_by)
-importFrom(dplyr,last_col)
-importFrom(dplyr,left_join)
-importFrom(dplyr,mutate)
-importFrom(dplyr,pull)
-importFrom(dplyr,relocate)
-importFrom(dplyr,rename)
-importFrom(dplyr,rename_with)
-importFrom(dplyr,rowwise)
-importFrom(dplyr,select)
-importFrom(dplyr,starts_with)
-importFrom(dplyr,ungroup)
-importFrom(fs,dir_ls)
-importFrom(fs,file_exists)
-importFrom(fs,fs_bytes)
-importFrom(fs,is_dir)
-importFrom(fs,path)
-importFrom(fs,path_join)
-importFrom(fs,path_split)
+importFrom(curl,
+  curl_fetch_memory,
+  curl_unescape
+)
+importFrom(dplyr,
+  "%>%",
+  bind_rows,
+  case_match,
+  case_when,
+  coalesce,
+  distinct,
+  filter,
+  group_by,
+  last_col,
+  left_join,
+  mutate,
+  pull,
+  relocate,
+  rename,
+  rename_with,
+  rowwise,
+  select,
+  starts_with,
+  ungroup
+)
+importFrom(fs,
+  dir_ls,
+  file_exists,
+  fs_bytes,
+  is_dir,
+  path,
+  path_join,
+  path_split
+)
 importFrom(glue,glue)
-importFrom(ipaddress,ip_address)
-importFrom(ipaddress,is_ipv6)
-importFrom(jsonlite,fromJSON)
-importFrom(jsonlite,toJSON)
+importFrom(ipaddress,
+  ip_address,
+  is_ipv6
+)
+importFrom(jsonlite,
+  fromJSON,
+  toJSON
+)
 importFrom(paws.common,locate_credentials)
 importFrom(paws.compute,ec2)
 importFrom(paws.cost.management,costexplorer)
-importFrom(paws.database,rds)
-importFrom(paws.database,redshift)
-importFrom(paws.security.identity,iam)
-importFrom(paws.security.identity,secretsmanager)
+importFrom(paws.database,
+  rds,
+  redshift
+)
+importFrom(paws.security.identity,
+  iam,
+  secretsmanager
+)
 importFrom(paws.storage,s3)
-importFrom(purrr,compact)
-importFrom(purrr,discard)
-importFrom(purrr,flatten)
-importFrom(purrr,keep)
-importFrom(purrr,list_rbind)
-importFrom(purrr,map)
-importFrom(purrr,map2_vec)
-importFrom(purrr,map_chr)
-importFrom(purrr,map_lgl)
-importFrom(purrr,pluck)
-importFrom(purrr,safely)
-importFrom(rlang,":=")
-importFrom(rlang,abort)
-importFrom(rlang,env_poke)
-importFrom(rlang,has_name)
-importFrom(rlang,is_character)
-importFrom(rlang,is_empty)
-importFrom(rlang,is_na)
-importFrom(s3fs,s3_file_system)
-importFrom(s3fs,s3_path)
-importFrom(tibble,as_tibble)
-importFrom(tibble,tibble)
+importFrom(purrr,
+  compact,
+  discard,
+  flatten,
+  keep,
+  list_rbind,
+  map,
+  map2_vec,
+  map_chr,
+  map_lgl,
+  pluck,
+  safely
+)
+importFrom(rlang,
+  ":=",
+  abort,
+  env_poke,
+  has_name,
+  is_character,
+  is_empty,
+  is_na
+)
+importFrom(s3fs,
+  s3_file_system,
+  s3_path
+)
+importFrom(tibble,
+  as_tibble,
+  tibble
+)
 importFrom(tidyr,pivot_wider)

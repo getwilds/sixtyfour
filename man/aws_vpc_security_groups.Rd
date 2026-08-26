@@ -17,17 +17,17 @@ for details
 List VPC security groups
 }
 \examples{
-\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) withAutoprint(\{ # examplesIf}
 aws_vpc_security_groups()
 aws_vpc_security_groups(MaxResults = 6)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other security groups: 
-\code{\link{aws_vpc_sec_group_rules_mod}()},
-\code{\link{aws_vpc_security_group}()},
-\code{\link{aws_vpc_security_group_create}()},
-\code{\link{aws_vpc_security_group_ingress}()},
-\code{\link{aws_vpc_sg_with_ingress}()}
+Other security groups:
+\code{\link[=aws_vpc_sec_group_rules_mod]{aws_vpc_sec_group_rules_mod()}},
+\code{\link[=aws_vpc_security_group]{aws_vpc_security_group()}},
+\code{\link[=aws_vpc_security_group_create]{aws_vpc_security_group_create()}},
+\code{\link[=aws_vpc_security_group_ingress]{aws_vpc_security_group_ingress()}},
+\code{\link[=aws_vpc_sg_with_ingress]{aws_vpc_sg_with_ingress()}}
 }
 \concept{security groups}
