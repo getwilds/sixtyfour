@@ -19,17 +19,17 @@ A tibble with information about groups
 List all groups or groups for a single user
 }
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 aws_groups()
 aws_groups(username = aws_user_current())
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other groups: 
-\code{\link{aws_group}()},
-\code{\link{aws_group_create}()},
-\code{\link{aws_group_delete}()},
-\code{\link{aws_group_exists}()},
-\code{\link{six_group_delete}()}
+Other groups:
+\code{\link[=aws_group]{aws_group()}},
+\code{\link[=aws_group_create]{aws_group_create()}},
+\code{\link[=aws_group_delete]{aws_group_delete()}},
+\code{\link[=aws_group_exists]{aws_group_exists()}},
+\code{\link[=six_group_delete]{six_group_delete()}}
 }
 \concept{groups}

@@ -19,7 +19,7 @@ aws_file_delete(remote_path, ...)
 Delete a file
 }
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 # create a file
 bucket <- random_bucket()
 aws_bucket_create(bucket)
@@ -38,13 +38,13 @@ six_bucket_delete(bucket, force = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other files: 
-\code{\link{aws_file_attr}()},
-\code{\link{aws_file_copy}()},
-\code{\link{aws_file_download}()},
-\code{\link{aws_file_exists}()},
-\code{\link{aws_file_rename}()},
-\code{\link{aws_file_upload}()},
-\code{\link{six_file_upload}()}
+Other files:
+\code{\link[=aws_file_attr]{aws_file_attr()}},
+\code{\link[=aws_file_copy]{aws_file_copy()}},
+\code{\link[=aws_file_download]{aws_file_download()}},
+\code{\link[=aws_file_exists]{aws_file_exists()}},
+\code{\link[=aws_file_rename]{aws_file_rename()}},
+\code{\link[=aws_file_upload]{aws_file_upload()}},
+\code{\link[=six_file_upload]{six_file_upload()}}
 }
 \concept{files}

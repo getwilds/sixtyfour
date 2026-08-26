@@ -20,7 +20,7 @@ Get a random password
 The parameter \code{PasswordLength} is hard coded to \code{40L}
 }
 \examples{
-\dontshow{if (aws_has_creds() && interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds() && interactive()) withAutoprint(\{ # examplesIf}
 aws_secrets_pwd()
 aws_secrets_pwd(ExcludeNumbers = TRUE)
 \dontshow{\}) # examplesIf}

@@ -22,7 +22,7 @@ invisibly returns \code{NULL}
 Delete a policy version
 }
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 if (aws_policy_exists("RdsAllow888")) {
   aws_policy_delete("RdsAllow888")
 }
@@ -58,17 +58,17 @@ aws_policy_delete("RdsAllow888")
 \url{https://www.paws-r-sdk.com/docs/iam_delete_policy_version/}
 }
 \seealso{
-Other policies: 
-\code{\link{as_policy_arn}()},
-\code{\link{aws_policies}()},
-\code{\link{aws_policy}()},
-\code{\link{aws_policy_attach}()},
-\code{\link{aws_policy_create}()},
-\code{\link{aws_policy_delete}()},
-\code{\link{aws_policy_detach}()},
-\code{\link{aws_policy_exists}()},
-\code{\link{aws_policy_list_entities}()},
-\code{\link{aws_policy_list_versions}()},
-\code{\link{aws_policy_update}()}
+Other policies:
+\code{\link[=as_policy_arn]{as_policy_arn()}},
+\code{\link[=aws_policies]{aws_policies()}},
+\code{\link[=aws_policy]{aws_policy()}},
+\code{\link[=aws_policy_attach]{aws_policy_attach()}},
+\code{\link[=aws_policy_create]{aws_policy_create()}},
+\code{\link[=aws_policy_delete]{aws_policy_delete()}},
+\code{\link[=aws_policy_detach]{aws_policy_detach()}},
+\code{\link[=aws_policy_exists]{aws_policy_exists()}},
+\code{\link[=aws_policy_list_entities]{aws_policy_list_entities()}},
+\code{\link[=aws_policy_list_versions]{aws_policy_list_versions()}},
+\code{\link[=aws_policy_update]{aws_policy_update()}}
 }
 \concept{policies}

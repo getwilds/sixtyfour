@@ -82,7 +82,7 @@ than "localstack") then we don't set any credentials internally, but
 files, etc.-
 }
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 z <- con_iam()
 z
 

@@ -43,7 +43,7 @@ update an existing secret. This function fails if you call it with
 an existing secret with the same name or ARN
 }
 \examples{
-\dontshow{if (aws_has_creds() && interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds() && interactive()) withAutoprint(\{ # examplesIf}
 try({
 # Text secret
 secret1 <- random_string("secret-", size = 16)

@@ -23,11 +23,11 @@ security group and ingress rules see \code{\link[=aws_vpc_security_group_create]
 and \code{\link[=aws_vpc_security_group_ingress]{aws_vpc_security_group_ingress()}}
 }
 \seealso{
-Other security groups: 
-\code{\link{aws_vpc_sec_group_rules_mod}()},
-\code{\link{aws_vpc_security_group}()},
-\code{\link{aws_vpc_security_group_create}()},
-\code{\link{aws_vpc_security_group_ingress}()},
-\code{\link{aws_vpc_security_groups}()}
+Other security groups:
+\code{\link[=aws_vpc_sec_group_rules_mod]{aws_vpc_sec_group_rules_mod()}},
+\code{\link[=aws_vpc_security_group]{aws_vpc_security_group()}},
+\code{\link[=aws_vpc_security_group_create]{aws_vpc_security_group_create()}},
+\code{\link[=aws_vpc_security_group_ingress]{aws_vpc_security_group_ingress()}},
+\code{\link[=aws_vpc_security_groups]{aws_vpc_security_groups()}}
 }
 \concept{security groups}

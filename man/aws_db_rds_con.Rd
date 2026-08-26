@@ -59,12 +59,12 @@ tbl(con_rds, "mtcars")
 }
 }
 \seealso{
-Other database: 
-\code{\link{aws_db_cluster_status}()},
-\code{\link{aws_db_instance_status}()},
-\code{\link{aws_db_rds_create}()},
-\code{\link{aws_db_rds_list}()},
-\code{\link{aws_db_redshift_con}()},
-\code{\link{aws_db_redshift_create}()}
+Other database:
+\code{\link[=aws_db_cluster_status]{aws_db_cluster_status()}},
+\code{\link[=aws_db_instance_status]{aws_db_instance_status()}},
+\code{\link[=aws_db_rds_create]{aws_db_rds_create()}},
+\code{\link[=aws_db_rds_list]{aws_db_rds_list()}},
+\code{\link[=aws_db_redshift_con]{aws_db_redshift_con()}},
+\code{\link[=aws_db_redshift_create]{aws_db_redshift_create()}}
 }
 \concept{database}

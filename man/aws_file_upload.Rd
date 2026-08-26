@@ -24,7 +24,7 @@ Upload a file
 to upload a folder of files see \code{\link[=aws_bucket_upload]{aws_bucket_upload()}}
 }
 \examples{
-\dontshow{if (aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (aws_has_creds()) withAutoprint(\{ # examplesIf}
 bucket1 <- random_bucket()
 aws_bucket_create(bucket1)
 cat(bucket1)
@@ -97,13 +97,13 @@ six_bucket_delete(bucket3, force = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other files: 
-\code{\link{aws_file_attr}()},
-\code{\link{aws_file_copy}()},
-\code{\link{aws_file_delete}()},
-\code{\link{aws_file_download}()},
-\code{\link{aws_file_exists}()},
-\code{\link{aws_file_rename}()},
-\code{\link{six_file_upload}()}
+Other files:
+\code{\link[=aws_file_attr]{aws_file_attr()}},
+\code{\link[=aws_file_copy]{aws_file_copy()}},
+\code{\link[=aws_file_delete]{aws_file_delete()}},
+\code{\link[=aws_file_download]{aws_file_download()}},
+\code{\link[=aws_file_exists]{aws_file_exists()}},
+\code{\link[=aws_file_rename]{aws_file_rename()}},
+\code{\link[=six_file_upload]{six_file_upload()}}
 }
 \concept{files}

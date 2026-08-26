@@ -22,12 +22,13 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Scott Chamberlain \email{sachamber@fredhutch.org} (\href{https://orcid.org/0000-0003-1444-9135}{ORCID})
   \item Sean Kross
 }
 
 Other contributors:
 \itemize{
-  \item Fred Hutchinson Cancer Center \email{wilds@fredhutch.org} (007ps6h72) [funder]
+  \item Fred Hutchinson Cancer Center \email{wilds@fredhutch.org} (\href{https://ror.org/007ps6h72}{ROR}) [funder]
 }
 
 }

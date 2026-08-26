@@ -65,7 +65,7 @@ Different filter criteria can be combined in different ways using \code{AND},
 }
 
 \examples{
-\dontshow{if (interactive() && aws_has_creds()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive() && aws_has_creds()) withAutoprint(\{ # examplesIf}
 library(lubridate)
 library(dplyr)
 
@@ -162,7 +162,7 @@ aws_billing(
 \url{https://www.paws-r-sdk.com/docs/costexplorer/}
 }
 \seealso{
-Other billing: 
-\code{\link{aws_billing_raw}()}
+Other billing:
+\code{\link[=aws_billing_raw]{aws_billing_raw()}}
 }
 \concept{billing}
