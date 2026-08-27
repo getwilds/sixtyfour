@@ -128,7 +128,6 @@ importFrom(cli,
   cli_progress_update,
   pb_spin
 )
-importFrom(clipr,write_clip)
 importFrom(curl,
   curl_fetch_memory,
   curl_unescape
@@ -164,10 +163,6 @@ importFrom(fs,
   path_split
 )
 importFrom(glue,glue)
-importFrom(ipaddress,
-  ip_address,
-  is_ipv6
-)
 importFrom(jsonlite,
   fromJSON,
   toJSON

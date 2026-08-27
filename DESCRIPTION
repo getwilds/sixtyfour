@@ -8,7 +8,7 @@ Authors@R: c(
     person("Fred Hutchinson Cancer Center", , , "wilds@fredhutch.org", role = "fnd",
            comment = c(ROR = "007ps6h72"))
   )
-Description: An opinionated interface to Amazon Web Services <https://aws.amazon.com>, 
+Description: An opinionated interface to Amazon Web Services <https://aws.amazon.com>,
     with functions for interacting with 'IAM' (Identity and Access Management),
     'S3' (Simple Storage Service), 'RDS' (Relational Data Service), Redshift, and Billing.
     Lower level functions ('aws_' prefix) are for do it yourself workflows, while
@@ -42,9 +42,7 @@ Imports:
     uuid,
     jsonlite,
     curl,
-    tidyr,
-    clipr,
-    ipaddress
+    tidyr
 Suggests:
     knitr,
     withr,
@@ -57,7 +55,9 @@ Suggests:
     lubridate,
     testthat (>= 3.0.0),
     vcr (>= 0.6.0),
-    webmockr
+    webmockr,
+    clipr,
+    ipaddress
 Config/roxyglobals/filename: globals.R
 Config/roxyglobals/unique: FALSE
 Config/testthat/edition: 3
