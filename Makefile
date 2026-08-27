@@ -72,8 +72,11 @@ test:
 readme:
 	${RSCRIPT} -e "knitr::knit('README.Rmd')"
 
-lint_package:
-	${RSCRIPT} -e "lintr::lint_package()"
+lint_check:
+	air format --check .
+
+lint_fix:
+	air format .
 
 # use: `make style_file FILE=stuff.R`
 # ("R/" is prepended); accepts 1 file only

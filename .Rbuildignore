@@ -12,3 +12,4 @@ vignettes/figure
 start/
 minio.deb
 ^cran-comments\.md$
+^[\.]?air\.toml$
