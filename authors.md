@@ -13,7 +13,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/getwilds/sixtyfour/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/getwilds/sixtyfour/blob/v0.2.4/DESCRIPTION)
 
 Kross S, Chamberlain S (2026). *sixtyfour: Humane Interface to Amazon
 Web Services*. R package version 0.2.4,
