@@ -20,7 +20,7 @@ You can fix typos, spelling mistakes, or grammatical errors in the documentation
 If you want to make a bigger change, it's a good idea to first file an issue and make sure someone from the team agrees that it’s needed.
 
 If you’ve found a bug, please file an issue that illustrates the bug with a minimal
-reproducible example using [reprex](https://www.tidyverse.org/help/#reprex).
+reproducible example using [reprex](https://tidyverse.org/help/#reprex).
 
 Note that this package has a `Makefile` in the root of the repository - see the targets in the `Makefile` for various package maintenance tasks.
 
@@ -59,7 +59,7 @@ We use [Minio][] for testing two sets of functions in this package for interacti
 
 `sixtyfour` tests that use Minio will just be skipped if you don't have Minio running.
 
-To use Minio, first install it for your platform: [MacOS](https://min.io/docs/minio/macos/index.html), [Windows](https://min.io/docs/minio/windows/index.html), [Linux](https://min.io/docs/minio/linux/index.html).
+To use Minio, first install it for your platform: [macOS](https://docs.min.io/aistor/installation/macos/install/), [Windows](https://docs.min.io/aistor/installation/windows/install/), [Linux](https://docs.min.io/aistor/installation/linux/install/deploy-aistor-on-ubuntu-server/).
 
 Next, start Minio. Within this package is a make target `minio_start` for starting Minio locally; it should only work on Linux and MacOS platforms.
 
@@ -164,5 +164,5 @@ Please note that this project is released with a
 [Contributor Code of Conduct](https://getwilds.org/sixtyfour/CODE_OF_CONDUCT.html). By contributing to this
 project you agree to abide by its terms.
 
-[Minio]: https://min.io/
+[Minio]: https://www.min.io/
 [ls]: https://www.localstack.cloud/
