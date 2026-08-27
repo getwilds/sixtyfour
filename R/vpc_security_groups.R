@@ -38,7 +38,9 @@ security_group_handler <- function(ids, engine) {
   sgsdf <- jsonlite::fromJSON(
     jsonlite::toJSON(sgs$SecurityGroups, auto_unbox = TRUE)
   )
-  if (is_empty(sgsdf)) sgsdf <- tibble(IpPermissions = list())
+  if (is_empty(sgsdf)) {
+    sgsdf <- tibble(IpPermissions = list())
+  }
 
   port_df <- dplyr::filter(
     sgsdf,

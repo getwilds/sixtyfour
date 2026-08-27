@@ -12,7 +12,9 @@ info <- function(id, fun, see_fun = "") {
   cli::cli_alert_info("Instance details:")
   con_info <- fun(id)
   for (i in seq_along(con_info)) {
-    if (names(con_info)[i] == "status") next
+    if (names(con_info)[i] == "status") {
+      next
+    }
     cli::cli_alert_info("  {names(con_info)[i]}: {con_info[[i]]}")
   }
 }
