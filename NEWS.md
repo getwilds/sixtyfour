@@ -1,3 +1,7 @@
+# sixtyfour 0.2.4
+
+* depend on paws child packages instead of paws itself (#135) (#136)
+
 # sixtyfour 0.2.0
 
 ## NEW FEATURES
