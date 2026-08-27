@@ -311,7 +311,6 @@ engine2port <- function(engine) {
 
 #' Ip Permissions generator
 #'
-#' @importFrom ipaddress ip_address is_ipv6
 #' @export
 #' @param engine (character) one of mariadb, mysql, or postgres
 #' @param port (character) port number. port determined from `engine`
@@ -320,6 +319,7 @@ engine2port <- function(engine) {
 #' depending on value of `engine`
 #' @return a list with slots: FromPort, ToPort, IpProtocol, and IpRanges
 ip_permissions_generator <- function(engine, port = NULL, description = NULL) {
+  rlang::check_installed("ipaddress", reason = "to generate ip permissions")
   protocol <- "tcp"
   port <- engine2port(engine)
   if (is.null(description)) {
@@ -331,7 +331,7 @@ ip_permissions_generator <- function(engine, port = NULL, description = NULL) {
     ToPort = port,
     IpProtocol = protocol
   )
-  if (is_ipv6(ip_address(ip))) {
+  if (ipaddress::is_ipv6(ipaddress::ip_address(ip))) {
     result$Ipv6Ranges <- list(
       list(CidrIpv6 = glue("{ip}/128"), description = description)
     )
