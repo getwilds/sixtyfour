@@ -36,7 +36,9 @@ test_that("aws_file_upload - many files", {
   aws_bucket_create("upload")
 
   the_files <- replicate(50, tempfile(fileext = ".txt"))
-  for (f in the_files) cat(letters, file = f)
+  for (f in the_files) {
+    cat(letters, file = f)
+  }
 
   res <- aws_file_upload(
     the_files,
@@ -44,9 +46,15 @@ test_that("aws_file_upload - many files", {
   )
 
   expect_length(res, length(the_files))
-  for (f in res) expect_type(f, "character")
-  for (f in res) expect_match(f, "upload")
-  for (f in res) expect_match(f, ".txt")
+  for (f in res) {
+    expect_type(f, "character")
+  }
+  for (f in res) {
+    expect_match(f, "upload")
+  }
+  for (f in res) {
+    expect_match(f, ".txt")
+  }
 
   bucket_delete("upload", force = TRUE)
 })
@@ -85,7 +93,9 @@ test_that("aws_file_download - many files", {
   aws_bucket_create("download")
 
   the_files <- replicate(10, tempfile(fileext = ".txt"))
-  for (f in the_files) cat(letters, "\n", file = f)
+  for (f in the_files) {
+    cat(letters, "\n", file = f)
+  }
 
   res <- aws_file_upload(
     the_files,
@@ -99,8 +109,12 @@ test_that("aws_file_download - many files", {
   )
 
   expect_length(out, length(the_files))
-  for (f in out) expect_type(f, "character")
-  for (f in out) expect_match(f, ".txt")
+  for (f in out) {
+    expect_type(f, "character")
+  }
+  for (f in out) {
+    expect_match(f, ".txt")
+  }
   for (f in out) {
     expect_equal(
       strsplit(readLines(f, warn = FALSE), " ")[[1]],

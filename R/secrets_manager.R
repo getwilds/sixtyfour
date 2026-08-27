@@ -120,8 +120,12 @@ aws_secrets_pwd <- function(...) {
 aws_secrets_create <- function(name, secret, description = NULL, ...) {
   check_secret(secret)
   secret_str <- secret_raw <- NULL
-  if (rlang::is_raw(secret)) secret_raw <- secret
-  if (rlang::is_character(secret)) secret_str <- secret
+  if (rlang::is_raw(secret)) {
+    secret_raw <- secret
+  }
+  if (rlang::is_character(secret)) {
+    secret_str <- secret
+  }
   con_sm()$create_secret(
     Name = name,
     ClientRequestToken = uuid::UUIDgenerate(),
@@ -172,8 +176,12 @@ aws_secrets_create <- function(name, secret, description = NULL, ...) {
 aws_secrets_update <- function(id, secret, ...) {
   check_secret(secret)
   secret_str <- secret_raw <- NULL
-  if (rlang::is_raw(secret)) secret_raw <- secret
-  if (rlang::is_character(secret)) secret_str <- secret
+  if (rlang::is_raw(secret)) {
+    secret_raw <- secret
+  }
+  if (rlang::is_character(secret)) {
+    secret_str <- secret
+  }
   con_sm()$put_secret_value(
     SecretId = id,
     ClientRequestToken = uuid::UUIDgenerate(),

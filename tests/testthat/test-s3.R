@@ -61,8 +61,7 @@ test_that("six_bucket_add_user", {
     c("AWS_PROFILE" = "localstack"),
     {
       withr::with_options(
-        list(cli.default_handler = function(...) {
-        }),
+        list(cli.default_handler = function(...) {}),
         {
           user_added <- six_bucket_add_user(
             bucket = bucket_name,
@@ -120,8 +119,7 @@ test_that("six_bucket_permissions", {
     c("AWS_PROFILE" = "localstack"),
     {
       withr::with_options(
-        list(cli.default_handler = function(...) {
-        }),
+        list(cli.default_handler = function(...) {}),
         {
           six_bucket_add_user(
             bucket = bucket_name,
@@ -151,15 +149,13 @@ test_that("six_bucket_permissions", {
     {
       if (aws_user_exists(user1)) {
         withr::with_options(
-          list(cli.default_handler = function(...) {
-          }),
+          list(cli.default_handler = function(...) {}),
           six_user_delete(user1)
         )
       }
       if (aws_user_exists(user2)) {
         withr::with_options(
-          list(cli.default_handler = function(...) {
-          }),
+          list(cli.default_handler = function(...) {}),
           six_user_delete(user2)
         )
       }
@@ -191,8 +187,7 @@ test_that("six_bucket_remove_user", {
     c("AWS_PROFILE" = "localstack"),
     {
       withr::with_options(
-        list(cli.default_handler = function(...) {
-        }),
+        list(cli.default_handler = function(...) {}),
         {
           six_bucket_add_user(
             bucket = bucket_name,
@@ -208,8 +203,7 @@ test_that("six_bucket_remove_user", {
     c("AWS_PROFILE" = "localstack"),
     {
       withr::with_options(
-        list(cli.default_handler = function(...) {
-        }),
+        list(cli.default_handler = function(...) {}),
         {
           user_removed <- six_bucket_remove_user(
             bucket = bucket_name,
@@ -229,8 +223,7 @@ test_that("six_bucket_remove_user", {
     {
       if (aws_user_exists(user_name)) {
         withr::with_options(
-          list(cli.default_handler = function(...) {
-          }),
+          list(cli.default_handler = function(...) {}),
           six_user_delete(user_name)
         )
       }

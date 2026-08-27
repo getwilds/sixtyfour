@@ -17,7 +17,9 @@ wait_until <- function(fun, message) {
     is_not_available <- TRUE
     while (is_not_available) {
       status <- fun(id)
-      if (status == "not found") break
+      if (status == "not found") {
+        break
+      }
       cli::cli_progress_update()
       Sys.sleep(sleep)
       if (status == status_target) {

@@ -90,7 +90,9 @@ test_that("aws_bucket_list_objects", {
   bucket <- random_bucket()
   aws_bucket_create(bucket)
   ffs <- list.files(file.path(system.file(), "Meta"), full.names = TRUE)
-  for (f in ffs) aws_file_upload(f, s3_path(bucket, basename(f)))
+  for (f in ffs) {
+    aws_file_upload(f, s3_path(bucket, basename(f)))
+  }
 
   res <- aws_bucket_list_objects(bucket)
 
@@ -102,7 +104,9 @@ test_that("aws_bucket_list_objects", {
 })
 
 test_that("aws_buckets", {
-  for (i in replicate(10, random_bucket())) aws_bucket_create(i)
+  for (i in replicate(10, random_bucket())) {
+    aws_bucket_create(i)
+  }
 
   res <- aws_buckets()
 
@@ -119,7 +123,9 @@ test_that("aws_bucket_tree", {
   bucket <- random_bucket()
   aws_bucket_create(bucket)
   ffs <- list.files(file.path(system.file(), "Meta"), full.names = TRUE)
-  for (f in ffs) aws_file_upload(f, s3_path(bucket, basename(f)))
+  for (f in ffs) {
+    aws_file_upload(f, s3_path(bucket, basename(f)))
+  }
 
   expect_output(
     res <- aws_bucket_tree(bucket),

@@ -77,7 +77,9 @@ all_policies <- memoise::memoise(function(...) {
 #' # refresh=TRUE will pull from AWS
 #' aws_policies(refresh = TRUE)
 aws_policies <- function(refresh = FALSE, ...) {
-  if (refresh) memoise::forget(all_policies)
+  if (refresh) {
+    memoise::forget(all_policies)
+  }
   all_policies(...)
 }
 
@@ -586,7 +588,9 @@ as_policy_arn <- function(name, local = FALSE, path = NULL) {
   stopifnot(is.character(name))
   stopifnot(is.logical(local))
   stopifnot(is.character(path) || is.null(path))
-  if (!is.null(path)) stopifnot(length(path) == 1)
+  if (!is.null(path)) {
+    stopifnot(length(path) == 1)
+  }
   stopifnot(length(name) == 1)
   if (grepl("^arn:", name)) {
     return(name)

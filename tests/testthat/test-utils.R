@@ -15,8 +15,16 @@ test_that("path_s3_parse works", {
   b <- path_s3_parse(paths)
   expect_type(b, "list")
   expect_named(b, NULL)
-  for (i in b) expect_named(i, c("bucket", "path", "file"))
-  for (i in b) expect_equal(i$bucket, "s64-test-2")
-  for (i in b) expect_type(i$path, "character")
-  for (i in b) expect_type(i$file, "character")
+  for (i in b) {
+    expect_named(i, c("bucket", "path", "file"))
+  }
+  for (i in b) {
+    expect_equal(i$bucket, "s64-test-2")
+  }
+  for (i in b) {
+    expect_type(i$path, "character")
+  }
+  for (i in b) {
+    expect_type(i$file, "character")
+  }
 })

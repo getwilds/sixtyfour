@@ -59,7 +59,9 @@ aws_s3_policy_doc_create <- function(
       )
     )
   )
-  if (!is.null(sid)) doc$Statement[[1]]$Sid <- sid
+  if (!is.null(sid)) {
+    doc$Statement[[1]]$Sid <- sid
+  }
   jsonlite::toJSON(doc, auto_unbox = TRUE, ...)
 }
 

@@ -86,7 +86,9 @@ aws_user <- function(username = NULL) {
   x <- con_iam()$get_user(username)$User %>%
     list(.) %>%
     user_list_tidy()
-  if (is.null(username)) username <- x$UserName
+  if (is.null(username)) {
+    username <- x$UserName
+  }
   list(
     user = x,
     policies = policies("user", username),
