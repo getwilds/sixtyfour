@@ -16,13 +16,13 @@ Source:
 [`DESCRIPTION`](https://github.com/getwilds/sixtyfour/blob/main/DESCRIPTION)
 
 Kross S, Chamberlain S (2026). *sixtyfour: Humane Interface to Amazon
-Web Services*. R package version 0.2.0,
+Web Services*. R package version 0.2.4,
 <https://github.com/getwilds/sixtyfour>.
 
     @Manual{,
       title = {sixtyfour: Humane Interface to Amazon Web Services},
       author = {Sean Kross and Scott Chamberlain},
       year = {2026},
-      note = {R package version 0.2.0},
+      note = {R package version 0.2.4},
       url = {https://github.com/getwilds/sixtyfour},
     }

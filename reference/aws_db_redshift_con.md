@@ -45,7 +45,7 @@ The connection returned is created using
 [RPostgres](https://rpostgres.r-dbi.org/)
 
 You can manage Redshift programatically via
-[paws::redshift](https://www.paws-r-sdk.com/docs/redshift/)
+[paws.database::redshift](https://www.paws-r-sdk.com/docs/redshift/)
 
 ## See also
 

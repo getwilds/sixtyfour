@@ -24,9 +24,12 @@ Useful links:
 
 Authors:
 
+- Scott Chamberlain <sachamber@fredhutch.org>
+  ([ORCID](https://orcid.org/0000-0003-1444-9135))
+
 - Sean Kross
 
 Other contributors:
 
-- Fred Hutchinson Cancer Center <wilds@fredhutch.org> (007ps6h72)
-  \[funder\]
+- Fred Hutchinson Cancer Center <wilds@fredhutch.org>
+  ([ROR](https://ror.org/007ps6h72)) \[funder\]

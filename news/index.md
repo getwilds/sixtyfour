@@ -1,5 +1,11 @@
 # Changelog
 
+## sixtyfour 0.2.4
+
+- depend on paws child packages instead of paws itself
+  ([\#135](https://github.com/getwilds/sixtyfour/issues/135))
+  ([\#136](https://github.com/getwilds/sixtyfour/issues/136))
+
 ## sixtyfour 0.2.0
 
 CRAN release: 2025-03-31

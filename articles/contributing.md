@@ -19,7 +19,7 @@ issue and make sure someone from the team agrees that it’s needed.
 
 If you’ve found a bug, please file an issue that illustrates the bug
 with a minimal reproducible example using
-[reprex](https://www.tidyverse.org/help/#reprex).
+[reprex](https://tidyverse.org/help/#reprex).
 
 Note that this package has a `Makefile` in the root of the repository -
 see the targets in the `Makefile` for various package maintenance tasks.
@@ -64,7 +64,7 @@ We use two tools to replace real AWS accounts: Minio, Localstack.
 
 ### Minio
 
-We use [Minio](https://min.io/) for testing two sets of functions in
+We use [Minio](https://www.min.io/) for testing two sets of functions in
 this package for interacting with S3:
 
 - tests in `test-buckets.R`
@@ -76,9 +76,9 @@ this package for interacting with S3:
 Minio running.
 
 To use Minio, first install it for your platform:
-[MacOS](https://min.io/docs/minio/macos/index.html),
-[Windows](https://min.io/docs/minio/windows/index.html),
-[Linux](https://min.io/docs/minio/linux/index.html).
+[macOS](https://docs.min.io/aistor/installation/macos/install/),
+[Windows](https://docs.min.io/aistor/installation/windows/install/),
+[Linux](https://docs.min.io/aistor/installation/linux/install/deploy-aistor-on-ubuntu-server/).
 
 Next, start Minio. Within this package is a make target `minio_start`
 for starting Minio locally; it should only work on Linux and MacOS

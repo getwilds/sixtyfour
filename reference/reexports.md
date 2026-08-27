@@ -5,8 +5,8 @@ to see their documentation.
 
 - dplyr:
 
-  [`%>%`](https://dplyr.tidyverse.org/reference/reexports.html)
+  [`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)
 
 - s3fs:
 
-  [`s3_path`](https://rdrr.io/pkg/s3fs/man/path.html)
+  [`s3_path()`](https://rdrr.io/pkg/s3fs/man/path.html)

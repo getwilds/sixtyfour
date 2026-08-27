@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sixtyfour</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,7 +106,7 @@ changes are made in the <em>source</em> file.</p>
 an issue and make sure someone from the team agrees that it’s
 needed.</p>
 <p>If you’ve found a bug, please file an issue that illustrates the bug
-with a minimal reproducible example using <a href="https://www.tidyverse.org/help/#reprex" class="external-link">reprex</a>.</p>
+with a minimal reproducible example using <a href="https://tidyverse.org/help/#reprex" class="external-link">reprex</a>.</p>
 <p>Note that this package has a <code>Makefile</code> in the root of the
 repository - see the targets in the <code>Makefile</code> for various
 package maintenance tasks.</p>
@@ -164,8 +164,8 @@ unwated changes to an account, etc.</p>
 <div class="section level3">
 <h3 id="minio">Minio<a class="anchor" aria-label="anchor" href="#minio"></a>
 </h3>
-<p>We use <a href="https://min.io/" class="external-link">Minio</a> for testing two sets of
-functions in this package for interacting with S3:</p>
+<p>We use <a href="https://www.min.io/" class="external-link">Minio</a> for testing two sets
+of functions in this package for interacting with S3:</p>
 <ul>
 <li>tests in <code>test-buckets.R</code>
 </li>
@@ -177,7 +177,9 @@ functions in this package for interacting with S3:</p>
 </h4>
 <p><code>sixtyfour</code> tests that use Minio will just be skipped if
 you don’t have Minio running.</p>
-<p>To use Minio, first install it for your platform: <a href="https://min.io/docs/minio/macos/index.html" class="external-link">MacOS</a>, <a href="https://min.io/docs/minio/windows/index.html" class="external-link">Windows</a>, <a href="https://min.io/docs/minio/linux/index.html" class="external-link">Linux</a>.</p>
+<p>To use Minio, first install it for your platform: <a href="https://docs.min.io/aistor/installation/macos/install/" class="external-link">macOS</a>,
+<a href="https://docs.min.io/aistor/installation/windows/install/" class="external-link">Windows</a>,
+<a href="https://docs.min.io/aistor/installation/linux/install/deploy-aistor-on-ubuntu-server/" class="external-link">Linux</a>.</p>
 <p>Next, start Minio. Within this package is a make target
 <code>minio_start</code> for starting Minio locally; it should only work
 on Linux and MacOS platforms.</p>
@@ -343,7 +345,7 @@ by its terms.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

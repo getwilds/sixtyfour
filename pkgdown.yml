@@ -1,5 +1,5 @@
 pandoc: 3.8.3
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   auth: auth.html
@@ -10,7 +10,7 @@ articles:
   s3iam: s3iam.html
   six: six.html
   sixtyfour: sixtyfour.html
-last_built: 2026-06-03T20:31Z
+last_built: 2026-08-27T17:58Z
 urls:
   reference: https://getwilds.org/sixtyfour/reference
   article: https://getwilds.org/sixtyfour/articles
